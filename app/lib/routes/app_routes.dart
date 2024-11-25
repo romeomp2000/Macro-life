@@ -7,6 +7,8 @@ abstract class Routes {
 
   static const login = '/login';
   static const layout = '/layout';
+  static const objetivos = '/objetivos';
+
 
   
 

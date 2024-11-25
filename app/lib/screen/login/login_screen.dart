@@ -25,13 +25,13 @@ class LoginScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 50),
-                    Center(
-                      child: Image.asset(
-                        'assets/images/logo_fep_256x100_original.png',
-                        width: 200,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+                    // Center(
+                    //   child: Image.network(
+                    //     'assets/images/logo_fep_256x100_original.png',
+                    //     width: 200,
+                    //     fit: BoxFit.contain,
+                    //   ),
+                    // ),
                     const SizedBox(height: 50),
                     Padding(
                       padding: const EdgeInsets.all(12.0),

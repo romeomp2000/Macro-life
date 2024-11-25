@@ -29,7 +29,7 @@ class PrincipalController extends GetxController {
 
         // Delay navigation to ensure it happens after the build cycle
         Future.delayed(Duration.zero, () {
-          Get.offAllNamed('/layout_home');
+          Get.offAllNamed('/registro');
         });
       } else {
         // Delay navigation to ensure it happens after the build cycle

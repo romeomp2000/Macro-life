@@ -9,6 +9,8 @@ class ListTileModel {
   final Widget? trailing;
   final Function? onTap;
   final Icon? icon;
+  final Widget? widget;
+
   final FutureOr<void> Function()? function;
 
   ListTileModel({
@@ -19,6 +21,7 @@ class ListTileModel {
     this.onTap,
     this.icon,
     this.function,
+    this.widget,
   });
 
   factory ListTileModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +32,7 @@ class ListTileModel {
       trailing: json['trailing'],
       onTap: json['onTap'],
       icon: json['icon'],
+      widget: json['widget'],
     );
   }
 
@@ -40,6 +44,7 @@ class ListTileModel {
       'trailing': trailing,
       'onTap': onTap,
       'icon': icon,
+      'widget': widget
     };
   }
 

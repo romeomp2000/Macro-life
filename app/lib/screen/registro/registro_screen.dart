@@ -1,6 +1,6 @@
+import 'package:fep/screen/registro/registro_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'registro_controller.dart';
 
 class RegistroScreen extends StatelessWidget {
   const RegistroScreen({Key? key}) : super(key: key);
@@ -12,31 +12,20 @@ class RegistroScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Imagen de fondo que ocupa la mitad superior y parece estar detrás del contenedor
-          Positioned.fill(
-            child: PageView.builder(
-              controller: controller
-                  .pageControllerImage, // Usar un controlador distinto para la imagen
-              itemCount: controller.pages.length,
-              onPageChanged: (index) {
-                controller.currentPage.value = index;
-              },
-              itemBuilder: (context, index) {
-                final page = controller.pages[index];
-                return Image.network(
-                  page['image']!,
-                  fit: BoxFit.fitWidth,
-                  alignment: Alignment.topCenter,
-                  width: Get.width,
-                );
-              },
+          // Imagen de fondo fija para cada página
+          Obx(
+            () => Image.network(
+              controller.pages[controller.currentPage.value]['image']!,
+              fit: BoxFit.contain, // Ajuste cambiado a 'cover'
+              alignment: Alignment
+                  .topCenter, // Alineación centrada en la parte superior
             ),
           ),
           // Contenedor inferior con contenido, botones y puntos de indicación
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              margin: const EdgeInsets.only(top: 350),
+              margin: const EdgeInsets.only(top: 410),
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -51,11 +40,9 @@ class RegistroScreen extends StatelessWidget {
                   // Título y subtítulo del contenido actual
                   Expanded(
                     child: PageView.builder(
-                      controller: controller
-                          .pageControllerContent, // Usar un controlador distinto para el contenido
+                      controller: controller.pageControllerContent,
                       itemCount: controller.pages.length,
-                      onPageChanged: (value) =>
-                          controller.currentPage.value = value,
+                      onPageChanged: controller.updatePage,
                       itemBuilder: (context, index) {
                         final page = controller.pages[index];
                         return Column(

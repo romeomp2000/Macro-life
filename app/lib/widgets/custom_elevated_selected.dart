@@ -8,6 +8,7 @@ class CustomElevatedSelected extends StatelessWidget {
   final FutureOr<void> Function() function;
   final bool? activo;
   final Icon? icon;
+  final Widget? widget;
   final String? subtitle;
 
   const CustomElevatedSelected({
@@ -17,6 +18,7 @@ class CustomElevatedSelected extends StatelessWidget {
     this.activo = true,
     this.icon,
     this.subtitle,
+    this.widget,
   });
 
   @override
@@ -32,7 +34,7 @@ class CustomElevatedSelected extends StatelessWidget {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           ),
           fixedSize: const WidgetStatePropertyAll(Size.fromWidth(370)),
-          padding: (icon == null && subtitle == null)
+          padding: (icon == null && subtitle == null && widget == null)
               ? const WidgetStatePropertyAll(
                   EdgeInsets.symmetric(vertical: 17),
                 )
@@ -41,29 +43,48 @@ class CustomElevatedSelected extends StatelessWidget {
               WidgetStatePropertyAll(activo! ? Colors.black : Colors.grey[200]),
           shadowColor: const WidgetStatePropertyAll(Colors.transparent),
         ),
-        child: (icon != null || subtitle != null)
-            ? ListTile(
-                minLeadingWidth: 20,
-                leading: icon,
-                title: Text(
-                  message,
-                  style: TextStyle(
-                    fontFamily: "Urbanist-SemiBold",
-                    fontWeight: FontWeight.bold,
-                    color: activo! ? Colors.white : Colors.grey[800],
-                  ),
-                ),
-                subtitle: subtitle != null
-                    ? Text(
-                        subtitle!,
-                        style: TextStyle(
-                          fontFamily: "Urbanist-SemiBold",
-                          fontWeight: FontWeight.normal,
-                          fontSize: 12,
-                          color: activo! ? Colors.white70 : Colors.grey[600],
+        child: (icon != null || subtitle != null || widget != null)
+            ? Column(
+                children: [
+                  const SizedBox(height: 15),
+                  Row(
+                    children: [
+                      icon ??
+                          widget!, // Esto es el ícono o el widget que defines
+                      const SizedBox(
+                          width: 15), // Espaciado entre el ícono y el texto
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              message,
+                              style: TextStyle(
+                                fontFamily: "Urbanist-SemiBold",
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    activo! ? Colors.white : Colors.grey[800],
+                              ),
+                            ),
+                            if (subtitle != null)
+                              Text(
+                                subtitle!,
+                                style: TextStyle(
+                                  fontFamily: "Urbanist-SemiBold",
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                  color: activo!
+                                      ? Colors.white70
+                                      : Colors.grey[600],
+                                ),
+                              ),
+                          ],
                         ),
-                      )
-                    : null,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                ],
               )
             : Column(
                 mainAxisSize: MainAxisSize.min,

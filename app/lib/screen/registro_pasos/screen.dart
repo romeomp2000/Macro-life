@@ -15,6 +15,7 @@ class RegistroPasosScreen extends StatelessWidget {
         Get.put(RegistroPasosController());
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -68,31 +69,43 @@ class RegistroPasosScreen extends StatelessWidget {
                   ListTileModel(
                     title: '0-2',
                     subtitle: 'Entrenamiento de vez en cuando',
-                    icon: Icon(
-                      Icons.circle,
-                      color: controller.entrenamiento.value == '0-2'
-                          ? Colors.white
-                          : Colors.black,
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/barra_vertical_intensidad_77x77_basica.png',
+                        color: controller.entrenamiento.value == '0-2'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        width: 45,
+                      ),
                     ),
                   ),
                   ListTileModel(
                     title: '3-5',
                     subtitle: 'Unos cuatro entrenamientos por semana',
-                    icon: Icon(
-                      Icons.grid_3x3,
-                      color: controller.entrenamiento.value == '3-5'
-                          ? Colors.white
-                          : Colors.black,
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_3ptos.png',
+                        color: controller.entrenamiento.value == '3-5'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        width: 45,
+                      ),
                     ),
                   ),
                   ListTileModel(
                     title: '6+',
                     subtitle: 'Atleta dedicado',
-                    icon: Icon(
-                      Icons.playlist_add_check,
-                      color: controller.entrenamiento.value == '6+'
-                          ? Colors.white
-                          : Colors.black,
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_6ptos.png',
+                        color: controller.entrenamiento.value == '6+'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        width: 45,
+                      ),
                     ),
                   ),
                 ],
@@ -237,6 +250,158 @@ class RegistroPasosScreen extends StatelessWidget {
             ),
             Obx(
               () => Steep(
+                title: '¿Sigues alguna dieta especifica?',
+                options: [
+                  ListTileModel(
+                    title: 'Clásico',
+                    // subtitle: '',
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_pierna.png',
+                        color: controller.dieta.value == 'Clásico'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
+                    ),
+                  ),
+                  ListTileModel(
+                    title: 'Pescatariana',
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_pescado.png',
+                        color: controller.dieta.value == 'Pescatariana'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
+                    ),
+                  ),
+                  ListTileModel(
+                    title: 'Vegetariano',
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_manzana.png',
+                        color: controller.dieta.value == 'Vegetariano'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
+                    ),
+                  ),
+                  ListTileModel(
+                    title: 'Vegano',
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_vegano.png',
+                        color: controller.dieta.value == 'Vegetariano'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
+                    ),
+                  ),
+                ],
+                body: null,
+                onOptionSelected: (dieta) => controller.dieta.value = dieta,
+                selectedOption: controller.dieta.value,
+                onNext:
+                    controller.isDietadoSelected() ? controller.nextStep : null,
+              ),
+            ),
+            Obx(
+              () => Steep(
+                title: '¿Qué te gustaría lograr?',
+                options: [
+                  ListTileModel(
+                    title: 'Come y vive más sano',
+                    // subtitle: '',
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_manzana.png',
+                        color: controller.lograr.value == 'Come y vive más sano'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
+                    ),
+                  ),
+                  ListTileModel(
+                    title: 'Aumentar mi energía y estado de ánimo',
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_sol.png',
+                        color: controller.lograr.value ==
+                                'Aumentar mi energía y estado de ánimo'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
+                    ),
+                  ),
+                  ListTileModel(
+                    title: 'Manténgase motivado y constante',
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_brazo.png',
+                        color: controller.lograr.value ==
+                                'Manténgase motivado y constante'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
+                    ),
+                  ),
+                  ListTileModel(
+                    title: 'Sentirse mejor con mi cuerpo',
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_yoga.png',
+                        color: controller.lograr.value ==
+                                'Sentirse mejor con mi cuerpo'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
+                    ),
+                  ),
+                ],
+                body: null,
+                onOptionSelected: (lograr) => controller.lograr.value = lograr,
+                selectedOption: controller.lograr.value,
+                onNext:
+                    controller.isLograrSelected() ? controller.nextStep : null,
+              ),
+            ),
+
+            Obx(
+              () => Steep(
+                body: ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                      15.0), // Define el radio de los bordes
+                  child: Image.network(
+                    'https://macrolife.app/images/app/registro/grafico_alcance_meta_982x1190_original.png',
+                  ),
+                ),
+                title: 'Tienes un gran potencial para aplastar tu objetivo. ',
+                options: const [],
+                onOptionSelected: (probado) =>
+                    controller.probado.value = probado,
+                selectedOption: controller.probado.value,
+                onNext: controller.nextStep,
+              ),
+            ),
+
+            Obx(
+              () => Steep(
                 body: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Column(
@@ -329,33 +494,36 @@ class RegistroPasosScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(
-                              Icons.circle,
+                            Image.network(
+                              'https://macrolife.app/images/app/registro/barra_avance_animales_koala_negro.png', // Reemplaza con la URL de tu imagen PNG
                               color: ((controller.rapidoMeta * 10)
                                               .truncateToDouble() /
                                           10) ==
                                       0.1
-                                  ? const Color.fromARGB(255, 242, 145, 109)
+                                  ? const Color(0xFFDD9A70)
                                   : Colors.black,
+
+                              height: 45, // Ancho deseado para la imagen
                             ),
-                            Icon(
-                              Icons.circle,
+                            Image.network(
+                              'https://macrolife.app/images/app/registro/barra_avance_animales_liebre_negra.png', // Reemplaza con la URL de tu imagen PNG
                               color: ((controller.rapidoMeta * 10)
                                               .truncateToDouble() /
                                           10) ==
                                       0.8
-                                  ? const Color.fromARGB(255, 242, 145, 109)
+                                  ? const Color(0xFFDD9A70)
                                   : Colors.black,
+                              height: 45, // Ajusta el ancho según sea necesario
                             ),
-                            Icon(
-                              Icons.circle,
+                            Image.network(
+                              'https://macrolife.app/images/app/registro/barra_avance_animales_leopardo_negro.png', // Reemplaza con la URL de tu imagen PNG
                               color: ((controller.rapidoMeta * 10)
                                               .truncateToDouble() /
                                           10) ==
                                       1.5
-                                  ? const Color.fromARGB(255, 242, 145, 109)
-                                  : Colors
-                                      .black, // Provide an alternative color here.
+                                  ? const Color(0xFFDD9A70)
+                                  : Colors.black, // Alternativa al color
+                              height: 45, // Ajusta el ancho según tu diseño
                             ),
                           ],
                         ),
@@ -377,7 +545,7 @@ class RegistroPasosScreen extends StatelessWidget {
                           width: Get.width,
                           padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
-                            color: Colors.grey[300],
+                            color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: Text(
@@ -413,7 +581,7 @@ class RegistroPasosScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(
                       15.0), // Define el radio de los bordes
                   child: Image.network(
-                    'https://play-lh.googleusercontent.com/fc_L9p1GTZ5_0yAb8K-NsCSZxGesF1ULsB7nUjWikonKRv_QA0vvRE0oJWuLxHFQNg',
+                    'https://macrolife.app/images/app/registro/grafica_sincon_macrolife_920x1065_original.png',
                   ),
                 ),
                 title:
@@ -432,50 +600,72 @@ class RegistroPasosScreen extends StatelessWidget {
                 options: [
                   ListTileModel(
                     title: 'Falta de constancia',
-                    icon: Icon(
-                      Icons.analytics_outlined,
-                      color: controller.entrenamiento.value ==
-                              'Falta de constancia'
-                          ? Colors.white
-                          : Colors.black,
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_barras.png',
+                        color: controller.entrenamiento.value ==
+                                'Falta de constancia'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
                     ),
                   ),
                   ListTileModel(
                     title: 'Hábitos alimenticios poco saludables',
-                    icon: Icon(
-                      Icons.analytics_outlined,
-                      color: controller.entrenamiento.value ==
-                              'Hábitos alimenticios poco saludables'
-                          ? Colors.white
-                          : Colors.black,
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_hamburguesa.png',
+                        color: controller.entrenamiento.value ==
+                                'Hábitos alimenticios poco saludables'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
                     ),
                   ),
                   ListTileModel(
                     title: 'Falta de apoyo',
-                    icon: Icon(
-                      Icons.handshake,
-                      color: controller.entrenamiento.value == 'Falta de apoyo'
-                          ? Colors.white
-                          : Colors.black,
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_saludo.png',
+                        color:
+                            controller.entrenamiento.value == 'Falta de apoyo'
+                                ? Colors.white
+                                : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
                     ),
                   ),
                   ListTileModel(
                     title: 'Agenda ocupada',
-                    icon: Icon(
-                      Icons.calendar_month_outlined,
-                      color: controller.entrenamiento.value == 'Agenda ocupada'
-                          ? Colors.white
-                          : Colors.black,
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_calendario.png',
+                        color:
+                            controller.entrenamiento.value == 'Agenda ocupada'
+                                ? Colors.white
+                                : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
                     ),
                   ),
                   ListTileModel(
                     title: 'Falta de inspiración para la comida',
-                    icon: Icon(
-                      Icons.apple_rounded,
-                      color: controller.entrenamiento.value ==
-                              'Falta de inspiración para la comida'
-                          ? Colors.white
-                          : Colors.black,
+                    widget: ClipOval(
+                      child: Image.network(
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_manzana.png',
+                        color: controller.entrenamiento.value ==
+                                'Falta de inspiración para la comida'
+                            ? Colors.white
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
                     ),
                   ),
                 ],
@@ -483,9 +673,7 @@ class RegistroPasosScreen extends StatelessWidget {
                   controller.entrenamiento.value = entrenamiento;
                 },
                 selectedOption: controller.entrenamiento.value,
-                onNext: controller.isEntrenamientoSelected()
-                    ? controller.nextStep
-                    : null,
+                onNext: () => Get.offAndToNamed('/layout'),
               ),
             ),
 
@@ -552,6 +740,7 @@ class Steep extends StatelessWidget {
                   CustomElevatedSelected(
                     message: option.title ?? '',
                     icon: option.icon,
+                    widget: option.widget,
                     subtitle: option.subtitle,
                     function: () => onOptionSelected(option.title ?? ''),
                     activo: selectedOption == option.title,
@@ -564,9 +753,11 @@ class Steep extends StatelessWidget {
         ),
         Column(
           children: [
-            CustomElevatedButton(
-              message: 'Siguiente',
-              function: onNext,
+            Center(
+              child: CustomElevatedButton(
+                message: 'Siguiente',
+                function: onNext,
+              ),
             ),
             const SizedBox(height: 20),
           ],

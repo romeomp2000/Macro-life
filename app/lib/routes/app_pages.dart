@@ -12,6 +12,8 @@ import 'package:fep/screen/impuestos/editar/impuestos_editar_screen.dart';
 import 'package:fep/screen/impuestos/impuestos_binding.dart';
 import 'package:fep/screen/impuestos/nuevo/impuestos_nuevo_screen.dart';
 import 'package:fep/screen/impuestos/lista/impuestos_lista_screen.dart';
+import 'package:fep/screen/objetivos/binding.dart';
+import 'package:fep/screen/objetivos/screen.dart';
 import 'package:fep/screen/preferencias/preferencias_binding.dart';
 import 'package:fep/screen/preferencias/preferencias_screen.dart';
 import 'package:fep/screen/productos/lista/productoss_llsta_screen.dart';
@@ -79,10 +81,15 @@ abstract class AppPages {
       page: () => const RegistroScreen(),
       binding: RegistroBinding(),
     ),
+    // GetPage(
+    //   name: Routes.configuraciones,
+    //   page: () => const ConfiguracionesScreen(),
+    //   binding: ConfiguracionesBinding(),
+    // ),
     GetPage(
-      name: Routes.configuraciones,
-      page: () => const ConfiguracionesScreen(),
-      binding: ConfiguracionesBinding(),
+      name: Routes.objetivos,
+      page: () => const ObjetivosScreen(),
+      binding: ObjetivosBinding(),
     ),
     GetPage(
       name: Routes.preferencias,

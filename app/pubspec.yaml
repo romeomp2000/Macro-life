@@ -30,6 +30,7 @@ dependencies:
     liquid_pull_to_refresh: ^3.0.1
     package_info_plus: ^8.0.2
     percent_indicator: ^4.2.3
+    syncfusion_flutter_charts: ^27.2.2
     url_launcher: ^6.3.1
     video_player: ^2.9.2
 

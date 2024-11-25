@@ -22,6 +22,10 @@ class RegistroPasosController extends GetxController {
 
   var rapidoMeta = 0.1.obs;
 
+  var dieta = ''.obs;
+
+  var lograr = ''.obs;
+
   var progress = 0.1.obs; // Barra de progreso inicial en 10%
   var currentStep = 1.obs; // Paso actual (1 a 10)
   late PageController pageController; // Controlador para PageView
@@ -51,6 +55,14 @@ class RegistroPasosController extends GetxController {
     return probado.isNotEmpty;
   }
 
+  bool isDietadoSelected() {
+    return dieta.isNotEmpty;
+  }
+
+  bool isLograrSelected() {
+    return lograr.isNotEmpty;
+  }
+
   bool isObjetivoSelected() {
     return objetivo.isNotEmpty;
   }
@@ -73,10 +85,10 @@ class RegistroPasosController extends GetxController {
 
   // Actualiza el progreso y avanza al siguiente paso
   void nextStep() {
-    if (currentStep.value < 12) {
+    if (currentStep.value < 15) {
       currentStep.value++;
       progress.value = currentStep.value /
-          12; // Actualiza el progreso en función del paso actual
+          15; // Actualiza el progreso en función del paso actual
       pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,

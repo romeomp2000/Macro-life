@@ -3,6 +3,7 @@ import 'package:fep/widgets/custom_elevated_button.dart';
 import 'package:fep/widgets/custom_elevated_selected.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'controller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -70,20 +71,26 @@ class RegistroPasosScreen extends StatelessWidget {
                     title: '0-2',
                     subtitle: 'Entrenamiento de vez en cuando',
                     icon: Icon(
-                      Icons.circle,
-                      color: controller.entrenamiento.value == '0-2'
-                          ? Colors.white
-                          : Colors.black,
+                      ImageIcon(
+                        const AssetImage(
+                            'assets/icons/barra_vertical_intensidad_77x77_básica.png'),
+                        color: controller.entrenamiento.value == '0-2'
+                            ? Colors.white
+                            : Colors.black,
+                      ) as IconData?,
                     ),
                   ),
                   ListTileModel(
                     title: '3-5',
                     subtitle: 'Unos cuatro entrenamientos por semana',
                     icon: Icon(
-                      Icons.grid_3x3,
-                      color: controller.entrenamiento.value == '3-5'
-                          ? Colors.white
-                          : Colors.black,
+                      ImageIcon(
+                        const AssetImage(
+                            'assets/icons/iconografia_primaria_103x103_3ptos.png'),
+                        color: controller.entrenamiento.value == '3-5'
+                            ? Colors.white
+                            : Colors.black,
+                      ) as IconData?,
                     ),
                   ),
                   ListTileModel(
