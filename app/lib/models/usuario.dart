@@ -1,125 +1,147 @@
-class Usuario {
-  int? idUsuario;
-  int? idDistribuidor;
-  int? idUsuarioPadre;
-  String? tipoUsuario;
-  String? clave;
-  int? cuota;
-  int? idComision;
-  String? nombreCompleto;
-  String? usuario;
-  String? password;
-  String? direccion;
-  String? telefono;
-  String? email;
-  Null? fechaNacimiento;
-  String? foto;
-  Null? thumbnail;
-  String? fechaRegistro;
-  String? altasSecciones;
-  String? bajasSecciones;
-  String? consultasSecciones;
-  String? actualizaSecciones;
-  String? cargasSecciones;
-  String? reportesSecciones;
-  Null? resetPasswordToken;
-  int? idUsuarioAnterior;
-  String? estatus;
-  String? timestamp;
+import 'package:get/get.dart';
 
-  Usuario(
-      {this.idUsuario,
-      this.idDistribuidor,
-      this.idUsuarioPadre,
-      this.tipoUsuario,
-      this.clave,
-      this.cuota,
-      this.idComision,
-      this.nombreCompleto,
-      this.usuario,
-      this.password,
-      this.direccion,
-      this.telefono,
-      this.email,
-      this.fechaNacimiento,
-      this.foto,
-      this.thumbnail,
-      this.fechaRegistro,
-      this.altasSecciones,
-      this.bajasSecciones,
-      this.consultasSecciones,
-      this.actualizaSecciones,
-      this.cargasSecciones,
-      this.reportesSecciones,
-      this.resetPasswordToken,
-      this.idUsuarioAnterior,
-      this.estatus,
-      this.timestamp});
+class Usuario {
+  Rx<Macronutrientes>? macronutrientes;
+  Rx<Macronutrientes>? macronutrientesDiario;
+  String? sId;
+  String? referenciaUsuario;
+  String? fechaVencimiento;
+  int? balance;
+  int? rachaDias;
+  String? fechaNacimiento;
+  int? altura;
+  int? pesoActual;
+  String? genero;
+  int? puntuacionSalud;
+  String? entrenamientoSemanal;
+  String? objetivo;
+  int? pesoObjetivo;
+  String? dieta;
+  String? lograr;
+  double? metaAlcanzar;
+  String? impideAlcanzar;
+  String? codigo;
+  String? fechaNacimientoFormato;
+  int? edad;
+  String? fechaMeta;
+  String? fechaMetaObjetivo;
+
+  Usuario({
+    this.macronutrientes,
+    this.macronutrientesDiario,
+    this.sId,
+    this.referenciaUsuario,
+    this.fechaVencimiento,
+    this.balance,
+    this.rachaDias,
+    this.fechaNacimiento,
+    this.altura,
+    this.pesoActual,
+    this.genero,
+    this.puntuacionSalud,
+    this.entrenamientoSemanal,
+    this.objetivo,
+    this.pesoObjetivo,
+    this.dieta,
+    this.lograr,
+    this.metaAlcanzar,
+    this.impideAlcanzar,
+    this.codigo,
+    this.fechaNacimientoFormato,
+    this.edad,
+    this.fechaMeta,
+    this.fechaMetaObjetivo,
+  });
 
   Usuario.fromJson(Map<String, dynamic> json) {
-    idUsuario = json['id_usuario'];
-    idDistribuidor = json['id_distribuidor'];
-    idUsuarioPadre = json['id_usuario_padre'];
-    tipoUsuario = json['tipo_usuario'];
-    clave = json['clave'];
-    cuota = json['cuota'];
-    idComision = json['id_comision'];
-    nombreCompleto = json['nombre_completo'];
-    usuario = json['usuario'];
-    password = json['password'];
-    direccion = json['direccion'];
-    telefono = json['telefono'];
-    email = json['email'];
-    fechaNacimiento = json['fecha_nacimiento'];
-    foto = json['foto'];
-    thumbnail = json['thumbnail'];
-    fechaRegistro = json['fecha_registro'];
-    altasSecciones = json['altas_secciones'];
-    bajasSecciones = json['bajas_secciones'];
-    consultasSecciones = json['consultas_secciones'];
-    actualizaSecciones = json['actualiza_secciones'];
-    cargasSecciones = json['cargas_secciones'];
-    reportesSecciones = json['reportes_secciones'];
-    resetPasswordToken = json['reset_password_token'];
-    idUsuarioAnterior = json['id_usuario_anterior'];
-    estatus = json['estatus'];
-    timestamp = json['timestamp'];
+    macronutrientes = json['macronutrientes'] != null
+        ? Rx<Macronutrientes>(Macronutrientes.fromJson(json['macronutrientes']))
+        : null;
+    macronutrientesDiario = json['macronutrientesDiario'] != null
+        ? Rx<Macronutrientes>(
+            Macronutrientes.fromJson(json['macronutrientesDiario']))
+        : null;
+    sId = json['_id'];
+    referenciaUsuario = json['referenciaUsuario'];
+    fechaVencimiento = json['fechaVencimiento'];
+    balance = json['balance'];
+    rachaDias = json['rachaDias'];
+    fechaNacimiento = json['fechaNacimiento'];
+    altura = json['altura'];
+    pesoActual = json['pesoActual'];
+    genero = json['genero'];
+    puntuacionSalud = json['puntuacionSalud'];
+    entrenamientoSemanal = json['entrenamientoSemanal'];
+    objetivo = json['objetivo'];
+    pesoObjetivo = json['pesoObjetivo'];
+    dieta = json['dieta'];
+    lograr = json['lograr'];
+    metaAlcanzar = json['metaAlcanzar'];
+    impideAlcanzar = json['impideAlcanzar'];
+    codigo = json['codigo'];
+    fechaNacimientoFormato = json['fechaNacimientoFormato'];
+    edad = json['edad'];
+    fechaMeta = json['fechaMeta'];
+    fechaMetaObjetivo = json['fechaMetaObjetivo'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id_usuario'] = this.idUsuario;
-    data['id_distribuidor'] = this.idDistribuidor;
-    data['id_usuario_padre'] = this.idUsuarioPadre;
-    data['tipo_usuario'] = this.tipoUsuario;
-    data['clave'] = this.clave;
-    data['cuota'] = this.cuota;
-    data['id_comision'] = this.idComision;
-    data['nombre_completo'] = this.nombreCompleto;
-    data['usuario'] = this.usuario;
-    data['password'] = this.password;
-    data['direccion'] = this.direccion;
-    data['telefono'] = this.telefono;
-    data['email'] = this.email;
-    data['fecha_nacimiento'] = this.fechaNacimiento;
-    data['foto'] = this.foto;
-    data['thumbnail'] = this.thumbnail;
-    data['fecha_registro'] = this.fechaRegistro;
-    data['altas_secciones'] = this.altasSecciones;
-    data['bajas_secciones'] = this.bajasSecciones;
-    data['consultas_secciones'] = this.consultasSecciones;
-    data['actualiza_secciones'] = this.actualizaSecciones;
-    data['cargas_secciones'] = this.cargasSecciones;
-    data['reportes_secciones'] = this.reportesSecciones;
-    data['reset_password_token'] = this.resetPasswordToken;
-    data['id_usuario_anterior'] = this.idUsuarioAnterior;
-    data['estatus'] = this.estatus;
-    data['timestamp'] = this.timestamp;
+    if (this.macronutrientes != null) {
+      data['macronutrientes'] = this.macronutrientes!.value.toJson();
+    }
+    if (this.macronutrientesDiario != null) {
+      data['macronutrientesDiario'] =
+          this.macronutrientesDiario!.value.toJson();
+    }
+    data['_id'] = this.sId;
+    data['referenciaUsuario'] = this.referenciaUsuario;
+    data['fechaVencimiento'] = this.fechaVencimiento;
+    data['balance'] = this.balance;
+    data['rachaDias'] = this.rachaDias;
+    data['fechaNacimiento'] = this.fechaNacimiento;
+    data['altura'] = this.altura;
+    data['pesoActual'] = this.pesoActual;
+    data['genero'] = this.genero;
+    data['puntuacionSalud'] = this.puntuacionSalud;
+    data['entrenamientoSemanal'] = this.entrenamientoSemanal;
+    data['objetivo'] = this.objetivo;
+    data['pesoObjetivo'] = this.pesoObjetivo;
+    data['dieta'] = this.dieta;
+    data['lograr'] = this.lograr;
+    data['metaAlcanzar'] = this.metaAlcanzar;
+    data['impideAlcanzar'] = this.impideAlcanzar;
+    data['codigo'] = this.codigo;
+    data['fechaNacimientoFormato'] = this.fechaNacimientoFormato;
+    data['edad'] = this.edad;
+    data['fechaMeta'] = this.fechaMeta;
+    data['fechaMetaObjetivo'] = this.fechaMetaObjetivo;
     return data;
   }
+}
 
-  static List<Usuario> fromJsonList(List list) {
-    if (list.isEmpty) return List<Usuario>.empty();
-    return list.map((item) => Usuario.fromJson(item)).toList();
+class Macronutrientes {
+  int? calorias;
+  int? proteina;
+  int? carbohidratos;
+  int? grasas;
+
+  Macronutrientes(
+      {this.calorias, this.proteina, this.carbohidratos, this.grasas});
+
+  Macronutrientes.fromJson(Map<String, dynamic> json) {
+    calorias = json['calorias'];
+    proteina = json['proteina'];
+    carbohidratos = json['carbohidratos'];
+    grasas = json['grasas'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['calorias'] = this.calorias;
+    data['proteina'] = this.proteina;
+    data['carbohidratos'] = this.carbohidratos;
+    data['grasas'] = this.grasas;
+    return data;
   }
 }

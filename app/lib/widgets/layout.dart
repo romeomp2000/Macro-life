@@ -1,12 +1,24 @@
-import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:camera/camera.dart';
+import 'package:fep/config/api_service.dart';
+import 'package:fep/config/theme.dart';
+import 'package:fep/helpers/usuario_controller.dart';
+import 'package:fep/screen/analitica/screen.dart';
+import 'package:fep/screen/configuraciones/screen.dart';
+import 'package:fep/screen/home/controller.dart';
+import 'package:fep/screen/home/screen.dart';
+import 'package:fep/widgets/BoderCamera.dart';
+import 'package:fep/widgets/CustomFloatingActionButtonLocation.dart';
+import 'package:fep/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 
 class LayoutScreen extends StatelessWidget {
   final LayoutController controller = Get.put(LayoutController());
+  final EscanearAlimentosController escanearController =
+      Get.put(EscanearAlimentosController());
+
+  final UsuarioController controllerUsuario = Get.put(UsuarioController());
 
   @override
   Widget build(BuildContext context) {
@@ -14,79 +26,302 @@ class LayoutScreen extends StatelessWidget {
       body: Obx(() {
         switch (controller.selectedIndex.value) {
           case 0:
-            return const Center(child: HomeScreen());
+            return const HomeScreen();
           case 1:
-            return const Center(child: AnaliticaScreen());
+            return AnaliticaScreen();
           case 2:
             return const Center(child: ConfiguracionesScreen());
           default:
-            return Center(child: Text('Home Screen'));
+            return const Center(child: Text('Home Screen'));
         }
       }),
-      bottomNavigationBar: Stack(
-        clipBehavior: Clip
-            .none, // Esto permite que el botón se muestre fuera del contenedor
+      floatingActionButton: ClipOval(
+        child: FloatingActionButton(
+          onPressed: () {
+            escanearController.onPressPlus();
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Image.network(
+              'https://macrolife.app/images/app/home/icono_agregar_180x180_line.png',
+              width: 40, // Tamaño fijo para la imagen
+              height: 40, // Igual que el ancho
+              fit: BoxFit.cover, // Ajusta la imagen dentro del círculo
+            ),
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: CustomFloatingActionButtonLocation(
+        xOffset: -12, // Mueve el botón 20px hacia la izquierda
+        yOffset: 10, // Mantén el eje vertical sin cambios
+      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          backgroundColor: Colors.white,
+          currentIndex: controller.selectedIndex.value,
+          onTap: (index) {
+            if (index != 3) {
+              controller.onItemTapped(index);
+            }
+          },
+          items: [
+            BottomNavigationBarItem(
+              activeIcon: Image.network(
+                  'https://macrolife.app/images/app/home/menu_inferior_195x195_inicio_activo.png',
+                  width: 20),
+              icon: Image.network(
+                  'https://macrolife.app/images/app/home/menu_inferior_195x195_inicio_inactivo.png',
+                  width: 20),
+              label: 'Inicio',
+            ),
+            BottomNavigationBarItem(
+              activeIcon: Image.network(
+                  'https://macrolife.app/images/app/home/menu_inferior_195x195_analytics_activo.png',
+                  width: 20),
+              icon: Image.network(
+                  'https://macrolife.app/images/app/home/menu_inferior_195x195_analytics_inactivo.png',
+                  width: 20),
+              label: 'Analítica',
+            ),
+            BottomNavigationBarItem(
+              activeIcon: Image.network(
+                  'https://macrolife.app/images/app/home/menu_inferior_195x195_configuracion_activo.png',
+                  width: 20),
+              icon: Image.network(
+                  'https://macrolife.app/images/app/home/menu_inferior_195x195_configuracion_inactivo.png',
+                  width: 20),
+              label: 'Ajustes',
+            ),
+            const BottomNavigationBarItem(
+              icon: SizedBox.shrink(), // Espacio vacío para el botón de +
+              label: '',
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+        ),
+      ),
+    );
+  }
+}
+
+class EscanearAlimentosController extends GetxController {
+  CameraController? cameraController; // Ahora puede ser null
+  RxBool linterna = false.obs;
+  late List<CameraDescription> cameras;
+  RxBool isCameraInitialized = false.obs;
+  RxList<ImageLabel> labels = <ImageLabel>[].obs;
+  final UsuarioController usuarioController = Get.put(UsuarioController());
+
+  // Asegurarse de que la cámara se inicialice correctamente
+  Future<void> initializeCamera() async {
+    try {
+      cameras = await availableCameras();
+      if (cameras.isEmpty) {
+        print('No hay cámaras disponibles.');
+        return;
+      }
+      cameraController = CameraController(
+          cameras[0], ResolutionPreset.ultraHigh,
+          enableAudio: false, fps: 30, imageFormatGroup: ImageFormatGroup.jpeg);
+      print('Inicializando la cámara...');
+      await cameraController?.initialize();
+      print('Cámara inicializada');
+      isCameraInitialized.value = true;
+    } catch (e) {
+      print('Error al inicializar la cámara: $e');
+    }
+  }
+
+  // Capturar y procesar la imagen
+  Future<void> captureAndProcessImage() async {
+    try {
+      final WeeklyCalendarController cargaMacro = Get.find();
+
+      cargaMacro.loader.value = true;
+      final image = await cameraController!.takePicture();
+      cameraController!.stopImageStream();
+      Get.back();
+
+      DateTime today = DateTime.now();
+
+      final images = [
+        ImageData(
+          fileKey: 'comida',
+          filePath: image.path,
+        ),
+      ];
+
+      final apiService = ApiService();
+
+      final response = await apiService.uploadImages(
+        'analizar-comida',
+        images,
+        extraFields: {
+          'idUsuario': usuarioController.usuario.value.sId ?? '',
+          'fecha': today.toUtc().toIso8601String(),
+        },
+      );
+
+      usuarioController.saveUsuarioFromJson(response['usuario']);
+
+      cargaMacro.refresh();
+      cargaMacro.loader.refresh();
+
+      cargaMacro.cargaAlimentos();
+    } catch (e) {
+      print("Error al capturar o procesar imagen: $e");
+    }
+  }
+
+// Procesar la imagen con el etiquetador de ML
+  Future<void> processImage(String imagePath) async {
+    final inputImage = InputImage.fromFilePath(imagePath);
+    final imageLabeler = GoogleMlKit.vision.imageLabeler();
+    final results = await imageLabeler.processImage(inputImage);
+
+    labels.clear();
+    labels.addAll(results);
+    imageLabeler.close();
+  }
+
+  @override
+  void onClose() {
+    cameraController?.dispose();
+    super.onClose();
+  }
+
+  void ayudaEscanear() {
+    Get.bottomSheet(
+      isScrollControlled: true,
+      Stack(
         children: [
-          Obx(
-            () => BottomNavigationBar(
-              backgroundColor: Colors.white,
-              currentIndex: controller.selectedIndex.value,
-              onTap: (index) {
-                if (index != 3) {
-                  controller.onItemTapped(index);
-                }
-              },
-              items: [
-                BottomNavigationBarItem(
-                  activeIcon: Image.network(
-                      'https://macrolife.app/images/app/home/menu_inferior_195x195_inicio_activo.png',
-                      width: 20),
-                  icon: Image.network(
-                      'https://macrolife.app/images/app/home/menu_inferior_195x195_inicio_inactivo.png',
-                      width: 20),
-                  label: 'Inicio',
+          SafeArea(
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(
+                    20), // Redondea la esquina superior izquierda
+                topRight:
+                    Radius.circular(20), // Redondea la esquina superior derecha
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                color: Colors.white,
+                height: Get.height - 80,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Mejor practicas de escaneo',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 35,
+                      ),
+                    ),
+                    Image.network(
+                      'https://macrolife.app/images/app/home/pantalla_proceso_1125x2436_corto.png',
+                      width: Get.width,
+                      height: 250,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Consejos generales',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        color: Colors.grey[50],
+                        child: const Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.circle,
+                                    size: 5, color: Colors.black45),
+                                SizedBox(width: 8),
+                                Expanded(
+                                  // Esto permitirá que el texto se ajuste y se envuelva
+                                  child: Text(
+                                    'Manténgase los alimentos dentro de las lineas de escaneo.',
+                                    softWrap:
+                                        true, // Esto asegura que el texto se envuelva
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Icon(Icons.circle,
+                                    size: 5, color: Colors.black45),
+                                SizedBox(width: 8),
+                                Expanded(
+                                  // Esto permitirá que el texto se ajuste y se envuelva
+                                  child: Text(
+                                    'Mantén tu teléfono fijo para que la imagen no salga borrosa.',
+                                    softWrap:
+                                        true, // Esto asegura que el texto se envuelva
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Icon(Icons.circle,
+                                    size: 5, color: Colors.black45),
+                                SizedBox(width: 8),
+                                Expanded(
+                                  // Esto permitirá que el texto se ajuste y se envuelva
+                                  child: Text(
+                                    'No tomes la fotografía desde ángulos oscuros.',
+                                    softWrap:
+                                        true, // Esto asegura que el texto se envuelva
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: Get.width,
+                      child: CustomElevatedButton(
+                        message: 'Escanear ahora',
+                        function: () => Get.back(),
+                      ),
+                    ),
+                  ],
                 ),
-                BottomNavigationBarItem(
-                  activeIcon: Image.network(
-                      'https://macrolife.app/images/app/home/menu_inferior_195x195_analytics_activo.png',
-                      width: 20),
-                  icon: Image.network(
-                      'https://macrolife.app/images/app/home/menu_inferior_195x195_analytics_inactivo.png',
-                      width: 20),
-                  label: 'Analítica',
-                ),
-                BottomNavigationBarItem(
-                  activeIcon: Image.network(
-                      'https://macrolife.app/images/app/home/menu_inferior_195x195_configuracion_activo.png',
-                      width: 20),
-                  icon: Image.network(
-                      'https://macrolife.app/images/app/home/menu_inferior_195x195_configuracion_inactivo.png',
-                      width: 20),
-                  label: 'Ajustes',
-                ),
-                const BottomNavigationBarItem(
-                  icon: SizedBox.shrink(), // Espacio vacío para el botón de +
-                  label: '',
-                ),
-              ],
-              type: BottomNavigationBarType.fixed,
+              ),
             ),
           ),
           Positioned(
-            right: 25,
-            bottom: 55, // Sube el botón para que sobresalga más
-            child: IconButton(
-              onPressed: () => controller.onPressPlus(),
-              icon: Container(
-                padding: const EdgeInsets.all(20.0),
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  shape: BoxShape.circle,
+            top: 0,
+            right: 0,
+            child: ClipOval(
+              child: IconButton(
+                icon: ClipOval(
+                  child: Container(
+                    color: Colors.white,
+                    child: Image.network(
+                      'https://macrolife.app/images/app/home/icono_cancelar_275x275_blanco.png',
+                      color: Colors.black26,
+                      width: 40,
+                    ),
+                  ),
                 ),
-                child: Image.network(
-                  'https://macrolife.app/images/app/home/icono_agregar_180x180_line.png',
-                  width: 20,
-                ),
+                onPressed: () => Get.back(),
               ),
             ),
           ),
@@ -94,26 +329,138 @@ class LayoutScreen extends StatelessWidget {
       ),
     );
   }
-}
 
-class LayoutController extends GetxController {
-  var selectedIndex = 0.obs;
+  void escanearAlimentos() async {
+    Get.back();
+    // Esperar la inicialización de la cámara
+    await initializeCamera(); // Asegúrate de que se haya completado la inicialización
 
-  void onItemTapped(int index) {
-    selectedIndex.value = index;
+    if (!isCameraInitialized.value) {
+      print("La cámara no se ha inicializado correctamente.");
+      return; // Si no se ha inicializado correctamente, salimos del método
+    }
+
+    // Mostrar el bottom sheet solo después de que la cámara esté inicializada
+    Get.bottomSheet(
+      isScrollControlled: true,
+      SafeArea(
+        child: Stack(
+          alignment: AlignmentDirectional.bottomCenter,
+          children: [
+            // Cámara ocupa todo el espacio
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(
+                    20), // Redondea la esquina superior izquierda
+                topRight:
+                    Radius.circular(20), // Redondea la esquina superior derecha
+              ),
+              child: SizedBox(
+                height: Get.height - 60,
+                child: cameraController == null
+                    ? const SizedBox.shrink()
+                    : CameraPreview(cameraController!),
+              ),
+            ),
+
+            Positioned(
+              top: 60,
+              left: 0,
+              child: IconButton(
+                icon: ClipOval(
+                  child: Container(
+                    color: Colors.grey.withOpacity(0.3),
+                    child: Image.network(
+                      'https://macrolife.app/images/app/home/icono_cancelar_275x275_blanco.png',
+                      width: 40,
+                    ),
+                  ),
+                ),
+                onPressed: () => {Get.back(), cameraController?.dispose()},
+              ),
+            ),
+
+            Positioned(
+              top: 60,
+              right: 0,
+              child: ClipOval(
+                child: IconButton(
+                  icon: Image.network(
+                    'https://macrolife.app/images/app/home/icono_pregunta_275x275_blanco.png',
+                    width: 45,
+                  ),
+                  onPressed: () => ayudaEscanear(),
+                ),
+              ),
+            ),
+
+            // Botón de captura centrado
+            Positioned(
+              bottom: 16,
+              left: Get.width / 2 - 30, // Centrado horizontalmente
+              child: IconButton(
+                iconSize: 30,
+                color: whiteTheme_,
+                icon: ClipOval(
+                  child: Image.network(
+                    'https://macrolife.app/images/app/home/ciculo-camera.png',
+                    width: 60,
+                  ),
+                ),
+                onPressed: () {
+                  captureAndProcessImage();
+                },
+              ),
+            ),
+
+            Positioned(
+              child: BorderCamera(
+                width: Get.width - 120,
+                height: Get.width - 120,
+              ),
+            ),
+
+            Positioned(
+              bottom: 16,
+              left: 20, // Centrado horizontalmente
+              child: IconButton(
+                icon: ClipOval(
+                  child: Obx(
+                    () => Image.network(
+                      'https://macrolife.app/images/app/home/icono_rayo_circulo_130x130_blanco.png',
+                      width: 30,
+                      color: linterna.value ? Colors.amber : Colors.white,
+                      colorBlendMode: BlendMode.srcIn,
+                    ),
+                  ),
+                ),
+                onPressed: () async {
+                  if (linterna.value == true) {
+                    linterna.value = false;
+                    cameraController?.setFlashMode(FlashMode.torch);
+                  } else {
+                    linterna.value = true;
+                    cameraController?.setFlashMode(FlashMode.off);
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    ).whenComplete(() {
+      cameraController?.dispose();
+      linterna.value = false;
+      isCameraInitialized.value = false;
+    });
   }
 
   void onPressPlus() {
-    Get.bottomSheet(
-      Container(
-        padding: const EdgeInsets.all(30.0),
-        decoration: const BoxDecoration(
-          // color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
+    Get.dialog(
+      Dialog(
+        elevation: 0,
+        alignment: Alignment.bottomCenter,
+        backgroundColor: Colors.transparent,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,33 +573,43 @@ class LayoutController extends GetxController {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Image.network(
-                          'https://macrolife.app/images/app/home/icono_57x57_camara_para_escanear_comida.png',
-                          width: 35,
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          'Escanear\nalimentos',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                      ],
+                    child: GestureDetector(
+                      onTap: () => {escanearAlimentos()},
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Image.network(
+                            'https://macrolife.app/images/app/home/icono_57x57_camara_para_escanear_comida.png',
+                            width: 35,
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Escanear\nalimentos',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 90)
+            const SizedBox(height: 50)
           ],
         ),
       ),
-      isScrollControlled: true,
     );
+  }
+}
+
+class LayoutController extends GetxController {
+  var selectedIndex = 0.obs;
+
+  void onItemTapped(int index) {
+    selectedIndex.value = index;
   }
 }
 
@@ -260,1228 +617,5 @@ class LayoutBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => LayoutController());
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final WeeklyCalendarController controller =
-        Get.put(WeeklyCalendarController());
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(
-            'https://macrolife.app/images/app/home/background_1125x2436_uno.jpg', // URL de tu imagen
-          ),
-          fit: BoxFit.cover, // Ajusta la imagen al tamaño del contenedor
-        ),
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.network(
-                      'https://macrolife.app/images/app/logo/logo_macro_life.png',
-                      width: 155,
-                    ),
-                    GestureDetector(
-                      onTap: () => controller.onRachaDias(),
-                      child: Container(
-                        padding: const EdgeInsets.all(5.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Row(
-                          children: [
-                            const SizedBox(width: 7),
-                            Image.network(
-                              'https://macrolife.app/images/app/home/icono_flama_chica_52x52_original.png',
-                              width: 20,
-                            ),
-                            const SizedBox(width: 5),
-                            const Text(
-                              '1',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            const SizedBox(width: 7),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 15),
-              SizedBox(
-                height: 100,
-                child: PageView.builder(
-                  controller: controller.pageController,
-                  reverse: true,
-                  itemBuilder: (context, index) {
-                    DateTime weekStart = controller.getWeekStartDate(index);
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: List.generate(7, (dayIndex) {
-                        DateTime day = weekStart.add(Duration(days: dayIndex));
-                        bool isToday = controller.isToday(day);
-                        bool isBeforeToday = day.isBefore(DateTime.now());
-
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Column(
-                            children: [
-                              // Letras iniciales con borde punteado solo para días hasta hoy
-                              if (!day.isAfter(
-                                  DateTime.now())) // Solo días hasta hoy
-                                DottedBorder(
-                                  color:
-                                      isToday ? Colors.black : Colors.black26,
-                                  borderType: BorderType.Circle,
-                                  dashPattern: const [3, 3],
-                                  child: Container(
-                                    width: 35,
-                                    height: 35,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      DateFormat.E('es')
-                                          .format(day)
-                                          .substring(0, 1)
-                                          .toUpperCase(),
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: isToday
-                                            ? FontWeight.bold
-                                            : FontWeight.normal,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              else // Días después de hoy (sin borde punteado)
-                                Container(
-                                  width: 36,
-                                  height: 36,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    DateFormat.E('es')
-                                        .format(day)
-                                        .substring(0, 1)
-                                        .toUpperCase(),
-                                    style: TextStyle(
-                                      color: Colors.grey[800],
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                ),
-                              SizedBox(height: 4),
-                              // Número del día sin borde ni fondo
-                              Text(
-                                day.day.toString(),
-                                style: TextStyle(
-                                  color: isToday
-                                      ? Colors.black
-                                      : (isBeforeToday
-                                          ? Colors.grey[800]
-                                          : Colors.grey[600]),
-                                  fontWeight: isToday
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                    );
-                  },
-                ),
-              ),
-              GestureDetector(
-                onTap: () => Get.toNamed('/objetivos'),
-                child: Container(
-                  padding: const EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  width: Get.width - 40,
-                  height: 160,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Texto de las calorías restantes
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '1744',
-                              style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              'Calorías restantes',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black54,
-                              ),
-                            ),
-                          ],
-                        ),
-                        // Círculo con icono de fuego
-                        CircularPercentIndicator(
-                          radius: 55.0,
-                          lineWidth: 8.0,
-                          percent: 0.2, // Ajusta el valor de progreso
-                          center: const Icon(
-                            Icons.local_fire_department,
-                          ),
-                          progressColor: Colors.black, // Color del progreso
-                          backgroundColor:
-                              Colors.black12, // Color del fondo del círculo
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  // Indicador de Proteína
-                  GestureDetector(
-                    onTap: () => Get.toNamed('/objetivos'),
-                    child: NutrientIndicator(
-                      amount: 122,
-                      nutrient: "Proteína",
-                      percent: 0.2,
-                      color: Colors.red,
-                      icon:
-                          'https://macrolife.app/images/app/home/iconografia_metas_28x28_proteinas.png',
-                    ),
-                  ),
-                  // Indicador de Carbohidratos
-                  GestureDetector(
-                    onTap: () => Get.toNamed('/objetivos'),
-                    child: NutrientIndicator(
-                      amount: 178,
-                      nutrient: "Carbohidratos",
-                      percent: 0.4,
-                      color: Colors.orange,
-                      icon:
-                          'https://macrolife.app/images/app/home/iconografia_metas_28x28_carbohidratos.png',
-                    ),
-                  ),
-                  // Indicador de Grasa
-                  GestureDetector(
-                    onTap: () => Get.toNamed('/objetivos'),
-                    child: NutrientIndicator(
-                      amount: 24,
-                      nutrient: "Grasa",
-                      percent: 0.8,
-                      color: Colors.blueAccent,
-                      icon:
-                          'https://macrolife.app/images/app/home/iconografia_metas_28x28_grasas.png',
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 15),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Center(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 15.0),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: const Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'No has subido ninguna comida',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                            ),
-                          ),
-                          SizedBox(height: 8.0),
-                          Text(
-                            'Comienza a registrar las comidas de hoy tomando una foto rápido',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 70,
-                    bottom: -30,
-                    child: Image.network(
-                      'https://macrolife.app/images/app/home/flecha_comida_113x149_negro.png',
-                      width: 40,
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class WeeklyCalendarController extends GetxController {
-  PageController pageController = PageController(initialPage: 0);
-  Rx<DateTime> today = DateTime.now().obs;
-
-  DateTime getWeekStartDate(int weekOffset) {
-    DateTime current = today.value;
-    return current
-        .subtract(Duration(days: current.weekday - 1 + weekOffset * 7));
-  }
-
-  void onRachaDias() {
-    Get.bottomSheet(
-      isDismissible: true, // Permite cerrar al presionar fuera
-      enableDrag: true, // Permite deslizar para cerrar
-      persistent: true,
-      isScrollControlled: true,
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  // Logo e ícono de fuego
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Icon(Icons.apple, size: 24, color: Colors.black),
-                      Image.network(
-                        'https://macrolife.app/images/app/logo/logo_macro_life.png',
-                        height: 20,
-                      ),
-
-                      Container(
-                        padding: const EdgeInsets.all(5.0),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Row(
-                          children: [
-                            const SizedBox(width: 7),
-                            Image.network(
-                              'https://macrolife.app/images/app/home/icono_flama_chica_52x52_original.png',
-                              width: 20,
-                            ),
-                            const SizedBox(width: 5),
-                            const Text(
-                              '1',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            const SizedBox(width: 7),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  // Ícono de fuego grande
-                  Stack(
-                    alignment: Alignment
-                        .center, // Centrar los widgets dentro del Stack
-                    clipBehavior: Clip
-                        .none, // Permite que los widgets se desborden fuera del Stack
-                    children: [
-                      Image.network(
-                        'https://macrolife.app/images/app/home/imagen_flama_num_378x462_no_sn.png',
-                        width: 130,
-                        height: 140,
-                      ),
-                      const Positioned(
-                        bottom:
-                            -25, // Ajusta este valor para mover el texto donde desees
-                        child: NumberWithBorder(number: '1'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-                  // Texto principal
-                  const Text(
-                    "Racha de días",
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFE69938),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  // Indicador de días
-                  Padding(
-                    padding: const EdgeInsets.all(25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: List.generate(7, (index) {
-                        return Column(
-                          children: [
-                            Text(
-                              ["L", "M", "M", "J", "V", "S", "D"][index],
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 4),
-                            Icon(
-                              index == 4
-                                  ? Icons.check_circle
-                                  : Icons.circle_rounded,
-                              color: index == 4
-                                  ? const Color(0xFFE69938)
-                                  : Colors.grey[200],
-                            ),
-                          ],
-                        );
-                      }),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  // Mensaje
-                  const Text(
-                    "¡Estás que ardes! Cada día cuenta para alcanzar tu meta",
-                    style: TextStyle(fontSize: 15),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  // Botón continuar
-                  SizedBox(
-                    width: double.infinity, // Ocupa todo el ancho disponible
-                    child: ElevatedButton(
-                      onPressed: () => Get.back(),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        backgroundColor: Colors.black,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-                      ),
-                      child: const Text(
-                        "Continuar",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  bool isToday(DateTime date) {
-    DateTime current = DateTime.now();
-    return date.day == current.day &&
-        date.month == current.month &&
-        date.year == current.year;
-  }
-}
-
-class NutrientIndicator extends StatelessWidget {
-  final int amount;
-  final String nutrient;
-  final double percent;
-  final Color color;
-  final String icon;
-
-  NutrientIndicator({
-    required this.amount,
-    required this.nutrient,
-    required this.percent,
-    required this.color,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 120,
-      height: 170,
-      // color: Colors.white,
-      padding: const EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(
-          color: Colors.white, // Color del borde
-          width: 1.0, // Ancho del borde
-        ),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 2,
-            spreadRadius: 0.1,
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '${amount}g',
-                style:
-                    const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                '$nutrient restante',
-                style: const TextStyle(fontSize: 10, color: Colors.black54),
-              ),
-            ],
-          ),
-          CircularPercentIndicator(
-            radius: 30.0,
-            lineWidth: 7.0,
-            percent: percent,
-            center: Image.network(
-              icon,
-              width: 15,
-            ),
-            progressColor: color,
-            backgroundColor: Colors.black12,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class AnaliticaScreen extends StatelessWidget {
-  const AnaliticaScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    // final WeeklyCalendarController controller =
-    //     Get.put(WeeklyCalendarController());
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(
-            'https://macrolife.app/images/app/home/background_1125x2436_uno.jpg', // URL de tu imagen
-          ),
-          fit: BoxFit.cover, // Ajusta la imagen al tamaño del contenedor
-        ),
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Vista general',
-                style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Image.network(
-                        'https://macrolife.app/images/app/home/icono_check_53x53_naranja.png',
-                        width: 27,
-                      ),
-                      const SizedBox(width: 10),
-                      const Text.rich(
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                        TextSpan(
-                          text: 'Peso objetivo: ',
-                          style: TextStyle(color: Colors.black),
-                          children: [
-                            TextSpan(
-                              text: '54 Kg',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () => {},
-                    // st: ElevatedButton.styleFrom(
-                    //   foregroundColor: Colors.white,
-                    //   backgroundColor: Colors.black, // Letras blancas
-                    //   padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
-                    // ),
-                    child: Container(
-                      padding: const EdgeInsets.fromLTRB(12.0, 5.0, 12.0, 5.0),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Text(
-                        'Actualizar',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 25),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: const BoxDecoration(
-                                  color: Colors.black12,
-                                  backgroundBlendMode: BlendMode.clear,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Image.network(
-                                  'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_registrar.png',
-                                  width: 20,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const Text.rich(
-                                TextSpan(
-                                  text: 'Peso actual',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: ' 70 kg',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          const Text(
-                            'Recuerda actualizar esto al menos una vez a la semana para que podamos ajustar tu plan y alcanzar tu objetivo',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.black54,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        // Acción del botón
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        decoration: const BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(15),
-                            bottomRight: Radius.circular(15),
-                          ),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Actualiza tu peso',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 25),
-              const Text(
-                'Tu IMC',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Título y categoría
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                const Text(
-                                  'Tu peso es',
-                                ),
-                                const SizedBox(width: 10),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 5,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: const Text(
-                                    'Saludable',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const Icon(
-                          Icons.help_outline,
-                          color: Colors.black54,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Peso
-                    const Text(
-                      '24.2',
-                      style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Indicador de rango
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Container(
-                          height: 8,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            gradient: const LinearGradient(
-                              colors: [
-                                Colors.blue,
-                                Colors.green,
-                                Colors.yellow,
-                                Colors.orange,
-                                Colors.red,
-                              ],
-                              stops: [0.0, 0.33, 0.66, 0.85, 1.0],
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 100, // Ajustar la posición según el peso
-                          top: -10,
-                          child: Container(
-                            width: 1.5,
-                            height: 25,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Etiquetas de rango
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        LegendItem(color: Colors.blue, text: 'Bajo peso'),
-                        LegendItem(color: Colors.green, text: 'Saludable'),
-                        LegendItem(color: Colors.yellow, text: 'Sobrepeso'),
-                        LegendItem(color: Colors.red, text: 'Obeso'),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-Widget _buildOption({
-  required IconData icon,
-  required String label,
-  required VoidCallback onTap,
-}) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 40, color: Colors.black),
-          SizedBox(height: 8),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-class LegendItem extends StatelessWidget {
-  final Color color;
-  final String text;
-
-  const LegendItem({
-    Key? key,
-    required this.color,
-    required this.text,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: 6,
-          backgroundColor: color,
-        ),
-        const SizedBox(width: 4),
-        Text(
-          text,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.black,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class NumberWithBorder extends StatelessWidget {
-  final String number;
-
-  const NumberWithBorder({
-    super.key,
-    required this.number,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // Texto con borde (más grande)
-        Text(
-          number,
-          style: TextStyle(
-            fontSize: 55,
-            fontWeight: FontWeight.bold,
-            foreground: Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 14 // Grosor del borde
-              ..color = const Color(0xFFE69938), // Color del borde
-          ),
-        ),
-        // Texto interior
-        Text(
-          number,
-          style: const TextStyle(
-            fontSize: 55,
-            fontWeight: FontWeight.bold,
-            color: Colors.white, // Color del texto interno
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class ConfiguracionesScreen extends StatelessWidget {
-  const ConfiguracionesScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(
-            'https://macrolife.app/images/app/home/background_1125x2436_uno.jpg', // URL de tu imagen
-          ),
-          fit: BoxFit.cover, // Ajusta la imagen al tamaño del contenedor
-        ),
-      ),
-      child: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Configuración',
-                style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              const CupertinoListTile(
-                padding: EdgeInsets.zero,
-                title: Text('Edad'),
-                trailing: Text(
-                  '24',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                ),
-              ),
-              const CupertinoListTile(
-                padding: EdgeInsets.zero,
-                title: Text('Altura'),
-                trailing: Text(
-                  '170 cm',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                ),
-              ),
-              const CupertinoListTile(
-                padding: EdgeInsets.zero,
-                title: Text('Peso actual'),
-                trailing: Text(
-                  '70 Kg',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                ),
-              ),
-              const SizedBox(height: 15),
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 2,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Row(
-                      children: [
-                        Icon(
-                          Icons.monetization_on,
-                          color: Color(0xFFE69938),
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          'Saldo actual',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      '\$0',
-                      style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                      ),
-                      onPressed: () {
-                        // Acción al presionar el botón
-                      },
-                      child: const Center(
-                        child: Text(
-                          'Recomienda amigos para ganar \$',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 15),
-              const Divider(
-                thickness: 0.4,
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 15),
-              const Text(
-                'Personalización',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-              const SizedBox(height: 15),
-              const CupertinoListTile(
-                padding: EdgeInsets.zero,
-                title: Text('Detalles personales'),
-                trailing: Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  color: Colors.black26,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(height: 15),
-              const CupertinoListTile(
-                padding: EdgeInsets.zero,
-                title: Text('Ajustar objetivos'),
-                subtitle: Text('Calorías, carbohidratos, gras y proteínas'),
-                trailing: Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  color: Colors.black26,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(height: 20),
-              const Divider(
-                thickness: 0.4,
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Preferencias',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-              const SizedBox(height: 15),
-              CupertinoListTile(
-                padding: EdgeInsets.zero,
-                title: const Text('Calorías quemadas'),
-                subtitle:
-                    const Text('Agregar calorías quemadas a la meta diario'),
-                trailing: CupertinoSwitch(
-                  value: true,
-                  activeColor: Colors.black,
-                  onChanged: (e) => {},
-                ),
-              ),
-              const SizedBox(height: 20),
-              const Divider(
-                thickness: 0.4,
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Legal',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-              const SizedBox(height: 15),
-              const CupertinoListTile(
-                padding: EdgeInsets.zero,
-                title: Text('Términos y condiciones'),
-                trailing: Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  color: Colors.black26,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(height: 15),
-              const CupertinoListTile(
-                padding: EdgeInsets.zero,
-                title: Text('Política de privacidad'),
-                trailing: Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  color: Colors.black26,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(height: 15),
-              const CupertinoListTile(
-                padding: EdgeInsets.zero,
-                title: Text('Correo de soporte'),
-                trailing: Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  color: Colors.black26,
-                  size: 20,
-                ),
-              ),
-              CupertinoListTile(
-                onTap: () => Get.offAndToNamed('/registro'),
-                padding: EdgeInsets.zero,
-                title: const Text('Eliminar cuenta'),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  color: Colors.black26,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(height: 20),
-              const Divider(
-                thickness: 0.4,
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 20),
-              const CupertinoListTile(
-                padding: EdgeInsets.zero,
-                title: Text('Dar de baja la cuenta'),
-                trailing: Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  color: Colors.black26,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(height: 20),
-              const Divider(
-                thickness: 0.4,
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 20),
-              const Text('Versión 0.0.1'),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class PrefixWidget extends StatelessWidget {
-  const PrefixWidget({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.color,
-  });
-
-  final IconData icon;
-  final String title;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(4.0),
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(4.0),
-          ),
-          child: Icon(icon, color: CupertinoColors.white),
-        ),
-        const SizedBox(width: 15),
-        Text(title)
-      ],
-    );
   }
 }

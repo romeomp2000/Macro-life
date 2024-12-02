@@ -1,3 +1,4 @@
+import 'package:fep/screen/analitica/controller.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:fep/models/usuario.dart';
@@ -39,9 +40,30 @@ class UsuarioController extends GetxController {
   // cerrar sesion
   void logout() {
     box.remove('usuario');
-    box.remove('contadores');
-    box.remove('modulos');
     usuario.value = Usuario();
     Get.offAllNamed('/login');
+  }
+
+  void onRefresh() {
+    refresh();
+  }
+
+  void saveUsuarioStorage(Usuario usuarioJson) {
+    // Guardar el objeto 'usuario' en el almacenamiento
+    box.write('usuario', usuarioJson.toJson());
+    usuario.value = usuarioJson;
+  }
+
+  void saveUsuarioFromJson(Map<String, dynamic> json) {
+    // Guardar el JSON directamente en el almacenamiento
+    try {
+      box.write('usuario', json);
+
+      usuario.value = Usuario.fromJson(json);
+
+      usuario.refresh();
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 }

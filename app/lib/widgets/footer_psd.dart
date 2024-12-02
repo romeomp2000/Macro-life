@@ -88,6 +88,7 @@ class HankFooter extends StatelessWidget {
                   ),
                   const SizedBox(width: 6),
                   GestureDetector(
+                  
                     child: Text(
                       'Términos y Condiciones',
                       style: TextStyle(

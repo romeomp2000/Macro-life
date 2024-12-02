@@ -1,5 +1,5 @@
 import 'package:fep/helpers/usuario_controller.dart';
-import 'package:fep/screen/home/home_screen.dart';
+import 'package:fep/screen/home/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -29,7 +29,7 @@ class LayoutHomeScreen extends StatelessWidget {
             Obx(
               () => Expanded(
                 child: Text(
-                  usuarioController.usuario.value.nombreCompleto ?? '',
+                  usuarioController.usuario.value.sId ?? '',
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 11,
@@ -77,7 +77,7 @@ class LayoutHomeScreen extends StatelessWidget {
                       heightFactor: 1,
                       child: CircleAvatar(
                         backgroundImage: NetworkImage(
-                            usuarioController.usuario.value.foto ??
+                            usuarioController.usuario.value.sId ??
                                 'https://via.placeholder.com/150'),
                         radius: 40,
                       ),

@@ -1,9 +1,16 @@
+import 'package:avatar_stack/avatar_stack.dart';
+import 'package:avatar_stack/positions.dart';
+import 'package:fep/helpers/funciones_globales.dart';
+import 'package:fep/helpers/usuario_controller.dart';
 import 'package:fep/models/list_tile_model.dart';
+import 'package:fep/screen/EditarNutrientes/screen.dart';
 import 'package:fep/widgets/custom_elevated_button.dart';
 import 'package:fep/widgets/custom_elevated_selected.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'controller.dart';
 
 class RegistroPasosScreen extends StatelessWidget {
@@ -13,6 +20,8 @@ class RegistroPasosScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final RegistroPasosController controller =
         Get.put(RegistroPasosController());
+
+    final UsuarioController controllerUsuario = Get.put(UsuarioController());
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -42,6 +51,7 @@ class RegistroPasosScreen extends StatelessWidget {
           },
           children: [
             // Paso 1: Selección de género
+
             Obx(
               () => Steep(
                 title: 'Elige tu género',
@@ -71,7 +81,7 @@ class RegistroPasosScreen extends StatelessWidget {
                     subtitle: 'Entrenamiento de vez en cuando',
                     widget: ClipOval(
                       child: Image.network(
-                        'https://macrolife.app/images/app/registro/barra_vertical_intensidad_77x77_basica.png',
+                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_1pto.png',
                         color: controller.entrenamiento.value == '0-2'
                             ? Colors.white
                             : Colors.black,
@@ -171,7 +181,9 @@ class RegistroPasosScreen extends StatelessWidget {
               () => Steep(
                 body: AlturaPesoPicker(
                   onAlturaSelected: (value) => controller.altura,
-                  onPesoSelected: (value) => controller.peso,
+                  onPesoSelected: (value) {
+                    controller.peso.value = value;
+                  },
                   defaultPeso: controller.peso.value,
                   defaultAltura: controller.altura.value,
                 ),
@@ -233,13 +245,13 @@ class RegistroPasosScreen extends StatelessWidget {
 
             Obx(
               () => Steep(
-                title: '¿Cual es tu pesos deseado?',
-                options: [],
-                body: CintaMedirWidget(
-                  pesoInicial: 10,
-                  onPesoSeleccionado: (pesoDeseado) =>
-                      controller.pesoDeseado.value = pesoDeseado,
-                  pesoDeseado: controller.pesoDeseado.value,
+                title: '¿Cuál es tu peso deseado?',
+                options: const [],
+                body: cintaMedirWidget(
+                  pesoActual: controller.pesoDeseado.value.toDouble(),
+                  onPesoChanged: (peso) {
+                    controller.pesoDeseado.value = peso.toInt();
+                  },
                 ),
                 onOptionSelected: (probado) =>
                     controller.probado.value = probado,
@@ -267,11 +279,11 @@ class RegistroPasosScreen extends StatelessWidget {
                     ),
                   ),
                   ListTileModel(
-                    title: 'Pescatariana',
+                    title: 'Pescetariana',
                     widget: ClipOval(
                       child: Image.network(
                         'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_pescado.png',
-                        color: controller.dieta.value == 'Pescatariana'
+                        color: controller.dieta.value == 'Pescetariana'
                             ? Colors.white
                             : Colors.black,
                         colorBlendMode: BlendMode.color,
@@ -417,7 +429,7 @@ class RegistroPasosScreen extends StatelessWidget {
                                       controller.pesoDeseado.value
                                   ? 'Perdiendo '
                                   : 'Ganando ',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
@@ -596,7 +608,7 @@ class RegistroPasosScreen extends StatelessWidget {
 
             Obx(
               () => Steep(
-                title: 'Qué te impide alcanzar tus metas?',
+                title: '¿Qué te impide alcanzar tus metas?',
                 options: [
                   ListTileModel(
                     title: 'Falta de constancia',
@@ -669,17 +681,653 @@ class RegistroPasosScreen extends StatelessWidget {
                     ),
                   ),
                 ],
-                onOptionSelected: (entrenamiento) {
-                  controller.entrenamiento.value = entrenamiento;
-                },
+                onOptionSelected: (impedimento) =>
+                    controller.impedimento.value = impedimento,
+                selectedOption: controller.impedimento.value,
+                onNext: controller.iaImpedimentoSelected()
+                    ? controller.nextStep
+                    : null,
+              ),
+            ),
+            Obx(
+              () => Steep(
+                title: 'Danos calificación',
+                options: const [],
+                body: Scrollable(
+                    axisDirection: AxisDirection.down,
+                    viewportBuilder: (context, offset) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 25),
+                          Container(
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black12),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.star, color: Colors.amber, size: 40),
+                                Icon(Icons.star, color: Colors.amber, size: 40),
+                                Icon(Icons.star, color: Colors.amber, size: 40),
+                                Icon(Icons.star, color: Colors.amber, size: 40),
+                                Icon(Icons.star, color: Colors.amber, size: 40),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          const Text(
+                            'Macro Life creado para',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 22),
+                          ),
+                          const Text(
+                            'gente como tú',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 22),
+                          ),
+                          const SizedBox(height: 30),
+                          AvatarStack(
+                            height: 70,
+                            borderColor: Colors.white,
+                            borderWidth: 3,
+                            settings: RestrictedPositions(
+                              minCoverage: 0.3,
+                              align: StackAlign.left,
+                            ),
+                            avatars: const [
+                              NetworkImage(
+                                  'https://macrolife.app/images/app/avatars/avatar_persona_212x212_8.png'),
+                              NetworkImage(
+                                  'https://macrolife.app/images/app/avatars/avatar_persona_212x212_11.png'),
+                              NetworkImage(
+                                  'https://macrolife.app/images/app/avatars/avatar_persona_212x212_14.png'),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          const Text(
+                            '+ 1000 usuarios en Macro life',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          const SizedBox(height: 30),
+                          review('Antony Levandowski',
+                              '"Esta aplicación ofrece muchas posibilidades de superación personal, desde la relajación hasta la confianza".'),
+                          const SizedBox(height: 15),
+                          review('Emma Richardson',
+                              '"Esta aplicación brinda diversas opciones para el crecimiento personal, desde el manejo del estrés hasta el fortalecimiento de la autoestima."'),
+                          const SizedBox(height: 25),
+                        ],
+                      );
+                    }),
+                onOptionSelected: (entrenamiento) =>
+                    controller.entrenamiento.value = entrenamiento,
                 selectedOption: controller.entrenamiento.value,
-                onNext: () => Get.offAndToNamed('/layout'),
+                onNext: controller.nextStep,
+                enableScroll: true,
+              ),
+            ),
+            Obx(
+              () => Steep(
+                enableScroll: true,
+                body: Column(
+                  children: [
+                    Image.network(
+                      'https://macrolife.app/images/app/home/imagen_corredor_1023x883_.png',
+                      width: Get.width,
+                      height: 350,
+                    ),
+                    const SizedBox(height: 15),
+                    const Text(
+                      'Alcanza tus objetivos con notificaciones',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Image.network(
+                      'https://macrolife.app/images/app/home/cuadro_permitir_notificaciones_913x415_original.png',
+                      width: Get.width,
+                      height: 120,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                        'Puedes desactivar cualquiera de los recordatorios en cualquier momento en la configuración. No te enviaremos correo basura.'),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+                title:
+                    'Pierda el doble de peso con Macro life que por su cuenta',
+                options: const [],
+                onOptionSelected: (probado) =>
+                    controller.probado.value = probado,
+                selectedOption: controller.probado.value,
+                onNext: controller.nextStep,
+              ),
+            ),
+            Obx(
+              () => Steep(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                      'https://macrolife.app/images/app/home/confetti3.gif',
+                    ),
+                  ),
+                ),
+                body: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.network(
+                          'https://macrolife.app/images/app/home/icono_check_53x53_naranja.png',
+                          width: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        const Text('¡Todo listo!')
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Gracias por confiar en nosotros',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 28,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 30),
+                      child: Text(
+                        'Prometemos mantener siempre su información personal privada y segura.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                textBTN: 'Crear mi perfil',
+                title: '',
+                options: const [],
+                onOptionSelected: (probado) =>
+                    controller.probado.value = probado,
+                selectedOption: controller.probado.value,
+                onNext: () => controller.onRegistrarLoader(),
               ),
             ),
 
+            Obx(
+              () => Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ClipOval(
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            color: Colors.black,
+                            child: Image.network(
+                              'https://macrolife.app/images/app/home/icono_check_57x57_negro.png',
+                              width: 18,
+                              height: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        const Text(
+                          '!Felicidades, tu plan personalizado está listo!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 23,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Text(
+                          'Debes ${(controller.peso.value - controller.pesoDeseado.value) < 0 ? 'perder' : 'ganar'}:',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(15))),
+                          child: Text(
+                            '${(controller.peso.value - controller.pesoDeseado.value).abs()} Kg el ${controllerUsuario.usuario.value.fechaMetaObjetivo ?? ''}',
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                        Container(
+                          width: Get.width,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(15))),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Recomendación diaría Puedes',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const Text(
+                                'estar esto en cualquier momento',
+                              ),
+                              const SizedBox(height: 25),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Obx(
+                                    () => Recomendaciones(
+                                        title: 'Calorías',
+                                        puntaje:
+                                            '${controllerUsuario.usuario.value.macronutrientesDiario?.value.calorias ?? 0}',
+                                        color: Colors.black,
+                                        onPressed: () {
+                                          Get.to(
+                                            () => EditarNutrientesScreen(
+                                              textField: 'Calorías',
+                                              color: Colors.black,
+                                              imageUrl:
+                                                  'https://macrolife.app/images/app/home/icono_flama_chica_negra_48x48_original.png',
+                                              title:
+                                                  'Editar Objetivo de Calorías',
+                                              initialValue: controllerUsuario
+                                                      .usuario
+                                                      .value
+                                                      .macronutrientesDiario
+                                                      ?.value
+                                                      .calorias ??
+                                                  0,
+                                              onSave: (value) {
+                                                controllerUsuario
+                                                    .usuario
+                                                    .value
+                                                    .macronutrientesDiario
+                                                    ?.value
+                                                    .calorias = value;
+
+                                                Get.back();
+                                                controllerUsuario.usuario
+                                                    .refresh();
+                                              },
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                  Obx(
+                                    () => Recomendaciones(
+                                      title: 'Carbohidratos',
+                                      puntaje:
+                                          '${controllerUsuario.usuario.value.macronutrientesDiario?.value.carbohidratos ?? 0}g',
+                                      color: Colors.orange,
+                                      onPressed: () {
+                                        Get.to(
+                                          () => EditarNutrientesScreen(
+                                            textField: 'Carbohidratos',
+                                            color: Colors.orange,
+                                            imageUrl:
+                                                'https://macrolife.app/images/app/home/iconografia_metas_28x28_carbohidratos.png',
+                                            title:
+                                                'Editar Objetivo de Carbohidratos',
+                                            initialValue: controllerUsuario
+                                                    .usuario
+                                                    .value
+                                                    .macronutrientesDiario
+                                                    ?.value
+                                                    .carbohidratos ??
+                                                0,
+                                            onSave: (value) {
+                                              controllerUsuario
+                                                  .usuario
+                                                  .value
+                                                  .macronutrientesDiario
+                                                  ?.value
+                                                  .carbohidratos = value;
+
+                                              Get.back();
+                                              controllerUsuario.usuario
+                                                  .refresh();
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 25),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Obx(
+                                    () => Recomendaciones(
+                                        title: 'Proteínas',
+                                        puntaje:
+                                            '${controllerUsuario.usuario.value.macronutrientesDiario?.value.proteina ?? 0}g',
+                                        color: Colors.red,
+                                        onPressed: () {
+                                          Get.to(
+                                            () => EditarNutrientesScreen(
+                                              textField: 'Proteínas',
+                                              color: Colors.red,
+                                              imageUrl:
+                                                  'https://macrolife.app/images/app/home/iconografia_metas_28x28_proteinas.png',
+                                              title:
+                                                  'Editar Objetivo de Proteínas',
+                                              initialValue: controllerUsuario
+                                                      .usuario
+                                                      .value
+                                                      .macronutrientesDiario
+                                                      ?.value
+                                                      .proteina ??
+                                                  0,
+                                              onSave: (value) {
+                                                controllerUsuario
+                                                    .usuario
+                                                    .value
+                                                    .macronutrientesDiario
+                                                    ?.value
+                                                    .proteina = value;
+
+                                                Get.back();
+                                                controllerUsuario.usuario
+                                                    .refresh();
+                                              },
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                  Obx(
+                                    () => Recomendaciones(
+                                      title: 'Grasas',
+                                      puntaje:
+                                          '${controllerUsuario.usuario.value.macronutrientesDiario?.value.grasas ?? 0}g',
+                                      color: Colors.blue,
+                                      onPressed: () {
+                                        Get.to(
+                                          () => EditarNutrientesScreen(
+                                            textField: 'Grasas',
+                                            color: Colors.blue,
+                                            imageUrl:
+                                                'https://macrolife.app/images/app/home/iconografia_metas_28x28_grasas.png',
+                                            title: 'Editar Objetivo de Grasas',
+                                            initialValue: controllerUsuario
+                                                    .usuario
+                                                    .value
+                                                    .macronutrientesDiario
+                                                    ?.value
+                                                    .grasas ??
+                                                0,
+                                            onSave: (value) {
+                                              controllerUsuario
+                                                  .usuario
+                                                  .value
+                                                  .macronutrientesDiario
+                                                  ?.value
+                                                  .grasas = value;
+
+                                              Get.back();
+                                              controllerUsuario.usuario
+                                                  .refresh();
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 25),
+                              Container(
+                                width: Get.width,
+                                padding: const EdgeInsets.all(12),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Image.network(
+                                          'https://macrolife.app/images/app/home/iconografia_metas_100x100_corazon.png',
+                                          width: 20,
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(width: 8),
+                                            const Text('Puntuación de salud'),
+                                            const SizedBox(height: 8),
+                                            SizedBox(
+                                              width: Get.width - 110,
+                                              child: LinearProgressIndicator(
+                                                value: controllerUsuario
+                                                        .usuario
+                                                        .value
+                                                        .puntuacionSalud! /
+                                                    10,
+                                                color: Colors.green,
+                                                backgroundColor:
+                                                    Colors.grey[100],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: Text(
+                                        '${controllerUsuario.usuario.value.puntuacionSalud!}/10',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                        Container(
+                          width: Get.width,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(15))),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Cómo alcanzar tus objetivos:',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              objetivos(
+                                  'https://macrolife.app/images/app/home/iconografia_metas_100x100_corazon.png',
+                                  'Utilice puntuaciones de salud para mejorar su rutina.'),
+                              const SizedBox(height: 15),
+                              objetivos(
+                                  'https://macrolife.app/images/app/home/iconografia_metas_100x100_aguacates.png',
+                                  'Sigue tu comida.'),
+                              const SizedBox(height: 15),
+                              objetivos(
+                                  'https://macrolife.app/images/app/home/iconografia_metas_100x100_calorias.png',
+                                  'Sigue tu recomendación diaria de calorías.'),
+                              const SizedBox(height: 15),
+                              objetivos(
+                                  'https://macrolife.app/images/app/home/iconografia_metas_100x100_varios.png',
+                                  'Equilibra tus carbohidratos, proteínas y grasas.'),
+                              const SizedBox(height: 15),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 50),
+                      ],
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Positioned(
+                      bottom: 0,
+                      child: Container(
+                        color: Colors.grey[100],
+                        width: Get.width,
+                        child: CustomElevatedButton(
+                          message: 'Siguiente',
+                          function: () {
+                            FuncionesGlobales.actualizarMacronutrientes();
+                            Get.toNamed('/layout');
+                          },
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
             // Aquí puedes añadir más widgets para otros pasos.
           ],
         ),
+      ),
+    );
+  }
+
+  ClipRRect objetivos(String url, String title) {
+    return ClipRRect(
+      borderRadius:
+          BorderRadius.circular(10), // Ajusta el radio de las esquinas
+      child: CupertinoListTile(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 25),
+        backgroundColor: Colors.white,
+        leading: Image.network(
+          url,
+          width: 30,
+        ),
+        title: Text(
+          title,
+          maxLines: 3,
+        ),
+      ),
+    );
+  }
+
+  Container review(String nombre, String texto) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.grey[300],
+        // border: Border.all(color: Colors.black12),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(
+        children: [
+          const Row(
+            children: [
+              Text(
+                'Antony Levandowski',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(width: 8),
+              Icon(Icons.star, color: Colors.amber, size: 20),
+              Icon(Icons.star, color: Colors.amber, size: 20),
+              Icon(Icons.star, color: Colors.amber, size: 20),
+              Icon(Icons.star, color: Colors.amber, size: 20),
+              Icon(Icons.star, color: Colors.amber, size: 20),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(texto),
+        ],
+      ),
+    );
+  }
+}
+
+class Recomendaciones extends StatelessWidget {
+  final String title;
+  final String puntaje;
+  final Color color;
+  final Function() onPressed;
+
+  const Recomendaciones({
+    Key? key,
+    required this.title,
+    required this.puntaje,
+    required this.color,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Stack(
+        children: [
+          Container(
+            width: 180,
+            height: 180,
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+            ),
+            child: Column(
+              children: [
+                Text(title),
+                const SizedBox(height: 15),
+                CircularPercentIndicator(
+                  radius: 45.0,
+                  lineWidth: 5.0,
+                  percent: 0.5, // Ajusta el valor de progreso
+                  center: Text(
+                    puntaje,
+                  ),
+                  progressColor: color, // Color del progreso
+                  backgroundColor:
+                      Colors.black12, // Color del fondo del círculo
+                ),
+              ],
+            ),
+          ),
+          const Positioned(
+            bottom: 35,
+            right: 10,
+            child: Icon(Icons.edit),
+          ),
+        ],
       ),
     );
   }
@@ -687,82 +1335,107 @@ class RegistroPasosScreen extends StatelessWidget {
 
 class Steep extends StatelessWidget {
   final String title;
+  final String? textBTN;
+
   final String? description;
   final List<ListTileModel> options;
   final Widget? body;
   final ValueChanged<String> onOptionSelected;
   final String selectedOption;
   final VoidCallback? onNext;
+  final BoxDecoration? decoration;
+  final bool? enableScroll; // Bandera para habilitar o deshabilitar el scroll
 
-  const Steep({
-    super.key,
-    required this.title,
-    this.description,
-    required this.options,
-    required this.onOptionSelected,
-    required this.selectedOption,
-    required this.onNext,
-    this.body,
-  });
+  const Steep(
+      {super.key,
+      required this.title,
+      this.textBTN = 'Siguiente',
+      this.description,
+      required this.options,
+      required this.onOptionSelected,
+      required this.selectedOption,
+      required this.onNext,
+      this.body,
+      this.enableScroll = false, // Inicializar la bandera
+      this.decoration});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
-            ),
-            if (description != null)
-              Column(
-                children: [
-                  const SizedBox(height: 10),
+    // Usar SingleChildScrollView solo si enableScroll es true
+    return enableScroll ?? false
+        ? SingleChildScrollView(
+            // Envolver en un SingleChildScrollView si enableScroll es true
+            child: _buildContent(context),
+          )
+        : _buildContent(
+            context); // Si no, simplemente mostrar el contenido sin scroll
+  }
+
+  // Método que construye todo el contenido
+  Widget _buildContent(BuildContext context) {
+    return Container(
+      decoration: decoration,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (title.isNotEmpty)
                   Text(
-                    description ?? '',
-                    style: const TextStyle(fontSize: 16),
+                    title,
+                    style: const TextStyle(
+                        fontSize: 27, fontWeight: FontWeight.bold),
                   ),
-                ],
-              ),
-          ],
-        ),
-        Column(
-          children: [
-            body != null ? body! : Container(),
-            ...options.map(
-              (option) => Column(
-                children: [
-                  CustomElevatedSelected(
-                    message: option.title ?? '',
-                    icon: option.icon,
-                    widget: option.widget,
-                    subtitle: option.subtitle,
-                    function: () => onOptionSelected(option.title ?? ''),
-                    activo: selectedOption == option.title,
+                if (description != null)
+                  Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      Text(
+                        description ?? '',
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 20),
-                ],
-              ),
+              ],
             ),
-          ],
-        ),
-        Column(
-          children: [
-            Center(
-              child: CustomElevatedButton(
-                message: 'Siguiente',
-                function: onNext,
+          ),
+          Column(
+            children: [
+              body != null ? body! : Container(),
+              ...options.map(
+                (option) => Column(
+                  children: [
+                    CustomElevatedSelected(
+                      message: option.title ?? '',
+                      icon: option.icon,
+                      widget: option.widget,
+                      subtitle: option.subtitle,
+                      function: () => onOptionSelected(option.title ?? ''),
+                      activo: selectedOption == option.title,
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-          ],
-        ),
-      ],
+            ],
+          ),
+          Column(
+            children: [
+              Center(
+                child: CustomElevatedButton(
+                  message: textBTN ?? 'Siguiente',
+                  function: onNext,
+                ),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -1022,123 +1695,69 @@ class FechaNacimientoPicker extends StatelessWidget {
   }
 }
 
-class CintaMedirWidget extends StatefulWidget {
-  final int pesoInicial; // Valor inicial del peso
-  final int pesoDeseado; // Peso deseado
-  final ValueChanged<int>
-      onPesoSeleccionado; // Callback para el peso seleccionado
-
-  const CintaMedirWidget({
-    super.key,
-    required this.pesoInicial,
-    required this.pesoDeseado,
-    required this.onPesoSeleccionado,
-  });
-
-  @override
-  State<CintaMedirWidget> createState() => _CintaMedirWidgetState();
-}
-
-class _CintaMedirWidgetState extends State<CintaMedirWidget> {
-  late int pesoActual; // Guardar el peso actual mientras se hace el scroll
-  final double itemWidth = 10.0; // Ancho de las divisiones
-
-  @override
-  void initState() {
-    super.initState();
-    pesoActual =
-        widget.pesoInicial; // Inicializamos el peso con el valor pasado
-  }
-
-  void _actualizarPesoConDesplazamiento(double desplazamiento) {
-    final int nuevoPeso =
-        (pesoActual + desplazamiento ~/ itemWidth).clamp(0, 1000);
-    if (nuevoPeso != pesoActual) {
-      setState(() {
-        pesoActual = nuevoPeso;
-      });
-      widget
-          .onPesoSeleccionado(nuevoPeso); // Llama al callback con el nuevo peso
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final int minPeso = 0;
-    final int maxPeso = 1000;
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          'Perder peso',
-          style: TextStyle(fontSize: 20),
-        ),
-        Text(
-          '${widget.pesoDeseado} kg', // Mostrar el peso deseado fijo
-          style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 20),
-        SizedBox(
-          height: 70, // Ajustamos el tamaño para hacer las líneas más compactas
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              GestureDetector(
-                onHorizontalDragUpdate: (details) {
-                  _actualizarPesoConDesplazamiento(details.primaryDelta ?? 0);
-                },
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(
-                      maxPeso - minPeso + 1,
-                      (index) {
-                        final int peso = minPeso + index;
-                        return Container(
-                          width: itemWidth,
-                          alignment: Alignment.center,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 45,
-                                child: CustomPaint(
-                                  painter: RulerPainter(
-                                    isMultipleOfTen: peso % 10 == 0,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                child: Container(
-                  width: 2,
-                  height: 70,
-                  decoration: BoxDecoration(
+Widget cintaMedirWidget({
+  required double pesoActual,
+  required Function(double) onPesoChanged,
+}) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      const Text(
+        'Perder peso',
+        style: TextStyle(fontSize: 20),
+      ),
+      Text(
+        '${pesoActual.toInt()} kg',
+        style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            SfLinearGauge(
+              minimum: 5,
+              maximum: 350,
+              interval: 50,
+              minorTicksPerInterval: 5,
+              axisLabelStyle: const TextStyle(fontSize: 13),
+              markerPointers: [
+                LinearWidgetPointer(
+                  value: pesoActual,
+                  child: Container(
+                    height: 70,
+                    width: 3,
                     color: Colors.transparent,
-                    border: Border.all(
-                        color: widget.pesoDeseado == pesoActual
-                            ? Colors
-                                .green // Color verde cuando es el peso deseado
-                            : Colors.black,
-                        width: 1),
-                    // borderRadius: BorderRadius.circular(8),
                   ),
                 ),
+              ],
+            ),
+            Positioned(
+              top: 0, // Posiciona el Slider encima del medidor
+              left: -20,
+              right: -20,
+              child: Slider(
+                activeColor: Colors.transparent,
+                thumbColor: Colors.black,
+                inactiveColor: Colors.transparent,
+                secondaryActiveColor: Colors.transparent,
+                min: 5,
+                max: 350,
+                value: pesoActual,
+                label: '${pesoActual.toInt()} kg',
+                onChanged: (value) {
+                  onPesoChanged(
+                    value,
+                  ); // Llamamos a la función para notificar el cambio
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }
 
 class RulerPainter extends CustomPainter {

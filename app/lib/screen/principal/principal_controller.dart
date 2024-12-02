@@ -24,7 +24,7 @@ class PrincipalController extends GetxController {
   asegurarUsuario() {
     try {
       final data = box.read('usuario');
-      if (data != null) {
+      if (data == null) {
         usuarioController.usuario.value = Usuario.fromJson(data);
 
         // Delay navigation to ensure it happens after the build cycle
@@ -34,7 +34,7 @@ class PrincipalController extends GetxController {
       } else {
         // Delay navigation to ensure it happens after the build cycle
         Future.delayed(Duration.zero, () {
-          Get.offNamed('/login');
+          Get.offNamed('/layout');
         });
       }
     } catch (e) {

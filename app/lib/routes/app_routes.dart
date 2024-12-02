@@ -9,8 +9,7 @@ abstract class Routes {
   static const layout = '/layout';
   static const objetivos = '/objetivos';
 
-
-  
+  static const loader = '/loader';
 
   static const recovery_password = '/recovery_password';
 
@@ -18,7 +17,6 @@ abstract class Routes {
 
   static const registro = '/registro';
   static const registro_pasos = '/registro/pasos';
-
 
   static const configuraciones = '/configuraciones';
 

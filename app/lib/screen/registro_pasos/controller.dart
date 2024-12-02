@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class RegistroPasosController extends GetxController {
   var selectedGender = ''.obs;
@@ -16,6 +17,7 @@ class RegistroPasosController extends GetxController {
   var anio = 2024.obs;
   var fechaNacimiento = Rx<DateTime?>(null); // Inicializamos como null
 
+  var codigo = ''.obs;
   var pesoDeseado = 54.obs;
 
   var objetivo = ''.obs;
@@ -25,6 +27,8 @@ class RegistroPasosController extends GetxController {
   var dieta = ''.obs;
 
   var lograr = ''.obs;
+
+  var impedimento = ''.obs;
 
   var progress = 0.1.obs; // Barra de progreso inicial en 10%
   var currentStep = 1.obs; // Paso actual (1 a 10)
@@ -40,6 +44,34 @@ class RegistroPasosController extends GetxController {
   void onClose() {
     pageController.dispose(); // Libera el PageController
     super.onClose();
+  }
+
+  void onRegistrarLoader() {
+    Get.toNamed(
+      '/loader',
+      arguments: {
+        "genero": selectedGender.value,
+        "entrenamiento": entrenamiento.value, // cuantos días entrena por día
+        "aplicacionSimilar": probado.value, // has probado un aplicación similar
+        "altura": altura.value,
+        "peso": peso.value,
+        "fechaNacimiento":
+            DateFormat('yyyy-MM-dd').format(fechaNacimiento.value!),
+        "objetivo": objetivo.value, // cual es tu objetivo
+        "pesoDeseado": pesoDeseado.value, // cual es tu peso deseado
+        "dieta": dieta.value, // sigues alguna dieta especifica
+        "lograr": lograr.value, // que te gustaría lograr
+        "metaVelocidad":
+            rapidoMeta.value, // que tán rápido quieres que alcance tu meta
+        "metaImpedimento":
+            impedimento.value, // qye te impide alcanzar tus metas
+        "codigo": codigo.value
+      },
+    );
+  }
+
+  bool iaImpedimentoSelected() {
+    return impedimento.isNotEmpty;
   }
 
   // Validación del género seleccionado para habilitar el siguiente paso
@@ -85,10 +117,10 @@ class RegistroPasosController extends GetxController {
 
   // Actualiza el progreso y avanza al siguiente paso
   void nextStep() {
-    if (currentStep.value < 15) {
+    if (currentStep.value < 21) {
       currentStep.value++;
       progress.value = currentStep.value /
-          15; // Actualiza el progreso en función del paso actual
+          21; // Actualiza el progreso en función del paso actual
       pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,

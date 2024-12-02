@@ -2,11 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ObjetivosController extends GetxController {
+  RxBool showKeyboardActions = false.obs;
+
+  // Método para alternar la visibilidad
+  void toggleKeyboardActions(bool isVisible) {
+    showKeyboardActions.value = isVisible;
+  }
+
+  final calorias = TextEditingController();
+  final protinae = TextEditingController();
+  final carbohidratos = TextEditingController();
+  final grasas = TextEditingController();
+
   // Datos del gráfico
   var chartData = <ChartData>[
-    ChartData('Proteínas', 134, Colors.redAccent),
-    ChartData('Grasas', 108, Color(0xFFE69938)),
-    ChartData('Carbohidratos', 35, Colors.blueAccent),
+    // ChartData('Proteínas', 100, Colors.redAccent),
+    // ChartData('Grasas', 108, Color(0xFFE69938)),
+    // ChartData('Carbohidratos', 35, Colors.blueAccent),
   ].obs;
 
   // Método para actualizar datos (ejemplo dinámico)

@@ -28,7 +28,7 @@ class ModulosController extends GetxController {
   Future obtenerModulos() async {
     try {
       final apiService = ApiService();
-      int? idUsuario = usuarioController.usuario.value.idUsuario;
+      String? idUsuario = usuarioController.usuario.value.sId;
       final response = await apiService.fetchData('modulos/${idUsuario ?? 0}');
 
       modulos.value = response['modulos']

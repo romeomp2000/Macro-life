@@ -64,5 +64,8 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
   
+  <key>NSCameraUsageDescription</key>
+  <string>Necesitamos acceso a la cámara para escanear alimentos.</string>
+
 </dict>
 </plist>

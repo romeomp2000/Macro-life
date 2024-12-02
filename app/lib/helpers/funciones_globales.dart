@@ -1,10 +1,55 @@
 import 'package:fep/config/api_service.dart';
+import 'package:fep/helpers/usuario_controller.dart';
 import 'package:fep/models/selected_model.dart';
+import 'package:fep/screen/home/controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class FuncionesGlobales {
+  static Future actualizarMacronutrientes() async {
+    try {
+      final UsuarioController controllerUsuario = Get.find();
+
+      final apiService = ApiService();
+
+      final response = await apiService.fetchData(
+        'macronutrientes',
+        method: Method.PUT,
+        body: {
+          "calorias": controllerUsuario
+                  .usuario.value.macronutrientesDiario?.value.calorias ??
+              0,
+          "carbohidratos": controllerUsuario
+                  .usuario.value.macronutrientesDiario?.value.carbohidratos ??
+              0,
+          "proteina": controllerUsuario
+                  .usuario.value.macronutrientesDiario?.value.proteina ??
+              0,
+          "grasas": controllerUsuario
+                  .usuario.value.macronutrientesDiario?.value.grasas ??
+              0,
+          "idUsuario": controllerUsuario.usuario.value.sId ?? 0,
+        },
+      );
+
+      controllerUsuario.saveUsuarioFromJson(response['usuario']);
+    } catch (e) {
+      Get.snackbar(
+        'Macronutrientes',
+        e.toString(),
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+    }
+  }
+
+  // static Future getAlimentos(DateTime today) async {
+  
+  // }
+
   static Future<List<SelectedModel>> getEstados() async {
     List<SelectedModel> estados = <SelectedModel>[];
     try {
