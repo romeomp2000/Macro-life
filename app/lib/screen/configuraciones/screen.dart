@@ -29,6 +29,7 @@ class ConfiguracionesScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 20),
               const Text(
                 'Configuración',
                 style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),

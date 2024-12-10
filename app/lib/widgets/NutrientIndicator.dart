@@ -8,7 +8,7 @@ class NutrientIndicator extends StatelessWidget {
   final Color color;
   final String icon;
 
-  NutrientIndicator({
+  const NutrientIndicator({
     required this.amount,
     required this.nutrient,
     required this.percent,
@@ -60,7 +60,7 @@ class NutrientIndicator extends StatelessWidget {
           ),
           CircularPercentIndicator(
             radius: 30.0,
-            lineWidth: 7.0,
+            lineWidth: 5.0,
             percent: percent,
             center: Image.network(
               icon,

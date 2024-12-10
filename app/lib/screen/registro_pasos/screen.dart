@@ -1,5 +1,6 @@
 import 'package:avatar_stack/avatar_stack.dart';
 import 'package:avatar_stack/positions.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fep/helpers/funciones_globales.dart';
 import 'package:fep/helpers/usuario_controller.dart';
 import 'package:fep/models/list_tile_model.dart';
@@ -506,8 +507,9 @@ class RegistroPasosScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Image.network(
-                              'https://macrolife.app/images/app/registro/barra_avance_animales_koala_negro.png', // Reemplaza con la URL de tu imagen PNG
+                            CachedNetworkImage(
+                              imageUrl:
+                                  'https://macrolife.app/images/app/registro/barra_avance_animales_koala_negro.png', // Reemplaza con la URL de tu imagen PNG
                               color: ((controller.rapidoMeta * 10)
                                               .truncateToDouble() /
                                           10) ==
@@ -517,8 +519,9 @@ class RegistroPasosScreen extends StatelessWidget {
 
                               height: 45, // Ancho deseado para la imagen
                             ),
-                            Image.network(
-                              'https://macrolife.app/images/app/registro/barra_avance_animales_liebre_negra.png', // Reemplaza con la URL de tu imagen PNG
+                            CachedNetworkImage(
+                              imageUrl:
+                                  'https://macrolife.app/images/app/registro/barra_avance_animales_liebre_negra.png', // Reemplaza con la URL de tu imagen PNG
                               color: ((controller.rapidoMeta * 10)
                                               .truncateToDouble() /
                                           10) ==
@@ -527,8 +530,9 @@ class RegistroPasosScreen extends StatelessWidget {
                                   : Colors.black,
                               height: 45, // Ajusta el ancho según sea necesario
                             ),
-                            Image.network(
-                              'https://macrolife.app/images/app/registro/barra_avance_animales_leopardo_negro.png', // Reemplaza con la URL de tu imagen PNG
+                            CachedNetworkImage(
+                              imageUrl:
+                                  'https://macrolife.app/images/app/registro/barra_avance_animales_leopardo_negro.png', // Reemplaza con la URL de tu imagen PNG
                               color: ((controller.rapidoMeta * 10)
                                               .truncateToDouble() /
                                           10) ==
@@ -773,8 +777,9 @@ class RegistroPasosScreen extends StatelessWidget {
                 enableScroll: true,
                 body: Column(
                   children: [
-                    Image.network(
-                      'https://macrolife.app/images/app/home/imagen_corredor_1023x883_.png',
+                    CachedNetworkImage(
+                      imageUrl:
+                          'https://macrolife.app/images/app/home/imagen_corredor_1023x883_.png',
                       width: Get.width,
                       height: 350,
                     ),
@@ -788,8 +793,9 @@ class RegistroPasosScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Image.network(
-                      'https://macrolife.app/images/app/home/cuadro_permitir_notificaciones_913x415_original.png',
+                    CachedNetworkImage(
+                      imageUrl:
+                          'https://macrolife.app/images/app/home/cuadro_permitir_notificaciones_913x415_original.png',
                       width: Get.width,
                       height: 120,
                     ),
@@ -822,8 +828,9 @@ class RegistroPasosScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.network(
-                          'https://macrolife.app/images/app/home/icono_check_53x53_naranja.png',
+                        CachedNetworkImage(
+                          imageUrl:
+                              'https://macrolife.app/images/app/home/icono_check_53x53_naranja.png',
                           width: 20,
                         ),
                         const SizedBox(width: 8),
@@ -1111,8 +1118,9 @@ class RegistroPasosScreen extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        Image.network(
-                                          'https://macrolife.app/images/app/home/iconografia_metas_100x100_corazon.png',
+                                        CachedNetworkImage(
+                                          imageUrl:
+                                              'https://macrolife.app/images/app/home/iconografia_metas_100x100_corazon.png',
                                           width: 20,
                                         ),
                                         const SizedBox(width: 12),

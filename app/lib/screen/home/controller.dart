@@ -1,23 +1,39 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fep/config/api_service.dart';
 import 'package:fep/helpers/usuario_controller.dart';
+import 'package:fep/models/alimento.model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+extension DateTimeComparison on DateTime {
+  bool isSameDay(DateTime other) {
+    return this.year == other.year &&
+        this.month == other.month &&
+        this.day == other.day;
+  }
+}
+
 class WeeklyCalendarController extends GetxController {
-  RxList<NutritionInfo> alimentosList =
-      <NutritionInfo>[].obs; // Lista vacía de tipo NutritionInfo
+  RxList<AlimentoModel> alimentosList = <AlimentoModel>[].obs;
   final UsuarioController controllerUsuario = Get.find();
 
   final RxBool loader = false.obs;
 
   PageController pageController = PageController(initialPage: 0);
-  Rx<DateTime> today = DateTime.now().obs;
+  Rx<DateTime> today =
+      DateTime.now().obs; // Usamos `today` como el día seleccionado
 
   DateTime getWeekStartDate(int weekOffset) {
     DateTime current = today.value;
     return current
         .subtract(Duration(days: current.weekday - 1 + weekOffset * 7));
+  }
+
+  // Método para verificar si el día es el seleccionado
+  bool isSelected(DateTime day) {
+    return today.value
+        .isSameDay(day); // Usamos la extensión para comparar fechas
   }
 
   void onRachaDias() {
@@ -46,8 +62,9 @@ class WeeklyCalendarController extends GetxController {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // Icon(Icons.apple, size: 24, color: Colors.black),
-                      Image.network(
-                        'https://macrolife.app/images/app/logo/logo_macro_life.png',
+                      CachedNetworkImage(
+                        imageUrl:
+                            'https://macrolife.app/images/app/logo/logo_macro_life.png',
                         height: 20,
                       ),
 
@@ -60,8 +77,9 @@ class WeeklyCalendarController extends GetxController {
                         child: Row(
                           children: [
                             const SizedBox(width: 7),
-                            Image.network(
-                              'https://macrolife.app/images/app/home/icono_flama_chica_52x52_original.png',
+                            CachedNetworkImage(
+                              imageUrl:
+                                  'https://macrolife.app/images/app/home/icono_flama_chica_52x52_original.png',
                               width: 20,
                             ),
                             const SizedBox(width: 5),
@@ -85,8 +103,9 @@ class WeeklyCalendarController extends GetxController {
                     clipBehavior: Clip
                         .none, // Permite que los widgets se desborden fuera del Stack
                     children: [
-                      Image.network(
-                        'https://macrolife.app/images/app/home/imagen_flama_num_378x462_no_sn.png',
+                      CachedNetworkImage(
+                        imageUrl:
+                            'https://macrolife.app/images/app/home/imagen_flama_num_378x462_no_sn.png',
                         width: 130,
                         height: 140,
                       ),
@@ -203,9 +222,20 @@ class WeeklyCalendarController extends GetxController {
         },
       );
 
-      final List<NutritionInfo> alimentos =
-          NutritionInfo.listFromJson(response['alimentos']);
+      final List<AlimentoModel> alimentos =
+          AlimentoModel.listFromJson(response['alimentos']);
       alimentosList.value = alimentos;
+
+      controllerUsuario.macronutrientes.value.calorias =
+          response['macronutrientes']['totalCalorias'];
+      controllerUsuario.macronutrientes.value.proteina =
+          response['macronutrientes']['totalProteina'];
+      controllerUsuario.macronutrientes.value.carbohidratos =
+          response['macronutrientes']['totalCarbohidratos'];
+      controllerUsuario.macronutrientes.value.grasas =
+          response['macronutrientes']['totalGrasas'];
+
+      refreshCantadorMacronutrientes(controllerUsuario);
 
       loader.value = false;
     } catch (e) {
@@ -217,6 +247,84 @@ class WeeklyCalendarController extends GetxController {
         backgroundColor: Colors.red,
       );
     }
+  }
+
+  void refreshCantadorMacronutrientes(UsuarioController controllerUsuario) {
+    final caloriasActual =
+        controllerUsuario.macronutrientes.value.calorias ?? 0;
+    final caloriasDiarias =
+        controllerUsuario.usuario.value.macronutrientesDiario?.value.calorias ??
+            0;
+
+    final proteinaActual =
+        controllerUsuario.macronutrientes.value.proteina ?? 0;
+
+    final proteinaDiaria =
+        controllerUsuario.usuario.value.macronutrientesDiario?.value.proteina ??
+            0;
+
+    double porcentajeDiferenciaproteina = proteinaDiaria == 0
+        ? 0.0
+        : (1 - ((proteinaActual - proteinaDiaria).abs() / proteinaDiaria))
+            .clamp(0.0, 1.0);
+
+    final carbohidratosActual =
+        controllerUsuario.macronutrientes.value.carbohidratos ?? 0;
+    final carbohidratosDiarios = controllerUsuario
+            .usuario.value.macronutrientesDiario?.value.carbohidratos ??
+        0;
+
+    double porcentajeDiferenciacarbohidratos = carbohidratosDiarios == 0
+        ? 0.0
+        : (1 -
+                ((carbohidratosActual - carbohidratosDiarios).abs() /
+                    carbohidratosDiarios))
+            .clamp(0.0, 1.0);
+
+    double porcentajeDiferenciaCalorias = caloriasDiarias == 0
+        ? 0.0
+        : (1 - ((caloriasActual - caloriasDiarias).abs() / caloriasDiarias))
+            .clamp(0.0, 1.0);
+
+    final grasasActual = controllerUsuario.macronutrientes.value.grasas ?? 0;
+    final grasasDiarias =
+        controllerUsuario.usuario.value.macronutrientesDiario?.value.grasas ??
+            0;
+
+    double porcentajeDiferenciagrasas = grasasDiarias == 0
+        ? 0.0
+        : (grasasActual / grasasDiarias).clamp(0.0, 1.0);
+
+    //CALORÍAS
+    controllerUsuario.macronutrientes.value.caloriasPorcentaje =
+        porcentajeDiferenciaCalorias;
+    controllerUsuario.macronutrientes.value.caloriasRestantes =
+        caloriasDiarias - caloriasActual;
+
+    //PROTEÍNA
+    controllerUsuario.macronutrientes.value.proteinaPorcentaje =
+        porcentajeDiferenciaproteina;
+    controllerUsuario.macronutrientes.value.proteinaRestantes =
+        proteinaDiaria - proteinaActual;
+
+    //CARBOHIDRATOS
+    controllerUsuario.macronutrientes.value.carbohidratosPorcentaje =
+        porcentajeDiferenciacarbohidratos;
+    controllerUsuario.macronutrientes.value.carbohidratosRestante =
+        carbohidratosDiarios - carbohidratosActual;
+
+    //GRASAS
+    controllerUsuario.macronutrientes.value.grasasRestantes =
+        grasasDiarias - grasasActual;
+
+    controllerUsuario.macronutrientes.value.grasasPorcentaje =
+        porcentajeDiferenciagrasas;
+
+    controllerUsuario.refresh();
+
+    controllerUsuario.usuario.refresh();
+    controllerUsuario.macronutrientes.refresh();
+    controllerUsuario.usuario.value.macronutrientesDiario?.refresh();
   }
 }
 
@@ -255,65 +363,5 @@ class NumberWithBorder extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class NutritionInfo {
-  final String imageUrl;
-  final String name;
-  final String time;
-  final int calories;
-  final int protein;
-  final int carbs;
-  final int fats;
-
-  // Constructor
-  NutritionInfo({
-    required this.imageUrl,
-    required this.name,
-    required this.time,
-    required this.calories,
-    required this.protein,
-    required this.carbs,
-    required this.fats,
-  });
-
-  // Método para convertir el objeto a JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'imageUrl': imageUrl,
-      'name': name,
-      'time': time,
-      'calories': calories,
-      'protein': protein,
-      'carbs': carbs,
-      'fats': fats,
-    };
-  }
-
-  // Método para crear el objeto a partir de JSON
-  factory NutritionInfo.fromJson(Map<String, dynamic> json) {
-    return NutritionInfo(
-      imageUrl: json['imageUrl'],
-      name: json['name'],
-      time: json['time'],
-      calories: json['calories'],
-      protein: json['protein'],
-      carbs: json['carbs'],
-      fats: json['fats'],
-    );
-  }
-
-  // Método para convertir una lista de objetos a JSON
-  static List<Map<String, dynamic>> listToJson(
-      List<NutritionInfo> nutritionInfos) {
-    return nutritionInfos
-        .map((nutritionInfo) => nutritionInfo.toJson())
-        .toList();
-  }
-
-  // Método para crear una lista de objetos a partir de JSON
-  static List<NutritionInfo> listFromJson(List<dynamic> jsonList) {
-    return jsonList.map((json) => NutritionInfo.fromJson(json)).toList();
   }
 }

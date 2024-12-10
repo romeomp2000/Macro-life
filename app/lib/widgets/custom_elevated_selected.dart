@@ -60,7 +60,6 @@ class CustomElevatedSelected extends StatelessWidget {
                             Text(
                               message,
                               style: TextStyle(
-                                fontFamily: "Urbanist-SemiBold",
                                 fontWeight: FontWeight.bold,
                                 color:
                                     activo! ? Colors.white : Colors.grey[800],
@@ -70,7 +69,6 @@ class CustomElevatedSelected extends StatelessWidget {
                               Text(
                                 subtitle!,
                                 style: TextStyle(
-                                  fontFamily: "Urbanist-SemiBold",
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12,
                                   color: activo!
@@ -95,7 +93,6 @@ class CustomElevatedSelected extends StatelessWidget {
                       Text(
                         message,
                         style: TextStyle(
-                          fontFamily: "Urbanist-SemiBold",
                           fontWeight: FontWeight.bold,
                           color: activo! ? Colors.white : Colors.grey[800],
                         ),
@@ -106,7 +103,6 @@ class CustomElevatedSelected extends StatelessWidget {
                     Text(
                       subtitle!,
                       style: TextStyle(
-                        fontFamily: "Urbanist-SemiBold",
                         fontWeight: FontWeight.normal,
                         fontSize: 12,
                         color: activo! ? Colors.white : Colors.grey[700],

@@ -1,10 +1,11 @@
-import 'package:fep/screen/analitica/controller.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:fep/models/usuario.dart';
 
 class UsuarioController extends GetxController {
   Rx<Usuario> usuario = Usuario().obs;
+  Rx<MacronutrientesCalculo> macronutrientes = MacronutrientesCalculo().obs;
+
   RxString token = ''.obs;
 
   /// va escuchar cambios
@@ -14,6 +15,7 @@ class UsuarioController extends GetxController {
   @override
   void onInit() {
     getUsuarioStorage();
+    getMacronutrientesStorage();
     //aca todo lo que se ejecuta al iniciar el controlador
     super.onInit();
   }
@@ -37,10 +39,20 @@ class UsuarioController extends GetxController {
     }
   }
 
+  void getMacronutrientesStorage() {
+    final data = box.read('macronutrientes');
+    if (data != null) {
+      macronutrientes.value = MacronutrientesCalculo.fromJson(data);
+    }
+  }
+
   // cerrar sesion
   void logout() {
     box.remove('usuario');
+    box.remove('macronutrientes');
     usuario.value = Usuario();
+    macronutrientes.value = MacronutrientesCalculo();
+
     Get.offAllNamed('/login');
   }
 
@@ -62,6 +74,25 @@ class UsuarioController extends GetxController {
       usuario.value = Usuario.fromJson(json);
 
       usuario.refresh();
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  void saveMacronutrientesStorage(MacronutrientesCalculo macronutrientesJson) {
+    // Guardar el objeto 'usuario' en el almacenamiento
+    box.write('macronutrientes', macronutrientesJson.toJson());
+    macronutrientes.value = macronutrientesJson;
+  }
+
+  void saveMacronutrientesFromJson(Map<String, dynamic> json) {
+    // Guardar el JSON directamente en el almacenamiento
+    try {
+      box.write('macronutrientes', json);
+
+      macronutrientes.value = MacronutrientesCalculo.fromJson(json);
+
+      macronutrientes.refresh();
     } on Exception catch (e) {
       print(e);
     }

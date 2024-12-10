@@ -15,11 +15,7 @@ class ObjetivosController extends GetxController {
   final grasas = TextEditingController();
 
   // Datos del gráfico
-  var chartData = <ChartData>[
-    // ChartData('Proteínas', 100, Colors.redAccent),
-    // ChartData('Grasas', 108, Color(0xFFE69938)),
-    // ChartData('Carbohidratos', 35, Colors.blueAccent),
-  ].obs;
+  var chartData = <ChartData>[].obs;
 
   // Método para actualizar datos (ejemplo dinámico)
   void updateChartData() {

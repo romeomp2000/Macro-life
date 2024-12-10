@@ -1,13 +1,43 @@
+import 'package:camera/camera.dart';
 import 'package:fep/config/api_service.dart';
 import 'package:fep/helpers/usuario_controller.dart';
 import 'package:fep/models/selected_model.dart';
-import 'package:fep/screen/home/controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'dart:typed_data';
+import 'package:image/image.dart' as img;
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class FuncionesGlobales {
+  static Future<XFile> compressImage(XFile imageFile) async {
+    // Lee la imagen como bytes
+    final bytes = await imageFile.readAsBytes();
+
+    // Decodifica la imagen a formato Image (del paquete 'image')
+    img.Image? image = img.decodeImage(Uint8List.fromList(bytes));
+
+    if (image != null) {
+      // Redimensiona la imagen si es necesario (opcional)
+      image = img.copyResize(image,
+          width: 800); // Ajusta el ancho y el alto automáticamente
+
+      // Comprime la imagen en formato JPEG y ajusta la calidad
+      final compressedBytes =
+          img.encodeJpg(image, quality: 75); // Ajusta la calidad entre 0 y 100
+
+      // Crea un archivo temporal con la imagen comprimida
+      final compressedImageFile = File('${imageFile.path}_compressed.jpg');
+      await compressedImageFile.writeAsBytes(compressedBytes);
+
+      // Retorna un nuevo XFile con el archivo comprimido
+      return XFile(compressedImageFile.path);
+    } else {
+      throw Exception('Error al decodificar la imagen');
+    }
+  }
+
   static Future actualizarMacronutrientes() async {
     try {
       final UsuarioController controllerUsuario = Get.find();
@@ -47,7 +77,7 @@ class FuncionesGlobales {
   }
 
   // static Future getAlimentos(DateTime today) async {
-  
+
   // }
 
   static Future<List<SelectedModel>> getEstados() async {

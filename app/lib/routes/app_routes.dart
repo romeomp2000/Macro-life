@@ -19,6 +19,9 @@ abstract class Routes {
   static const registro_pasos = '/registro/pasos';
 
   static const configuraciones = '/configuraciones';
+  
+  static const nutricion = '/nutricion';
+
 
   static const preferencias = '/preferencias';
 

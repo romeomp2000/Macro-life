@@ -35,7 +35,7 @@ final ThemeData themeData = ThemeData(
     surface: fondoTheme1_,
   ),
   useMaterial3: true,
-  fontFamily: 'Urbanist-Medium',
+  fontFamily: 'HostGrotesk',
   appBarTheme: const AppBarTheme(
     backgroundColor: fondoTheme1_,
     toolbarTextStyle: TextStyle(
@@ -49,12 +49,12 @@ final ThemeData themeData = ThemeData(
   ),
   listTileTheme: const ListTileThemeData(
     titleTextStyle: TextStyle(
-      fontFamily: 'Montserrat',
+      fontFamily: 'HostGrotesk',
       fontSize: 16,
       color: blackTheme1_,
     ),
     subtitleTextStyle: TextStyle(
-      fontFamily: 'Montserrat',
+      fontFamily: 'HostGrotesk',
       fontSize: 14,
       color: blackTheme5_,
     ),

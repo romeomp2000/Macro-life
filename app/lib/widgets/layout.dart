@@ -1,6 +1,9 @@
+import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:fep/config/api_service.dart';
 import 'package:fep/config/theme.dart';
+import 'package:fep/helpers/funciones_globales.dart';
 import 'package:fep/helpers/usuario_controller.dart';
 import 'package:fep/screen/analitica/screen.dart';
 import 'package:fep/screen/configuraciones/screen.dart';
@@ -12,6 +15,7 @@ import 'package:fep/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:image_picker/image_picker.dart';
 
 class LayoutScreen extends StatelessWidget {
   final LayoutController controller = Get.put(LayoutController());
@@ -134,12 +138,82 @@ class EscanearAlimentosController extends GetxController {
   }
 
   // Capturar y procesar la imagen
+  // Future<void> captureAndProcessImage() async {
+  //   try {
+  //     final WeeklyCalendarController cargaMacro = Get.find();
+
+  //     cargaMacro.loader.value = true;
+  //     final image = await cameraController!.takePicture();
+  //     final imagenCompress = await FuncionesGlobales.compressImage(image);
+  //     cameraController!.stopImageStream();
+  //     Get.back();
+
+  //     DateTime today = DateTime.now();
+
+  //     final images = [
+  //       ImageData(
+  //         fileKey: 'comida',
+  //         filePath: imagenCompress.path,
+  //       ),
+  //     ];
+
+  //     final apiService = ApiService();
+
+  //     final response = await apiService.uploadImages(
+  //       'analizar-comida/escanear',
+  //       images,
+  //       extraFields: {
+  //         'idUsuario': usuarioController.usuario.value.sId ?? '',
+  //         'fecha': today.toUtc().toIso8601String(),
+  //       },
+  //     );
+
+  //     usuarioController.saveUsuarioFromJson(response['usuario']);
+  //     cargaMacro.cargaAlimentos();
+
+  //     usuarioController.macronutrientes.refresh();
+  //     usuarioController.usuario.value.macronutrientesDiario?.refresh();
+
+  //     cargaMacro.refresh();
+  //     cargaMacro.loader.refresh();
+
+  //     cargaMacro.cargaAlimentos();
+  //   } catch (e) {
+  //     print("Error al capturar o procesar imagen: $e");
+  //   }
+  // }
+
   Future<void> captureAndProcessImage() async {
     try {
       final WeeklyCalendarController cargaMacro = Get.find();
-
       cargaMacro.loader.value = true;
+      String? barocde = null;
+
+      // Captura la imagen
       final image = await cameraController!.takePicture();
+      final imagenCompress = await FuncionesGlobales.compressImage(image);
+
+      // Procesa la imagen para detectar códigos de barras
+      final inputImage = InputImage.fromFilePath(imagenCompress.path);
+      final barcodeScanner = BarcodeScanner();
+
+      // Detectar códigos de barras en la imagen
+      final List<Barcode> barcodes =
+          await barcodeScanner.processImage(inputImage);
+
+      // Verifica si se detectó algún código de barras
+      if (barcodes.isNotEmpty) {
+        for (final barcode in barcodes) {
+          barocde = barcode.displayValue;
+        }
+      } else {
+        barocde = null;
+      }
+
+      // Cierra el escáner de códigos de barras
+      barcodeScanner.close();
+
+      // Realiza las operaciones habituales con la imagen
       cameraController!.stopImageStream();
       Get.back();
 
@@ -148,7 +222,7 @@ class EscanearAlimentosController extends GetxController {
       final images = [
         ImageData(
           fileKey: 'comida',
-          filePath: image.path,
+          filePath: imagenCompress.path,
         ),
       ];
 
@@ -160,10 +234,15 @@ class EscanearAlimentosController extends GetxController {
         extraFields: {
           'idUsuario': usuarioController.usuario.value.sId ?? '',
           'fecha': today.toUtc().toIso8601String(),
+          'barcode': barocde ?? ''
         },
       );
 
       usuarioController.saveUsuarioFromJson(response['usuario']);
+      cargaMacro.cargaAlimentos();
+
+      usuarioController.macronutrientes.refresh();
+      usuarioController.usuario.value.macronutrientesDiario?.refresh();
 
       cargaMacro.refresh();
       cargaMacro.loader.refresh();
@@ -219,8 +298,9 @@ class EscanearAlimentosController extends GetxController {
                         fontSize: 35,
                       ),
                     ),
-                    Image.network(
-                      'https://macrolife.app/images/app/home/pantalla_proceso_1125x2436_corto.png',
+                    CachedNetworkImage(
+                      imageUrl:
+                          'https://macrolife.app/images/app/home/pantalla_proceso_1125x2436_corto.png',
                       width: Get.width,
                       height: 250,
                       fit: BoxFit.cover,
@@ -330,6 +410,80 @@ class EscanearAlimentosController extends GetxController {
     );
   }
 
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> abrirGaleria() async {
+    try {
+      String? barocde = null;
+
+      final WeeklyCalendarController cargaMacro = Get.find();
+      cargaMacro.loader.value = true;
+
+      final XFile? imagen =
+          await _picker.pickImage(source: ImageSource.gallery);
+
+      if (imagen == null) {
+        return print("Ninguna imagen seleccionada");
+      }
+
+      cameraController!.stopImageStream();
+      Get.back();
+
+      DateTime today = DateTime.now();
+
+      final imagenCompress = await FuncionesGlobales.compressImage(imagen);
+
+      // Procesa la imagen para detectar códigos de barras
+      final inputImage = InputImage.fromFilePath(imagenCompress.path);
+      final barcodeScanner = BarcodeScanner();
+
+      // Detectar códigos de barras en la imagen
+      final List<Barcode> barcodes =
+          await barcodeScanner.processImage(inputImage);
+
+      // Verifica si se detectó algún código de barras
+      if (barcodes.isNotEmpty) {
+        for (final barcode in barcodes) {
+          barocde = barcode.displayValue;
+        }
+      } else {
+        barocde = null;
+      }
+
+      final images = [
+        ImageData(
+          fileKey: 'comida',
+          filePath: imagenCompress.path,
+        ),
+      ];
+
+      final apiService = ApiService();
+
+      final response = await apiService.uploadImages(
+        'analizar-comida/galeria',
+        images,
+        extraFields: {
+          'idUsuario': usuarioController.usuario.value.sId ?? '',
+          'fecha': today.toUtc().toIso8601String(),
+          'barcode': barocde ?? ''
+        },
+      );
+
+      usuarioController.saveUsuarioFromJson(response['usuario']);
+      cargaMacro.cargaAlimentos();
+
+      usuarioController.macronutrientes.refresh();
+      usuarioController.usuario.value.macronutrientesDiario?.refresh();
+
+      cargaMacro.refresh();
+      cargaMacro.loader.refresh();
+
+      cargaMacro.cargaAlimentos();
+    } catch (e) {
+      print("Error al capturar o procesar imagen: $e");
+    }
+  }
+
   void escanearAlimentos() async {
     Get.back();
     // Esperar la inicialización de la cámara
@@ -414,6 +568,130 @@ class EscanearAlimentosController extends GetxController {
             ),
 
             Positioned(
+              bottom: 120,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    child: Container(
+                      width: 80,
+                      height: 70,
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(3),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl:
+                                'https://macrolife.app/images/app/home/icono_57x57_camara_para_escanear_comida.png',
+                            width: 20,
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Escanear comida',
+                            style: TextStyle(fontSize: 8),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    child: Container(
+                      width: 80,
+                      height: 70,
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(3),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl:
+                                'https://macrolife.app/images/app/home/icono_57x57_camara_para_codigo_barras.png',
+                            width: 20,
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Código de barras',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 8),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: () {
+                      captureAndProcessImage();
+                    },
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      child: Container(
+                        width: 80,
+                        height: 70,
+                        color: Colors.white,
+                        padding: const EdgeInsets.all(3),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl:
+                                  'https://macrolife.app/images/app/home/icono_57x57_camara_para_nivel_alimento.png',
+                              width: 20,
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Etiqueta de alimentos',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 8),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: () {
+                      abrirGaleria();
+                    },
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      child: Container(
+                        width: 80,
+                        height: 70,
+                        color: Colors.white,
+                        padding: const EdgeInsets.all(3),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl:
+                                  'https://macrolife.app/images/app/home/icono_57x57_camara_para_galeria.png',
+                              width: 20,
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Galería',
+                              style: TextStyle(fontSize: 8),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Positioned(
               child: BorderCamera(
                 width: Get.width - 120,
                 height: Get.width - 120,
@@ -483,8 +761,9 @@ class EscanearAlimentosController extends GetxController {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Image.network(
-                          'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_registrar.png',
+                        CachedNetworkImage(
+                          imageUrl:
+                              'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_registrar.png',
                           width: 35,
                         ),
                         const SizedBox(height: 8),
@@ -512,8 +791,9 @@ class EscanearAlimentosController extends GetxController {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Image.network(
-                          'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_alimentos_guardados.png',
+                        CachedNetworkImage(
+                          imageUrl:
+                              'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_alimentos_guardados.png',
                           width: 35,
                         ),
                         const SizedBox(height: 8),
@@ -548,8 +828,9 @@ class EscanearAlimentosController extends GetxController {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Image.network(
-                          'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_buscar_alimentos.png',
+                        CachedNetworkImage(
+                          imageUrl:
+                              'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_buscar_alimentos.png',
                           width: 35,
                         ),
                         const SizedBox(height: 8),
@@ -579,8 +860,9 @@ class EscanearAlimentosController extends GetxController {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Image.network(
-                            'https://macrolife.app/images/app/home/icono_57x57_camara_para_escanear_comida.png',
+                          CachedNetworkImage(
+                            imageUrl:
+                                'https://macrolife.app/images/app/home/icono_57x57_camara_para_escanear_comida.png',
                             width: 35,
                           ),
                           const SizedBox(height: 8),

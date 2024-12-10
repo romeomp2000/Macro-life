@@ -1,5 +1,6 @@
 import 'package:fep/helpers/funciones_globales.dart';
 import 'package:fep/helpers/usuario_controller.dart';
+import 'package:fep/screen/home/controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ class ObjetivosScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ObjetivosController controller = Get.put(ObjetivosController());
     final UsuarioController controllerUsuario = Get.find();
+    final WeeklyCalendarController controllerCalendar = Get.find();
 
     controller.calorias.text = controllerUsuario
             .usuario.value.macronutrientesDiario?.value.calorias
@@ -143,7 +145,7 @@ class ObjetivosScreen extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       leading: CircularPercentIndicator(
                         radius: 33.0,
-                        lineWidth: 7.0,
+                        lineWidth: 5.0,
                         percent: 0.5,
                         center: const Icon(
                           Icons.local_fire_department,
@@ -182,7 +184,7 @@ class ObjetivosScreen extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       leading: CircularPercentIndicator(
                         radius: 33.0,
-                        lineWidth: 7.0,
+                        lineWidth: 5.0,
                         percent: 0.5,
                         center: Image.network(
                           'https://macrolife.app/images/app/home/iconografia_metas_28x28_proteinas.png',
@@ -220,7 +222,7 @@ class ObjetivosScreen extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       leading: CircularPercentIndicator(
                         radius: 33.0,
-                        lineWidth: 7.0,
+                        lineWidth: 5.0,
                         percent: 0.5,
                         center: Image.network(
                           'https://macrolife.app/images/app/home/iconografia_metas_28x28_carbohidratos.png',
@@ -258,7 +260,7 @@ class ObjetivosScreen extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       leading: CircularPercentIndicator(
                         radius: 33.0,
-                        lineWidth: 7.0,
+                        lineWidth: 5.0,
                         percent: 0.5,
                         center: Image.network(
                           'https://macrolife.app/images/app/home/iconografia_metas_28x28_grasas.png',
@@ -374,6 +376,8 @@ class ObjetivosScreen extends StatelessWidget {
                               ?.value
                               .grasas = int.parse(controller.grasas.text),
                           FuncionesGlobales.actualizarMacronutrientes(),
+                          controllerCalendar.refreshCantadorMacronutrientes(
+                              controllerUsuario),
                           controller.showKeyboardActions.value = false,
                           Get.focusScope?.unfocus(),
                           controllerUsuario.usuario.refresh(),

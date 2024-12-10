@@ -74,13 +74,15 @@ class LoginScreen extends StatelessWidget {
                             const SizedBox(height: 10),
                             FadeInAnimation(
                               delay: 2.2,
-                              child: CustomTextFormField(
-                                obsecuretext: true,
-                                label: 'Ingresa tu contraseña',
-                                controller: controller
-                                    .passwordController, // Conectar el controlador
-                                // validator: controller
-                                // .validatorPassword, // Conectar la función de validación
+                              child: Obx(
+                                () => CustomTextFormField(
+                                  obsecuretext: true,
+                                  label: 'Ingresa tu contraseña',
+                                  controller: controller
+                                      .passwordController, // Conectar el controlador
+                                  // validator: controller
+                                  // .validatorPassword, // Conectar la función de validación
+                                ),
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -96,7 +98,6 @@ class LoginScreen extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w700,
-                                      fontFamily: "Urbanist-SemiBold",
                                     ),
                                   ),
                                 ),

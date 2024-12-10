@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:fep/config/theme.dart';
 
 // ignore: non_constant_identifier_names
 Widget TextFieldPSD({
@@ -10,42 +9,40 @@ Widget TextFieldPSD({
   required TextInputType keyboardType,
   RxBool? enabled,
 }) {
-  return Obx(
-    () => Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            width: Get.width,
-            height: 60,
-            child: TextFormField(
-              controller: controller,
-              keyboardType: keyboardType,
-              decoration: InputDecoration(
-                labelText: labelText,
-                hintText: hintText,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.white),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.white),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.white),
-                ),
-                // fillColor: purpleTheme5_,
-                filled: true,
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          width: Get.width,
+          height: 60,
+          child: TextFormField(
+            controller: controller,
+            keyboardType: keyboardType,
+            decoration: InputDecoration(
+              labelText: labelText,
+              hintText: hintText,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: Colors.white),
               ),
-              style: const TextStyle(fontSize: 18, color: Colors.white),
-              enabled: enabled?.value,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: Colors.white),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: Colors.white),
+              ),
+              // fillColor: purpleTheme5_,
+              filled: true,
             ),
-          )
-        ],
-      ),
+            style: const TextStyle(fontSize: 18, color: Colors.white),
+            enabled: enabled?.value,
+          ),
+        )
+      ],
     ),
   );
 }

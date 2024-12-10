@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fep/helpers/usuario_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,6 +29,7 @@ class AnaliticaScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 20),
               const Text(
                 'Vista general',
                 style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
@@ -38,8 +40,9 @@ class AnaliticaScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Image.network(
-                        'https://macrolife.app/images/app/home/icono_check_53x53_naranja.png',
+                      CachedNetworkImage(
+                        imageUrl:
+                            'https://macrolife.app/images/app/home/icono_check_53x53_naranja.png',
                         width: 27,
                       ),
                       const SizedBox(width: 10),

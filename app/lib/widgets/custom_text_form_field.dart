@@ -38,6 +38,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       keyboardType: widget.keyboardType,
       controller: widget.controller,
       validator: widget.validator,
+      maxLines: null,
       obscureText: widget.obsecuretext != null && widget.obsecuretext!
           ? _obscureText
           : false, // Aplica la lógica solo si es verdadero
@@ -97,7 +98,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         hintText: widget.hinttext ?? '',
         hintStyle: const TextStyle(
           fontSize: 15,
-          fontFamily: 'Urbanist-Medium',
           color: Color(0xFF2A3A3A),
         ),
         suffixIcon: widget.obsecuretext != null && widget.obsecuretext!

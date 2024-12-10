@@ -1,10 +1,7 @@
-import 'package:fep/screen/EditarNutrientes/screen.dart';
 import 'package:fep/screen/loader/binding.dart';
 import 'package:fep/screen/loader/screen.dart';
 import 'package:fep/screen/objetivos/binding.dart';
 import 'package:fep/screen/objetivos/screen.dart';
-import 'package:fep/screen/preferencias/preferencias_binding.dart';
-import 'package:fep/screen/preferencias/preferencias_screen.dart';
 import 'package:fep/screen/registro/registro_binding.dart';
 import 'package:fep/screen/registro/registro_screen.dart';
 import 'package:fep/screen/registro_pasos/binding.dart';
@@ -38,6 +35,11 @@ abstract class AppPages {
       page: () => const RegistroPasosScreen(),
       binding: RegistroPasosBinding(),
     ),
+    // GetPage(
+    //   name: Routes.nutricion,
+    //   page: () => const NutricionScreen(),
+    //   binding: NutricionBinding(),
+    // ),
     GetPage(
       name: Routes.layout_home,
       page: () => const LayoutHomeScreen(),
@@ -68,10 +70,6 @@ abstract class AppPages {
       page: () => const ObjetivosScreen(),
       binding: ObjetivosBinding(),
     ),
-    GetPage(
-      name: Routes.preferencias,
-      page: () => const PreferenciasScreen(),
-      binding: PreferenciasBinding(),
-    ),
+   
   ];
 }

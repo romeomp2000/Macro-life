@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 class Usuario {
-  Rx<Macronutrientes>? macronutrientes;
+  // Rx<MacronutrientesCalculo>? macronutrientes;
   Rx<Macronutrientes>? macronutrientesDiario;
   String? sId;
   String? referenciaUsuario;
@@ -27,7 +27,7 @@ class Usuario {
   String? fechaMetaObjetivo;
 
   Usuario({
-    this.macronutrientes,
+    // this.macronutrientes,
     this.macronutrientesDiario,
     this.sId,
     this.referenciaUsuario,
@@ -54,9 +54,10 @@ class Usuario {
   });
 
   Usuario.fromJson(Map<String, dynamic> json) {
-    macronutrientes = json['macronutrientes'] != null
-        ? Rx<Macronutrientes>(Macronutrientes.fromJson(json['macronutrientes']))
-        : null;
+    // macronutrientes = json['macronutrientes'] != null
+    //     ? Rx<MacronutrientesCalculo>(
+    //         MacronutrientesCalculo.fromJson(json['macronutrientes']))
+    //     : null;
     macronutrientesDiario = json['macronutrientesDiario'] != null
         ? Rx<Macronutrientes>(
             Macronutrientes.fromJson(json['macronutrientesDiario']))
@@ -87,9 +88,9 @@ class Usuario {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.macronutrientes != null) {
-      data['macronutrientes'] = this.macronutrientes!.value.toJson();
-    }
+    // if (this.macronutrientes != null) {
+    //   data['macronutrientes'] = this.macronutrientes!.value.toJson();
+    // }
     if (this.macronutrientesDiario != null) {
       data['macronutrientesDiario'] =
           this.macronutrientesDiario!.value.toJson();
@@ -142,6 +143,78 @@ class Macronutrientes {
     data['proteina'] = this.proteina;
     data['carbohidratos'] = this.carbohidratos;
     data['grasas'] = this.grasas;
+    return data;
+  }
+}
+
+class MacronutrientesCalculo {
+  int? calorias;
+  int? caloriasRestantes;
+  double? caloriasPorcentaje;
+
+  int? proteina;
+  int? proteinaRestantes;
+  double? proteinaPorcentaje;
+
+  int? carbohidratos;
+  int? carbohidratosRestante;
+  double? carbohidratosPorcentaje;
+
+  int? grasas;
+  int? grasasRestantes;
+  double? grasasPorcentaje;
+
+  MacronutrientesCalculo({
+    this.calorias,
+    this.proteina,
+    this.carbohidratos,
+    this.grasas,
+    this.caloriasRestantes,
+    this.caloriasPorcentaje,
+    this.proteinaRestantes,
+    this.proteinaPorcentaje,
+    this.carbohidratosRestante,
+    this.carbohidratosPorcentaje,
+    this.grasasRestantes,
+    this.grasasPorcentaje,
+  });
+
+  MacronutrientesCalculo.fromJson(Map<String, dynamic> json) {
+    calorias = json['calorias'];
+    caloriasRestantes = json['caloriasRestantes'];
+    caloriasPorcentaje = json['caloriasPorcentaje'];
+
+    proteina = json['proteina'];
+    proteinaRestantes = json['proteinaRestantes'];
+    proteinaPorcentaje = json['proteinaPorcentaje'];
+
+    carbohidratos = json['carbohidratos'];
+    carbohidratosRestante = json['carbohidratosRestante'];
+    carbohidratosPorcentaje = json['carbohidratosPorcentaje'];
+
+    grasas = json['grasas'];
+    grasasRestantes = json['grasasRestantes'];
+    grasasPorcentaje = json['grasasPorcentaje'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['calorias'] = calorias;
+    data['caloriasRestantes'] = caloriasRestantes;
+    data['caloriasPorcentaje'] = caloriasPorcentaje;
+
+    data['proteina'] = proteina;
+    data['proteinaRestantes'] = proteinaRestantes;
+    data['proteinaPorcentaje'] = proteinaPorcentaje;
+
+    data['carbohidratos'] = carbohidratos;
+    data['carbohidratosRestante'] = carbohidratosRestante;
+    data['carbohidratosPorcentaje'] = carbohidratosPorcentaje;
+
+    data['grasas'] = grasas;
+    data['grasas'] = grasasRestantes;
+    data['grasasPorcentaje'] = grasasPorcentaje;
+
     return data;
   }
 }
