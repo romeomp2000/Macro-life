@@ -7,6 +7,11 @@ const AlimentoSchema = new Schema({
     ref: 'usuarios',
     required: true
   },
+  favorito: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
   nombre: {
     type: String,
     required: false,
@@ -61,7 +66,15 @@ const AlimentoSchema = new Schema({
       default: 0,
       min: 0,
       max: 10
-    }
+    },
+    caracteristicas: [
+      {
+        type: String,
+        required: false,
+        trim: true
+      }
+    ]
+
   },
   fecha: { // la fecha que se comió el alimento
     type: Date,
@@ -81,6 +94,9 @@ const AlimentoSchema = new Schema({
 //   }
 //   return obj;
 // };
+
+AlimentoSchema.index({ usuario: 1, createdAt: -1 }); // Índice compuesto
+AlimentoSchema.index({ usuario: 1, createdAt: -1 });
 
 AlimentoSchema.plugin(mongoosePaginate);
 module.exports = model('alimentos', AlimentoSchema);

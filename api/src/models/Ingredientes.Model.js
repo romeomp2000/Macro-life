@@ -27,6 +27,11 @@ const IngredientesSchema = new Schema({
   grasas: {
     type: Number,
     required: true
+  },
+  eliminado: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 
 }, {
