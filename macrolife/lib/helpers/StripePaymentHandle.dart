@@ -53,7 +53,7 @@ class StripePaymentHandle {
         'payment_method_types[]': 'card',
       };
       var secretKey =
-          "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";
+          "";
       var response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
