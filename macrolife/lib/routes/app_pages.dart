@@ -8,6 +8,8 @@ import 'package:macrolife/screen/registro/registro_binding.dart';
 import 'package:macrolife/screen/registro/registro_screen.dart';
 import 'package:macrolife/screen/registro_pasos/binding.dart';
 import 'package:macrolife/screen/registro_pasos/screen.dart';
+import 'package:macrolife/screen/suscripcion/binding.dart';
+import 'package:macrolife/screen/suscripcion/screen.dart';
 import 'package:macrolife/widgets/layout.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/screen/layout_home/layout_home_binding.dart';
@@ -37,6 +39,13 @@ abstract class AppPages {
       page: () => const RegistroPasosScreen(),
       binding: RegistroPasosBinding(),
     ),
+
+    GetPage(
+      name: Routes.suscripcion,
+      page: () => const SuscripcionScreen(),
+      binding: SuscripcionBinding(),
+    ),
+
     GetPage(
       name: Routes.favoritos,
       page: () => const FavoritosScreen(),

@@ -735,140 +735,44 @@ class EscanearAlimentosController extends GetxController {
   }
 
   void onPressPlus() {
-    Get.dialog(
-      Dialog(
-        elevation: 0,
-        alignment: Alignment.bottomCenter,
-        backgroundColor: Colors.transparent,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () => {},
-                  child: Container(
-                    width: (Get.width / 2) - 50,
-                    height: 140,
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl:
-                              'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_registrar.png',
-                          width: 35,
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          'Registrar\nejercicio',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => {Get.back(), Get.toNamed('favoritos')},
-                  child: Container(
-                    width: (Get.width / 2) - 50,
-                    height: 140,
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl:
-                              'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_alimentos_guardados.png',
-                          width: 35,
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          'Alimentos\nguardados',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () => {},
-                  child: Container(
-                    width: (Get.width / 2) - 50,
-                    height: 140,
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl:
-                              'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_buscar_alimentos.png',
-                          width: 35,
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          'Base de datos de alimentos',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => {},
-                  child: Container(
-                    width: (Get.width / 2) - 50,
-                    height: 140,
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: GestureDetector(
-                      onTap: () => {escanearAlimentos()},
+    if (usuarioController.usuario.value.vencidoSup == false) {
+      Get.toNamed('/suscripcion');
+    } else {
+      Get.dialog(
+        Dialog(
+          elevation: 0,
+          alignment: Alignment.bottomCenter,
+          backgroundColor: Colors.transparent,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () => {},
+                    child: Container(
+                      width: (Get.width / 2) - 50,
+                      height: 140,
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           CachedNetworkImage(
                             imageUrl:
-                                'https://macrolife.app/images/app/home/icono_57x57_camara_para_escanear_comida.png',
+                                'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_registrar.png',
                             width: 35,
                           ),
                           const SizedBox(height: 8),
                           const Text(
-                            'Escanear\nalimentos',
+                            'Registrar\nejercicio',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
@@ -877,14 +781,114 @@ class EscanearAlimentosController extends GetxController {
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 50)
-          ],
+                  GestureDetector(
+                    onTap: () => {Get.back(), Get.toNamed('favoritos')},
+                    child: Container(
+                      width: (Get.width / 2) - 50,
+                      height: 140,
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl:
+                                'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_alimentos_guardados.png',
+                            width: 35,
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Alimentos\nguardados',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () => {},
+                    child: Container(
+                      width: (Get.width / 2) - 50,
+                      height: 140,
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl:
+                                'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_buscar_alimentos.png',
+                            width: 35,
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Base de datos de alimentos',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => {},
+                    child: Container(
+                      width: (Get.width / 2) - 50,
+                      height: 140,
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: GestureDetector(
+                        onTap: () => {escanearAlimentos()},
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl:
+                                  'https://macrolife.app/images/app/home/icono_57x57_camara_para_escanear_comida.png',
+                              width: 35,
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Escanear\nalimentos',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 50)
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
 

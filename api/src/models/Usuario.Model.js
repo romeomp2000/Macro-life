@@ -143,6 +143,12 @@ const UsuariosSchema = new Schema({
   appleID: {
     type: String,
     required: false
+  },
+  estatus: {
+    type: String,
+    enum: ['Activo', 'Inactivo'],
+    require: false,
+    default: 'Activo'
   }
 
 }, { versionKey: false }
@@ -184,9 +190,12 @@ UsuariosSchema.methods.toJSON = function () {
   const obj = this.toObject();
 
   // Formatear fechaVencimiento
+  obj.vencido = false;
   if (obj.fechaVencimiento) {
     obj.fechaVencimientoFormato = moment(obj.fechaVencimiento).format('DD/MM/YYYY');
     obj.diasAVencer = moment(obj.fechaVencimiento).diff(moment(), 'days');
+    // Bandera para saber si la mensualidad ya venció
+    obj.vencido = moment(obj.fechaVencimiento).isBefore(moment()) || true; // Si la fecha de vencimiento es antes de la fecha actual, venció
   }
 
   // Formatear fechaNacimiento

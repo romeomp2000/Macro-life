@@ -25,33 +25,35 @@ class Usuario {
   int? edad;
   String? fechaMeta;
   String? fechaMetaObjetivo;
+  bool? vencidoSup;
 
-  Usuario({
-    // this.macronutrientes,
-    this.macronutrientesDiario,
-    this.sId,
-    this.referenciaUsuario,
-    this.fechaVencimiento,
-    this.balance,
-    this.rachaDias,
-    this.fechaNacimiento,
-    this.altura,
-    this.pesoActual,
-    this.genero,
-    this.puntuacionSalud,
-    this.entrenamientoSemanal,
-    this.objetivo,
-    this.pesoObjetivo,
-    this.dieta,
-    this.lograr,
-    this.metaAlcanzar,
-    this.impideAlcanzar,
-    this.codigo,
-    this.fechaNacimientoFormato,
-    this.edad,
-    this.fechaMeta,
-    this.fechaMetaObjetivo,
-  });
+  Usuario(
+      {
+      // this.macronutrientes,
+      this.macronutrientesDiario,
+      this.sId,
+      this.referenciaUsuario,
+      this.fechaVencimiento,
+      this.balance,
+      this.rachaDias,
+      this.fechaNacimiento,
+      this.altura,
+      this.pesoActual,
+      this.genero,
+      this.puntuacionSalud,
+      this.entrenamientoSemanal,
+      this.objetivo,
+      this.pesoObjetivo,
+      this.dieta,
+      this.lograr,
+      this.metaAlcanzar,
+      this.impideAlcanzar,
+      this.codigo,
+      this.fechaNacimientoFormato,
+      this.edad,
+      this.fechaMeta,
+      this.fechaMetaObjetivo,
+      this.vencidoSup});
 
   Usuario.fromJson(Map<String, dynamic> json) {
     // macronutrientes = json['macronutrientes'] != null
@@ -66,6 +68,7 @@ class Usuario {
     referenciaUsuario = json['referenciaUsuario'];
     fechaVencimiento = json['fechaVencimiento'];
     balance = json['balance'];
+    vencidoSup = json['vencido'] ?? false;
     rachaDias = json['rachaDias'];
     fechaNacimiento = json['fechaNacimiento'];
     altura = json['altura'];
@@ -117,6 +120,7 @@ class Usuario {
     data['edad'] = this.edad;
     data['fechaMeta'] = this.fechaMeta;
     data['fechaMetaObjetivo'] = this.fechaMetaObjetivo;
+    data['vencido'] = this.vencidoSup ?? false;
     return data;
   }
 }

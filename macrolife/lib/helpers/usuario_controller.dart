@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/models/usuario.dart';
 
 class UsuarioController extends GetxController {
@@ -16,6 +17,7 @@ class UsuarioController extends GetxController {
   void onInit() {
     getUsuarioStorage();
     getMacronutrientesStorage();
+    buscarUsuario();
     //aca todo lo que se ejecuta al iniciar el controlador
     super.onInit();
   }
@@ -94,6 +96,28 @@ class UsuarioController extends GetxController {
 
       macronutrientes.refresh();
     } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  void buscarUsuario() async {
+    try {
+      if (usuario.value.sId != null && usuario.value.sId != '') {
+        // final apiService = ApiService();
+
+        // final response = await apiService.fetchData(
+        //   'usuario/buscar/${usuario.value.sId}',
+        //   method: Method.GET,
+        //   body: {},
+        // );
+
+        // if (response['usuario']['estatus'] == 'Activo') {
+        //   Get.offAndToNamed('/registro_pasos');
+        // }
+
+        // print(response);
+      }
+    } catch (e) {
       print(e);
     }
   }

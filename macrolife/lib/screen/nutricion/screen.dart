@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/models/alimento.model.dart';
-import 'package:macrolife/models/ingrediente.model.dart';
 import 'package:macrolife/screen/IngredientesEditar/screen.dart';
 import 'package:macrolife/screen/IngredientesEditarNombre/screen.dart';
 import 'package:macrolife/screen/home/controller.dart';
