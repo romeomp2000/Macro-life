@@ -87,9 +87,8 @@ class WeeklyCalendarController extends GetxController {
                         child: Row(
                           children: [
                             const SizedBox(width: 7),
-                            CachedNetworkImage(
-                              imageUrl:
-                                  'https://macrolife.app/images/app/home/icono_flama_chica_52x52_original.png',
+                            Image.asset(
+                              'assets/icons/icono_rutina_60x60_nuevo.png',
                               width: 20,
                             ),
                             const SizedBox(width: 5),
@@ -113,11 +112,10 @@ class WeeklyCalendarController extends GetxController {
                     clipBehavior: Clip
                         .none, // Permite que los widgets se desborden fuera del Stack
                     children: [
-                      CachedNetworkImage(
-                        imageUrl:
-                            'https://macrolife.app/images/app/home/imagen_flama_num_378x462_no_sn.png',
-                        width: 130,
-                        height: 140,
+                      Image.asset(
+                        'assets/icons/icono_rutina_60x60_nuevo.png',
+                        width: 200,
+                        height: 200,
                       ),
                       Positioned(
                         bottom:
@@ -137,7 +135,7 @@ class WeeklyCalendarController extends GetxController {
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFFE69938),
+                      color: Colors.black,
                     ),
                   ),
                   const SizedBox(height: 30),
@@ -159,9 +157,8 @@ class WeeklyCalendarController extends GetxController {
                               index == 4
                                   ? Icons.check_circle
                                   : Icons.circle_rounded,
-                              color: index == 4
-                                  ? const Color(0xFFE69938)
-                                  : Colors.grey[200],
+                              color:
+                                  index == 4 ? Colors.black : Colors.grey[200],
                             ),
                           ],
                         );
@@ -275,8 +272,12 @@ class WeeklyCalendarController extends GetxController {
 
     double porcentajeDiferenciaproteina = proteinaDiaria == 0
         ? 0.0
-        : (1 - ((proteinaActual - proteinaDiaria).abs() / proteinaDiaria))
-            .clamp(0.0, 1.0);
+        : proteinaActual == 0
+            ? 0.0
+            : ((proteinaDiaria - proteinaActual) / proteinaDiaria * 100);
+
+    porcentajeDiferenciaproteina =
+        porcentajeDiferenciaproteina.clamp(0.0, 100.0);
 
     final carbohidratosActual =
         controllerUsuario.macronutrientes.value.carbohidratos ?? 0;
@@ -286,15 +287,22 @@ class WeeklyCalendarController extends GetxController {
 
     double porcentajeDiferenciacarbohidratos = carbohidratosDiarios == 0
         ? 0.0
-        : (1 -
-                ((carbohidratosActual - carbohidratosDiarios).abs() /
-                    carbohidratosDiarios))
-            .clamp(0.0, 1.0);
+        : carbohidratosActual == 0
+            ? 0.0
+            : ((carbohidratosDiarios - carbohidratosActual) /
+                carbohidratosDiarios *
+                100);
+    porcentajeDiferenciacarbohidratos =
+        porcentajeDiferenciacarbohidratos.clamp(0.0, 100.0);
 
     double porcentajeDiferenciaCalorias = caloriasDiarias == 0
         ? 0.0
-        : (1 - ((caloriasActual - caloriasDiarias).abs() / caloriasDiarias))
-            .clamp(0.0, 1.0);
+        : caloriasActual == 0
+            ? 0.0
+            : ((caloriasDiarias - caloriasActual) / caloriasDiarias) * 100;
+
+    porcentajeDiferenciaCalorias =
+        porcentajeDiferenciaCalorias.clamp(0.0, 100.0);
 
     final grasasActual = controllerUsuario.macronutrientes.value.grasas ?? 0;
     final grasasDiarias =
@@ -303,8 +311,11 @@ class WeeklyCalendarController extends GetxController {
 
     double porcentajeDiferenciagrasas = grasasDiarias == 0
         ? 0.0
-        : (grasasActual / grasasDiarias).clamp(0.0, 1.0);
+        : grasasActual == 0
+            ? 0.0
+            : ((grasasDiarias - grasasActual) / grasasDiarias) * 100;
 
+    porcentajeDiferenciagrasas = porcentajeDiferenciagrasas.clamp(0.0, 100);
     //CALORÍAS
     controllerUsuario.macronutrientes.value.caloriasPorcentaje =
         porcentajeDiferenciaCalorias;
@@ -359,7 +370,7 @@ class NumberWithBorder extends StatelessWidget {
             foreground: Paint()
               ..style = PaintingStyle.stroke
               ..strokeWidth = 14 // Grosor del borde
-              ..color = const Color(0xFFE69938), // Color del borde
+              ..color = Colors.black, // Color del borde
           ),
         ),
         // Texto interior

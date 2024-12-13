@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/alimento.model.dart';
 import 'package:macrolife/screen/home/controller.dart';
 import 'package:macrolife/screen/nutricion/screen.dart';
+import 'package:macrolife/screen/objetivos/controller.dart';
 import 'package:macrolife/widgets/NutrientIndicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,260 +19,297 @@ class HomeScreen extends StatelessWidget {
 
     final WeeklyCalendarController controller =
         Get.put(WeeklyCalendarController());
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(
-            'https://macrolife.app/images/app/home/background_1125x2436_uno.jpg', // URL de tu imagen
-          ),
-          fit: BoxFit.cover, // Ajusta la imagen al tamaño del contenedor
-        ),
-      ),
-      child: SingleChildScrollView(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl:
-                          'https://macrolife.app/images/app/logo/logo_macro_life.png',
-                      width: 155,
-                    ),
-                    GestureDetector(
-                      onTap: () => controller.onRachaDias(),
-                      child: Container(
-                        padding: const EdgeInsets.all(5.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Row(
-                          children: [
-                            const SizedBox(width: 7),
-                            CachedNetworkImage(
-                              imageUrl:
-                                  'https://macrolife.app/images/app/home/icono_flama_chica_52x52_original.png',
-                              width: 20,
-                            ),
-                            const SizedBox(width: 5),
-                            Obx(
-                              () => Text(
-                                '${controllerUsuario.usuario.value.rachaDias}',
-                                style: const TextStyle(fontSize: 15),
-                              ),
-                            ),
-                            const SizedBox(width: 7),
-                          ],
-                        ),
+    return SingleChildScrollView(
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    'assets/icons/logo_macro_life_1125x207.png',
+                    width: 155,
+                  ),
+                  GestureDetector(
+                    onTap: () => controller.onRachaDias(),
+                    child: Container(
+                      padding: const EdgeInsets.all(5.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                calendario(controller),
-                GestureDetector(
-                  onTap: () => Get.toNamed('/objetivos'),
-                  child: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    width: Get.width,
-                    height: 160,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Obx(
-                                () => Text(
-                                  '${controllerUsuario.macronutrientes.value.caloriasRestantes ?? 0}',
-                                  style: const TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              const Text(
-                                'Calorías restantes',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                            ],
+                          const SizedBox(width: 7),
+                          Image.asset(
+                            'assets/icons/icono_rutina_60x60_nuevo.png',
+                            width: 20,
                           ),
-                          // Círculo con icono de fuego
+                          const SizedBox(width: 5),
                           Obx(
-                            () => CircularPercentIndicator(
-                              radius: 55.0,
-                              lineWidth: 8.0,
-                              percent: controllerUsuario
-                                      .macronutrientes.value.caloriasPorcentaje
-                                      ?.toDouble() ??
-                                  0.0,
-                              center: const Icon(Icons.local_fire_department),
-                              progressColor: Colors.black, // Color del progreso
-                              backgroundColor:
-                                  Colors.black12, // Color del fondo del círculo
+                            () => Text(
+                              '${controllerUsuario.usuario.value.rachaDias}',
+                              style: const TextStyle(fontSize: 15),
                             ),
                           ),
+                          const SizedBox(width: 7),
                         ],
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    // Indicador de Proteína
-                    GestureDetector(
-                      onTap: () => Get.toNamed('/objetivos'),
-                      child: Obx(
-                        () => NutrientIndicator(
-                          amount: (controllerUsuario
-                                  .macronutrientes.value.proteinaRestantes ??
-                              0),
-                          nutrient: "Proteína",
-                          percent: controllerUsuario
-                                  .macronutrientes.value.proteinaPorcentaje
-                                  ?.toDouble() ??
-                              0.0,
-                          color: Colors.red,
-                          icon:
-                              'https://macrolife.app/images/app/home/iconografia_metas_28x28_proteinas.png',
-                        ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              calendario(controller),
+              GestureDetector(
+                onTap: () => Get.toNamed('/objetivos'),
+                child: Container(
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 2,
+                        spreadRadius: 0.1,
                       ),
-                    ),
-                    // Indicador de Carbohidratos
-                    GestureDetector(
-                      onTap: () => Get.toNamed('/objetivos'),
-                      child: Obx(
-                        () => NutrientIndicator(
-                          amount: (controllerUsuario.macronutrientes.value
-                                  .carbohidratosRestante ??
-                              0),
-                          nutrient: "Carbohidratos",
-                          percent: controllerUsuario
-                                  .macronutrientes.value.caloriasPorcentaje
-                                  ?.toDouble() ??
-                              0.0,
-                          color: Colors.orange,
-                          icon:
-                              'https://macrolife.app/images/app/home/iconografia_metas_28x28_carbohidratos.png',
-                        ),
-                      ),
-                    ),
-                    // Indicador de Grasa
-                    GestureDetector(
-                      onTap: () => Get.toNamed('/objetivos'),
-                      child: Obx(
-                        () => NutrientIndicator(
-                          amount: (controllerUsuario
-                                  .macronutrientes.value.grasasRestantes ??
-                              0),
-                          nutrient: "Grasa",
-                          percent: controllerUsuario
-                                  .macronutrientes.value.grasasPorcentaje
-                                  ?.toDouble() ??
-                              0.0,
-                          color: Colors.blueAccent,
-                          icon:
-                              'https://macrolife.app/images/app/home/iconografia_metas_28x28_grasas.png',
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                Obx(
-                  () => controller.alimentosList.isEmpty
-                      ? Stack(
-                          clipBehavior: Clip.none,
+                    ],
+                  ),
+                  width: Get.width,
+                  height: 160,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Center(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 15.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[100],
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: const Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'No has subido ninguna comida',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                    SizedBox(height: 8.0),
-                                    Text(
-                                      'Comienza a registrar las comidas de hoy tomando una foto rápido',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 15.0,
-                                        color: Colors.black87,
-                                      ),
-                                    ),
+                            SizedBox(
+                              width: 85,
+                              child: Obx(
+                                () => SfCartesianChart(
+                                  primaryYAxis: NumericAxis(
+                                    minimum: 0,
+                                    maximum: 100,
+                                    interval: 50,
+                                    opposedPosition: true,
+                                    borderColor: Colors.black12,
+                                  ),
+                                  plotAreaBackgroundColor: Colors.black12,
+                                  primaryXAxis: CategoryAxis(
+                                    isVisible: false,
+                                  ),
+                                  enableSideBySideSeriesPlacement: false,
+                                  series: <CartesianSeries>[
+                                    // Inicializa la serie de columnas (barras)
+                                    ColumnSeries<ChartData, String>(
+                                      dataSource: [
+                                        // Fuente de datos
+                                        ChartData(
+                                            '',
+                                            controllerUsuario.macronutrientes
+                                                    .value.caloriasPorcentaje
+                                                    ?.toDouble() ??
+                                                0.0,
+                                            Colors.white),
+                                      ],
+                                      width: 1,
+                                      color: Colors.black,
+                                      xValueMapper: (ChartData data, _) =>
+                                          data.label,
+                                      yValueMapper: (ChartData data, _) =>
+                                          data.value,
+                                    )
                                   ],
                                 ),
                               ),
                             ),
-                            Positioned(
-                              right: 70,
-                              bottom: -30,
-                              child: Image.network(
-                                'https://macrolife.app/images/app/home/flecha_comida_113x149_negro.png',
-                                width: 40,
-                              ),
-                            ),
-                          ],
-                        )
-                      : Column(
-                          children: [
-                            Text(
-                              'Recientemente registros',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 15),
+                            Image.asset(
+                              'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                              width: 25,
+                            )
                           ],
                         ),
-                ),
-                Obx(() {
-                  return SingleChildScrollView(
-                    // Permite que el contenido sea desplazable
-                    child: Column(
-                      // Se puede usar Column para manejar el tamaño dinámico
-                      children: [
-                        if (controller.loader.value)
-                          const LinearProgressIndicator(),
-                        for (var alimento in controller.alimentosList)
-                          NutritionWidget(nutritionInfo: alimento),
+                        VerticalDivider(
+                          color: Colors.black26,
+                        ),
+                        Row(
+                          children: [
+                            const SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Obx(
+                                  () => Text(
+                                    '${controllerUsuario.macronutrientes.value.caloriasRestantes ?? 0}',
+                                    style: const TextStyle(
+                                      fontSize: 36,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                const Text(
+                                  'Calorías\nrestantes',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 10),
+                          ],
+                        ),
                       ],
                     ),
-                  );
-                }),
-              ],
-            ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  // Indicador de Proteína
+                  GestureDetector(
+                    onTap: () => Get.toNamed('/objetivos'),
+                    child: Obx(
+                      () => NutrientIndicator(
+                        amount: (controllerUsuario
+                                .macronutrientes.value.proteinaRestantes ??
+                            0),
+                        nutrient: "Proteína",
+                        percent: controllerUsuario
+                                .macronutrientes.value.proteinaPorcentaje
+                                ?.toDouble() ??
+                            0.0,
+                        color: Colors.red,
+                        icon: 'assets/icons/icono_filetecarne_90x69_nuevo.png',
+                      ),
+                    ),
+                  ),
+                  // Indicador de Carbohidratos
+                  GestureDetector(
+                    onTap: () => Get.toNamed('/objetivos'),
+                    child: Obx(
+                      () => NutrientIndicator(
+                        amount: (controllerUsuario
+                                .macronutrientes.value.carbohidratosRestante ??
+                            0),
+                        nutrient: "Carbohidratos",
+                        percent: controllerUsuario
+                                .macronutrientes.value.caloriasPorcentaje
+                                ?.toDouble() ??
+                            0.0,
+                        color: Colors.orange,
+                        icon:
+                            'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
+                      ),
+                    ),
+                  ),
+                  // Indicador de Grasa
+                  GestureDetector(
+                    onTap: () => Get.toNamed('/objetivos'),
+                    child: Obx(
+                      () => NutrientIndicator(
+                        amount: (controllerUsuario
+                                .macronutrientes.value.grasasRestantes ??
+                            0),
+                        nutrient: "Grasa",
+                        percent: controllerUsuario
+                                .macronutrientes.value.grasasPorcentaje
+                                ?.toDouble() ??
+                            0.0,
+                        color: Colors.blue,
+                        icon: 'assets/icons/icono_almedraazul_74x70_nuevo.png',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              Obx(
+                () => controller.alimentosList.isEmpty
+                    ? Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Center(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 15.0),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[100],
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: const Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'No has subido ninguna comida',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8.0),
+                                  Text(
+                                    'Comienza a registrar las comidas de hoy tomando una foto rápido',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 70,
+                            bottom: -30,
+                            child: Image.asset(
+                              'assets/icons/flecha_comida_113x149_negro.png',
+                              width: 40,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          Text(
+                            'Recientemente registros',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                        ],
+                      ),
+              ),
+              Obx(() {
+                return SingleChildScrollView(
+                  // Permite que el contenido sea desplazable
+                  child: Column(
+                    // Se puede usar Column para manejar el tamaño dinámico
+                    children: [
+                      if (controller.loader.value)
+                        const LinearProgressIndicator(),
+                      for (var alimento in controller.alimentosList)
+                        NutritionWidget(nutritionInfo: alimento),
+                    ],
+                  ),
+                );
+              }),
+            ],
           ),
         ),
       ),
@@ -306,12 +343,14 @@ class HomeScreen extends StatelessWidget {
                   child: Obx(() {
                     return Column(
                       children: [
-                        DottedBorder(
-                          color: controller.today.value == day
-                              ? Colors.black
-                              : Colors.black26,
-                          borderType: BorderType.Circle,
-                          dashPattern: const [3, 3],
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black26,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white54,
+                          ),
                           child: Container(
                             width: 35,
                             height: 35,
@@ -358,6 +397,10 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class SalesData {
+  SalesData(DateTime dateTime, String s, double d, int i, int j, int k, int l);
 }
 
 class NutritionWidget extends StatelessWidget {

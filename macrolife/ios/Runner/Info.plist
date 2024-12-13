@@ -57,5 +57,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+  <key>NSPhotoLibraryUsageDescription</key>
+<string>Esta aplicación necesita acceso a tu galería para seleccionar imágenes.</string>
+
 </dict>
 </plist>

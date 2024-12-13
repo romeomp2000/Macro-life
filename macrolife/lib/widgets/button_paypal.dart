@@ -52,7 +52,7 @@ class ButtonPayPal extends StatelessWidget {
             "description": "MACROLIFE - Pago de Servicios",
           }
         ],
-        note: "Hank App - Pago de Servicios",
+        note: "MACRO LIFE - Pago de Servicios",
         onSuccess: (Map result) {
           onSuccess(result);
         },
@@ -69,22 +69,14 @@ class ButtonPayPal extends StatelessWidget {
         payPalPagar();
       },
       child: Container(
-        width: 250,
-        padding: const EdgeInsets.all(12.0),
+        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4.0),
+          borderRadius: BorderRadius.circular(10.0),
           color: const Color(0xFFFFC439), // color personalizado
         ),
         child: const Center(
           child: Text.rich(
             TextSpan(
-              text: 'Paga con',
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-                // fontStyle: FontStyle.italic,
-              ),
               children: <TextSpan>[
                 TextSpan(
                   text: ' Pay',

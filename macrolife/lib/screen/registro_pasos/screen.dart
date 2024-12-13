@@ -509,15 +509,15 @@ class RegistroPasosScreen extends StatelessWidget {
                           children: [
                             CachedNetworkImage(
                               imageUrl:
-                                  'https://macrolife.app/images/app/registro/barra_avance_animales_koala_negro.png', // Reemplaza con la URL de tu imagen PNG
+                                  'https://macrolife.app/images/app/icono_tortuga_194x91_nuevo_negra.png', // Reemplaza con la URL de tu imagen PNG
                               color: ((controller.rapidoMeta * 10)
                                               .truncateToDouble() /
                                           10) ==
                                       0.1
-                                  ? const Color(0xFFDD9A70)
+                                  ? Colors.red
                                   : Colors.black,
 
-                              height: 45, // Ancho deseado para la imagen
+                              height: 30, // Ancho deseado para la imagen
                             ),
                             CachedNetworkImage(
                               imageUrl:
@@ -528,7 +528,7 @@ class RegistroPasosScreen extends StatelessWidget {
                                       0.8
                                   ? const Color(0xFFDD9A70)
                                   : Colors.black,
-                              height: 45, // Ajusta el ancho según sea necesario
+                              height: 30, // Ajusta el ancho según sea necesario
                             ),
                             CachedNetworkImage(
                               imageUrl:
@@ -539,7 +539,7 @@ class RegistroPasosScreen extends StatelessWidget {
                                       1.5
                                   ? const Color(0xFFDD9A70)
                                   : Colors.black, // Alternativa al color
-                              height: 45, // Ajusta el ancho según tu diseño
+                              height: 30, // Ajusta el ancho según tu diseño
                             ),
                           ],
                         ),
@@ -642,34 +642,34 @@ class RegistroPasosScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  ListTileModel(
-                    title: 'Falta de apoyo',
-                    widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_saludo.png',
-                        color:
-                            controller.entrenamiento.value == 'Falta de apoyo'
-                                ? Colors.white
-                                : Colors.black,
-                        colorBlendMode: BlendMode.color,
-                        height: 45,
-                      ),
-                    ),
-                  ),
-                  ListTileModel(
-                    title: 'Agenda ocupada',
-                    widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_calendario.png',
-                        color:
-                            controller.entrenamiento.value == 'Agenda ocupada'
-                                ? Colors.white
-                                : Colors.black,
-                        colorBlendMode: BlendMode.color,
-                        height: 45,
-                      ),
-                    ),
-                  ),
+                  // ListTileModel(
+                  //   title: 'Falta de apoyo',
+                  //   widget: ClipOval(
+                  //     child: Image.network(
+                  //       'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_saludo.png',
+                  //       color:
+                  //           controller.entrenamiento.value == 'Falta de apoyo'
+                  //               ? Colors.white
+                  //               : Colors.black,
+                  //       colorBlendMode: BlendMode.color,
+                  //       height: 45,
+                  //     ),
+                  //   ),
+                  // ),
+                  // ListTileModel(
+                  //   title: 'Agenda ocupada',
+                  //   widget: ClipOval(
+                  //     child: Image.network(
+                  //       'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_calendario.png',
+                  //       color:
+                  //           controller.entrenamiento.value == 'Agenda ocupada'
+                  //               ? Colors.white
+                  //               : Colors.black,
+                  //       colorBlendMode: BlendMode.color,
+                  //       height: 45,
+                  //     ),
+                  //   ),
+                  // ),
                   ListTileModel(
                     title: 'Falta de inspiración para la comida',
                     widget: ClipOval(

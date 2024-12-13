@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:macrolife/helpers/AplePay.dart';
 import 'package:macrolife/helpers/StripePaymentHandle.dart';
 import 'package:macrolife/screen/suscripcion/controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:macrolife/widgets/button_paypal.dart';
+import 'package:pay/pay.dart';
 
 class SuscripcionScreen extends StatelessWidget {
   const SuscripcionScreen({super.key});
@@ -148,39 +151,126 @@ class SuscripcionScreen extends StatelessWidget {
       enableDrag: true, // Permite deslizar para cerrar
       persistent: true,
       isScrollControlled: true,
-      Container(
-        width: Get.width,
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  ButtonPayPal(
-                    precio: 50.0,
-                    producto: 'Mensualidad',
-                    onSuccess: (fee) {},
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        final prueba = StripePaymentHandle();
-
-                        prueba.makePayment();
-                      },
-                      child: Text('Stripe'))
-                ],
-              ),
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
             ),
-          ],
-        ),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                const Center(
+                  child: Text(
+                    'Pagar con:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ButtonPayPal(
+                  precio: 199,
+                  producto: 'MACRO LIFE',
+                  onSuccess: (e) {},
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(
+                        255, 104, 116, 244), // Color de fondo de Stripe
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    elevation: 5,
+                  ),
+                  onPressed: () async {
+                    final prueba = StripeController();
+
+                    prueba.makePay();
+                    // get the pay instince
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl:
+                            'https://cdn.iconscout.com/icon/free/png-256/free-stripe-logo-icon-download-in-svg-png-gif-file-formats--flat-social-media-branding-pack-logos-icons-498440.png?f=webp',
+                        width: 30,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'Stripe',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF1D1D1F), // Fondo negro
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    elevation: 5,
+                  ),
+                  onPressed: () async {
+                    final pay = Pay({
+                      PayProvider.apple_pay:
+                          PaymentConfiguration.fromJsonString(defaultApplePay)
+                    });
+
+                    // show it to the user, and get the payload
+                    final payload =
+                        await pay.showPaymentSelector(PayProvider.apple_pay, [
+                      PaymentItem(
+                          type: PaymentItemType.total,
+                          status: PaymentItemStatus.final_price,
+                          amount: '199',
+                          label: 'MACRO LIFE')
+                    ]);
+
+                    // use the payload to get the stripe token
+                    final stripeToken =
+                        await Stripe.instance.createApplePayToken(payload);
+
+                    // send the stripe token id to the server side
+                    final tokenId = stripeToken.id;
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.apple, // Icono de pago
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'Apple Pay',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

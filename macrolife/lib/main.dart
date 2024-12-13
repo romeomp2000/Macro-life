@@ -17,8 +17,9 @@ void main() async {
   final configuracionesController = Get.put(ConfiguracionesController());
   // await configuracionesController.buscaConfiguraciones();
   Stripe.merchantIdentifier = 'merchant.mx.posibilidades.macrolife';
+
   Stripe.publishableKey =
-      'pk_live_51QUWUeIAwppv4H1aGxrcrldFpBjEIJyOkB7A8K9vF1E7sCUD77OgPSPb3jwxImSTBSOfcBznoEs5IwIIGWvfyIyk00GhO9taPS';
+      'pk_test_51QUWUeIAwppv4H1a4RXT8tYB8EjIXA1rS7RwxWxswyBpf7k4i9jrfpoSNaL2jpbMiCuxtYEVQ05SXNZ3N7SorWrP00oucGKl9b';
 
   runApp(
     GetMaterialApp(

@@ -1,4 +1,3 @@
-import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:macrolife/config/api_service.dart';
@@ -46,8 +45,8 @@ class LayoutScreen extends StatelessWidget {
           },
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Image.network(
-              'https://macrolife.app/images/app/home/icono_agregar_180x180_line.png',
+            child: Image.asset(
+              'assets/icons/icono_agregar_180x180_line.png',
               width: 40, // Tamaño fijo para la imagen
               height: 40, // Igual que el ancho
               fit: BoxFit.cover, // Ajusta la imagen dentro del círculo
@@ -71,29 +70,29 @@ class LayoutScreen extends StatelessWidget {
           },
           items: [
             BottomNavigationBarItem(
-              activeIcon: Image.network(
-                  'https://macrolife.app/images/app/home/menu_inferior_195x195_inicio_activo.png',
+              activeIcon: Image.asset(
+                  'assets/icons/menu_inferior_195x195_inicio_activo.png',
                   width: 20),
-              icon: Image.network(
-                  'https://macrolife.app/images/app/home/menu_inferior_195x195_inicio_inactivo.png',
+              icon: Image.asset(
+                  'assets/icons/menu_inferior_195x195_inicio_inactivo.png',
                   width: 20),
               label: 'Inicio',
             ),
             BottomNavigationBarItem(
-              activeIcon: Image.network(
-                  'https://macrolife.app/images/app/home/menu_inferior_195x195_analytics_activo.png',
+              activeIcon: Image.asset(
+                  'assets/icons/menu_inferior_195x195_analytics_activo.png',
                   width: 20),
-              icon: Image.network(
-                  'https://macrolife.app/images/app/home/menu_inferior_195x195_analytics_inactivo.png',
+              icon: Image.asset(
+                  'assets/icons/menu_inferior_195x195_analytics_inactivo.png',
                   width: 20),
               label: 'Analítica',
             ),
             BottomNavigationBarItem(
-              activeIcon: Image.network(
-                  'https://macrolife.app/images/app/home/menu_inferior_195x195_configuracion_activo.png',
+              activeIcon: Image.asset(
+                  'assets/icons/menu_inferior_195x195_configuracion_activo.png',
                   width: 20),
-              icon: Image.network(
-                  'https://macrolife.app/images/app/home/menu_inferior_195x195_configuracion_inactivo.png',
+              icon: Image.asset(
+                  'assets/icons/menu_inferior_195x195_configuracion_inactivo.png',
                   width: 20),
               label: 'Ajustes',
             ),
@@ -249,8 +248,10 @@ class EscanearAlimentosController extends GetxController {
       cargaMacro.loader.refresh();
 
       cargaMacro.cargaAlimentos();
+      cameraController?.dispose();
     } catch (e) {
       print("Error al capturar o procesar imagen: $e");
+      cameraController?.dispose();
     }
   }
 
@@ -267,7 +268,7 @@ class EscanearAlimentosController extends GetxController {
 
   @override
   void onClose() {
-    cameraController?.dispose();
+    // cameraController?.dispose();
     super.onClose();
   }
 
@@ -461,7 +462,7 @@ class EscanearAlimentosController extends GetxController {
       final apiService = ApiService();
 
       final response = await apiService.uploadImages(
-        'analizar-comida/galeria',
+        'analizar-comida',
         images,
         extraFields: {
           'idUsuario': usuarioController.usuario.value.sId ?? '',
@@ -699,36 +700,36 @@ class EscanearAlimentosController extends GetxController {
               ),
             ),
 
-            Positioned(
-              bottom: 16,
-              left: 20, // Centrado horizontalmente
-              child: IconButton(
-                icon: ClipOval(
-                  child: Obx(
-                    () => Image.network(
-                      'https://macrolife.app/images/app/home/icono_rayo_circulo_130x130_blanco.png',
-                      width: 30,
-                      color: linterna.value ? Colors.amber : Colors.white,
-                      colorBlendMode: BlendMode.srcIn,
-                    ),
-                  ),
-                ),
-                onPressed: () async {
-                  if (linterna.value == true) {
-                    linterna.value = false;
-                    cameraController?.setFlashMode(FlashMode.torch);
-                  } else {
-                    linterna.value = true;
-                    cameraController?.setFlashMode(FlashMode.off);
-                  }
-                },
-              ),
-            ),
+            // Positioned(
+            //   bottom: 16,
+            //   left: 20, // Centrado horizontalmente
+            //   child: IconButton(
+            //     icon: ClipOval(
+            //       child: Obx(
+            //         () => Image.asset(
+            //           'assets/icons/barra_vertical_intensidad_77x77_basica.png',
+            //           width: 30,
+            //           color: linterna.value ? Colors.amber : Colors.white,
+            //           colorBlendMode: BlendMode.srcIn,
+            //         ),
+            //       ),
+            //     ),
+            //     onPressed: () async {
+            //       if (linterna.value == true) {
+            //         linterna.value = false;
+            //         cameraController?.setFlashMode(FlashMode.torch);
+            //       } else {
+            //         linterna.value = true;
+            //         cameraController?.setFlashMode(FlashMode.off);
+            //       }
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),
     ).whenComplete(() {
-      cameraController?.dispose();
+      // cameraController?.dispose();
       linterna.value = false;
       isCameraInitialized.value = false;
     });

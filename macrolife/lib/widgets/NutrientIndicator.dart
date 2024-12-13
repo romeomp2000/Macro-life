@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:macrolife/screen/objetivos/controller.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class NutrientIndicator extends StatelessWidget {
   final int amount;
@@ -9,6 +10,7 @@ class NutrientIndicator extends StatelessWidget {
   final String icon;
 
   const NutrientIndicator({
+    super.key,
     required this.amount,
     required this.nutrient,
     required this.percent,
@@ -20,7 +22,7 @@ class NutrientIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 120,
-      height: 170,
+      height: 200,
       // color: Colors.white,
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
@@ -58,16 +60,47 @@ class NutrientIndicator extends StatelessWidget {
               ),
             ],
           ),
-          CircularPercentIndicator(
-            radius: 30.0,
-            lineWidth: 5.0,
-            percent: percent,
-            center: Image.network(
-              icon,
-              width: 15,
-            ),
-            progressColor: color,
-            backgroundColor: Colors.black12,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                height: 100,
+                width: 40,
+                child: SfCartesianChart(
+                  primaryYAxis: NumericAxis(
+                    minimum: 0,
+                    maximum: 100,
+                    interval: 50,
+                    opposedPosition: true,
+                    borderColor: Colors.black12,
+                    isVisible: false,
+                  ),
+                  plotAreaBackgroundColor: Colors.black12,
+                  primaryXAxis: CategoryAxis(
+                    isVisible: false,
+                  ),
+                  enableSideBySideSeriesPlacement: false,
+                  series: <CartesianSeries>[
+                    // Inicializa la serie de columnas (barras)
+                    ColumnSeries<ChartData, String>(
+                      dataSource: [
+                        // Fuente de datos
+                        ChartData('', percent, Colors.white),
+                      ],
+                      width: 1,
+                      color: color,
+                      xValueMapper: (ChartData data, _) => data.label,
+                      yValueMapper: (ChartData data, _) => data.value,
+                    )
+                  ],
+                ),
+              ),
+              Image.asset(
+                icon,
+                width: 30,
+                height: 30,
+              ),
+            ],
           ),
         ],
       ),
