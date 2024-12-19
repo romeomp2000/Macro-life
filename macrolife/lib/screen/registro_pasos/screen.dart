@@ -5,12 +5,14 @@ import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/list_tile_model.dart';
 import 'package:macrolife/screen/EditarNutrientes/screen.dart';
+import 'package:macrolife/screen/objetivos/controller.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
 import 'package:macrolife/widgets/custom_elevated_selected.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'controller.dart';
 
@@ -81,11 +83,11 @@ class RegistroPasosScreen extends StatelessWidget {
                     title: '0-2',
                     subtitle: 'Entrenamiento de vez en cuando',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_1pto.png',
-                        color: controller.entrenamiento.value == '0-2'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_entrenamiento_semanal_100x100_nuevo_0-2.png',
+                        // color: controller.entrenamiento.value == '0-2'
+                        //     ? Colors.white
+                        //     : Colors.black,
                         colorBlendMode: BlendMode.color,
                         width: 45,
                       ),
@@ -95,11 +97,11 @@ class RegistroPasosScreen extends StatelessWidget {
                     title: '3-5',
                     subtitle: 'Unos cuatro entrenamientos por semana',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_3ptos.png',
-                        color: controller.entrenamiento.value == '3-5'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_entrenamiento_semanal_100x100_nuevo_3-5.png',
+                        // color: controller.entrenamiento.value == '3-5'
+                        //     ? Colors.white
+                        //     : Colors.black,
                         colorBlendMode: BlendMode.color,
                         width: 45,
                       ),
@@ -109,11 +111,11 @@ class RegistroPasosScreen extends StatelessWidget {
                     title: '6+',
                     subtitle: 'Atleta dedicado',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_6ptos.png',
-                        color: controller.entrenamiento.value == '6+'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_entrenamiento_semanal_100x100_nuevo_6+.png',
+                        // color: controller.entrenamiento.value == '6+'
+                        //     ? Colors.blue
+                        //     : Colors.black,
                         colorBlendMode: BlendMode.color,
                         width: 45,
                       ),
@@ -135,21 +137,15 @@ class RegistroPasosScreen extends StatelessWidget {
                 options: [
                   ListTileModel(
                     title: 'No',
-                    icon: Icon(
-                      Icons.thumb_down,
-                      color: controller.probado.value == 'No'
-                          ? Colors.white
-                          : Colors.black,
-                    ),
+                    widget: Image.asset(
+                        'assets/icons/icono_si_no_120x120_nuevo_no.png',
+                        width: 25),
                   ),
                   ListTileModel(
                     title: 'Si',
-                    icon: Icon(
-                      Icons.thumb_up,
-                      color: controller.probado.value == 'Si'
-                          ? Colors.white
-                          : Colors.black,
-                    ),
+                    widget: Image.asset(
+                        'assets/icons/icono_si_no_120x120_nuevo_si.png',
+                        width: 25),
                   ),
                 ],
                 onOptionSelected: (probado) =>
@@ -165,11 +161,11 @@ class RegistroPasosScreen extends StatelessWidget {
                 body: ClipRRect(
                   borderRadius: BorderRadius.circular(
                       15.0), // Define el radio de los bordes
-                  child: Image.network(
-                    'https://macrolife.app/images/app/registro/grafica_peso_1125x939.png',
+                  child: Image.asset(
+                    'assets/images/grafica_barras_477x372_nuevo_1.png',
                   ),
                 ),
-                title: 'MACRO LIFE crea resultados a largo plazo',
+                title: 'Macro Life crea resultados a largo plazo',
                 options: const [],
                 onOptionSelected: (probado) =>
                     controller.probado.value = probado,
@@ -269,11 +265,8 @@ class RegistroPasosScreen extends StatelessWidget {
                     title: 'Clásico',
                     // subtitle: '',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_pierna.png',
-                        color: controller.dieta.value == 'Clásico'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_dietas_alimenticias_120x120_nuevo_clasico.png',
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -282,11 +275,8 @@ class RegistroPasosScreen extends StatelessWidget {
                   ListTileModel(
                     title: 'Pescetariana',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_pescado.png',
-                        color: controller.dieta.value == 'Pescetariana'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_dietas_alimenticias_120x120_nuevo_pescetario.png',
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -295,11 +285,8 @@ class RegistroPasosScreen extends StatelessWidget {
                   ListTileModel(
                     title: 'Vegetariano',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_manzana.png',
-                        color: controller.dieta.value == 'Vegetariano'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_dietas_alimenticias_120x120_nuevo_vegetariano.png',
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -308,11 +295,8 @@ class RegistroPasosScreen extends StatelessWidget {
                   ListTileModel(
                     title: 'Vegano',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_vegano.png',
-                        color: controller.dieta.value == 'Vegetariano'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_dietas_alimenticias_120x120_nuevo_vegano.png',
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -334,11 +318,8 @@ class RegistroPasosScreen extends StatelessWidget {
                     title: 'Come y vive más sano',
                     // subtitle: '',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_manzana.png',
-                        color: controller.lograr.value == 'Come y vive más sano'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_logros_alimenticios_120x120_nuevo_1.png',
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -347,12 +328,8 @@ class RegistroPasosScreen extends StatelessWidget {
                   ListTileModel(
                     title: 'Aumentar mi energía y estado de ánimo',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_sol.png',
-                        color: controller.lograr.value ==
-                                'Aumentar mi energía y estado de ánimo'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_logros_alimenticios_120x120_nuevo_2.png',
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -361,12 +338,8 @@ class RegistroPasosScreen extends StatelessWidget {
                   ListTileModel(
                     title: 'Manténgase motivado y constante',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_brazo.png',
-                        color: controller.lograr.value ==
-                                'Manténgase motivado y constante'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_logros_alimenticios_120x120_nuevo_3.png',
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -375,12 +348,8 @@ class RegistroPasosScreen extends StatelessWidget {
                   ListTileModel(
                     title: 'Sentirse mejor con mi cuerpo',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_yoga.png',
-                        color: controller.lograr.value ==
-                                'Sentirse mejor con mi cuerpo'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_logros_alimenticios_120x120_nuevo_4.png',
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -400,11 +369,11 @@ class RegistroPasosScreen extends StatelessWidget {
                 body: ClipRRect(
                   borderRadius: BorderRadius.circular(
                       15.0), // Define el radio de los bordes
-                  child: Image.network(
-                    'https://macrolife.app/images/app/registro/grafico_alcance_meta_982x1190_original.png',
+                  child: Image.asset(
+                    'assets/images/grafico_alcance_meta_982x1190_nuevo.png',
                   ),
                 ),
-                title: 'Tienes un gran potencial para aplastar tu objetivo. ',
+                title: 'Tienes un gran potencial para aplastar tu objetivo.',
                 options: const [],
                 onOptionSelected: (probado) =>
                     controller.probado.value = probado,
@@ -507,39 +476,35 @@ class RegistroPasosScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CachedNetworkImage(
-                              imageUrl:
-                                  'https://macrolife.app/images/app/icono_tortuga_194x91_nuevo_negra.png', // Reemplaza con la URL de tu imagen PNG
+                            Image.asset(
+                              'assets/icons/icono_tortuga_194x91_nuevo_roja.png',
                               color: ((controller.rapidoMeta * 10)
                                               .truncateToDouble() /
                                           10) ==
                                       0.1
                                   ? Colors.red
                                   : Colors.black,
-
-                              height: 30, // Ancho deseado para la imagen
+                              height: 30,
                             ),
-                            CachedNetworkImage(
-                              imageUrl:
-                                  'https://macrolife.app/images/app/registro/barra_avance_animales_liebre_negra.png', // Reemplaza con la URL de tu imagen PNG
+                            Image.asset(
+                              'assets/icons/icono_ardilla_137x130_nuevo_amarillo.png',
                               color: ((controller.rapidoMeta * 10)
                                               .truncateToDouble() /
                                           10) ==
                                       0.8
                                   ? const Color(0xFFDD9A70)
                                   : Colors.black,
-                              height: 30, // Ajusta el ancho según sea necesario
+                              height: 30,
                             ),
-                            CachedNetworkImage(
-                              imageUrl:
-                                  'https://macrolife.app/images/app/registro/barra_avance_animales_leopardo_negro.png', // Reemplaza con la URL de tu imagen PNG
+                            Image.asset(
+                              'assets/icons/icono_gacela_194x130_nuevo_negro.png',
                               color: ((controller.rapidoMeta * 10)
                                               .truncateToDouble() /
                                           10) ==
                                       1.5
-                                  ? const Color(0xFFDD9A70)
-                                  : Colors.black, // Alternativa al color
-                              height: 30, // Ajusta el ancho según tu diseño
+                                  ? Colors.blue
+                                  : Colors.black,
+                              height: 30,
                             ),
                           ],
                         ),
@@ -593,11 +558,43 @@ class RegistroPasosScreen extends StatelessWidget {
 
             Obx(
               () => Steep(
-                body: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                      15.0), // Define el radio de los bordes
-                  child: Image.network(
-                    'https://macrolife.app/images/app/registro/grafica_sincon_macrolife_920x1065_original.png',
+                body: Container(
+                  height: 350,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(15)),
+                  width: Get.width,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 50),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                15.0), // Define el radio de los bordes
+                            child: Image.asset(
+                              'assets/images/grafico_barra_comparativa_306x596_nuevo_sin_macrolife.png',
+                              width: 100,
+                            ),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                15.0), // Define el radio de los bordes
+                            child: Image.asset(
+                              'assets/images/grafico_barra_comparativa_306x596_nuevo_con_macrolife.png',
+                              width: 100,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'Macro Life lo hace fácil y te hace fácil y te hace responsable',
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                    ],
                   ),
                 ),
                 title:
@@ -617,12 +614,8 @@ class RegistroPasosScreen extends StatelessWidget {
                   ListTileModel(
                     title: 'Falta de constancia',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_barras.png',
-                        color: controller.entrenamiento.value ==
-                                'Falta de constancia'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_metas_alimenticias_120x120_nuevo_1.png',
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -631,54 +624,38 @@ class RegistroPasosScreen extends StatelessWidget {
                   ListTileModel(
                     title: 'Hábitos alimenticios poco saludables',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_hamburguesa.png',
-                        color: controller.entrenamiento.value ==
-                                'Hábitos alimenticios poco saludables'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_metas_alimenticias_120x120_nuevo_2.png',
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
                     ),
                   ),
-                  // ListTileModel(
-                  //   title: 'Falta de apoyo',
-                  //   widget: ClipOval(
-                  //     child: Image.network(
-                  //       'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_saludo.png',
-                  //       color:
-                  //           controller.entrenamiento.value == 'Falta de apoyo'
-                  //               ? Colors.white
-                  //               : Colors.black,
-                  //       colorBlendMode: BlendMode.color,
-                  //       height: 45,
-                  //     ),
-                  //   ),
-                  // ),
-                  // ListTileModel(
-                  //   title: 'Agenda ocupada',
-                  //   widget: ClipOval(
-                  //     child: Image.network(
-                  //       'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_calendario.png',
-                  //       color:
-                  //           controller.entrenamiento.value == 'Agenda ocupada'
-                  //               ? Colors.white
-                  //               : Colors.black,
-                  //       colorBlendMode: BlendMode.color,
-                  //       height: 45,
-                  //     ),
-                  //   ),
-                  // ),
+                  ListTileModel(
+                    title: 'Falta de apoyo',
+                    widget: ClipOval(
+                      child: Image.asset(
+                        'assets/icons/icono_metas_alimenticias_120x120_nuevo_3.png',
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
+                    ),
+                  ),
+                  ListTileModel(
+                    title: 'Agenda ocupada',
+                    widget: ClipOval(
+                      child: Image.asset(
+                        'assets/icons/icono_metas_alimenticias_120x120_nuevo_4.png',
+                        colorBlendMode: BlendMode.color,
+                        height: 45,
+                      ),
+                    ),
+                  ),
                   ListTileModel(
                     title: 'Falta de inspiración para la comida',
                     widget: ClipOval(
-                      child: Image.network(
-                        'https://macrolife.app/images/app/registro/iconografia_primaria_103x103_manzana.png',
-                        color: controller.entrenamiento.value ==
-                                'Falta de inspiración para la comida'
-                            ? Colors.white
-                            : Colors.black,
+                      child: Image.asset(
+                        'assets/icons/icono_metas_alimenticias_120x120_nuevo_5.png',
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -742,12 +719,12 @@ class RegistroPasosScreen extends StatelessWidget {
                               align: StackAlign.left,
                             ),
                             avatars: const [
-                              NetworkImage(
-                                  'https://macrolife.app/images/app/avatars/avatar_persona_212x212_8.png'),
-                              NetworkImage(
-                                  'https://macrolife.app/images/app/avatars/avatar_persona_212x212_11.png'),
-                              NetworkImage(
-                                  'https://macrolife.app/images/app/avatars/avatar_persona_212x212_14.png'),
+                              AssetImage(
+                                  'assets/avatars/avatar_persona_212x212_.png'),
+                              AssetImage(
+                                  'assets/avatars/avatar_persona_212x212_2.png'),
+                              AssetImage(
+                                  'assets/avatars/avatar_persona_212x212_3.png'),
                             ],
                           ),
                           const SizedBox(height: 15),
@@ -777,9 +754,8 @@ class RegistroPasosScreen extends StatelessWidget {
                 enableScroll: true,
                 body: Column(
                   children: [
-                    CachedNetworkImage(
-                      imageUrl:
-                          'https://macrolife.app/images/app/home/imagen_corredor_1023x883_.png',
+                    Image.asset(
+                      'assets/images/imagen_corredor_1023x883_.png',
                       width: Get.width,
                       height: 350,
                     ),
@@ -793,9 +769,8 @@ class RegistroPasosScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    CachedNetworkImage(
-                      imageUrl:
-                          'https://macrolife.app/images/app/home/cuadro_permitir_notificaciones_913x415_original.png',
+                    Image.asset(
+                      'assets/images/cuadro_permitir_notificaciones_913x415_original.png',
                       width: Get.width,
                       height: 120,
                     ),
@@ -818,8 +793,8 @@ class RegistroPasosScreen extends StatelessWidget {
               () => Steep(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(
-                      'https://macrolife.app/images/app/home/confetti3.gif',
+                    image: AssetImage(
+                      'assets/icons/confetti3.gif',
                     ),
                   ),
                 ),
@@ -828,9 +803,8 @@ class RegistroPasosScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CachedNetworkImage(
-                          imageUrl:
-                              'https://macrolife.app/images/app/home/icono_check_53x53_naranja.png',
+                        Image.asset(
+                          'assets/icons/icono_checkverde_53x53_nuevo.png',
                           width: 20,
                         ),
                         const SizedBox(width: 8),
@@ -879,15 +853,10 @@ class RegistroPasosScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         ClipOval(
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            color: Colors.black,
-                            child: Image.network(
-                              'https://macrolife.app/images/app/home/icono_check_57x57_negro.png',
-                              width: 18,
-                              height: 18,
-                              color: Colors.white,
-                            ),
+                          child: Image.asset(
+                            'assets/icons/icono_checkverde_53x53_nuevo.png',
+                            width: 25,
+                            height: 25,
                           ),
                         ),
                         const SizedBox(height: 15),
@@ -945,6 +914,8 @@ class RegistroPasosScreen extends StatelessWidget {
                                 children: [
                                   Obx(
                                     () => Recomendaciones(
+                                        imagen:
+                                            'assets/icons/icono_calorias_negro_99x117_nuevo.png',
                                         title: 'Calorías',
                                         puntaje:
                                             '${controllerUsuario.usuario.value.macronutrientesDiario?.value.calorias ?? 0}',
@@ -955,7 +926,7 @@ class RegistroPasosScreen extends StatelessWidget {
                                               textField: 'Calorías',
                                               color: Colors.black,
                                               imageUrl:
-                                                  'https://macrolife.app/images/app/home/icono_flama_chica_negra_48x48_original.png',
+                                                  'assets/icons/icono_calorias_negro_99x117_nuevo.png',
                                               title:
                                                   'Editar Objetivo de Calorías',
                                               initialValue: controllerUsuario
@@ -983,6 +954,8 @@ class RegistroPasosScreen extends StatelessWidget {
                                   ),
                                   Obx(
                                     () => Recomendaciones(
+                                      imagen:
+                                          'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
                                       title: 'Carbohidratos',
                                       puntaje:
                                           '${controllerUsuario.usuario.value.macronutrientesDiario?.value.carbohidratos ?? 0}g',
@@ -993,7 +966,7 @@ class RegistroPasosScreen extends StatelessWidget {
                                             textField: 'Carbohidratos',
                                             color: Colors.orange,
                                             imageUrl:
-                                                'https://macrolife.app/images/app/home/iconografia_metas_28x28_carbohidratos.png',
+                                                'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
                                             title:
                                                 'Editar Objetivo de Carbohidratos',
                                             initialValue: controllerUsuario
@@ -1029,6 +1002,8 @@ class RegistroPasosScreen extends StatelessWidget {
                                 children: [
                                   Obx(
                                     () => Recomendaciones(
+                                        imagen:
+                                            'assets/icons/icono_filetecarne_90x69_nuevo.png',
                                         title: 'Proteínas',
                                         puntaje:
                                             '${controllerUsuario.usuario.value.macronutrientesDiario?.value.proteina ?? 0}g',
@@ -1039,7 +1014,7 @@ class RegistroPasosScreen extends StatelessWidget {
                                               textField: 'Proteínas',
                                               color: Colors.red,
                                               imageUrl:
-                                                  'https://macrolife.app/images/app/home/iconografia_metas_28x28_proteinas.png',
+                                                  'assets/icons/icono_filetecarne_90x69_nuevo.png',
                                               title:
                                                   'Editar Objetivo de Proteínas',
                                               initialValue: controllerUsuario
@@ -1067,6 +1042,8 @@ class RegistroPasosScreen extends StatelessWidget {
                                   ),
                                   Obx(
                                     () => Recomendaciones(
+                                      imagen:
+                                          'assets/icons/icono_almedraazul_74x70_nuevo.png',
                                       title: 'Grasas',
                                       puntaje:
                                           '${controllerUsuario.usuario.value.macronutrientesDiario?.value.grasas ?? 0}g',
@@ -1077,7 +1054,7 @@ class RegistroPasosScreen extends StatelessWidget {
                                             textField: 'Grasas',
                                             color: Colors.blue,
                                             imageUrl:
-                                                'https://macrolife.app/images/app/home/iconografia_metas_28x28_grasas.png',
+                                                'assets/icons/icono_almedraazul_74x70_nuevo.png',
                                             title: 'Editar Objetivo de Grasas',
                                             initialValue: controllerUsuario
                                                     .usuario
@@ -1118,9 +1095,8 @@ class RegistroPasosScreen extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        CachedNetworkImage(
-                                          imageUrl:
-                                              'https://macrolife.app/images/app/home/iconografia_metas_100x100_corazon.png',
+                                        Image.asset(
+                                          'assets/icons/icono_corazonrosa_50x50_nuevo.png',
                                           width: 20,
                                         ),
                                         const SizedBox(width: 12),
@@ -1184,19 +1160,19 @@ class RegistroPasosScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 15),
                               objetivos(
-                                  'https://macrolife.app/images/app/home/iconografia_metas_100x100_corazon.png',
+                                  'assets/icons/icono_corazonrosa_50x50_nuevo.png',
                                   'Utilice puntuaciones de salud para mejorar su rutina.'),
                               const SizedBox(height: 15),
                               objetivos(
-                                  'https://macrolife.app/images/app/home/iconografia_metas_100x100_aguacates.png',
+                                  'assets/icons/icono_almedraazul_74x70_nuevo.png',
                                   'Sigue tu comida.'),
                               const SizedBox(height: 15),
                               objetivos(
-                                  'https://macrolife.app/images/app/home/iconografia_metas_100x100_calorias.png',
+                                  'assets/icons/icono_calorias_negro_99x117_nuevo.png',
                                   'Sigue tu recomendación diaria de calorías.'),
                               const SizedBox(height: 15),
                               objetivos(
-                                  'https://macrolife.app/images/app/home/iconografia_metas_100x100_varios.png',
+                                  'assets/icons/icono_calendario_azul_94x104_nuevo.png',
                                   'Equilibra tus carbohidratos, proteínas y grasas.'),
                               const SizedBox(height: 15),
                             ],
@@ -1217,7 +1193,7 @@ class RegistroPasosScreen extends StatelessWidget {
                           message: 'Siguiente',
                           function: () {
                             FuncionesGlobales.actualizarMacronutrientes();
-                            Get.toNamed('/layout');
+                            Get.offAllNamed('/layout');
                           },
                         ),
                       ),
@@ -1226,7 +1202,6 @@ class RegistroPasosScreen extends StatelessWidget {
                 ],
               ),
             ),
-            // Aquí puedes añadir más widgets para otros pasos.
           ],
         ),
       ),
@@ -1240,7 +1215,7 @@ class RegistroPasosScreen extends StatelessWidget {
       child: CupertinoListTile(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 25),
         backgroundColor: Colors.white,
-        leading: Image.network(
+        leading: Image.asset(
           url,
           width: 30,
         ),
@@ -1289,6 +1264,7 @@ class Recomendaciones extends StatelessWidget {
   final String puntaje;
   final Color color;
   final Function() onPressed;
+  final String imagen;
 
   const Recomendaciones({
     Key? key,
@@ -1296,6 +1272,7 @@ class Recomendaciones extends StatelessWidget {
     required this.puntaje,
     required this.color,
     required this.onPressed,
+    required this.imagen,
   }) : super(key: key);
 
   @override
@@ -1307,29 +1284,86 @@ class Recomendaciones extends StatelessWidget {
           Container(
             width: 180,
             height: 180,
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(12),
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
-            child: Column(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(title),
-                const SizedBox(height: 15),
-                CircularPercentIndicator(
-                  radius: 45.0,
-                  lineWidth: 5.0,
-                  percent: 0.5, // Ajusta el valor de progreso
-                  center: Text(
-                    puntaje,
-                  ),
-                  progressColor: color, // Color del progreso
-                  backgroundColor:
-                      Colors.black12, // Color del fondo del círculo
+                Column(
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      width: 85,
+                      height: 110,
+                      child: SfCartesianChart(
+                        primaryYAxis: NumericAxis(
+                          minimum: 0,
+                          maximum: 100,
+                          interval: 50,
+                          opposedPosition: true,
+                          borderColor: Colors.black12,
+                        ),
+                        plotAreaBackgroundColor: Colors.black12,
+                        primaryXAxis: CategoryAxis(
+                          isVisible: false,
+                        ),
+                        enableSideBySideSeriesPlacement: false,
+                        series: <CartesianSeries>[
+                          ColumnSeries<ChartData, String>(
+                            dataSource: [
+                              ChartData('', 50.0, Colors.white),
+                            ],
+                            width: 1,
+                            color: color,
+                            xValueMapper: (ChartData data, _) => data.label,
+                            yValueMapper: (ChartData data, _) => data.value,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
+                Image.asset(
+                  imagen,
+                  width: 25,
+                  color: color,
+                )
               ],
             ),
           ),
+          // Container(
+          //   width: 180,
+          //   height: 180,
+          //   padding: const EdgeInsets.all(10),
+          //   decoration: const BoxDecoration(
+          //     color: Colors.white,
+          //     borderRadius: BorderRadius.all(Radius.circular(15)),
+          //   ),
+          //   child: Column(
+          //     children: [
+          //       Text(title),
+          //       const SizedBox(height: 15),
+          //       CircularPercentIndicator(
+          //         radius: 45.0,
+          //         lineWidth: 5.0,
+          //         percent: 0.5, // Ajusta el valor de progreso
+          //         center: Text(
+          //           puntaje,
+          //         ),
+          //         progressColor: color, // Color del progreso
+          //         backgroundColor:
+          //             Colors.black12, // Color del fondo del círculo
+          //       ),
+          //     ],
+          //   ),
+          // ),
           const Positioned(
             bottom: 35,
             right: 10,

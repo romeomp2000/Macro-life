@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
+import 'package:macrolife/models/Entrenamiento.dart';
 import 'package:macrolife/models/alimento.model.dart';
+import 'package:macrolife/screen/correr/screen.dart';
 import 'package:macrolife/screen/home/controller.dart';
 import 'package:macrolife/screen/nutricion/screen.dart';
 import 'package:macrolife/screen/objetivos/controller.dart';
@@ -19,6 +21,7 @@ class HomeScreen extends StatelessWidget {
 
     final WeeklyCalendarController controller =
         Get.put(WeeklyCalendarController());
+
     return SingleChildScrollView(
       child: SafeArea(
         child: Padding(
@@ -242,30 +245,33 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           Center(
                             child: Container(
+                              width: Get.width,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20.0, vertical: 15.0),
                               decoration: BoxDecoration(
-                                color: Colors.grey[100],
+                                color: Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
-                              child: const Column(
-                                mainAxisSize: MainAxisSize.min,
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'No has subido ninguna comida',
+                                    '¡Inicia hoy!',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18.0,
                                     ),
                                   ),
                                   SizedBox(height: 8.0),
-                                  Text(
-                                    'Comienza a registrar las comidas de hoy tomando una foto rápido',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Colors.black87,
+                                  SizedBox(
+                                    width: Get.width - 200,
+                                    child: Text(
+                                      'Escanea tus alimentos y lleva un control exacto',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 15.0,
+                                        color: Colors.black87,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -273,11 +279,11 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                           Positioned(
-                            right: 70,
-                            bottom: -30,
+                            right: Get.width / 2 - 80,
+                            bottom: -60,
                             child: Image.asset(
-                              'assets/icons/flecha_comida_113x149_negro.png',
-                              width: 40,
+                              'assets/icons/flecha_curva_negra_227x222_nuevo_1.png',
+                              width: 70,
                             ),
                           ),
                         ],
@@ -297,9 +303,9 @@ class HomeScreen extends StatelessWidget {
               ),
               Obx(() {
                 return SingleChildScrollView(
-                  // Permite que el contenido sea desplazable
-                  child: Column(
-                    // Se puede usar Column para manejar el tamaño dinámico
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       if (controller.loader.value)
                         const LinearProgressIndicator(),
@@ -309,6 +315,103 @@ class HomeScreen extends StatelessWidget {
                   ),
                 );
               }),
+              const SizedBox(height: 20),
+              Obx(() {
+                return SingleChildScrollView(
+                  // Permite que el contenido sea desplazable
+                  child: Column(
+                    // Se puede usar Column para manejar el tamaño dinámico
+                    children: [
+                      if (controller.loader.value)
+                        const LinearProgressIndicator(),
+                      for (var alimento in controller.entrenamientosList)
+                        EjercicioWidget(entrenamiento: alimento),
+                    ],
+                  ),
+                );
+              }),
+
+              // Container(
+              //   padding: EdgeInsets.symmetric(vertical: 10),
+              //   decoration: BoxDecoration(
+              //       color: Colors.grey[200],
+              //       borderRadius: BorderRadius.circular(10)),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //     children: [
+              //       Image.asset(
+              //         'assets/icons/icono_registrar_ejercicio_solido_180x180_correr.png',
+              //         width: 40,
+              //       ),
+              //       Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           Text('Levantamiento de pesas'),
+              //           const SizedBox(height: 15),
+              //           Row(
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             children: [
+              //               Image.asset(
+              //                 'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+              //                 width: 15,
+              //               ),
+              //               const SizedBox(width: 8),
+              //               Text(
+              //                 '487 Calorías',
+              //                 style: TextStyle(fontWeight: FontWeight.bold),
+              //               ),
+              //             ],
+              //           ),
+              //           const SizedBox(height: 15),
+              //           Row(
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             children: [
+              //               Image.asset(
+              //                 'assets/icons/icono_intensidad_negro_38x24_nuevo.png',
+              //                 width: 15,
+              //               ),
+              //               const SizedBox(width: 8),
+              //               Text('Intensidad: Ligero'),
+              //             ],
+              //           )
+              //         ],
+              //       ),
+              //       Column(
+              //         mainAxisAlignment: MainAxisAlignment.end,
+              //         crossAxisAlignment: CrossAxisAlignment.end,
+              //         children: [
+              //           Container(
+              //             padding: EdgeInsets.all(5),
+              //             decoration: BoxDecoration(
+              //               color: Colors.white,
+              //               borderRadius: BorderRadius.circular(10),
+              //             ),
+              //             child: Text(
+              //               '8:24 a.m.',
+              //               style: TextStyle(fontSize: 10),
+              //             ),
+              //           ),
+              //           const SizedBox(height: 50),
+              //           Container(
+              //             padding: EdgeInsets.all(5),
+              //             child: Row(
+              //               children: [
+              //                 Image.asset(
+              //                     'assets/icons/icono_cronometro_negro_34x38_nuevo.png',
+              //                     width: 15),
+              //                 SizedBox(width: 8),
+              //                 Text(
+              //                   '90 min.',
+              //                   style: TextStyle(fontSize: 10),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -411,102 +514,115 @@ class NutritionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = 210;
     return GestureDetector(
       onTap: () {
         Get.to(() => NutricionScreen(alimento: nutritionInfo));
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 20),
+        margin: const EdgeInsets.only(right: 20, bottom: 10, left: 10),
+        width: width,
+        // height: 350,
         decoration: BoxDecoration(
           color: Colors.grey[100],
           borderRadius: BorderRadius.circular(16.0),
-        ),
-        child: Row(
-          children: [
-            // Imagen de la izquierda
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(16.0),
-                bottomLeft: Radius.circular(16.0),
-              ),
-              child: Image.network(
-                '${nutritionInfo.imageUrl}',
-                width: 135,
-                height: 135,
-                fit: BoxFit.cover,
-              ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            '${nutritionInfo.name}',
-                            style: const TextStyle(
-                              fontSize: 14.0,
+          ],
+        ),
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                if (nutritionInfo.imageUrl != null)
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(16.0),
+                      topRight: Radius.circular(16.0),
+                    ),
+                    child: CachedNetworkImage(
+                      imageUrl: '${nutritionInfo.imageUrl}',
+                      width: width,
+                      height: 180,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                      progressIndicatorBuilder: (context, url, progress) =>
+                          CircularProgressIndicator.adaptive(),
+                    ),
+                  )
+                else
+                  Container(
+                    height: 30,
+                  ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        '${nutritionInfo.name}',
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Image.asset(
+                            'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                            width: 18,
+                            height: 18,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${nutritionInfo.calories} calorías', // Usamos el parámetro de las calorías
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
                             ),
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                        const SizedBox(width: 8.0),
-                        Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(
-                                7.0), // Bordes redondeados
-                          ),
-                          child: Text(
-                            '${nutritionInfo.time}',
-                            style: const TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 8.0),
-                    Row(
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl:
-                              'https://macrolife.app/images/app/home/icono_flama_chica_negra_48x48_original.png', // Ícono de calorías
-                          width: 20,
-                          height: 20,
-                        ),
-                        const SizedBox(width: 8.0),
-                        Text(
-                          '${nutritionInfo.calories} calorías', // Usamos el parámetro de las calorías
-                          style: TextStyle(fontSize: 16.0),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        _buildNutritionItem(
-                          'https://macrolife.app/images/app/home/iconografia_metas_28x28_proteinas.png', // Ícono de proteínas
-                          '${nutritionInfo.protein}g', // Usamos el parámetro de proteínas
-                        ),
-                        _buildNutritionItem(
-                          'https://macrolife.app/images/app/home/iconografia_metas_28x28_carbohidratos.png', // Ícono de carbohidratos
-                          '${nutritionInfo.carbs}g', // Usamos el parámetro de carbohidratos
-                        ),
-                        _buildNutritionItem(
-                          'https://macrolife.app/images/app/home/iconografia_metas_28x28_grasas.png', // Ícono de grasas
-                          '${nutritionInfo.fats}g', // Usamos el parámetro de grasas
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      _buildNutritionItem(
+                        'assets/icons/icono_filetecarne_90x69_nuevo.png', // Ícono de proteínas
+                        '${nutritionInfo.protein}gr.', // Usamos el parámetro de proteínas
+                      ),
+                      const SizedBox(height: 10),
+                      _buildNutritionItem(
+                        'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png', // Ícono de carbohidratos
+                        '${nutritionInfo.carbs}gr', // Usamos el parámetro de carbohidratos
+                      ),
+                      const SizedBox(height: 10),
+                      _buildNutritionItem(
+                        'assets/icons/icono_almedraazul_74x70_nuevo.png', // Ícono de grasas
+                        '${nutritionInfo.fats}gr.', // Usamos el parámetro de grasas
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.all(8),
+                margin: EdgeInsets.only(top: 10, right: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                child: Text(
+                  '${nutritionInfo.time}',
+                  style: TextStyle(fontSize: 10),
                 ),
               ),
             ),
@@ -519,8 +635,262 @@ class NutritionWidget extends StatelessWidget {
   Widget _buildNutritionItem(String iconUrl, String value) {
     return Row(
       children: [
-        CachedNetworkImage(
-          imageUrl: iconUrl,
+        Image.asset(
+          iconUrl,
+          width: 15,
+          height: 15,
+        ),
+        const SizedBox(width: 8.0),
+        Text(value),
+        const SizedBox(width: 10),
+      ],
+    );
+  }
+}
+
+class AjercicioWidget extends StatelessWidget {
+  final AlimentoModel nutritionInfo;
+
+  // Constructor con un solo parámetro
+  const AjercicioWidget({super.key, required this.nutritionInfo});
+
+  @override
+  Widget build(BuildContext context) {
+    double width = 210;
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => NutricionScreen(alimento: nutritionInfo));
+      },
+      child: Container(
+        margin: const EdgeInsets.only(right: 20, bottom: 10, left: 10),
+        width: width,
+        // height: 350,
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(16.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16.0),
+                    topRight: Radius.circular(16.0),
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: '${nutritionInfo.imageUrl}',
+                    width: width,
+                    height: 180,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    progressIndicatorBuilder: (context, url, progress) =>
+                        CircularProgressIndicator.adaptive(),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        '${nutritionInfo.name}',
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Image.asset(
+                            'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                            width: 18,
+                            height: 18,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${nutritionInfo.calories} calorías', // Usamos el parámetro de las calorías
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      _buildNutritionItem(
+                        'assets/icons/icono_filetecarne_90x69_nuevo.png', // Ícono de proteínas
+                        '${nutritionInfo.protein}gr.', // Usamos el parámetro de proteínas
+                      ),
+                      const SizedBox(height: 10),
+                      _buildNutritionItem(
+                        'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png', // Ícono de carbohidratos
+                        '${nutritionInfo.carbs}gr', // Usamos el parámetro de carbohidratos
+                      ),
+                      const SizedBox(height: 10),
+                      _buildNutritionItem(
+                        'assets/icons/icono_almedraazul_74x70_nuevo.png', // Ícono de grasas
+                        '${nutritionInfo.fats}gr.', // Usamos el parámetro de grasas
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.all(8),
+                margin: EdgeInsets.only(top: 10, right: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                child: Text(
+                  '${nutritionInfo.time}',
+                  style: TextStyle(fontSize: 10),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNutritionItem(String iconUrl, String value) {
+    return Row(
+      children: [
+        Image.asset(
+          iconUrl,
+          width: 15,
+          height: 15,
+        ),
+        const SizedBox(width: 8.0),
+        Text(value),
+        const SizedBox(width: 10),
+      ],
+    );
+  }
+}
+
+class EjercicioWidget extends StatelessWidget {
+  final Entrenamiento entrenamiento;
+
+  // Constructor con un solo parámetro
+  const EjercicioWidget({super.key, required this.entrenamiento});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Get.to(
+          () => CorrerScreen(
+            entrenamiento: entrenamiento,
+            id: entrenamiento.sId,
+          ),
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        margin: EdgeInsets.only(bottom: 10),
+        decoration: BoxDecoration(
+            color: Colors.grey[200], borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Image.asset(
+              'assets/icons/icono_registrar_ejercicio_solido_180x180_correr.png',
+              width: 40,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('${entrenamiento.nombre}'),
+                const SizedBox(height: 15),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                      width: 15,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '${entrenamiento.calorias} Calorías',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 15),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/icons/icono_intensidad_negro_38x24_nuevo.png',
+                      width: 15,
+                    ),
+                    const SizedBox(width: 8),
+                    Text('Intensidad: ${entrenamiento.intensidad}'),
+                  ],
+                )
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    '${entrenamiento.time}.',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                ),
+                const SizedBox(height: 50),
+                Container(
+                  padding: EdgeInsets.all(5),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                          'assets/icons/icono_cronometro_negro_34x38_nuevo.png',
+                          width: 15),
+                      SizedBox(width: 8),
+                      Text(
+                        '${entrenamiento.tiempo} min.',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNutritionItem(String iconUrl, String value) {
+    return Row(
+      children: [
+        Image.asset(
+          iconUrl,
           width: 15,
           height: 15,
         ),

@@ -10,7 +10,6 @@ const obtenerHistorialUsuario = async (req, res) => {
   const { idUsuario, fecha } = req.body;
 
   try {
-    console.log(fecha);
     // Convertir la fecha a la zona horaria de 'America/Mexico_City'
     const fechaHoy = moment.tz(fecha, 'YYYY-MM-DD', 'America/Mexico_City');
 
@@ -54,7 +53,7 @@ const obtenerHistorialUsuario = async (req, res) => {
         puntuacionSalud: {
           nombre: alimento?.puntuacionSalud?.nombre || '',
           descripcion: alimento?.puntuacionSalud?.descripcion || '',
-          score: alimento?.puntuacionSalud?.score || '',
+          score: alimento?.puntuacionSalud?.score || 0,
           caracteristicas: alimento?.puntuacionSalud?.caracteristicas || []
         },
         ingredientes: alimento?.ingredientes?.map((ingrediente) => {

@@ -26,17 +26,18 @@ class NutricionScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          CachedNetworkImage(
-            imageUrl: controller.alimento.value.imageUrl ?? '',
-            fit: BoxFit.cover,
-            alignment: Alignment.center,
-            width: Get.width,
-            height: 600,
-          ),
+          if (controller.alimento.value.imageUrl != null)
+            CachedNetworkImage(
+              imageUrl: controller.alimento.value.imageUrl ?? '',
+              fit: BoxFit.cover,
+              alignment: Alignment.center,
+              width: Get.width,
+              height: 600,
+            ),
           DraggableScrollableSheet(
             snap: false,
             initialChildSize:
-                0.5, // Tamaño inicial del contenedor (50% de la pantalla)
+                controller.alimento.value.imageUrl != null ? 0.5 : 0.9,
             minChildSize: 0.5, // Tamaño mínimo (20% de la pantalla)
             maxChildSize: 0.95, // Tamaño máximo (90% de la pantalla)
             builder: (context, scrollController) {
@@ -195,10 +196,10 @@ class NutricionScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          trailing: const Icon(
-                            Icons.edit,
-                            color: Colors.blue,
-                          ),
+                          // trailing: const Icon(
+                          //   Icons.edit,
+                          //   color: Colors.blue,
+                          // ),
                           leadingSize: 40,
                           leading: Container(
                             decoration: BoxDecoration(
@@ -207,9 +208,8 @@ class NutricionScreen extends StatelessWidget {
                               color: Colors.grey[100],
                             ),
                             padding: const EdgeInsets.all(8.0),
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  'https://macrolife.app/images/app/home/icono_flama_chica_negra_48x48_original.png', // Ícono de calorías
+                            child: Image.asset(
+                              'assets/icons/icono_calorias_negro_99x117_nuevo.png', // Ícono de calorías
                             ),
                           ),
                         ),
@@ -219,82 +219,90 @@ class NutricionScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           NutritionalInfoRow(
-                            icon:
-                                'https://macrolife.app/images/app/home/iconografia_metas_28x28_proteinas.png',
+                            icon: Image.asset(
+                              'assets/icons/icono_filetecarne_90x69_nuevo.png',
+                              width: 13,
+                            ),
                             label: 'Proteína',
                             value: '${alimento.protein}g',
                           ),
                           NutritionalInfoRow(
-                            icon:
-                                'https://macrolife.app/images/app/home/iconografia_metas_28x28_carbohidratos.png',
+                            icon: Image.asset(
+                              'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
+                              width: 13,
+                            ),
                             label: 'Carbohidratos',
                             value: '${alimento.carbs}g',
                           ),
                           NutritionalInfoRow(
-                            icon:
-                                'https://macrolife.app/images/app/home/iconografia_metas_28x28_grasas.png',
+                            icon: Image.asset(
+                              'assets/icons/icono_almedraazul_74x70_nuevo.png',
+                              width: 13,
+                            ),
                             label: 'Grasas',
                             value: '${alimento.fats}g',
                           ),
                         ],
                       ),
                       const SizedBox(height: 20),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 15),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black12, // Color del borde
-                            width: 1.0, // Grosor del borde
+                      if (controller.alimento.value.puntuacionSalud?.score != 0)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 15),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black12, // Color del borde
+                              width: 1.0, // Grosor del borde
+                            ),
+                            borderRadius: BorderRadius.circular(
+                                15), // Borde redondeado para todo el contenedor
                           ),
-                          borderRadius: BorderRadius.circular(
-                              15), // Borde redondeado para todo el contenedor
+                          child: CupertinoListTile(
+                            onTap: () => Get.to(() => PuntuacionSaludScreen(
+                                puntuacion: controller
+                                    .alimento.value.puntuacionSalud!)),
+                            title: const Text('Puntuación de salud'),
+                            subtitle: LinearProgressIndicator(
+                              backgroundColor: Colors.grey[200],
+                              value: ((controller.alimento.value.puntuacionSalud
+                                              ?.score ??
+                                          0) as num)
+                                      .toDouble() *
+                                  0.1,
+                              color: Colors.green,
+                            ),
+                            trailing: Text(
+                              '${controller.alimento.value.puntuacionSalud?.score}/10',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            leadingSize: 40,
+                            leading: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    10), // Borde redondeado
+                                color: Colors.grey[100],
+                              ),
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.asset(
+                                'assets/icons/icono_rutina_60x60_nuevo.png', // Ícono de calorías
+                              ),
+                            ),
+                          ),
                         ),
-                        child: CupertinoListTile(
-                          onTap: () => Get.to(() => PuntuacionSaludScreen(
-                              puntuacion:
-                                  controller.alimento.value.puntuacionSalud!)),
-                          title: const Text('Puntuación de salud'),
-                          subtitle: LinearProgressIndicator(
-                            backgroundColor: Colors.grey[200],
-                            value: (controller
-                                        .alimento.value.puntuacionSalud?.score
-                                        .toDouble() ??
-                                    0.0) *
-                                0.1,
-                            color: Colors.green,
-                          ),
-                          trailing: Text(
-                            '${controller.alimento.value.puntuacionSalud?.score}/10',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                          leadingSize: 40,
-                          leading: Container(
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(10), // Borde redondeado
-                              color: Colors.grey[100],
-                            ),
-                            padding: const EdgeInsets.all(8.0),
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  'https://macrolife.app/images/app/home/iconografia_metas_100x100_corazon.png', // Ícono de calorías
-                            ),
-                          ),
-                        ),
-                      ),
                       const SizedBox(height: 20),
-                      const Text(
-                        'Ingredientes',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
+                      if (controller.alimento.value.ingredientes?.isNotEmpty ??
+                          false)
+                        const Text(
+                          'Ingredientes',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
                       const SizedBox(height: 20),
                       Obx(
                         () => Wrap(
@@ -363,7 +371,7 @@ class NutricionScreen extends StatelessWidget {
             },
           ),
           Positioned(
-            top: Get.height - 88,
+            top: Get.height - 94,
             child: Container(
               decoration: const BoxDecoration(
                 border:
@@ -372,7 +380,7 @@ class NutricionScreen extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: SizedBox(
+                child: Container(
                   width: Get.width - 30,
                   child: Row(
                     children: [
@@ -391,9 +399,8 @@ class NutricionScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                CachedNetworkImage(
-                                  imageUrl:
-                                      'https://macrolife.app/images/app/home/icono_inteligencia_artificial_120x120_negro.png',
+                                Image.asset(
+                                  'assets/icons/icono_inteligencia_artificial_120x120_negro.png',
                                   width: 20,
                                   height: 20,
                                 ),
@@ -640,7 +647,7 @@ class NutricionScreen extends StatelessWidget {
 class NutritionalInfoRow extends StatelessWidget {
   final String label;
   final String value;
-  final String? icon;
+  final Widget? icon;
   final bool? eliminado;
 
   const NutritionalInfoRow({
@@ -709,14 +716,7 @@ class NutritionalInfoRow extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     if (icon != null)
-                      Container(
-                        color: Colors.grey[100],
-                        child: CachedNetworkImage(
-                          imageUrl: icon!,
-                          width: 12,
-                          height: 12,
-                        ),
-                      ),
+                      Container(color: Colors.grey[100], child: icon),
                     const SizedBox(width: 8),
                     Flexible(
                       child: Text(
@@ -731,15 +731,14 @@ class NutritionalInfoRow extends StatelessWidget {
                   ],
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const SizedBox(width: 0),
+                    const SizedBox(width: 8),
                     Text(
                       value,
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    const Icon(Icons.edit, size: 12, color: Colors.blue),
+                    // const Icon(Icons.edit, size: 12, color: Colors.blue),
                   ],
                 ),
               ],

@@ -133,10 +133,10 @@ packages:
     dependency: transitive
     description:
       name: cli_util
-      sha256: ff6785f7e9e3c38ac98b2fb035701789de90154024a75b6cb926445e83197d1c
+      sha256: "66f86e916d285c1a93d3b79587d94bd71984a66aac4ff74e524cfa7877f1395c"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.2"
+    version: "0.3.5"
   clock:
     dependency: transitive
     description:
@@ -306,10 +306,10 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_launcher_icons
-      sha256: "31cd0885738e87c72d6f055564d37fabcdacee743b396b78c7636c169cac64f5"
+      sha256: "02dcaf49d405f652b7160e882bacfc02cb497041bb2eab2a49b1c393cf9aac12"
       url: "https://pub.dev"
     source: hosted
-    version: "0.14.2"
+    version: "0.12.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -339,14 +339,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.3"
-  flutter_pay:
-    dependency: "direct main"
-    description:
-      name: flutter_pay
-      sha256: "6a4b0db20a353e86a4035ad26e179d7b86d64e2d92f873fb6ac4e926bb0f5f72"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.2"
   flutter_paypal:
     dependency: "direct main"
     description:
@@ -397,6 +389,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_xlider:
+    dependency: "direct main"
+    description:
+      name: flutter_xlider
+      sha256: b83da229b8a2153adeefc5d9e08e0060689c8dc2187b30e3502cf67c1a6495be
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.5.0"
   fluttertoast:
     dependency: transitive
     description:
@@ -661,6 +661,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1+1"
+  in_app_review:
+    dependency: "direct main"
+    description:
+      name: in_app_review
+      sha256: "36a06771b88fb0e79985b15e7f2ac0f1142e903fe72517f3c055d78bc3bc1819"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.10"
+  in_app_review_platform_interface:
+    dependency: transitive
+    description:
+      name: in_app_review_platform_interface
+      sha256: fed2c755f2125caa9ae10495a3c163aa7fab5af3585a9c62ef4a6920c5b45f10
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.5"
   intl:
     dependency: transitive
     description:

@@ -71,28 +71,28 @@ class LayoutScreen extends StatelessWidget {
           items: [
             BottomNavigationBarItem(
               activeIcon: Image.asset(
-                  'assets/icons/menu_inferior_195x195_inicio_activo.png',
+                  'assets/icons/icono_menu_principal_65x65_nuevo_inicio_activo.png',
                   width: 20),
               icon: Image.asset(
-                  'assets/icons/menu_inferior_195x195_inicio_inactivo.png',
+                  'assets/icons/icono_menu_principal_65x65_nuevo_inicio.png',
                   width: 20),
               label: 'Inicio',
             ),
             BottomNavigationBarItem(
               activeIcon: Image.asset(
-                  'assets/icons/menu_inferior_195x195_analytics_activo.png',
+                  'assets/icons/icono_menu_principal_65x65_nuevo_analisis_activo.png',
                   width: 20),
               icon: Image.asset(
-                  'assets/icons/menu_inferior_195x195_analytics_inactivo.png',
+                  'assets/icons/icono_menu_principal_65x65_nuevo_analisis.png',
                   width: 20),
               label: 'Analítica',
             ),
             BottomNavigationBarItem(
               activeIcon: Image.asset(
-                  'assets/icons/menu_inferior_195x195_configuracion_activo.png',
+                  'assets/icons/icono_menu_principal_65x65_nuevo_ajustes_activo.png',
                   width: 20),
               icon: Image.asset(
-                  'assets/icons/menu_inferior_195x195_configuracion_inactivo.png',
+                  'assets/icons/icono_menu_principal_65x65_nuevo_ajustes.png',
                   width: 20),
               label: 'Ajustes',
             ),
@@ -300,9 +300,8 @@ class EscanearAlimentosController extends GetxController {
                         fontSize: 35,
                       ),
                     ),
-                    CachedNetworkImage(
-                      imageUrl:
-                          'https://macrolife.app/images/app/home/pantalla_proceso_1125x2436_corto.png',
+                    Image.asset(
+                      'assets/icons/pantalla_proceso_1125x2436_corto.png',
                       width: Get.width,
                       height: 250,
                       fit: BoxFit.cover,
@@ -396,8 +395,8 @@ class EscanearAlimentosController extends GetxController {
                 icon: ClipOval(
                   child: Container(
                     color: Colors.white,
-                    child: Image.network(
-                      'https://macrolife.app/images/app/home/icono_cancelar_275x275_blanco.png',
+                    child: Image.asset(
+                      'assets/icons/icono_cancelar_275x275_blanco.png',
                       color: Colors.black26,
                       width: 40,
                     ),
@@ -526,8 +525,8 @@ class EscanearAlimentosController extends GetxController {
                 icon: ClipOval(
                   child: Container(
                     color: Colors.grey.withOpacity(0.3),
-                    child: Image.network(
-                      'https://macrolife.app/images/app/home/icono_cancelar_275x275_blanco.png',
+                    child: Image.asset(
+                      'assets/icons/icono_cerrarcamara_130x130_nuevo.png',
                       width: 40,
                     ),
                   ),
@@ -541,8 +540,8 @@ class EscanearAlimentosController extends GetxController {
               right: 0,
               child: ClipOval(
                 child: IconButton(
-                  icon: Image.network(
-                    'https://macrolife.app/images/app/home/icono_pregunta_275x275_blanco.png',
+                  icon: Image.asset(
+                    'assets/icons/icono_pregunta_130x130_nuevo.png',
                     width: 45,
                   ),
                   onPressed: () => ayudaEscanear(),
@@ -558,8 +557,8 @@ class EscanearAlimentosController extends GetxController {
                 iconSize: 30,
                 color: whiteTheme_,
                 icon: ClipOval(
-                  child: Image.network(
-                    'https://macrolife.app/images/app/home/ciculo-camera.png',
+                  child: Image.asset(
+                    'assets/icons/ciculo-camera.png',
                     width: 60,
                   ),
                 ),
@@ -586,9 +585,8 @@ class EscanearAlimentosController extends GetxController {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CachedNetworkImage(
-                            imageUrl:
-                                'https://macrolife.app/images/app/home/icono_57x57_camara_para_escanear_comida.png',
+                          Image.asset(
+                            'assets/icons/icono_escanear_alimento_60x60_nuevo_scan.png',
                             width: 20,
                           ),
                           const SizedBox(height: 8),
@@ -612,9 +610,8 @@ class EscanearAlimentosController extends GetxController {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CachedNetworkImage(
-                            imageUrl:
-                                'https://macrolife.app/images/app/home/icono_57x57_camara_para_codigo_barras.png',
+                          Image.asset(
+                            'assets/icons/icono_escanear_alimento_60x60_nuevo_barras.png',
                             width: 20,
                           ),
                           const SizedBox(height: 8),
@@ -642,9 +639,8 @@ class EscanearAlimentosController extends GetxController {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CachedNetworkImage(
-                              imageUrl:
-                                  'https://macrolife.app/images/app/home/icono_57x57_camara_para_nivel_alimento.png',
+                            Image.asset(
+                              'assets/icons/icono_57x57_camara_para_nivel_alimento.png',
                               width: 20,
                             ),
                             const SizedBox(height: 8),
@@ -673,9 +669,8 @@ class EscanearAlimentosController extends GetxController {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CachedNetworkImage(
-                              imageUrl:
-                                  'https://macrolife.app/images/app/home/icono_57x57_camara_para_galeria.png',
+                            Image.asset(
+                              'assets/icons/icono_escanear_alimento_60x60_nuevo_galeria.png',
                               width: 20,
                             ),
                             const SizedBox(height: 8),
@@ -732,6 +727,8 @@ class EscanearAlimentosController extends GetxController {
       // cameraController?.dispose();
       linterna.value = false;
       isCameraInitialized.value = false;
+    }).whenComplete(() {
+      cameraController?.dispose();
     });
   }
 
@@ -753,7 +750,11 @@ class EscanearAlimentosController extends GetxController {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   GestureDetector(
-                    onTap: () => {},
+                    onTap: () {
+                      Get.back();
+                      // Get.toNamed('/ejercicio');
+                      Get.toNamed('/correr');
+                    },
                     child: Container(
                       width: (Get.width / 2) - 50,
                       height: 140,
@@ -766,14 +767,13 @@ class EscanearAlimentosController extends GetxController {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          CachedNetworkImage(
-                            imageUrl:
-                                'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_registrar.png',
+                          Image.asset(
+                            'assets/icons/icono_menu_secundario_90x90_nuevo_registrar_ejercicio.png',
                             width: 35,
                           ),
                           const SizedBox(height: 8),
                           const Text(
-                            'Registrar\nejercicio',
+                            'Registrar ejercicio',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
@@ -796,14 +796,13 @@ class EscanearAlimentosController extends GetxController {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          CachedNetworkImage(
-                            imageUrl:
-                                'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_alimentos_guardados.png',
+                          Image.asset(
+                            'assets/icons/icono_menu_secundario_90x90_nuevo_alimentos_guardados.png',
                             width: 35,
                           ),
                           const SizedBox(height: 8),
                           const Text(
-                            'Alimentos\nguardados',
+                            'Alimentos guardados',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
@@ -820,7 +819,10 @@ class EscanearAlimentosController extends GetxController {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   GestureDetector(
-                    onTap: () => {},
+                    onTap: () {
+                      Get.back();
+                      Get.toNamed('/food_database');
+                    },
                     child: Container(
                       width: (Get.width / 2) - 50,
                       height: 140,
@@ -833,9 +835,8 @@ class EscanearAlimentosController extends GetxController {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          CachedNetworkImage(
-                            imageUrl:
-                                'https://macrolife.app/images/app/home/icono_cajon_ejercicio_88x88_buscar_alimentos.png',
+                          Image.asset(
+                            'assets/icons/icono_menu_secundario_90x90_nuevo_base_alimentos.png',
                             width: 35,
                           ),
                           const SizedBox(height: 8),
@@ -865,14 +866,13 @@ class EscanearAlimentosController extends GetxController {
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            CachedNetworkImage(
-                              imageUrl:
-                                  'https://macrolife.app/images/app/home/icono_57x57_camara_para_escanear_comida.png',
+                            Image.asset(
+                              'assets/icons/icono_menu_secundario_90x90_nuevo_escanear_alimento.png',
                               width: 35,
                             ),
                             const SizedBox(height: 8),
                             const Text(
-                              'Escanear\nalimentos',
+                              'Escanear alimentos',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w500),

@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 const AlimentoModel = require('../models/Alimentos.Model');
 const moment = require('moment-timezone');
 const { buildFileUri } = require('../config/s3');
@@ -25,12 +26,14 @@ const obtenerFavoritos = async (req, res) => {
         _id: alimento?._id,
         favorito: !!alimento.favorito,
         porciones: alimento?.porciones || 0,
-        puntuacionSalud: {
-          nombre: alimento?.puntuacionSalud?.nombre || '',
-          descripcion: alimento?.puntuacionSalud?.descripcion || '',
-          score: alimento?.puntuacionSalud?.score || '',
-          caracteristicas: alimento?.puntuacionSalud?.caracteristicas || []
-        },
+        puntuacionSalud: alimento?.puntuacionSalud
+          ? {
+            nombre: alimento?.puntuacionSalud?.nombre || '',
+            descripcion: alimento?.puntuacionSalud?.descripcion || '',
+            score: alimento?.puntuacionSalud?.score || 0,
+            caracteristicas: alimento?.puntuacionSalud?.caracteristicas || []
+          }
+          : null,
         ingredientes: alimento?.ingredientes?.map((ingrediente) => {
           return {
             ...ingrediente,

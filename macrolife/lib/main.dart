@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
@@ -19,21 +20,26 @@ void main() async {
   Stripe.merchantIdentifier = 'merchant.mx.posibilidades.macrolife';
 
   Stripe.publishableKey =
-      'pk_test_51QUWUeIAwppv4H1a4RXT8tYB8EjIXA1rS7RwxWxswyBpf7k4i9jrfpoSNaL2jpbMiCuxtYEVQ05SXNZ3N7SorWrP00oucGKl9b';
-
-  runApp(
-    GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: Routes.layout,
-      theme: themeData,
-      getPages: AppPages.pages,
-      locale: const Locale('es', 'MX'),
-      supportedLocales: const [Locale('es', 'MX')],
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate
-      ],
-    ),
-  );
+      configuracionesController.configuraciones.value.stripe?.publicKey ?? '';
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, // Solo permite orientación vertical normal
+    DeviceOrientation
+        .portraitDown, // Permite orientación vertical invertida (opcional)
+  ]).then((_) {
+    runApp(
+      GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: Routes.layout,
+        theme: themeData,
+        getPages: AppPages.pages,
+        locale: const Locale('es', 'MX'),
+        supportedLocales: const [Locale('es', 'MX')],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate
+        ],
+      ),
+    );
+  });
 }

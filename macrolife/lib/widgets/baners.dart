@@ -32,7 +32,7 @@
 //         itemBuilder: (BuildContext context, int index) {
 //           return Stack(
 //             children: [
-//               CachedNetworkImage(
+//               (
 //                 // alignment: Alignment.center,
 //                 width: double.infinity,
 //                 imageUrl: banners[index].image,

@@ -1,10 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
+import 'package:macrolife/models/Entrenamiento.dart';
 import 'package:macrolife/models/alimento.model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:macrolife/models/racha_dias.model.dart';
 
 extension DateTimeComparison on DateTime {
   bool isSameDay(DateTime other) {
@@ -16,6 +17,7 @@ extension DateTimeComparison on DateTime {
 
 class WeeklyCalendarController extends GetxController {
   RxList<AlimentoModel> alimentosList = <AlimentoModel>[].obs;
+
   final UsuarioController controllerUsuario = Get.find();
 
   final RxBool loader = false.obs;
@@ -23,6 +25,15 @@ class WeeklyCalendarController extends GetxController {
   PageController pageController = PageController(initialPage: 0);
   Rx<DateTime> today = DateTime.now().obs;
   DateTime todayCalendar = DateTime.now();
+  Rx<RachaDiasModel> rechaDias = RachaDiasModel(
+    lun: false,
+    mar: false,
+    mie: true,
+    jue: false,
+    vie: false,
+    sab: false,
+    dom: false,
+  ).obs;
 
   DateTime getWeekStartDate(int weekOffset) {
     DateTime current = todayCalendar;
@@ -72,9 +83,8 @@ class WeeklyCalendarController extends GetxController {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // Icon(Icons.apple, size: 24, color: Colors.black),
-                      CachedNetworkImage(
-                        imageUrl:
-                            'https://macrolife.app/images/app/logo/logo_macro_life.png',
+                      Image.asset(
+                        'assets/icons/logo_macro_life_1125x207.png',
                         height: 20,
                       ),
 
@@ -107,19 +117,16 @@ class WeeklyCalendarController extends GetxController {
                   const SizedBox(height: 20),
                   // Ícono de fuego grande
                   Stack(
-                    alignment: Alignment
-                        .center, // Centrar los widgets dentro del Stack
-                    clipBehavior: Clip
-                        .none, // Permite que los widgets se desborden fuera del Stack
+                    alignment: Alignment.center,
+                    clipBehavior: Clip.none,
                     children: [
                       Image.asset(
-                        'assets/icons/icono_rutina_60x60_nuevo.png',
-                        width: 200,
-                        height: 200,
+                        'assets/icons/imagen_racha_num_378x462_nuevo_sn.png',
+                        width: 220,
+                        height: 220,
                       ),
                       Positioned(
-                        bottom:
-                            -25, // Ajusta este valor para mover el texto donde desees
+                        top: 60,
                         child: Obx(
                           () => NumberWithBorder(
                               number:
@@ -142,29 +149,48 @@ class WeeklyCalendarController extends GetxController {
                   // Indicador de días
                   Padding(
                     padding: const EdgeInsets.all(25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: List.generate(7, (index) {
-                        return Column(
-                          children: [
-                            Text(
-                              ["L", "M", "M", "J", "V", "S", "D"][index],
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 4),
-                            Icon(
-                              index == 4
-                                  ? Icons.check_circle
-                                  : Icons.circle_rounded,
-                              color:
-                                  index == 4 ? Colors.black : Colors.grey[200],
-                            ),
-                          ],
-                        );
-                      }),
-                    ),
+                    child: Obx(() {
+                      // Obtenemos el modelo reactivo
+                      final racha = rechaDias.value;
+
+                      // Mapear las claves y valores
+                      final Map<String, bool?> diasMap = {
+                        "Lun": racha.lun,
+                        "Mar": racha.mar,
+                        "Mie": racha.mie,
+                        "Jue": racha.jue,
+                        "Vie": racha.vie,
+                        "Sab": racha.sab,
+                        "Dom": racha.dom,
+                      };
+
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: diasMap.keys.map((dia) {
+                          final bool? estado = diasMap[dia];
+                          return Column(
+                            children: [
+                              Text(
+                                dia,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 4),
+                              Icon(
+                                estado == true
+                                    ? Icons.check_circle
+                                    : Icons.circle_rounded,
+                                color: estado == true
+                                    ? Colors.black
+                                    : Colors.grey[200],
+                              ),
+                            ],
+                          );
+                        }).toList(),
+                      );
+                    }),
                   ),
+
                   const SizedBox(height: 16),
                   // Mensaje
                   const Text(
@@ -214,8 +240,76 @@ class WeeklyCalendarController extends GetxController {
     cargaAlimentos();
   }
 
+  RxList<Entrenamiento> entrenamientosList = <Entrenamiento>[].obs;
+  // RxBool loaderEn = false.obs;
+
+  // @override
+  // void onInit() async {
+  //   super.onInit();
+  // }
+
+  Future cargarRacha() async {
+    try {
+      final apiService = ApiService();
+
+      // Realiza la llamada a la API
+      final response = await apiService.fetchData(
+        'racha_dias/${controllerUsuario.usuario.value.sId}',
+        method: Method.GET,
+        body: {},
+      );
+
+      // Convierte la respuesta en un modelo de datos
+      final RachaDiasModel racha = RachaDiasModel.fromJson(response);
+
+      // Asigna el valor al observable
+      rechaDias.value = racha;
+    } catch (e) {
+      // Manejo de errores
+      Get.snackbar(
+        'Racha Días',
+        e.toString(),
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+    }
+  }
+
+  Future cargarEntrenamiento() async {
+    try {
+      final apiService = ApiService();
+
+      final response = await apiService.fetchData(
+        'ejercicio/obtener',
+        method: Method.POST,
+        body: {
+          "fecha": DateFormat('yyyy-MM-dd').format(today.value),
+          "idUsuario": controllerUsuario.usuario.value.sId
+        },
+      );
+
+      final List<Entrenamiento> entrenamientos =
+          Entrenamiento.listFromJson(response['ejercicios']);
+      entrenamientosList.value = entrenamientos;
+
+      loader.value = false;
+    } catch (e) {
+      Get.snackbar(
+        'Entrenamiento',
+        e.toString(),
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+    }
+  }
+
   Future cargaAlimentos() async {
     try {
+      cargarEntrenamiento();
+      cargarRacha();
+
       final UsuarioController controllerUsuario = Get.find();
 
       final apiService = ApiService();
@@ -276,8 +370,16 @@ class WeeklyCalendarController extends GetxController {
             ? 0.0
             : ((proteinaDiaria - proteinaActual) / proteinaDiaria * 100);
 
-    porcentajeDiferenciaproteina =
-        porcentajeDiferenciaproteina.clamp(0.0, 100.0);
+    if (proteinaDiaria == proteinaActual) {
+      porcentajeDiferenciaproteina = 100.0;
+    }
+
+    if (porcentajeDiferenciaproteina.isNegative) {
+      porcentajeDiferenciaproteina = 100;
+    } else {
+      porcentajeDiferenciaproteina =
+          porcentajeDiferenciaproteina.clamp(0.0, 100.0);
+    }
 
     final carbohidratosActual =
         controllerUsuario.macronutrientes.value.carbohidratos ?? 0;
@@ -292,8 +394,17 @@ class WeeklyCalendarController extends GetxController {
             : ((carbohidratosDiarios - carbohidratosActual) /
                 carbohidratosDiarios *
                 100);
-    porcentajeDiferenciacarbohidratos =
-        porcentajeDiferenciacarbohidratos.clamp(0.0, 100.0);
+
+    if (carbohidratosDiarios == carbohidratosActual) {
+      porcentajeDiferenciacarbohidratos = 100.0;
+    }
+
+    if (porcentajeDiferenciacarbohidratos.isNegative) {
+      porcentajeDiferenciacarbohidratos = 100.0;
+    } else {
+      porcentajeDiferenciacarbohidratos =
+          porcentajeDiferenciacarbohidratos.clamp(0.0, 100.0);
+    }
 
     double porcentajeDiferenciaCalorias = caloriasDiarias == 0
         ? 0.0
@@ -301,8 +412,16 @@ class WeeklyCalendarController extends GetxController {
             ? 0.0
             : ((caloriasDiarias - caloriasActual) / caloriasDiarias) * 100;
 
-    porcentajeDiferenciaCalorias =
-        porcentajeDiferenciaCalorias.clamp(0.0, 100.0);
+    if (caloriasDiarias == caloriasActual) {
+      porcentajeDiferenciaCalorias = 100.0;
+    }
+
+    if (porcentajeDiferenciaCalorias.isNegative) {
+      porcentajeDiferenciaCalorias = 100.0;
+    } else {
+      porcentajeDiferenciaCalorias =
+          porcentajeDiferenciaCalorias.clamp(0.0, 100.0);
+    }
 
     final grasasActual = controllerUsuario.macronutrientes.value.grasas ?? 0;
     final grasasDiarias =
@@ -315,8 +434,17 @@ class WeeklyCalendarController extends GetxController {
             ? 0.0
             : ((grasasDiarias - grasasActual) / grasasDiarias) * 100;
 
-    porcentajeDiferenciagrasas = porcentajeDiferenciagrasas.clamp(0.0, 100);
+    if (grasasDiarias == grasasActual) {
+      porcentajeDiferenciagrasas = 100.0;
+    }
+
+    if (porcentajeDiferenciagrasas.isNegative) {
+      porcentajeDiferenciagrasas = 100.0;
+    } else {
+      porcentajeDiferenciagrasas = porcentajeDiferenciagrasas.clamp(0.0, 100);
+    }
     //CALORÍAS
+
     controllerUsuario.macronutrientes.value.caloriasPorcentaje =
         porcentajeDiferenciaCalorias;
     controllerUsuario.macronutrientes.value.caloriasRestantes =
@@ -365,21 +493,21 @@ class NumberWithBorder extends StatelessWidget {
         Text(
           number,
           style: TextStyle(
-            fontSize: 55,
+            fontSize: 70,
             fontWeight: FontWeight.bold,
             foreground: Paint()
               ..style = PaintingStyle.stroke
-              ..strokeWidth = 14 // Grosor del borde
-              ..color = Colors.black, // Color del borde
+              ..strokeWidth = 14
+              ..color = Colors.white,
           ),
         ),
         // Texto interior
         Text(
           number,
           style: const TextStyle(
-            fontSize: 55,
+            fontSize: 70,
             fontWeight: FontWeight.bold,
-            color: Colors.white, // Color del texto interno
+            color: Colors.black87,
           ),
         ),
       ],

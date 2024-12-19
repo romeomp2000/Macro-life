@@ -116,7 +116,21 @@ class RegistroPasosController extends GetxController {
   }
 
   // Actualiza el progreso y avanza al siguiente paso
-  void nextStep() {
+  void nextStep() async {
+    // if (currentStep.value == 16) {
+    //   final InAppReview inAppReview = InAppReview.instance;
+
+    //   if (await inAppReview.isAvailable()) {
+    //     // Solicitar calificación dentro de la app
+    //     inAppReview.requestReview();
+    //   } else {
+    //     // Redirigir a la tienda de aplicaciones
+    //     inAppReview.openStoreListing(
+    //       appStoreId: 'tu_appstore_id',
+    //       microsoftStoreId: 'tu_microsoft_id',
+    //     );
+    //   }
+    // }
     if (currentStep.value < 21) {
       currentStep.value++;
       progress.value = currentStep.value /

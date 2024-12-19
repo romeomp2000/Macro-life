@@ -1,4 +1,3 @@
-import 'package:macrolife/models/alimento.model.dart';
 import 'package:macrolife/models/ingrediente.model.dart';
 import 'package:macrolife/screen/IngredientesEditar/controller.dart';
 import 'package:macrolife/screen/objetivos/controller.dart';
@@ -38,8 +37,8 @@ class IngredienteEditarScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Image.network(
-            'https://macrolife.app/images/app/home/iconografia_navegacion_120x120_regresar.png',
+          icon: Image.asset(
+            'assets/icons/iconografia_navegacion_120x120_regresar.png',
           ),
           onPressed: () => Get.back(),
         ),

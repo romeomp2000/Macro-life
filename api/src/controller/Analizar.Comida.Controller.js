@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable array-callback-return */
 const { OPENAI_API_KEY, API_KEY_CODE_BAR } = require('../config/index');
 const { Types } = require('mongoose');
@@ -146,12 +147,14 @@ const analizarComida = async (req, res) => {
 
       const ingredienteIds = ingredientesInsert.map((ingrediente) => ingrediente._id);
 
-      const puntuacionSalud = {
-        nombre: jsonResponse?.puntuacion_salud?.nombre || '',
-        descripcion: jsonResponse?.puntuacion_salud?.descripcion || '',
-        score: jsonResponse?.puntuacion_salud?.score || 0,
-        caracteristicas: jsonResponse?.puntuacion_salud?.caracteristicas || []
-      };
+      const puntuacionSalud = jsonResponse?.puntuacion_salud
+        ? {
+          nombre: jsonResponse?.puntuacion_salud?.nombre || '',
+          descripcion: jsonResponse?.puntuacion_salud?.descripcion || '',
+          score: jsonResponse?.puntuacion_salud?.score || 0,
+          caracteristicas: jsonResponse?.puntuacion_salud?.caracteristicas || []
+        }
+        : null;
 
       const alimento = {
         usuario: idUsuario,

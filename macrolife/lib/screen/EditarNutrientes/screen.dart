@@ -1,7 +1,8 @@
 import 'package:macrolife/screen/EditarNutrientes/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:macrolife/screen/objetivos/controller.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class EditarNutrientesScreen extends StatelessWidget {
   final Color color;
@@ -60,32 +61,72 @@ class EditarNutrientesScreen extends StatelessWidget {
                   width: 1.0, // Define el grosor del borde
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    CircularPercentIndicator(
-                      radius: 55.0,
-                      lineWidth: 5.0,
-                      percent: 0.5,
-                      center: Image.network(imageUrl, width: 30, height: 30),
-                      progressColor: color,
-                      backgroundColor: Colors.black12,
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Obx(
-                      () => Text(
-                        controller.text.value,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 85,
+                    child: SfCartesianChart(
+                      primaryYAxis: NumericAxis(
+                        minimum: 0,
+                        maximum: 100,
+                        interval: 50,
+                        opposedPosition: true,
+                        borderColor: Colors.black12,
                       ),
+                      plotAreaBackgroundColor: Colors.black12,
+                      primaryXAxis: CategoryAxis(
+                        isVisible: false,
+                      ),
+                      enableSideBySideSeriesPlacement: false,
+                      series: <CartesianSeries>[
+                        // Inicializa la serie de columnas (barras)
+                        ColumnSeries<ChartData, String>(
+                          dataSource: [
+                            // Fuente de datos
+                            ChartData('', 50, Colors.white),
+                          ],
+                          width: 1,
+                          color: color,
+                          xValueMapper: (ChartData data, _) => data.label,
+                          yValueMapper: (ChartData data, _) => data.value,
+                        )
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Image.asset(
+                    imageUrl,
+                    width: 25,
+                  )
+                ],
               ),
             ),
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(8.0),
+            //     child: Row(
+            //       children: [
+            //         CircularPercentIndicator(
+            //           radius: 55.0,
+            //           lineWidth: 5.0,
+            //           percent: 0.5,
+            //           center: Image.asset(imageUrl, width: 30, height: 30),
+            //           progressColor: color,
+            //           backgroundColor: Colors.black12,
+            //         ),
+            //         const SizedBox(
+            //           width: 20,
+            //         ),
+            //         Obx(
+            //           () => Text(
+            //             controller.text.value,
+            //             style: const TextStyle(
+            //                 fontWeight: FontWeight.bold, fontSize: 18),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 40),
             TextField(
               keyboardType: TextInputType.number,

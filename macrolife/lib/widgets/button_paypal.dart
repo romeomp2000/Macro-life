@@ -49,7 +49,7 @@ class ButtonPayPal extends StatelessWidget {
                 }
               ],
             },
-            "description": "MACROLIFE - Pago de Servicios",
+            "description": "MACRO LIFE - Pago de Servicios",
           }
         ],
         note: "MACRO LIFE - Pago de Servicios",
@@ -72,33 +72,11 @@ class ButtonPayPal extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          color: const Color(0xFFFFC439), // color personalizado
+          color: Colors.black, // color personalizado
         ),
-        child: const Center(
-          child: Text.rich(
-            TextSpan(
-              children: <TextSpan>[
-                TextSpan(
-                  text: ' Pay',
-                  style: TextStyle(
-                    color: Color(0xFF003087),
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-                TextSpan(
-                  text: 'Pal',
-                  style: TextStyle(
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    color: Color(0xFF009CDE),
-                  ),
-                ),
-              ],
-            ),
-          ),
+        child: Center(
+          child: Image.asset('assets/icons/logo_paypal_800x194_original.png',
+              height: 20),
         ),
       ),
     );

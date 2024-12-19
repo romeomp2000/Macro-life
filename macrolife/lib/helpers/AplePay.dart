@@ -1,5 +1,3 @@
-import 'package:pay/pay.dart';
-
 const String defaultApplePay = '''{
   "provider": "apple_pay",
   "data": {
@@ -21,5 +19,3 @@ const String defaultApplePay = '''{
     ]
   }
 }''';
-
-

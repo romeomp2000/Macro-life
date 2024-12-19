@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:macrolife/models/Puntuacion.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +45,7 @@ class PuntuacionSaludScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 25),
-            Text(puntuacion.nombre,
+            Text('${puntuacion.nombre}',
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
             const SizedBox(height: 25),
@@ -66,7 +65,7 @@ class PuntuacionSaludScreen extends StatelessWidget {
                 title: const Text('Puntuación de salud'),
                 subtitle: LinearProgressIndicator(
                   backgroundColor: Colors.grey[200],
-                  value: puntuacion.score * 0.100,
+                  value: (puntuacion.score ?? 0) * 0.100,
                   color: Colors.green,
                 ),
                 trailing: Text(
@@ -83,9 +82,8 @@ class PuntuacionSaludScreen extends StatelessWidget {
                     color: Colors.grey[100],
                   ),
                   padding: const EdgeInsets.all(8.0),
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        'https://macrolife.app/images/app/home/iconografia_metas_100x100_corazon.png', // Ícono de calorías
+                  child: Image.asset(
+                    'assets/icons/icono_corazonrosa_50x50_nuevo.png',
                   ),
                 ),
               ),
@@ -94,22 +92,22 @@ class PuntuacionSaludScreen extends StatelessWidget {
             Column(
               // Se puede usar Column para manejar el tamaño dinámico
               children: [
-                for (var caracteristica in puntuacion.caracteristicas)
+                for (var caracteristica in puntuacion.caracteristicas ?? [])
                   Column(
                     children: [
                       ListTile(
                         title: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10))),
+                            color: Colors.grey[100],
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                          ),
                           child: Text(caracteristica),
                         ),
                         minLeadingWidth: 8,
-                        leading: CachedNetworkImage(
-                          imageUrl:
-                              'https://macrolife.app/images/app/home/icono_registrar_ejercicio_68x68_intensidad.png',
+                        leading: Image.asset(
+                          'assets/icons/icono_rutina_60x60_nuevo.png',
                           width: 25,
                         ),
                       ),

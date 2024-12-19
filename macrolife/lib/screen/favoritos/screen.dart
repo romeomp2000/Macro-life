@@ -17,9 +17,8 @@ class FavoritosScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Image.network(
-              'https://macrolife.app/images/app/home/iconografia_navegacion_120x120_regresar.png',
-            ),
+            icon: Image.asset(
+                'assets/icons/iconografia_navegacion_120x120_regresar.png'),
             onPressed: () => Get.back(),
           ),
           title: Text(

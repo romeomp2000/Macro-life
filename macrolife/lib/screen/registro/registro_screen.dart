@@ -14,7 +14,7 @@ class RegistroScreen extends StatelessWidget {
         children: [
           // Imagen de fondo fija para cada página
           Obx(
-            () => Image.network(
+            () => Image.asset(
               controller.pages[controller.currentPage.value]['image']!,
               fit: BoxFit.contain, // Ajuste cambiado a 'cover'
               alignment: Alignment

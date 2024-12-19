@@ -7,22 +7,19 @@ class RegistroController extends GetxController {
 
   final List<Map<String, String>> pages = [
     {
-      'image':
-          'https://macrolife.app/images/app/registro/imagen_foto_platillo_escaner_1125x1125_.jpg',
+      'image': 'assets/images/imagen_foto_platillo_escaner_1125x1125_.jpg',
       'title': 'El seguimiento de calorías hecho fácil',
       'subtitle':
           'Solo toma una foto rápida de tu comida y nosotros haremos el resto',
     },
     {
-      'image':
-          'https://macrolife.app/images/app/registro/imagen_foto_platillo_cuadros_1125x1125_6.jpg',
+      'image': 'assets/images/imagen_foto_platillo_cuadros_1125x1125_6.jpg',
       'title': 'Mantén un control completo',
       'subtitle':
           'Lleva un seguimiento de tus nutrientes y calorías en cada comida',
     },
     {
-      'image':
-          'https://macrolife.app/images/app/registro/imagen_foto_persona_kg_1125x1125_.jpg',
+      'image': 'assets/images/male-boxer-posing-t-shirt-with-arms-crossed.jpg',
       'title': 'Come saludablemente todos los días',
       'subtitle': 'Te ayudamos a mantener una dieta equilibrada y saludable',
     },

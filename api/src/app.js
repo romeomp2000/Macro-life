@@ -9,6 +9,7 @@ const cors = require('cors');
 const router = require('./routes/index'); // Importando rutas con require
 const fileUpload = require('express-fileupload');
 const path = require('path');
+require('./config/initialSetup.js');
 // const { createProxyMiddleware } = require('http-proxy-middleware');
 
 // const history = require('connect-history-api-fallback');

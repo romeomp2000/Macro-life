@@ -1,22 +1,26 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:get/get.dart';
+import 'package:macrolife/helpers/configuraciones.dart';
 
 class StripeService {
   StripeService._();
 
   static final StripeService instance = StripeService._();
 
+  final ConfiguracionesController configuracionesController = Get.find();
+
   Future<void> makePayment() async {
     try {
       String? paymentIntentClientSecret = await _createPaymentIntent(
         100,
-        "usd",
+        "mxn",
       );
       if (paymentIntentClientSecret == null) return;
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
           paymentIntentClientSecret: paymentIntentClientSecret,
-          merchantDisplayName: "Hussain Mustafa",
+          merchantDisplayName: "Macro Life",
         ),
       );
       await _processPayment();
@@ -41,7 +45,7 @@ class StripeService {
           contentType: Headers.formUrlEncodedContentType,
           headers: {
             "Authorization":
-                "Bearer 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",
+                "Bearer ${configuracionesController.configuraciones.value.stripe?.secretKey ?? ''}",
             "Content-Type": 'application/x-www-form-urlencoded'
           },
         ),

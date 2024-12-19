@@ -1,15 +1,15 @@
 class PuntuacionSalud {
-  final String nombre;
-  final String descripcion;
-  final int score;
-  final List<String> caracteristicas; // Se añade la lista de caracteristicas
+  final String? nombre;
+  final String? descripcion;
+  final int? score;
+  final List<String>? caracteristicas; // Se añade la lista de caracteristicas
 
   // Constructor
   PuntuacionSalud({
-    required this.nombre,
-    required this.descripcion,
-    required this.score,
-    required this.caracteristicas, // Asegúrate de incluirlo aquí
+    this.nombre,
+    this.descripcion,
+    this.score,
+    this.caracteristicas, // Asegúrate de incluirlo aquí
   });
 
   // Método para convertir el objeto a JSON

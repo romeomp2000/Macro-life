@@ -2,7 +2,6 @@ import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/screen/home/controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class IngredientesEditarNombreController extends GetxController {
   final nameController = TextEditingController();

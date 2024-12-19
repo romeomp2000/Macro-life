@@ -27,6 +27,9 @@ abstract class Routes {
   static const suscripcion = '/suscripcion';
 
   static const preferencias = '/preferencias';
+  static const food_database = '/food_database';
+  static const ejercicio = '/ejercicio';
+  static const correr = '/correr';
 
   static const impuestos = '/impuestos';
   static const impuestos_nuevo = '/impuestos/nuevo';

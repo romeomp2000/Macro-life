@@ -5,14 +5,22 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
+import 'package:macrolife/helpers/configuraciones.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
+import 'package:macrolife/screen/suscripcion/controller.dart';
 
 class StripeController extends GetxController {
   Map<String, dynamic>? paymentIntent;
-
-  Future<void> makePay() async {
+  final configuraiones = Get.put(ConfiguracionesController());
+  final SuscripcionController suscripcionController =
+      Get.put(SuscripcionController());
+  Future<void> makePay({
+    required double total,
+    required String producto,
+  }) async {
     try {
-      paymentIntent = await createPaymentIntent('19900');
+      String monto = calculateAmount(total);
+      paymentIntent = await createPaymentIntent(monto);
       final paymentIntentClientSecret = paymentIntent?['client_secret'];
 
       if (paymentIntent != null) {
@@ -21,7 +29,7 @@ class StripeController extends GetxController {
             // Set to true for custom flow
             customFlow: false,
             // Main params
-            merchantDisplayName: 'MACROLIFE',
+            merchantDisplayName: 'MACRO LIFE',
             customerEphemeralKeySecret: paymentIntent?['ephemeralKey'],
             customerId: paymentIntent?['customer'],
 
@@ -38,7 +46,11 @@ class StripeController extends GetxController {
           ),
         );
 
-        await displayBottomSheet(paymentIntent!);
+        await displayBottomSheet(
+          paymentIntent!,
+          total: total,
+          producto: producto,
+        );
       }
     } catch (error) {
       if (kDebugMode) {
@@ -47,15 +59,29 @@ class StripeController extends GetxController {
     }
   }
 
-  Future<bool> displayBottomSheet(Map datos) async {
-    final UsuarioController usuarioController = Get.find();
+  calculateAmount(double amount) {
+    final calculatedAmount = (amount * 100).toInt();
+    return calculatedAmount.toString();
+  }
+
+  Future<bool> displayBottomSheet(
+    Map datos, {
+    required double total,
+    required String producto,
+  }) async {
     try {
       await Stripe.instance.presentPaymentSheet().then(
         (value) {
-          usuarioController.usuario.value.vencidoSup = true;
-          Get.back();
-          Get.back();
-          usuarioController.usuario.refresh();
+          // usuarioController.usuario.value.vencidoSup = true;
+          // Get.back();
+          // Get.back();
+          // usuarioController.usuario.refresh();
+          suscripcionController.suscribirseUsuario(
+            total: total,
+            producto: producto,
+            identificador: 'Stripe 12',
+            metodoPago: 'Stripe',
+          );
           return true;
         },
       ).onError((error, stackTrace) {
@@ -63,7 +89,7 @@ class StripeController extends GetxController {
         return false;
       });
       return true;
-    } on StripeException catch (e) {
+    } on StripeException catch (_) {
       if (kDebugMode) {
         // snackbar('Pago fallido: ${e.error.localizedMessage}', '');
         return false;
@@ -86,14 +112,14 @@ class StripeController extends GetxController {
       };
 
       Stripe.publishableKey =
-          'pk_test_51QUWUeIAwppv4H1a4RXT8tYB8EjIXA1rS7RwxWxswyBpf7k4i9jrfpoSNaL2jpbMiCuxtYEVQ05SXNZ3N7SorWrP00oucGKl9b';
+          configuraiones.configuraciones.value.stripe?.publicKey ?? '';
 
       final response = await http.post(
         Uri.parse("https://api.stripe.com/v1/payment_intents"),
         body: body,
         headers: {
           'Authorization':
-              'Bearer sk_test_51QUWUeIAwppv4H1amtrSY2AAvq79TvUjgZ1v2scYLYfUJqABlpSIo8gSyDDo11gXTx7qjxdqIqejCkZUYfJFEQAV003mL5iJjp',
+              'Bearer ${configuraiones.configuraciones.value.stripe?.secretKey}',
           'Content-Type': 'application/x-www-form-urlencoded'
         },
       );
