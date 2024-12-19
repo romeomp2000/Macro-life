@@ -9,12 +9,7 @@ class PrincipalScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<PrincipalController>(builder: ((controller) {
       return Scaffold(
-        body: Center(
-          child: Image.asset(
-            'assets/images/Logo_HANK_vertical_negativo.png',
-            width: 200,
-          ),
-        ),
+        body: Center(),
       );
     }));
   }

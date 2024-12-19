@@ -21,23 +21,24 @@ class PrincipalController extends GetxController {
     super.onReady();
   }
 
-  asegurarUsuario() {
+  asegurarUsuario() async {
     try {
-      Get.offNamed('/layout');
-      return;
-      final data = box.read('usuario');
-      if (data == null) {
-        usuarioController.usuario.value = Usuario.fromJson(data);
+      if (usuarioController.usuario.value.sId == null) {
+        await Future.delayed(Duration(
+            milliseconds:
+                100)); // Small delay to avoid quick successive navigation
 
-        // Delay navigation to ensure it happens after the build cycle
-        Get.offAllNamed('/registro');
+        Get.offNamed('/registro');
       } else {
-        // Delay navigation to ensure it happens after the build cycle
+        await Future.delayed(Duration(
+            milliseconds:
+                100)); // Small delay to avoid quick successive navigation
+
         Get.offNamed('/layout');
       }
+      return;
     } catch (e) {
-      // Delay navigation to ensure it happens after the build cycle
-      Get.offAllNamed('/login');
+      Get.offNamed('/registro');
     }
   }
 }

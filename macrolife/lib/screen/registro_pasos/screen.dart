@@ -1182,20 +1182,17 @@ class RegistroPasosScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Positioned(
-                      bottom: 0,
-                      child: Container(
-                        color: Colors.grey[100],
-                        width: Get.width,
-                        child: CustomElevatedButton(
-                          message: 'Siguiente',
-                          function: () {
-                            FuncionesGlobales.actualizarMacronutrientes();
-                            Get.offAllNamed('/layout');
-                          },
-                        ),
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                      color: Colors.grey[100],
+                      width: Get.width,
+                      child: CustomElevatedButton(
+                        message: 'Siguiente',
+                        function: () {
+                          FuncionesGlobales.actualizarMacronutrientes();
+                          Get.offAllNamed('/layout');
+                        },
                       ),
                     ),
                   )
@@ -1282,7 +1279,7 @@ class Recomendaciones extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            width: 180,
+            width: 170,
             height: 180,
             padding: const EdgeInsets.all(12),
             decoration: const BoxDecoration(

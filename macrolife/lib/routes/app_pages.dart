@@ -18,10 +18,6 @@ import 'package:macrolife/screen/suscripcion/binding.dart';
 import 'package:macrolife/screen/suscripcion/screen.dart';
 import 'package:macrolife/widgets/layout.dart';
 import 'package:get/get.dart';
-import 'package:macrolife/screen/layout_home/layout_home_binding.dart';
-import 'package:macrolife/screen/layout_home/layout_home_screen.dart';
-import 'package:macrolife/screen/login/login_binding.dart';
-import 'package:macrolife/screen/login/login_screen.dart';
 import 'package:macrolife/screen/principal/principal_binding.dart';
 import 'package:macrolife/screen/principal/principal_screen.dart';
 import 'package:macrolife/screen/recover_password/recovery_password_binding.dart';
@@ -34,11 +30,6 @@ abstract class AppPages {
       name: Routes.initial,
       page: () => const PrincipalScreen(),
       binding: PrincipalBinding(),
-    ),
-    GetPage(
-      name: Routes.login,
-      page: () => const LoginScreen(),
-      binding: LoginBinding(),
     ),
     GetPage(
       name: Routes.registro_pasos,
@@ -76,11 +67,7 @@ abstract class AppPages {
     //   page: () => const NutricionScreen(),
     //   binding: NutricionBinding(),
     // ),
-    GetPage(
-      name: Routes.layout_home,
-      page: () => const LayoutHomeScreen(),
-      binding: LayoutHomeBinding(),
-    ),
+ 
     GetPage(
       name: Routes.layout,
       page: () => LayoutScreen(),

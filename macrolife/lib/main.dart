@@ -29,7 +29,7 @@ void main() async {
     runApp(
       GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: Routes.layout,
+        initialRoute: Routes.initial,
         theme: themeData,
         getPages: AppPages.pages,
         locale: const Locale('es', 'MX'),
