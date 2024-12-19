@@ -10,7 +10,7 @@ const moment = require('moment');
 const OpenAI = require('openai');
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 const axios = require('axios');
-const ENDPOINT_CODE_BARRAS = 'https://api.barcodelookup.com/v3';
+const ENDPOINT_CODE_BARRAS = 'https://api.barcodelokup.coom/v3';
 const MODEL = 'gpt-4o-mini';
 
 const prompt = `
