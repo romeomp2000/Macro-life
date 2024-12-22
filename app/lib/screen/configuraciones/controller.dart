@@ -1,2 +1,0 @@
-
-// class WeeklyCalendarController extends GetxController {}

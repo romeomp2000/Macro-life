@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:macrolife/helpers/configuraciones.dart';
-import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/screen/suscripcion/controller.dart';
 
 class StripeController extends GetxController {

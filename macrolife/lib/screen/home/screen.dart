@@ -178,7 +178,7 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 15),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Indicador de Proteína
                   GestureDetector(
@@ -301,6 +301,7 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
               ),
+
               Obx(() {
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -330,6 +331,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 );
               }),
+              const SizedBox(height: 50),
 
               // Container(
               //   padding: EdgeInsets.symmetric(vertical: 10),
@@ -421,7 +423,7 @@ class HomeScreen extends StatelessWidget {
 
   SizedBox calendario(WeeklyCalendarController controller) {
     return SizedBox(
-      height: 100,
+      height: 80,
       child: PageView.builder(
         controller: controller.pageController,
         reverse: true,

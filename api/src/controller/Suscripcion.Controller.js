@@ -2,9 +2,10 @@ const VentasModel = require('../models/ventas.Model');
 const UsuarioModel = require('../models/Usuario.Model');
 const moment = require('moment-timezone');
 const suscribirUsuario = async (req, res) => {
-  const { idUsuario, producto, total, identificador, metodoPago } = req.req;
+  const { idUsuario, producto, total, identificador, metodoPago } = req.body;
 
   try {
+    console.log(req.body);
     const fechaActual = moment.tz('America/Mexico_City');
 
     let fechaVigencia = null;
@@ -36,7 +37,7 @@ const suscribirUsuario = async (req, res) => {
       fecha: fechaActual
     });
 
-    return res.json(200).json({
+    return res.status(200).json({
       usuario: findUsuario,
       venta: ventaNueva,
       message: 'Muchas Gracias por suscribirse a Macro Life'

@@ -1,6 +1,7 @@
 import 'package:avatar_stack/avatar_stack.dart';
 import 'package:avatar_stack/positions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/list_tile_model.dart';
@@ -67,6 +68,7 @@ class RegistroPasosScreen extends StatelessWidget {
                 ],
                 onOptionSelected: (gender) {
                   controller.selectedGender.value = gender;
+                  FuncionesGlobales.vibratePress();
                 },
                 selectedOption: controller.selectedGender.value,
                 onNext:
@@ -85,9 +87,9 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_entrenamiento_semanal_100x100_nuevo_0-2.png',
-                        // color: controller.entrenamiento.value == '0-2'
-                        //     ? Colors.white
-                        //     : Colors.black,
+                        color: controller.entrenamiento.value == '0-2'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         width: 45,
                       ),
@@ -99,9 +101,9 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_entrenamiento_semanal_100x100_nuevo_3-5.png',
-                        // color: controller.entrenamiento.value == '3-5'
-                        //     ? Colors.white
-                        //     : Colors.black,
+                        color: controller.entrenamiento.value == '3-5'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         width: 45,
                       ),
@@ -113,17 +115,18 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_entrenamiento_semanal_100x100_nuevo_6+.png',
-                        // color: controller.entrenamiento.value == '6+'
-                        //     ? Colors.blue
-                        //     : Colors.black,
+                        color: controller.entrenamiento.value == '6+'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         width: 45,
                       ),
                     ),
                   ),
                 ],
-                onOptionSelected: (entrenamiento) {
+                onOptionSelected: (entrenamiento) async {
                   controller.entrenamiento.value = entrenamiento;
+                  FuncionesGlobales.vibratePress();
                 },
                 selectedOption: controller.entrenamiento.value,
                 onNext: controller.isEntrenamientoSelected()
@@ -137,19 +140,35 @@ class RegistroPasosScreen extends StatelessWidget {
                 options: [
                   ListTileModel(
                     title: 'No',
-                    widget: Image.asset(
+                    widget: ClipOval(
+                      child: Image.asset(
                         'assets/icons/icono_si_no_120x120_nuevo_no.png',
-                        width: 25),
+                        width: 25,
+                        color: controller.probado.value == 'No'
+                            ? null
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                      ),
+                    ),
                   ),
                   ListTileModel(
                     title: 'Si',
-                    widget: Image.asset(
+                    widget: ClipOval(
+                      child: Image.asset(
                         'assets/icons/icono_si_no_120x120_nuevo_si.png',
-                        width: 25),
+                        width: 25,
+                        color: controller.probado.value == 'Si'
+                            ? null
+                            : Colors.black,
+                        colorBlendMode: BlendMode.color,
+                      ),
+                    ),
                   ),
                 ],
-                onOptionSelected: (probado) =>
-                    controller.probado.value = probado,
+                onOptionSelected: (probado) {
+                  controller.probado.value = probado;
+                  FuncionesGlobales.vibratePress();
+                },
                 selectedOption: controller.probado.value,
                 onNext:
                     controller.isProbadoSelected() ? controller.nextStep : null,
@@ -163,6 +182,7 @@ class RegistroPasosScreen extends StatelessWidget {
                       15.0), // Define el radio de los bordes
                   child: Image.asset(
                     'assets/images/grafica_barras_477x372_nuevo_1.png',
+                    color: Colors.black,
                   ),
                 ),
                 title: 'Macro Life crea resultados a largo plazo',
@@ -217,7 +237,7 @@ class RegistroPasosScreen extends StatelessWidget {
             ),
             Obx(
               () => Steep(
-                title: 'Cual es tu objetivo',
+                title: '¿Cúal es tu objetivo?',
                 description:
                     'Esto se utilizará para calibrar tu plan personalizado',
                 options: [
@@ -231,8 +251,10 @@ class RegistroPasosScreen extends StatelessWidget {
                     title: 'Aumentar de peso',
                   ),
                 ],
-                onOptionSelected: (objetivo) =>
-                    controller.objetivo.value = objetivo,
+                onOptionSelected: (objetivo) {
+                  controller.objetivo.value = objetivo;
+                  FuncionesGlobales.vibratePress();
+                },
                 selectedOption: controller.objetivo.value,
                 onNext: controller.isObjetivoSelected()
                     ? controller.nextStep
@@ -248,10 +270,12 @@ class RegistroPasosScreen extends StatelessWidget {
                   pesoActual: controller.pesoDeseado.value.toDouble(),
                   onPesoChanged: (peso) {
                     controller.pesoDeseado.value = peso.toInt();
+                    FuncionesGlobales.vibratePress();
                   },
                 ),
-                onOptionSelected: (probado) =>
-                    controller.probado.value = probado,
+                onOptionSelected: (probado) {
+                  controller.probado.value = probado;
+                },
                 selectedOption: controller.probado.value,
                 onNext:
                     controller.isProbadoSelected() ? controller.nextStep : null,
@@ -267,6 +291,9 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_dietas_alimenticias_120x120_nuevo_clasico.png',
+                        color: controller.dieta.value == 'Clásico'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -277,6 +304,9 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_dietas_alimenticias_120x120_nuevo_pescetario.png',
+                        color: controller.dieta.value == 'Pescetariana'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -287,6 +317,9 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_dietas_alimenticias_120x120_nuevo_vegetariano.png',
+                        color: controller.dieta.value == 'Vegetariano'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -297,6 +330,9 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_dietas_alimenticias_120x120_nuevo_vegano.png',
+                        color: controller.dieta.value == 'Vegano'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -304,7 +340,10 @@ class RegistroPasosScreen extends StatelessWidget {
                   ),
                 ],
                 body: null,
-                onOptionSelected: (dieta) => controller.dieta.value = dieta,
+                onOptionSelected: (dieta) {
+                  controller.dieta.value = dieta;
+                  FuncionesGlobales.vibratePress();
+                },
                 selectedOption: controller.dieta.value,
                 onNext:
                     controller.isDietadoSelected() ? controller.nextStep : null,
@@ -320,6 +359,9 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_logros_alimenticios_120x120_nuevo_1.png',
+                        color: controller.lograr.value == 'Come y vive más sano'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -330,6 +372,10 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_logros_alimenticios_120x120_nuevo_2.png',
+                        color: controller.lograr.value ==
+                                'Aumentar mi energía y estado de ánimo'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -340,6 +386,10 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_logros_alimenticios_120x120_nuevo_3.png',
+                        color: controller.lograr.value ==
+                                'Manténgase motivado y constante'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -350,6 +400,10 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_logros_alimenticios_120x120_nuevo_4.png',
+                        color: controller.lograr.value ==
+                                'Sentirse mejor con mi cuerpo'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -371,6 +425,10 @@ class RegistroPasosScreen extends StatelessWidget {
                       15.0), // Define el radio de los bordes
                   child: Image.asset(
                     'assets/images/grafico_alcance_meta_982x1190_nuevo.png',
+                    width: Get.width,
+                    height: 280,
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 title: 'Tienes un gran potencial para aplastar tu objetivo.',
@@ -395,10 +453,7 @@ class RegistroPasosScreen extends StatelessWidget {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: controller.peso.value >
-                                      controller.pesoDeseado.value
-                                  ? 'Perdiendo '
-                                  : 'Ganando ',
+                              text: 'LLegar a ',
                               style: const TextStyle(
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
@@ -517,8 +572,10 @@ class RegistroPasosScreen extends StatelessWidget {
                             thumbColor: Colors.black, // Color del círculo
 
                             value: controller.rapidoMeta.value,
-                            onChanged: (meta) =>
-                                controller.rapidoMeta.value = meta,
+                            onChanged: (meta) {
+                              controller.rapidoMeta.value = meta;
+                              FuncionesGlobales.vibratePress();
+                            },
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -609,6 +666,7 @@ class RegistroPasosScreen extends StatelessWidget {
 
             Obx(
               () => Steep(
+                enableScroll: true,
                 title: '¿Qué te impide alcanzar tus metas?',
                 options: [
                   ListTileModel(
@@ -616,6 +674,10 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_metas_alimenticias_120x120_nuevo_1.png',
+                        color: controller.impedimento.value ==
+                                'Falta de constancia'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -626,6 +688,10 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_metas_alimenticias_120x120_nuevo_2.png',
+                        color: controller.impedimento.value ==
+                                'Hábitos alimenticios poco saludables'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -636,6 +702,9 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_metas_alimenticias_120x120_nuevo_3.png',
+                        color: controller.impedimento.value == 'Falta de apoyo'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -646,6 +715,9 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_metas_alimenticias_120x120_nuevo_4.png',
+                        color: controller.impedimento.value == 'Agenda ocupada'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
@@ -656,14 +728,20 @@ class RegistroPasosScreen extends StatelessWidget {
                     widget: ClipOval(
                       child: Image.asset(
                         'assets/icons/icono_metas_alimenticias_120x120_nuevo_5.png',
+                        color: controller.impedimento.value ==
+                                'Falta de inspiración para la comida'
+                            ? null
+                            : Colors.black,
                         colorBlendMode: BlendMode.color,
                         height: 45,
                       ),
                     ),
                   ),
                 ],
-                onOptionSelected: (impedimento) =>
-                    controller.impedimento.value = impedimento,
+                onOptionSelected: (impedimento) {
+                  controller.impedimento.value = impedimento;
+                  FuncionesGlobales.vibratePress();
+                },
                 selectedOption: controller.impedimento.value,
                 onNext: controller.iaImpedimentoSelected()
                     ? controller.nextStep
@@ -733,12 +811,15 @@ class RegistroPasosScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 12),
                           ),
                           const SizedBox(height: 30),
-                          review('Antony Levandowski',
-                              '"Esta aplicación ofrece muchas posibilidades de superación personal, desde la relajación hasta la confianza".'),
+                          review('José Antonio García',
+                              'Excelente app para llevar un control fácil y rápido de mis macronutrientes. La interfaz es muy intuitiva.'),
                           const SizedBox(height: 15),
-                          review('Emma Richardson',
-                              '"Esta aplicación brinda diversas opciones para el crecimiento personal, desde el manejo del estrés hasta el fortalecimiento de la autoestima."'),
+                          review('María Teresa Rodríguez',
+                              'Me encanta la base de datos de alimentos y la opción de escanear códigos de barras. Hace todo mucho más sencillo.'),
                           const SizedBox(height: 25),
+                          review('Carlos Alberto López',
+                              'Perfecta para quienes quieren objetivos personalizados. Me ayuda a alcanzar mis metas nutricionales de manera efectiva.'),
+                          const SizedBox(height: 15),
                         ],
                       );
                     }),
@@ -861,7 +942,7 @@ class RegistroPasosScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 15),
                         const Text(
-                          '!Felicidades, tu plan personalizado está listo!',
+                          '¡Felicidades, tu plan personalizado está listo!',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 23,
@@ -1186,7 +1267,7 @@ class RegistroPasosScreen extends StatelessWidget {
                     bottom: 0,
                     child: Container(
                       color: Colors.grey[100],
-                      width: Get.width,
+                      width: Get.width - 25,
                       child: CustomElevatedButton(
                         message: 'Siguiente',
                         function: () {
@@ -1279,7 +1360,7 @@ class Recomendaciones extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            width: 170,
+            width: 155,
             height: 180,
             padding: const EdgeInsets.all(12),
             decoration: const BoxDecoration(

@@ -12,7 +12,7 @@ import 'package:macrolife/widgets/button_paypal.dart';
 import 'package:pay/pay.dart';
 
 class SuscripcionController extends GetxController {
-  final configuraiones = Get.put(ConfiguracionesController());
+  final ConfiguracionesController configuraiones = Get.find();
   final sucripcion = 'Mensual'.obs;
   final UsuarioController usuarioController = Get.find();
 
@@ -38,19 +38,19 @@ class SuscripcionController extends GetxController {
   }) async {
     try {
       final apiService = ApiService();
-
       await apiService.fetchData(
-        'ejercicio/ejecutar',
+        'suscripcion/usuario',
         method: Method.POST,
         body: {
-          "producto": producto,
           "idUsuario": usuarioController.usuario.value.sId,
+          "producto": producto,
           'total': total,
           'identificador': identificador,
           'metodoPago': metodoPago,
         },
       );
 
+      Get.back();
       Get.back();
       usuarioController.usuario.value.vencidoSup = true;
       usuarioController.usuario.refresh();

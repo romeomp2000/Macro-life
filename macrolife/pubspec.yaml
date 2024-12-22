@@ -41,6 +41,7 @@ dependencies:
     flutter_xlider: ^3.5.0
 
     in_app_review: ^2.0.10
+    flutter_vibrate: ^1.3.0
 
 dev_dependencies:
     flutter_test:
@@ -51,7 +52,7 @@ dev_dependencies:
 flutter_icons:
     android: true
     ios: true
-    image_path: "assets/icons/icono_Macro_Life_512x512_negro.jpg"
+    image_path: "assets/icons/icono_Macro_Life_1024x1024_favicon_negro.jpg"
 
 # flutter_native_splash:
 #     color: "#ffffff"

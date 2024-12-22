@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/selected_model.dart';
@@ -11,6 +12,12 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 class FuncionesGlobales {
+  static void vibratePress() {
+    if (Platform.isIOS) {
+      Vibrate.feedback(FeedbackType.impact);
+    }
+  }
+
   static Future<XFile> compressImage(XFile imageFile) async {
     // Lee la imagen como bytes
     final bytes = await imageFile.readAsBytes();

@@ -6,6 +6,8 @@ PODS:
     - Flutter
   - flutter_native_splash (2.4.3):
     - Flutter
+  - flutter_vibrate (0.0.1):
+    - Flutter
   - google_mlkit_barcode_scanning (0.13.0):
     - Flutter
     - google_mlkit_commons
@@ -300,6 +302,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_localization (from `.symlinks/plugins/flutter_localization/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
+  - flutter_vibrate (from `.symlinks/plugins/flutter_vibrate/ios`)
   - google_mlkit_barcode_scanning (from `.symlinks/plugins/google_mlkit_barcode_scanning/ios`)
   - google_mlkit_commons (from `.symlinks/plugins/google_mlkit_commons/ios`)
   - google_mlkit_digital_ink_recognition (from `.symlinks/plugins/google_mlkit_digital_ink_recognition/ios`)
@@ -380,6 +383,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_localization/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
+  flutter_vibrate:
+    :path: ".symlinks/plugins/flutter_vibrate/ios"
   google_mlkit_barcode_scanning:
     :path: ".symlinks/plugins/google_mlkit_barcode_scanning/ios"
   google_mlkit_commons:
@@ -434,6 +439,7 @@ SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_localization: f43b18844a2b3d2c71fd64f04ffd6b1e64dd54d4
   flutter_native_splash: e8a1e01082d97a8099d973f919f57904c925008a
+  flutter_vibrate: 9f4c2ab57008965f78969472367c329dd77eb801
   google_mlkit_barcode_scanning: 1a409f86a4c7df45e6dee9ba06e520357b2c7110
   google_mlkit_commons: 384e4e206e122b6dad430d3158205e0b2fac6789
   google_mlkit_digital_ink_recognition: 587238bd53496dc6caaee4259c9e745ed1911885
@@ -502,6 +508,6 @@ SPEC CHECKSUMS:
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
   webview_flutter_wkwebview: 0982481e3d9c78fd5c6f62a002fcd24fc791f1e4
 
-PODFILE CHECKSUM: eafa10f9074d2241d05f519a567fbb67fdfaf41a
+PODFILE CHECKSUM: c02126faad36c02ae022819140c8ceaafcf5a1a0
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

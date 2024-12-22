@@ -24,13 +24,11 @@ class SuscripcionScreen extends StatelessWidget {
           ),
           DraggableScrollableSheet(
             snap: false,
-            minChildSize: 0.36,
-            maxChildSize: 0.36,
-            initialChildSize: 0.36,
+            minChildSize: 0.45,
+            maxChildSize: 0.45,
+            initialChildSize: 0.45,
             builder: (context, scrollController) {
               return Container(
-                // padding:
-                //     const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -45,7 +43,7 @@ class SuscripcionScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 5),
                       const Text(
                         'Acceso ilimitado a',
                         style: TextStyle(
@@ -88,7 +86,7 @@ class SuscripcionScreen extends StatelessWidget {
                               },
                               child: tipoPago(
                                   precio:
-                                      '\$${NumberFormat.decimalPattern().format((controller.configuraiones.configuraciones.value.suscripcion!.anual! * controller.configuraiones.configuraciones.value.suscripcion!.descuentoAnual! / 100).toDouble())} /año',
+                                      '\$${NumberFormat.decimalPattern().format((controller.configuraiones.configuraciones.value.suscripcion?.anual ?? 0 * controller.configuraiones.configuraciones.value.suscripcion!.descuentoAnual!).toDouble())} /año',
                                   tipo: 'Anual',
                                   valor: controller.sucripcion.value,
                                   descuento:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:macrolife/helpers/funciones_globales.dart';
 
 class RegistroController extends GetxController {
   final PageController pageControllerContent = PageController();
@@ -30,6 +31,8 @@ class RegistroController extends GetxController {
   }
 
   void nextPage() {
+    FuncionesGlobales.vibratePress();
+
     if (currentPage.value < pages.length - 1) {
       if (pageControllerContent.hasClients) {
         // Verifica que el controlador esté listo
@@ -41,7 +44,7 @@ class RegistroController extends GetxController {
     } else {
       pageControllerContent.jumpTo(0);
       currentPage.value = 0;
-      Get.toNamed('/registro/pasos');
+      Get.offAndToNamed('/registro/pasos');
     }
   }
 

@@ -185,13 +185,13 @@ class EscanearAlimentosController extends GetxController {
   Future<void> captureAndProcessImage() async {
     try {
       Get.back();
+      final image = await cameraController!.takePicture();
 
       final WeeklyCalendarController cargaMacro = Get.find();
       cargaMacro.loader.value = true;
       String? barocde = null;
 
       // Captura la imagen
-      final image = await cameraController!.takePicture();
       final imagenCompress = await FuncionesGlobales.compressImage(image);
 
       // Procesa la imagen para detectar códigos de barras
@@ -728,7 +728,9 @@ class EscanearAlimentosController extends GetxController {
       linterna.value = false;
       isCameraInitialized.value = false;
     }).whenComplete(() {
-      cameraController?.dispose();
+      Future.delayed(Duration(seconds: 5), () {
+        cameraController?.dispose();
+      });
     });
   }
 

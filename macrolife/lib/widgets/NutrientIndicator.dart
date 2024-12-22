@@ -21,9 +21,8 @@ class NutrientIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
+      width: 110,
       height: 200,
-      // color: Colors.white,
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -55,7 +54,7 @@ class NutrientIndicator extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                '$nutrient restante',
+                '$nutrient\nrestante',
                 style: const TextStyle(fontSize: 10, color: Colors.black54),
               ),
             ],
@@ -65,7 +64,7 @@ class NutrientIndicator extends StatelessWidget {
             children: [
               SizedBox(
                 height: 100,
-                width: 40,
+                width: 38,
                 child: SfCartesianChart(
                   primaryYAxis: NumericAxis(
                     minimum: 0,

@@ -1,5 +1,0 @@
-package mx.posibilidades.fep
-
-import io.flutter.embedding.android.FlutterActivity
-
-class MainActivity: FlutterActivity()

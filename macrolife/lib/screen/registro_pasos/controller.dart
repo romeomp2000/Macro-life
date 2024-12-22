@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
+import 'package:macrolife/helpers/funciones_globales.dart';
 
 class RegistroPasosController extends GetxController {
   var selectedGender = ''.obs;
@@ -47,6 +49,7 @@ class RegistroPasosController extends GetxController {
   }
 
   void onRegistrarLoader() {
+    FuncionesGlobales.vibratePress();
     Get.toNamed(
       '/loader',
       arguments: {
@@ -117,20 +120,8 @@ class RegistroPasosController extends GetxController {
 
   // Actualiza el progreso y avanza al siguiente paso
   void nextStep() async {
-    // if (currentStep.value == 16) {
-    //   final InAppReview inAppReview = InAppReview.instance;
+    FuncionesGlobales.vibratePress();
 
-    //   if (await inAppReview.isAvailable()) {
-    //     // Solicitar calificación dentro de la app
-    //     inAppReview.requestReview();
-    //   } else {
-    //     // Redirigir a la tienda de aplicaciones
-    //     inAppReview.openStoreListing(
-    //       appStoreId: 'tu_appstore_id',
-    //       microsoftStoreId: 'tu_microsoft_id',
-    //     );
-    //   }
-    // }
     if (currentStep.value < 21) {
       currentStep.value++;
       progress.value = currentStep.value /
@@ -139,6 +130,23 @@ class RegistroPasosController extends GetxController {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
+
+      if (currentStep.value == 16) {
+        final InAppReview inAppReview = InAppReview.instance;
+
+        await Future.delayed(Duration(seconds: 1));
+
+        if (await inAppReview.isAvailable()) {
+          // Solicitar calificación dentro de la app
+          inAppReview.requestReview();
+        } else {
+          // Redirigir a la tienda de aplicaciones
+          inAppReview.openStoreListing(
+            appStoreId: 'mx.posibilidades.macrolife',
+            // microsoftStoreId: 'mx.posibilidades.macrolife',
+          );
+        }
+      }
     }
   }
 

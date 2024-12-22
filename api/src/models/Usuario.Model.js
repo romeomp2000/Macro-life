@@ -110,7 +110,7 @@ const UsuariosSchema = new Schema({
   },
   objetivo: {
     type: String,
-    enum: ['Perder peso', 'Mantener', 'Aumentar peso'],
+    enum: ['Perder peso', 'Mantener', 'Aumentar de peso'],
     require: false
   },
   pesoObjetivo: { // no va ser requerido
