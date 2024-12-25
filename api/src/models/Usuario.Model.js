@@ -144,6 +144,18 @@ const UsuariosSchema = new Schema({
     type: String,
     required: false
   },
+  correo: {
+    type: String,
+    required: false
+  },
+  telefono: {
+    type: String,
+    required: false
+  },
+  nombre: {
+    type: String,
+    required: false
+  },
   estatus: {
     type: String,
     enum: ['Activo', 'Inactivo'],

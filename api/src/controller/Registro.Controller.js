@@ -18,7 +18,12 @@ const registroController = async (req, res) => {
     lograr,
     metaVelocidad,
     metaImpedimento,
-    referidoCodigo
+    referidoCodigo,
+    appleID,
+    googleId,
+    correo,
+    telefono,
+    nombre
   } = req.body;
 
   try {
@@ -148,7 +153,12 @@ const registroController = async (req, res) => {
       lograr,
       metaAlcanzar: metaVelocidad,
       impideAlcanzar: metaImpedimento,
-      fechaMeta: jsonResponse?.fechaMeta || null
+      fechaMeta: jsonResponse?.fechaMeta || null,
+      appleID,
+      googleId,
+      correo,
+      telefono,
+      nombre
     };
 
     const newUsuario = await UsuarioModel.create(objUsuario);
