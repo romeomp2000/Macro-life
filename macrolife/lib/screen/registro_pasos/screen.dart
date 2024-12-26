@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:avatar_stack/avatar_stack.dart';
 import 'package:avatar_stack/positions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/list_tile_model.dart';
@@ -12,6 +15,7 @@ import 'package:macrolife/widgets/custom_elevated_selected.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:macrolife/widgets/custom_text_form_field.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -748,6 +752,151 @@ class RegistroPasosScreen extends StatelessWidget {
                     : null,
               ),
             ),
+
+            Steep(
+              body: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                    spacing: 25,
+                    children: [
+                      if (Platform.isIOS)
+                        SizedBox(
+                          width: Get.width,
+                          child: ElevatedButton.icon(
+                            icon: Icon(FontAwesomeIcons.apple),
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  WidgetStateProperty.all(Colors.black),
+                              iconColor: WidgetStateProperty.all(Colors.white),
+                              foregroundColor:
+                                  WidgetStateProperty.all(Colors.white),
+                            ),
+                            onPressed: controller.signWithApple,
+                            label: Text('Iniciar sesión con Apple'),
+                          ),
+                        ),
+                      SizedBox(
+                        width: Get.width,
+                        child: ElevatedButton.icon(
+                          icon: Icon(FontAwesomeIcons.google),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStateProperty.all(Colors.black),
+                            iconColor: WidgetStateProperty.all(Colors.white),
+                            foregroundColor:
+                                WidgetStateProperty.all(Colors.white),
+                          ),
+                          onPressed: controller.signWithGoogle,
+                          label: Text('Iniciar sesión con Google'),
+                        ),
+                      ),
+                      SizedBox(
+                        width: Get.width,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStateProperty.all(Colors.white),
+                            foregroundColor:
+                                WidgetStateProperty.all(Colors.black),
+                            shadowColor: WidgetStateProperty.all(Colors.white),
+                            overlayColor: WidgetStateProperty.all(Colors.white),
+                            surfaceTintColor:
+                                WidgetStateProperty.all(Colors.white),
+                          ),
+                          onPressed: () {
+                            FuncionesGlobales.vibratePress();
+                            controller.nextStep();
+                          },
+                          child: Text('Saltar'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              title: 'Crear una cuenta',
+              options: const [],
+              onOptionSelected: (nombre) {},
+              selectedOption: controller.correoController.value.text,
+              onNext: controller.nextStep,
+            ),
+
+            Obx(
+              () => Steep(
+                body: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CustomTextFormField(
+                      focus: true,
+                      keyboardType: TextInputType.emailAddress,
+                      controller: controller.correoController,
+                      onChanged: (p0) {
+                        controller.correo.value = p0;
+                      },
+                      label: 'Correo electrónico',
+                    ),
+                  ),
+                ),
+                title:
+                    '¿Cuál es tu correo electrónico para registrar tu cuenta?',
+                options: const [],
+                onOptionSelected: (nombre) {},
+                selectedOption: controller.correoController.value.text,
+                onNext: controller.correo.value.isEmpty
+                    ? null
+                    : controller.nextStep,
+              ),
+            ),
+            Obx(
+              () => Steep(
+                body: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CustomTextFormField(
+                      focus: true,
+                      controller: controller.nombreController,
+                      onChanged: (p0) {
+                        controller.nombre.value = p0;
+                      },
+                      label: 'Nombre completo',
+                    ),
+                  ),
+                ),
+                title: '¿Cuál es tu nombre completo para registrar tu cuenta?',
+                options: const [],
+                onOptionSelected: (nombre) {},
+                selectedOption: controller.nombreController.value.text,
+                onNext: controller.nombre.value.isEmpty
+                    ? null
+                    : controller.nextStep,
+              ),
+            ),
+            Obx(
+              () => Steep(
+                body: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CustomTextFormField(
+                      keyboardType: TextInputType.number,
+                      focus: true,
+                      controller: controller.telefonoController,
+                      onChanged: (p0) {
+                        controller.telefono.value = p0;
+                      },
+                      label: 'Celular',
+                    ),
+                  ),
+                ),
+                title: '¿Cuál es tu celular para registrar tu cuenta?',
+                options: const [],
+                onOptionSelected: (telefono) {},
+                selectedOption: controller.telefonoController.value.text,
+                onNext: controller.telefono.value.length != 10
+                    ? null
+                    : controller.nextStep,
+              ),
+            ),
             Obx(
               () => Steep(
                 title: 'Danos calificación',
@@ -868,6 +1017,31 @@ class RegistroPasosScreen extends StatelessWidget {
                     controller.probado.value = probado,
                 selectedOption: controller.probado.value,
                 onNext: controller.nextStep,
+              ),
+            ),
+            Obx(
+              () => Steep(
+                body: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CustomTextFormField(
+                      focus: true,
+                      keyboardType: TextInputType.emailAddress,
+                      controller: controller.correoController,
+                      onChanged: (p0) {
+                        controller.correo.value = p0;
+                      },
+                      label: 'Código de referencia',
+                    ),
+                  ),
+                ),
+                title: '¿Tienes un código de referencia?',
+                options: const [],
+                onOptionSelected: (nombre) {},
+                selectedOption: controller.correoController.value.text,
+                onNext: controller.correo.value.isEmpty
+                    ? null
+                    : controller.nextStep,
               ),
             ),
             Obx(
@@ -1245,8 +1419,9 @@ class RegistroPasosScreen extends StatelessWidget {
                                   'Utilice puntuaciones de salud para mejorar su rutina.'),
                               const SizedBox(height: 15),
                               objetivos(
-                                  'assets/icons/icono_almedraazul_74x70_nuevo.png',
-                                  'Sigue tu comida.'),
+                                'assets/icons/icono_almedraazul_74x70_nuevo.png',
+                                'Sigue tu comida.',
+                              ),
                               const SizedBox(height: 15),
                               objetivos(
                                   'assets/icons/icono_calorias_negro_99x117_nuevo.png',
@@ -1315,10 +1490,10 @@ class RegistroPasosScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
               Text(
-                'Antony Levandowski',
+                nombre,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(width: 8),
@@ -1466,18 +1641,19 @@ class Steep extends StatelessWidget {
   final BoxDecoration? decoration;
   final bool? enableScroll; // Bandera para habilitar o deshabilitar el scroll
 
-  const Steep(
-      {super.key,
-      required this.title,
-      this.textBTN = 'Siguiente',
-      this.description,
-      required this.options,
-      required this.onOptionSelected,
-      required this.selectedOption,
-      required this.onNext,
-      this.body,
-      this.enableScroll = false, // Inicializar la bandera
-      this.decoration});
+  const Steep({
+    super.key,
+    required this.title,
+    this.textBTN = 'Siguiente',
+    this.description,
+    required this.options,
+    required this.onOptionSelected,
+    required this.selectedOption,
+    required this.onNext,
+    this.body,
+    this.enableScroll = false, // Inicializar la bandera
+    this.decoration,
+  });
 
   @override
   Widget build(BuildContext context) {

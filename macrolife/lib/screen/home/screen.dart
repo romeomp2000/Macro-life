@@ -291,7 +291,7 @@ class HomeScreen extends StatelessWidget {
                     : Column(
                         children: [
                           Text(
-                            'Recientemente registros',
+                            'Registros recientes',
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -303,13 +303,17 @@ class HomeScreen extends StatelessWidget {
               ),
 
               Obx(() {
+                return controller.loader.value
+                    ? const LinearProgressIndicator()
+                    : const SizedBox
+                        .shrink(); // O cualquier widget vacío que desees
+              }),
+              Obx(() {
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      if (controller.loader.value)
-                        const LinearProgressIndicator(),
                       for (var alimento in controller.alimentosList)
                         NutritionWidget(nutritionInfo: alimento),
                     ],
@@ -323,8 +327,6 @@ class HomeScreen extends StatelessWidget {
                   child: Column(
                     // Se puede usar Column para manejar el tamaño dinámico
                     children: [
-                      if (controller.loader.value)
-                        const LinearProgressIndicator(),
                       for (var alimento in controller.entrenamientosList)
                         EjercicioWidget(entrenamiento: alimento),
                     ],
@@ -530,6 +532,7 @@ class NutritionWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.0),
           boxShadow: [
             BoxShadow(
+              // ignore: deprecated_member_use
               color: Colors.black.withOpacity(0.2),
               blurRadius: 10,
               offset: const Offset(0, 4),
@@ -539,6 +542,7 @@ class NutritionWidget extends StatelessWidget {
         child: Stack(
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (nutritionInfo.imageUrl != null)
                   ClipRRect(
@@ -563,6 +567,7 @@ class NutritionWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         '${nutritionInfo.name}',

@@ -32,6 +32,11 @@ class LoaderController extends GetxController {
       var metaVelocidad = args["metaVelocidad"];
       var metaImpedimento = args["metaImpedimento"];
       var codigo = args["codigo"];
+      var appleID = args["appleID"];
+      var googleId = args["googleId"];
+      var correo = args["correo"];
+      var telefono = args["telefono"];
+      var nombre = args["nombre"];
 
       final apiService = ApiService();
 
@@ -51,7 +56,12 @@ class LoaderController extends GetxController {
           'lograr': lograr,
           'metaVelocidad': metaVelocidad,
           'metaImpedimento': metaImpedimento,
-          'referidoCodigo': codigo
+          'referidoCodigo': codigo,
+          'appleID': appleID,
+          'googleId': googleId,
+          'correo': correo,
+          'telefono': telefono,
+          'nombre': nombre
         },
       );
 
@@ -64,7 +74,7 @@ class LoaderController extends GetxController {
       registroPasosController.nextStep();
       registroPasosController.currentStep++;
       Get.back();
-    } on Exception catch (e) {
+    } catch (e) {
       print(e);
       Get.snackbar(
         'Registro',

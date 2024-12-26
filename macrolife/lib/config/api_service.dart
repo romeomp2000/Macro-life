@@ -81,7 +81,7 @@ class ApiService {
 
         throw (error['error']);
       }
-    } on Exception catch (_) {
+    } catch (_) {
       return Future.error(_);
     }
   }

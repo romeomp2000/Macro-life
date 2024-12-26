@@ -427,7 +427,7 @@ class EscanearAlimentosController extends GetxController {
         return print("Ninguna imagen seleccionada");
       }
 
-      cameraController!.stopImageStream();
+      cameraController?.stopImageStream();
       Get.back();
 
       DateTime today = DateTime.now();
@@ -511,6 +511,7 @@ class EscanearAlimentosController extends GetxController {
                     Radius.circular(20), // Redondea la esquina superior derecha
               ),
               child: SizedBox(
+                width: Get.width,
                 height: Get.height - 60,
                 child: cameraController == null
                     ? const SizedBox.shrink()

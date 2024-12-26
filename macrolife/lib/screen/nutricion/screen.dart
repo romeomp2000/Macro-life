@@ -404,12 +404,12 @@ class NutricionScreen extends StatelessWidget {
                                   width: 20,
                                   height: 20,
                                 ),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: 8),
                                 // Usar Wrap para manejar el texto largo
                                 const Text(
                                   'Corregir\n resultados',
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(fontSize: 15),
                                   softWrap:
                                       true, // Habilitar el ajuste de línea
                                 ),

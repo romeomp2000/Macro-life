@@ -9,10 +9,14 @@ import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/helpers/configuraciones.dart';
 import 'package:macrolife/routes/app_pages.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await GetStorage.init();
 
   final configuracionesController = Get.put(ConfiguracionesController());
@@ -21,10 +25,10 @@ void main() async {
 
   Stripe.publishableKey =
       configuracionesController.configuraciones.value.stripe?.publicKey ?? '';
+
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp, // Solo permite orientación vertical normal
-    DeviceOrientation
-        .portraitDown, // Permite orientación vertical invertida (opcional)
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
   ]).then((_) {
     runApp(
       GetMaterialApp(

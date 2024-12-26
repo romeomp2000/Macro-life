@@ -3,8 +3,81 @@ import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
 import 'package:macrolife/helpers/funciones_globales.dart';
+import 'package:macrolife/services/auth_service.dart';
 
 class RegistroPasosController extends GetxController {
+  final authService = AuthService();
+
+  void signWithApple() async {
+    try {
+      FuncionesGlobales.vibratePress();
+
+      final usuarioAplle = await authService.signWithApple();
+
+      String? correoWithApple = usuarioAplle?.user?.email;
+      String? nombreWithApple = usuarioAplle?.user?.displayName;
+      String? uuid = usuarioAplle?.user?.uid;
+      nextStep();
+
+      // si no proporsiona que lo escriba;
+      if (correoWithApple != null) {
+        correoController.text = correoWithApple;
+        correo.value = correoWithApple;
+      }
+
+      if (nombreWithApple != null) {
+        nombreController.text = nombreWithApple;
+        nombre.value = nombreWithApple;
+      }
+
+      if (uuid != null) {
+        appleUUID.value = uuid;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void signWithGoogle() async {
+    try {
+      FuncionesGlobales.vibratePress();
+
+      final usuarioGoogle = await authService.signWithGoogle();
+
+      String? correoWithGoogle = usuarioGoogle?.user?.email;
+      String? nombreWithGoogle = usuarioGoogle?.user?.displayName;
+      String? uuid = usuarioGoogle?.user?.uid;
+      String? phone = usuarioGoogle?.user?.phoneNumber;
+
+      nextStep();
+
+      // si no proporsiona que lo escriba;
+      if (correoWithGoogle != null) {
+        correoController.text = correoWithGoogle;
+        correo.value = correoWithGoogle;
+      }
+
+      if (nombreWithGoogle != null) {
+        nombreController.text = nombreWithGoogle;
+        nombre.value = nombreWithGoogle;
+      }
+
+      if (phone != null) {
+        telefonoController.text = phone;
+        telefono.value = phone;
+      }
+
+      if (uuid != null) {
+        googleUUID.value = uuid;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  var appleUUID = ''.obs;
+  var googleUUID = ''.obs;
+
   var selectedGender = ''.obs;
 
   var entrenamiento = ''.obs;
@@ -19,7 +92,6 @@ class RegistroPasosController extends GetxController {
   var anio = 2024.obs;
   var fechaNacimiento = Rx<DateTime?>(null); // Inicializamos como null
 
-  var codigo = ''.obs;
   var pesoDeseado = 54.obs;
 
   var objetivo = ''.obs;
@@ -31,6 +103,19 @@ class RegistroPasosController extends GetxController {
   var lograr = ''.obs;
 
   var impedimento = ''.obs;
+
+  final nombreController = TextEditingController();
+  final nombre = ''.obs;
+
+  final codigoController = TextEditingController();
+  var codigo = ''.obs;
+
+
+  final telefonoController = TextEditingController();
+  final telefono = ''.obs;
+
+  final correoController = TextEditingController();
+  final correo = ''.obs;
 
   var progress = 0.1.obs; // Barra de progreso inicial en 10%
   var currentStep = 1.obs; // Paso actual (1 a 10)
@@ -68,7 +153,12 @@ class RegistroPasosController extends GetxController {
             rapidoMeta.value, // que tán rápido quieres que alcance tu meta
         "metaImpedimento":
             impedimento.value, // qye te impide alcanzar tus metas
-        "codigo": codigo.value
+        "codigo": codigo.value,
+        "appleID": appleUUID.value,
+        "googleId": googleUUID.value,
+        "correo": correo.value,
+        "telefono": telefonoController.text,
+        "nombre": nombreController.text,
       },
     );
   }
@@ -120,18 +210,20 @@ class RegistroPasosController extends GetxController {
 
   // Actualiza el progreso y avanza al siguiente paso
   void nextStep() async {
+    FocusScope.of(Get.context!).unfocus();
+
     FuncionesGlobales.vibratePress();
 
-    if (currentStep.value < 21) {
+    if (currentStep.value < 24) {
       currentStep.value++;
       progress.value = currentStep.value /
-          21; // Actualiza el progreso en función del paso actual
+          24; // Actualiza el progreso en función del paso actual
       pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
 
-      if (currentStep.value == 16) {
+      if (currentStep.value == 20) {
         final InAppReview inAppReview = InAppReview.instance;
 
         await Future.delayed(Duration(seconds: 1));
@@ -147,11 +239,17 @@ class RegistroPasosController extends GetxController {
           );
         }
       }
+
+      if (currentStep.value == 21) {
+        FuncionesGlobales.getDeviceToken();
+      }
     }
   }
 
   // Retrocede un paso o vuelve atrás si está en el primer paso
   void back() {
+    FocusScope.of(Get.context!).unfocus();
+
     if (currentStep.value > 1) {
       currentStep.value--;
       progress.value = currentStep.value /

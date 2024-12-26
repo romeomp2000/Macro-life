@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
@@ -15,6 +16,26 @@ class FuncionesGlobales {
   static void vibratePress() {
     if (Platform.isIOS) {
       Vibrate.feedback(FeedbackType.impact);
+    }
+  }
+
+  static Future<String> getDeviceToken() async {
+    try {
+      // Request user permission for push notifications (iOS)
+      await FirebaseMessaging.instance.requestPermission();
+
+      // Get the FirebaseMessaging instance
+      FirebaseMessaging _firebaseMessage = FirebaseMessaging.instance;
+
+      // Listen to token refresh events (e.g., after the app is installed or the token changes)
+
+      String? deviceToken = await _firebaseMessage.getToken();
+
+      // If the token is not null, return it, otherwise return an empty string
+      return (deviceToken == null) ? '' : deviceToken;
+    } catch (e) {
+      print("Error getting device token: $e");
+      return '';
     }
   }
 
