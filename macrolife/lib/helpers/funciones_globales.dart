@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
+// import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/selected_model.dart';
@@ -14,9 +14,9 @@ import 'package:image_picker/image_picker.dart';
 
 class FuncionesGlobales {
   static void vibratePress() {
-    if (Platform.isIOS) {
-      Vibrate.feedback(FeedbackType.impact);
-    }
+    // if (Platform.isIOS) {
+    //   Vibrate.feedback(FeedbackType.impact);
+    // }
   }
 
   static Future<String> getDeviceToken() async {

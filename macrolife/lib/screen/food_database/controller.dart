@@ -21,7 +21,7 @@ class FoodDatabaseController extends GetxController {
       final response = await apiService.fetchData(
         'food-database',
         method: Method.POST,
-        body: {'search': alimento.trim()},
+        body: {'search': alimento.trim().toLowerCase()},
       );
 
       alimentos.value = AlimentosPSD.fromJsonList(response);

@@ -76,7 +76,7 @@ class FoodDatabaseScreen extends StatelessWidget {
                             },
                             subtitleTextStyle: TextStyle(color: Colors.black),
                             title: Text(
-                              alimento.nombre,
+                              alimento.nombre!,
                               style: TextStyle(fontWeight: FontWeight.w500),
                             ),
                             // trailing: IconButton(
@@ -102,7 +102,7 @@ class FoodDatabaseScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                    '${alimento.calorias.toStringAsFixed(0)} calorías')
+                                    '${alimento.calorias!.toStringAsFixed(0)} calorías')
                               ],
                             ),
                           ),

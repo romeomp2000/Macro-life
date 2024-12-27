@@ -294,11 +294,11 @@ class FoodDatabaseAlimentoScreen extends StatelessWidget {
               ListView(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                children: controller.alimento?.value?.propiedades.entries
+                children: controller.alimento?.value?.propiedades!.entries
                         .map((entry) {
                       return CupertinoListTile(
                         title: Text(entry.key),
-                        trailing: Text(entry.value),
+                        trailing: Text(entry.value ?? 'Sin datos'),
                       );
                     }).toList() ??
                     [
@@ -352,7 +352,7 @@ class NutritionalInfoRow extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 11),
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,
@@ -394,7 +394,7 @@ class NutritionalInfoRow extends StatelessWidget {
                     Flexible(
                       child: Text(
                         label,
-                        style: const TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: 11),
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,

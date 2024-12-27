@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:macrolife/screen/suscripcion/controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +16,43 @@ class SuscripcionScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Image.asset(
-            controller.imagenUrl.value,
-            fit: BoxFit.cover,
-            alignment: Alignment.bottomCenter,
+          SizedBox(
             width: Get.width,
             height: 600,
+            child: CarouselSlider(
+                items: controller.images.map((e) {
+                  return Image.asset(
+                    e,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    width: Get.width,
+                    // height: 600,
+                  );
+                }).toList(),
+                options: CarouselOptions(
+                  disableCenter: false,
+                  height: 600,
+                  aspectRatio: 16 / 9,
+                  viewportFraction: 1,
+                  initialPage: 0,
+                  enableInfiniteScroll: true,
+                  reverse: false,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 2),
+                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.linear,
+                  enlargeCenterPage: true,
+                  enlargeFactor: 0,
+                  scrollDirection: Axis.horizontal,
+                )),
           ),
+          // Image.asset(
+          //   controller.imagenUrl.value,
+          //   fit: BoxFit.cover,
+          //   alignment: Alignment.bottomCenter,
+          //   width: Get.width,
+          //   height: 600,
+          // ),
           DraggableScrollableSheet(
             snap: false,
             minChildSize: 0.45,
