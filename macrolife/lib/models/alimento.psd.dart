@@ -1,24 +1,24 @@
 class AlimentosPSD {
   String? id;
-  String nombre;
-  double calorias;
-  double proteina;
-  double carbohidratos;
-  double grasas;
-  Map<String, String> propiedades;
-  DateTime createdAt;
-  DateTime updatedAt;
+  String? nombre;
+  double? calorias;
+  double? proteina;
+  double? carbohidratos;
+  double? grasas;
+  Map<String, String?>? propiedades;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   AlimentosPSD({
     this.id,
-    required this.nombre,
-    required this.calorias,
-    required this.proteina,
-    required this.carbohidratos,
-    required this.grasas,
-    required this.propiedades,
-    required this.createdAt,
-    required this.updatedAt,
+    this.nombre,
+    this.calorias,
+    this.proteina,
+    this.carbohidratos,
+    this.grasas,
+    this.propiedades,
+    this.createdAt,
+    this.updatedAt,
   });
 
   // Deserialización desde JSON
@@ -26,13 +26,16 @@ class AlimentosPSD {
     return AlimentosPSD(
       id: json['_id'],
       nombre: json['nombre'] ?? '',
-      calorias: (json['calorias'] as num).toDouble(),
-      proteina: (json['proteina'] as num).toDouble(),
-      carbohidratos: (json['carbohidratos'] as num).toDouble(),
-      grasas: (json['grasas'] as num).toDouble(),
-      propiedades: Map<String, String>.from(json['propiedades'] ?? {}),
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      calorias: (json['calorias'] as num?)?.toDouble() ?? 0.0,
+      proteina: (json['proteina'] as num?)?.toDouble() ?? 0.0,
+      carbohidratos: (json['carbohidratos'] as num?)?.toDouble() ?? 0.0,
+      grasas: (json['grasas'] as num?)?.toDouble() ?? 0.0,
+      propiedades: (json['propiedades'] as Map<String, dynamic>?)
+          ?.map((key, value) => MapEntry(key, value?.toString())),
+      createdAt:
+          json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      updatedAt:
+          json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
   }
 
@@ -46,8 +49,8 @@ class AlimentosPSD {
       'carbohidratos': carbohidratos,
       'grasas': grasas,
       'propiedades': propiedades,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 

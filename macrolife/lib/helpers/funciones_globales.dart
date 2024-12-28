@@ -64,9 +64,9 @@ class FuncionesGlobales {
   }
 
   static void vibratePress() {
-    if (Platform.isIOS) {
-      Vibrate.feedback(FeedbackType.impact);
-    }
+    // if (Platform.isIOS) {
+    //   Vibrate.feedback(FeedbackType.impact);
+    // }
   }
 
   static Future<String> getDeviceToken() async {

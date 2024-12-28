@@ -20,17 +20,24 @@ class SuscripcionController extends GetxController {
       Get.put(EscanearAlimentosController());
   final RxDouble totalAPagar = 0.0.obs;
 
+  RxList<String> images = <String>[].obs;
+
+  RxString imagenUrl =
+      'assets/images/pantalla_escaneo_alimentos_1125x2436_6 (1).jpg'.obs;
+
   @override
   void onInit() {
     totalAPagar.value =
         configuraiones.configuraciones.value.suscripcion?.mensual ?? 0.0;
 
+    images.add('assets/images/imagen_slider_1.jpg');
+    images.add('assets/images/imagen_slider_2.jpg');
+    images.add('assets/images/imagen_slider_3.jpg');
+    images.add('assets/images/imagen_slider_4.jpg');
+
     super.onInit();
     configuraiones.configuraciones.value.suscripcion?.mensual ?? 0.0.obs;
   }
-
-  RxString imagenUrl =
-      'assets/images/pantalla_escaneo_alimentos_1125x2436_6 (1).jpg'.obs;
 
   void suscribirseUsuario({
     required double total,
