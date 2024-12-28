@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/Entrenamiento.dart';
 import 'package:macrolife/models/alimento.model.dart';
@@ -68,6 +69,12 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 15),
               calendario(controller),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     FuncionesGlobales.appleHealth();
+              //   },
+              //   child: Text('Apple Helth'),
+              // ),
               GestureDetector(
                 onTap: () => Get.toNamed('/objetivos'),
                 child: Container(

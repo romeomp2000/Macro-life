@@ -9,13 +9,15 @@ import 'package:macrolife/helpers/StripePaymentHandle.dart';
 import 'package:macrolife/helpers/configuraciones.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/widgets/button_paypal.dart';
+import 'package:macrolife/widgets/layout.dart';
 import 'package:pay/pay.dart';
 
 class SuscripcionController extends GetxController {
   final ConfiguracionesController configuraiones = Get.find();
   final sucripcion = 'Mensual'.obs;
   final UsuarioController usuarioController = Get.find();
-
+  final EscanearAlimentosController escanearAlimentoController =
+      Get.put(EscanearAlimentosController());
   final RxDouble totalAPagar = 0.0.obs;
 
   @override
@@ -52,6 +54,7 @@ class SuscripcionController extends GetxController {
 
       Get.back();
       Get.back();
+      escanearAlimentoController.ayudaEscanear();
       usuarioController.usuario.value.vencidoSup = true;
       usuarioController.usuario.refresh();
     } catch (e) {
