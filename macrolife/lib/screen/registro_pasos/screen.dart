@@ -10,6 +10,7 @@ import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/list_tile_model.dart';
 import 'package:macrolife/screen/EditarNutrientes/screen.dart';
 import 'package:macrolife/screen/objetivos/controller.dart';
+import 'package:macrolife/widgets/Cinta_metrica.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
 import 'package:macrolife/widgets/custom_elevated_selected.dart';
 import 'package:flutter/cupertino.dart';
@@ -59,6 +60,56 @@ class RegistroPasosScreen extends StatelessWidget {
           },
           children: [
             // Paso 1: Selección de género
+            Steep(
+              body: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                    spacing: 25,
+                    children: [
+                      if (Platform.isIOS)
+                        SizedBox(
+                          width: Get.width,
+                          height: 50,
+                          child: ElevatedButton.icon(
+                            icon: Icon(FontAwesomeIcons.apple),
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  WidgetStateProperty.all(Colors.black),
+                              iconColor: WidgetStateProperty.all(Colors.white),
+                              foregroundColor:
+                                  WidgetStateProperty.all(Colors.white),
+                            ),
+                            onPressed: controller.signWithApple,
+                            label: Text('Iniciar sesión con Apple'),
+                          ),
+                        ),
+                      SizedBox(
+                        width: Get.width,
+                        height: 50,
+                        child: ElevatedButton.icon(
+                          icon: Icon(FontAwesomeIcons.google),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStateProperty.all(Colors.black),
+                            iconColor: WidgetStateProperty.all(Colors.white),
+                            foregroundColor:
+                                WidgetStateProperty.all(Colors.white),
+                          ),
+                          onPressed: controller.signWithGoogle,
+                          label: Text('Iniciar sesión con Google'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              title: 'Crear una cuenta',
+              options: const [],
+              onOptionSelected: (nombre) {},
+              selectedOption: controller.correoController.value.text,
+              onNext: null,
+            ),
 
             Obx(
               () => Steep(
@@ -433,6 +484,8 @@ class RegistroPasosScreen extends StatelessWidget {
                     height: 280,
                     alignment: Alignment.topCenter,
                     fit: BoxFit.cover,
+                    color: Colors.black,
+                    colorBlendMode: BlendMode.color,
                   ),
                 ),
                 title: 'Tienes un gran potencial para aplastar tu objetivo.',
@@ -616,7 +669,6 @@ class RegistroPasosScreen extends StatelessWidget {
                 onNext: controller.nextStep,
               ),
             ),
-
             Obx(
               () => Steep(
                 body: Container(
@@ -637,6 +689,8 @@ class RegistroPasosScreen extends StatelessWidget {
                             child: Image.asset(
                               'assets/images/grafico_barra_comparativa_306x596_nuevo_sin_macrolife.png',
                               width: 100,
+                              color: Colors.black,
+                              colorBlendMode: BlendMode.color,
                             ),
                           ),
                           ClipRRect(
@@ -645,6 +699,8 @@ class RegistroPasosScreen extends StatelessWidget {
                             child: Image.asset(
                               'assets/images/grafico_barra_comparativa_306x596_nuevo_con_macrolife.png',
                               width: 100,
+                              color: Colors.black,
+                              colorBlendMode: BlendMode.color,
                             ),
                           ),
                         ],
@@ -751,75 +807,6 @@ class RegistroPasosScreen extends StatelessWidget {
                     ? controller.nextStep
                     : null,
               ),
-            ),
-
-            Steep(
-              body: Center(
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
-                    spacing: 25,
-                    children: [
-                      if (Platform.isIOS)
-                        SizedBox(
-                          width: Get.width,
-                          child: ElevatedButton.icon(
-                            icon: Icon(FontAwesomeIcons.apple),
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  WidgetStateProperty.all(Colors.black),
-                              iconColor: WidgetStateProperty.all(Colors.white),
-                              foregroundColor:
-                                  WidgetStateProperty.all(Colors.white),
-                            ),
-                            onPressed: controller.signWithApple,
-                            label: Text('Iniciar sesión con Apple'),
-                          ),
-                        ),
-                      SizedBox(
-                        width: Get.width,
-                        child: ElevatedButton.icon(
-                          icon: Icon(FontAwesomeIcons.google),
-                          style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStateProperty.all(Colors.black),
-                            iconColor: WidgetStateProperty.all(Colors.white),
-                            foregroundColor:
-                                WidgetStateProperty.all(Colors.white),
-                          ),
-                          onPressed: controller.signWithGoogle,
-                          label: Text('Iniciar sesión con Google'),
-                        ),
-                      ),
-                      SizedBox(
-                        width: Get.width,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStateProperty.all(Colors.white),
-                            foregroundColor:
-                                WidgetStateProperty.all(Colors.black),
-                            shadowColor: WidgetStateProperty.all(Colors.white),
-                            overlayColor: WidgetStateProperty.all(Colors.white),
-                            surfaceTintColor:
-                                WidgetStateProperty.all(Colors.white),
-                          ),
-                          onPressed: () {
-                            FuncionesGlobales.vibratePress();
-                            controller.nextStep();
-                          },
-                          child: Text('Saltar'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              title: 'Crear una cuenta',
-              options: const [],
-              onOptionSelected: (nombre) {},
-              selectedOption: controller.correoController.value.text,
-              onNext: controller.nextStep,
             ),
 
             Obx(
@@ -1019,30 +1006,26 @@ class RegistroPasosScreen extends StatelessWidget {
                 onNext: controller.nextStep,
               ),
             ),
-            Obx(
-              () => Steep(
-                body: Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CustomTextFormField(
-                      focus: true,
-                      keyboardType: TextInputType.emailAddress,
-                      controller: controller.correoController,
-                      onChanged: (p0) {
-                        controller.correo.value = p0;
-                      },
-                      label: 'Código de referencia',
-                    ),
+            Steep(
+              body: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: CustomTextFormField(
+                    focus: true,
+                    keyboardType: TextInputType.emailAddress,
+                    controller: controller.correoController,
+                    onChanged: (p0) {
+                      controller.correo.value = p0;
+                    },
+                    label: 'Código de referencia',
                   ),
                 ),
-                title: '¿Tienes un código de referencia?',
-                options: const [],
-                onOptionSelected: (nombre) {},
-                selectedOption: controller.correoController.value.text,
-                onNext: controller.correo.value.isEmpty
-                    ? null
-                    : controller.nextStep,
               ),
+              title: '¿Tienes un código de referencia?',
+              options: const [],
+              onOptionSelected: (nombre) {},
+              selectedOption: controller.correoController.value.text,
+              onNext: controller.nextStep,
             ),
             Obx(
               () => Steep(
@@ -1125,7 +1108,7 @@ class RegistroPasosScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 15),
                         Text(
-                          'Debes ${(controller.peso.value - controller.pesoDeseado.value) < 0 ? 'perder' : 'ganar'}:',
+                          'Tu objetivo es: ',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 18,
@@ -2009,47 +1992,16 @@ Widget cintaMedirWidget({
       const SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            SfLinearGauge(
-              minimum: 5,
-              maximum: 350,
-              interval: 50,
-              minorTicksPerInterval: 5,
-              axisLabelStyle: const TextStyle(fontSize: 13),
-              markerPointers: [
-                LinearWidgetPointer(
-                  value: pesoActual,
-                  child: Container(
-                    height: 70,
-                    width: 3,
-                    color: Colors.transparent,
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              top: 0, // Posiciona el Slider encima del medidor
-              left: -20,
-              right: -20,
-              child: Slider(
-                activeColor: Colors.transparent,
-                thumbColor: Colors.black,
-                inactiveColor: Colors.transparent,
-                secondaryActiveColor: Colors.transparent,
-                min: 5,
-                max: 350,
-                value: pesoActual,
-                label: '${pesoActual.toInt()} kg',
-                onChanged: (value) {
-                  onPesoChanged(
-                    value,
-                  ); // Llamamos a la función para notificar el cambio
-                },
-              ),
-            ),
-          ],
+        child: SizedBox(
+          height: 120,
+          width: Get.width,
+          child: CintaMetrica(
+            min: 10,
+            max: 300,
+            step: 1,
+            value: 60,
+            onChanged: onPesoChanged,
+          ),
         ),
       ),
     ],

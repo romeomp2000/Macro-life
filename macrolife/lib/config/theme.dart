@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const greenTheme1_ = Color.fromARGB(255, 0, 0, 0);
 const blackTheme1_ = Color(0xFF002A3A);
-const fondoTheme1_ = Color.fromARGB(255, 247, 247, 247); // F2F2F2
+const fondoTheme1_ = Colors.white;
 
 const blackTheme2_ = Color.fromRGBO(1, 0, 7, 1); // 44, 47, 58
 

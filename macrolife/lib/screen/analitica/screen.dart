@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:macrolife/screen/peso/screen.dart';
+import 'package:macrolife/screen/peso_objetivo/screen.dart';
 
 class AnaliticaScreen extends StatelessWidget {
   const AnaliticaScreen({super.key});
@@ -36,33 +38,30 @@ class AnaliticaScreen extends StatelessWidget {
                       width: 27,
                     ),
                     const SizedBox(width: 10),
-                    Text.rich(
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
-                      TextSpan(
-                        text: 'Peso objetivo: ',
-                        style: const TextStyle(color: Colors.black),
-                        children: [
-                          TextSpan(
-                            text:
-                                '${usuarioController.usuario.value.pesoObjetivo} Kg',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
+                    Obx(
+                      () => Text.rich(
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                        TextSpan(
+                          text: 'Peso objetivo: ',
+                          style: const TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(
+                              text:
+                                  '${usuarioController.usuario.value.pesoObjetivo} Kg',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
                 GestureDetector(
-                  onTap: () => {},
-                  // st: ElevatedButton.styleFrom(
-                  //   foregroundColor: Colors.white,
-                  //   backgroundColor: Colors.black, // Letras blancas
-                  //   padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
-                  // ),
+                  onTap: () => {Get.to(() => PesoObjetivosScreen())},
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(12.0, 5.0, 12.0, 5.0),
                     decoration: BoxDecoration(
@@ -152,6 +151,7 @@ class AnaliticaScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       // Acción del botón
+                      Get.to(() => PesoActualizarScreen());
                     },
                     child: Container(
                       width: double.infinity,
@@ -237,10 +237,10 @@ class AnaliticaScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Icon(
-                        Icons.help_outline,
-                        color: Colors.black54,
-                      ),
+                      // const Icon(
+                      //   Icons.help_outline,
+                      //   color: Colors.black54,
+                      // ),
                     ],
                   ),
                   const SizedBox(height: 16),

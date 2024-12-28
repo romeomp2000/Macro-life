@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-// import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:health/health.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/selected_model.dart';
@@ -13,6 +14,55 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 class FuncionesGlobales {
+  static void appleHealth() async {
+// define the types to get
+    List<HealthDataType> types = [
+      HealthDataType.STEPS,
+      HealthDataType.BLOOD_GLUCOSE,
+      HealthDataType.WORKOUT,
+      HealthDataType.SLEEP_IN_BED,
+      HealthDataType.HEART_RATE,
+      HealthDataType.WEIGHT,
+    ];
+
+// Filter types depending on platform
+    if (Platform.isIOS) {
+      types = [
+        HealthDataType.STEPS,
+        HealthDataType.HEART_RATE,
+        HealthDataType.WORKOUT,
+        HealthDataType.WEIGHT,
+        HealthDataType.SLEEP_IN_BED,
+      ];
+    }
+
+    HealthFactory health = HealthFactory(useHealthConnectIfAvailable: true);
+
+    // Request authorization for the filtered types
+    bool requested = await health.requestAuthorization(types);
+
+    if (requested) {
+      var now = DateTime.now();
+      try {
+        // Fetch health data
+        List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(
+          now.subtract(Duration(days: 1)),
+          now,
+          types,
+        );
+
+        // Process fetched data
+        for (var point in healthData) {
+          print('${point.type}: ${point.value}');
+        }
+      } catch (error) {
+        print('Error fetching health data: $error');
+      }
+    } else {
+      print('Authorization not granted');
+    }
+  }
+
   static void vibratePress() {
     // if (Platform.isIOS) {
     //   Vibrate.feedback(FeedbackType.impact);

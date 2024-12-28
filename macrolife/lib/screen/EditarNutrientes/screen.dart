@@ -43,7 +43,7 @@ class EditarNutrientesScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
+            // const SizedBox(height: 20),
             Text(
               title,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 27),

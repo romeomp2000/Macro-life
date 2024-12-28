@@ -126,7 +126,7 @@ class WeeklyCalendarController extends GetxController {
                         height: 220,
                       ),
                       Positioned(
-                        top: 60,
+                        top: 58,
                         child: Obx(
                           () => NumberWithBorder(
                               number:
@@ -173,17 +173,27 @@ class WeeklyCalendarController extends GetxController {
                               Text(
                                 dia,
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const SizedBox(height: 4),
-                              Icon(
-                                estado == true
-                                    ? Icons.check_circle
-                                    : Icons.circle_rounded,
-                                color: estado == true
-                                    ? Colors.black
-                                    : Colors.grey[200],
+                              Container(
+                                width: 18, // Ancho del cuadrado
+                                height: 18, // Alto del cuadrado
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.black45, // Color del borde
+                                      width: 1, // Grosor del borde
+                                    ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5))),
                               ),
+                              // Icon(
+                              //   estado == true ? Icons.star : Icons.gif_box,
+                              //   color: estado == true
+                              //       ? Colors.black
+                              //       : Colors.grey[200],
+                              // ),
                             ],
                           );
                         }).toList(),

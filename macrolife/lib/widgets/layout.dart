@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/config/theme.dart';
@@ -289,100 +288,98 @@ class EscanearAlimentosController extends GetxController {
                 padding: const EdgeInsets.all(12),
                 color: Colors.white,
                 height: Get.height - 80,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Mejor practicas de escaneo',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 35,
-                      ),
-                    ),
-                    Image.asset(
-                      'assets/icons/pantalla_proceso_1125x2436_corto.png',
-                      width: Get.width,
-                      height: 250,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter,
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Consejos generales',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        color: Colors.grey[50],
-                        child: const Column(
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.circle,
-                                    size: 5, color: Colors.black45),
-                                SizedBox(width: 8),
-                                Expanded(
-                                  // Esto permitirá que el texto se ajuste y se envuelva
-                                  child: Text(
-                                    'Manténgase los alimentos dentro de las lineas de escaneo.',
-                                    softWrap:
-                                        true, // Esto asegura que el texto se envuelva
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Icon(Icons.circle,
-                                    size: 5, color: Colors.black45),
-                                SizedBox(width: 8),
-                                Expanded(
-                                  // Esto permitirá que el texto se ajuste y se envuelva
-                                  child: Text(
-                                    'Mantén tu teléfono fijo para que la imagen no salga borrosa.',
-                                    softWrap:
-                                        true, // Esto asegura que el texto se envuelva
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Icon(Icons.circle,
-                                    size: 5, color: Colors.black45),
-                                SizedBox(width: 8),
-                                Expanded(
-                                  // Esto permitirá que el texto se ajuste y se envuelva
-                                  child: Text(
-                                    'No tomes la fotografía desde ángulos oscuros.',
-                                    softWrap:
-                                        true, // Esto asegura que el texto se envuelva
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
+                child: SingleChildScrollView(
+                  // Envuelve el Column en un SingleChildScrollView
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Mejores practicas de escaneo',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 35,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: Get.width,
-                      child: CustomElevatedButton(
-                        message: 'Escanear ahora',
-                        function: () => Get.back(),
+                      Image.asset(
+                        'assets/icons/pantalla_proceso_1125x2436_corto.png',
+                        width: Get.width,
+                        height: 250,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter,
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Consejos generales',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      ClipRRect(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          color: Colors.grey[50],
+                          child: const Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.circle,
+                                      size: 5, color: Colors.black45),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      'Manténgase los alimentos dentro de las lineas de escaneo.',
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Icon(Icons.circle,
+                                      size: 5, color: Colors.black45),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      'Mantén tu teléfono fijo para que la imagen no salga borrosa.',
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Icon(Icons.circle,
+                                      size: 5, color: Colors.black45),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      'No tomes la fotografía desde ángulos oscuros.',
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: Get.width,
+                        child: CustomElevatedButton(
+                          message: 'Escanear ahora',
+                          function: () => Get.back(),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
