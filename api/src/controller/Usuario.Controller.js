@@ -3,6 +3,8 @@ const UsuarioModel = require('../models/Usuario.Model');
 const buscaUsuario = async (req, res) => {
   const { id } = req.params;
   try {
+    console.log(req.body);
+
     const usuario = await UsuarioModel.findById(id);
 
     if (!usuario) {
@@ -19,16 +21,16 @@ const buscaUsuario = async (req, res) => {
 const buscaAuth = async (req, res) => {
   const { googleId, appleID } = req.body;
   try {
-    if (!googleId) {
+    console.log(req.body);
+    if (googleId) {
       const usuario = await UsuarioModel.findOne({ googleId });
 
       if (!usuario) {
         return res.status(400).json({ message: 'El usuario no existe.' });
       }
-      return res.status(200).json({ usuario });
-    }
 
-    if (!appleID) {
+      return res.status(200).json({ usuario });
+    } else if (appleID) {
       const usuario = await UsuarioModel.findOne({ appleID });
 
       if (!usuario) {
