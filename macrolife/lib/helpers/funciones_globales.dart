@@ -1,6 +1,5 @@
 import 'package:camera/camera.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:health/health.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
@@ -12,6 +11,7 @@ import 'dart:typed_data';
 import 'package:image/image.dart' as img;
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/services.dart';
 
 class FuncionesGlobales {
   static void appleHealth() async {
@@ -64,9 +64,9 @@ class FuncionesGlobales {
   }
 
   static void vibratePress() {
-    // if (Platform.isIOS) {
-    //   Vibrate.feedback(FeedbackType.impact);
-    // }
+    if (Platform.isIOS) {
+      HapticFeedback.lightImpact();
+    }
   }
 
   static Future<String> getDeviceToken() async {

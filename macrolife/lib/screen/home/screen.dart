@@ -443,27 +443,26 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(7, (dayIndex) {
               DateTime day = weekStart.add(Duration(days: dayIndex));
-              // bool isFutureDay = controller.today.value.isAfter(day);
-
               return GestureDetector(
                 onTap: () {
-                  // if (!isFutureDay) {
                   controller.today.value = day;
                   controller.cargaAlimentos();
-                  // }
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: Obx(() {
+                    bool isSelected =
+                        controller.isSameDay(controller.today.value, day);
+
                     return Column(
                       children: [
                         Container(
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: Colors.black26,
+                              color: isSelected ? Colors.black : Colors.black26,
                             ),
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.white54,
+                            color: isSelected ? Colors.black : Colors.white54,
                           ),
                           child: Container(
                             width: 35,
@@ -475,10 +474,9 @@ class HomeScreen extends StatelessWidget {
                                   .substring(0, 1)
                                   .toUpperCase(),
                               style: TextStyle(
-                                color: controller.today.value == day
-                                    ? Colors.black
-                                    : Colors.black54,
-                                fontWeight: controller.today.value == day
+                                color:
+                                    isSelected ? Colors.white : Colors.black54,
+                                fontWeight: isSelected
                                     ? FontWeight.bold
                                     : FontWeight.normal,
                               ),
@@ -486,16 +484,12 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
-
-                        // Número del día sin borde ni fondo
+                        // Número del día
                         Text(
                           day.day.toString(),
                           style: TextStyle(
-                            color: controller.today.value == day
-                                ? Colors
-                                    .black // Color del número cuando está seleccionado
-                                : Colors.black26,
-                            fontWeight: controller.today.value == day
+                            color: isSelected ? Colors.black : Colors.black54,
+                            fontWeight: isSelected
                                 ? FontWeight.bold
                                 : FontWeight.normal,
                           ),

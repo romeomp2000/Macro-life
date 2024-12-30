@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,10 +10,6 @@ class AnaliticaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UsuarioController usuarioController = Get.put(UsuarioController());
-    var resultadoIMC = calcularIMCConClasificacion(
-      usuarioController.usuario.value.pesoActual ?? 0,
-      (usuarioController.usuario.value.altura ?? 0) / 100, // Convertir a metros
-    );
 
     return SafeArea(
       child: Padding(
@@ -115,23 +110,25 @@ class AnaliticaScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 8),
-                            Text.rich(
-                              TextSpan(
-                                text: 'Peso actual',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text:
-                                        ' ${usuarioController.usuario.value.pesoActual} kg',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            Obx(
+                              () => Text.rich(
+                                TextSpan(
+                                  text: 'Peso actual',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black,
                                   ),
-                                ],
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          ' ${usuarioController.usuario.value.pesoActual} kg',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -186,95 +183,103 @@ class AnaliticaScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Título y categoría
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              const Text(
-                                'Tu peso es',
-                              ),
-                              const SizedBox(width: 10),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 5,
-                                  vertical: 4,
+            Obx(() {
+              var resultadoIMC = calcularIMCConClasificacion(
+                usuarioController.usuario.value.pesoActual ?? 0,
+                (usuarioController.usuario.value.altura ?? 0) / 100,
+              );
+
+              return Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Título y categoría
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Text(
+                                  'Tu peso es',
                                 ),
-                                decoration: BoxDecoration(
-                                  color: resultadoIMC['clasificacion']['color'],
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  '${resultadoIMC['clasificacion']['texto']}',
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                                const SizedBox(width: 10),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 5,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: resultadoIMC['clasificacion']
+                                        ['color'],
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    '${resultadoIMC['clasificacion']['texto']}',
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      // const Icon(
-                      //   Icons.help_outline,
-                      //   color: Colors.black54,
-                      // ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Peso
-                  Text(
-                    '${resultadoIMC['imc'].toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                              ],
+                            ),
+                          ],
+                        ),
+                        // const Icon(
+                        //   Icons.help_outline,
+                        //   color: Colors.black54,
+                        // ),
+                      ],
                     ),
-                  ),
+                    const SizedBox(height: 16),
 
-                  const SizedBox(height: 16),
+                    // Peso
+                    Text(
+                      '${resultadoIMC['imc'].toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
 
-                  // Indicador de rango
-                  IMCBar(imc: resultadoIMC['imc']),
+                    const SizedBox(height: 16),
 
-                  const SizedBox(height: 16),
+                    // Indicador de rango
+                    IMCBar(imc: resultadoIMC['imc']),
 
-                  // Etiquetas de rango
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      LegendItem(color: Colors.blue, text: 'Bajo peso'),
-                      LegendItem(color: Colors.green, text: 'Saludable'),
-                      LegendItem(color: Colors.yellow, text: 'Sobrepeso'),
-                      LegendItem(color: Colors.red, text: 'Obeso'),
-                    ],
-                  ),
-                ],
-              ),
-            )
+                    const SizedBox(height: 16),
+
+                    // Etiquetas de rango
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        LegendItem(color: Colors.blue, text: 'Bajo peso'),
+                        LegendItem(color: Colors.green, text: 'Saludable'),
+                        LegendItem(color: Colors.yellow, text: 'Sobrepeso'),
+                        LegendItem(color: Colors.red, text: 'Obeso'),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            })
           ],
         ),
       ),

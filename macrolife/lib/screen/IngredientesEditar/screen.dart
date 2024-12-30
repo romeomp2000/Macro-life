@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class IngredienteEditarScreen extends StatelessWidget {
   final IngredienteModel ingrediente;
@@ -76,19 +77,49 @@ class IngredienteEditarScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 35),
                 CupertinoListTile(
-                  leadingSize: 67,
+                  leadingSize: 70,
                   padding: EdgeInsets.zero,
-                  leading: CircularPercentIndicator(
-                    radius: 33.0,
-                    lineWidth: 5.0,
-                    percent: 0.5,
-                    center: const Icon(
-                      Icons.local_fire_department,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                    progressColor: Colors.black,
-                    backgroundColor: Colors.black12,
+                  leading: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        width: 40,
+                        child: SfCartesianChart(
+                          primaryYAxis: NumericAxis(
+                            minimum: 0,
+                            maximum: 100,
+                            interval: 50,
+                            opposedPosition: true,
+                            borderColor: Colors.black12,
+                            isVisible: false,
+                          ),
+                          plotAreaBackgroundColor: Colors.black12,
+                          primaryXAxis: CategoryAxis(
+                            isVisible: false,
+                          ),
+                          enableSideBySideSeriesPlacement: false,
+                          series: <CartesianSeries>[
+                            // Inicializa la serie de columnas (barras)
+                            ColumnSeries<ChartData, String>(
+                              dataSource: [
+                                // Fuente de datos
+                                ChartData('', 50, Colors.white),
+                              ],
+                              width: 1,
+                              color: Colors.black,
+                              xValueMapper: (ChartData data, _) => data.label,
+                              yValueMapper: (ChartData data, _) => data.value,
+                            )
+                          ],
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                        width: 30,
+                        height: 30,
+                      ),
+                    ],
                   ),
                   title: const Text(
                     'Calorías',
@@ -115,18 +146,49 @@ class IngredienteEditarScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 25),
                 CupertinoListTile(
-                  leadingSize: 67,
+                  leadingSize: 70,
                   padding: EdgeInsets.zero,
-                  leading: CircularPercentIndicator(
-                    radius: 33.0,
-                    lineWidth: 5.0,
-                    percent: 0.5,
-                    center: Image.network(
-                      'https://macrolife.app/images/app/home/iconografia_metas_28x28_proteinas.png',
-                      width: 15,
-                    ),
-                    progressColor: Colors.redAccent,
-                    backgroundColor: Colors.black12,
+                  leading: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        width: 40,
+                        child: SfCartesianChart(
+                          primaryYAxis: NumericAxis(
+                            minimum: 0,
+                            maximum: 100,
+                            interval: 50,
+                            opposedPosition: true,
+                            borderColor: Colors.black12,
+                            isVisible: false,
+                          ),
+                          plotAreaBackgroundColor: Colors.black12,
+                          primaryXAxis: CategoryAxis(
+                            isVisible: false,
+                          ),
+                          enableSideBySideSeriesPlacement: false,
+                          series: <CartesianSeries>[
+                            // Inicializa la serie de columnas (barras)
+                            ColumnSeries<ChartData, String>(
+                              dataSource: [
+                                // Fuente de datos
+                                ChartData('', 50, Colors.white),
+                              ],
+                              width: 1,
+                              color: Colors.red,
+                              xValueMapper: (ChartData data, _) => data.label,
+                              yValueMapper: (ChartData data, _) => data.value,
+                            )
+                          ],
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/icons/icono_filetecarne_90x69_nuevo.png',
+                        width: 30,
+                        height: 30,
+                      ),
+                    ],
                   ),
                   title: const Text(
                     'Objetivo de proteína',
@@ -153,18 +215,49 @@ class IngredienteEditarScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 25),
                 CupertinoListTile(
-                  leadingSize: 67,
+                  leadingSize: 70,
                   padding: EdgeInsets.zero,
-                  leading: CircularPercentIndicator(
-                    radius: 33.0,
-                    lineWidth: 5.0,
-                    percent: 0.5,
-                    center: Image.network(
-                      'https://macrolife.app/images/app/home/iconografia_metas_28x28_carbohidratos.png',
-                      width: 15,
-                    ),
-                    progressColor: const Color(0xFFE69938),
-                    backgroundColor: Colors.black12,
+                  leading: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        width: 40,
+                        child: SfCartesianChart(
+                          primaryYAxis: NumericAxis(
+                            minimum: 0,
+                            maximum: 100,
+                            interval: 50,
+                            opposedPosition: true,
+                            borderColor: Colors.black12,
+                            isVisible: false,
+                          ),
+                          plotAreaBackgroundColor: Colors.black12,
+                          primaryXAxis: CategoryAxis(
+                            isVisible: false,
+                          ),
+                          enableSideBySideSeriesPlacement: false,
+                          series: <CartesianSeries>[
+                            // Inicializa la serie de columnas (barras)
+                            ColumnSeries<ChartData, String>(
+                              dataSource: [
+                                // Fuente de datos
+                                ChartData('', 50, Colors.white),
+                              ],
+                              width: 1,
+                              color: Colors.orange,
+                              xValueMapper: (ChartData data, _) => data.label,
+                              yValueMapper: (ChartData data, _) => data.value,
+                            )
+                          ],
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
+                        width: 30,
+                        height: 30,
+                      ),
+                    ],
                   ),
                   title: const Text(
                     'Meta de carbohidratos',
@@ -191,18 +284,49 @@ class IngredienteEditarScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 25),
                 CupertinoListTile(
-                  leadingSize: 67,
+                  leadingSize: 70,
                   padding: EdgeInsets.zero,
-                  leading: CircularPercentIndicator(
-                    radius: 33.0,
-                    lineWidth: 5.0,
-                    percent: 0.5,
-                    center: Image.network(
-                      'https://macrolife.app/images/app/home/iconografia_metas_28x28_grasas.png',
-                      width: 15,
-                    ),
-                    progressColor: Colors.blueAccent,
-                    backgroundColor: Colors.black12,
+                  leading: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        width: 40,
+                        child: SfCartesianChart(
+                          primaryYAxis: NumericAxis(
+                            minimum: 0,
+                            maximum: 100,
+                            interval: 50,
+                            opposedPosition: true,
+                            borderColor: Colors.black12,
+                            isVisible: false,
+                          ),
+                          plotAreaBackgroundColor: Colors.black12,
+                          primaryXAxis: CategoryAxis(
+                            isVisible: false,
+                          ),
+                          enableSideBySideSeriesPlacement: false,
+                          series: <CartesianSeries>[
+                            // Inicializa la serie de columnas (barras)
+                            ColumnSeries<ChartData, String>(
+                              dataSource: [
+                                // Fuente de datos
+                                ChartData('', 50, Colors.white),
+                              ],
+                              width: 1,
+                              color: Colors.blue,
+                              xValueMapper: (ChartData data, _) => data.label,
+                              yValueMapper: (ChartData data, _) => data.value,
+                            )
+                          ],
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/icons/icono_almedraazul_74x70_nuevo.png',
+                        width: 30,
+                        height: 30,
+                      ),
+                    ],
                   ),
                   title: const Text(
                     'Objetivo de grasas',

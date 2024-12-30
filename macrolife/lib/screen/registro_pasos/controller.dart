@@ -2,11 +2,14 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
+import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/funciones_globales.dart';
+import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/services/auth_service.dart';
 
 class RegistroPasosController extends GetxController {
   final authService = AuthService();
+  final UsuarioController usuarioController = Get.find();
 
   void signWithApple() async {
     try {
@@ -32,6 +35,23 @@ class RegistroPasosController extends GetxController {
 
       if (uuid != null) {
         appleUUID.value = uuid;
+      }
+
+      if (uuid != null) {
+        final apiService = ApiService();
+
+        final response = await apiService.fetchData(
+          'usuario/buscar-auth',
+          method: Method.POST,
+          body: {
+            'googleId': '',
+            'appleID': uuid,
+          },
+        );
+
+        usuarioController.saveUsuarioFromJson(response['usuario']);
+
+        Get.offAndToNamed('/layout');
       }
     } catch (e) {
       print(e);
@@ -69,6 +89,23 @@ class RegistroPasosController extends GetxController {
 
       if (uuid != null) {
         googleUUID.value = uuid;
+      }
+
+      if (uuid != null) {
+        final apiService = ApiService();
+
+        final response = await apiService.fetchData(
+          'usuario/buscar-auth',
+          method: Method.POST,
+          body: {
+            'googleId': uuid,
+            'appleID': '',
+          },
+        );
+
+        usuarioController.saveUsuarioFromJson(response['usuario']);
+
+        Get.offAndToNamed('/layout');
       }
     } catch (e) {
       print(e);
@@ -109,7 +146,6 @@ class RegistroPasosController extends GetxController {
 
   final codigoController = TextEditingController();
   var codigo = ''.obs;
-
 
   final telefonoController = TextEditingController();
   final telefono = ''.obs;

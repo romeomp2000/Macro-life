@@ -68,45 +68,39 @@ class FoodDatabaseScreen extends StatelessWidget {
                       final alimento = controller.alimentos[index];
                       return Column(
                         children: [
-                          ListTile(
-                            onTap: () {
-                              Get.to(FoodDatabaseAlimentoScreen(
-                                alimento: alimento,
-                              ));
-                            },
-                            subtitleTextStyle: TextStyle(color: Colors.black),
-                            title: Text(
-                              alimento.nombre!,
-                              style: TextStyle(fontWeight: FontWeight.w500),
-                            ),
-                            // trailing: IconButton(
-                            //   onPressed: () {},
-                            //   icon: Container(
-                            //     padding: EdgeInsets.all(10),
-                            //     decoration: BoxDecoration(
-                            //       color: Colors.grey[100],
-                            //       borderRadius:
-                            //           BorderRadius.all(Radius.circular(15)),
-                            //     ),
-                            //     child: Image.asset(
-                            //       'assets/icons/icono_mas_44x44_negro.png',
-                            //       width: 12,
-                            //     ),
-                            //   ),
-                            // ),
-                            subtitle: Row(
-                              children: [
-                                Image.asset(
-                                  'assets/icons/icono_calorias_negro_99x117_nuevo.png',
-                                  width: 18,
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.grey[100],
+                                borderRadius: BorderRadius.circular(10)),
+                            child: ListTile(
+                              trailing: Icon(Icons.add),
+                              onTap: () {
+                                Get.to(FoodDatabaseAlimentoScreen(
+                                  alimento: alimento,
+                                ));
+                              },
+                              subtitleTextStyle: TextStyle(color: Colors.black),
+                              title: Text(
+                                alimento.nombre!,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 13,
                                 ),
-                                const SizedBox(width: 8),
-                                Text(
-                                    '${alimento.calorias!.toStringAsFixed(0)} calorías')
-                              ],
+                              ),
+                              subtitle: Row(
+                                children: [
+                                  Image.asset(
+                                    'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                                    width: 18,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                      '${alimento.calorias!.toStringAsFixed(0)} calorías')
+                                ],
+                              ),
                             ),
                           ),
-                          const SizedBox(height: 3),
+                          const SizedBox(height: 8),
                         ],
                       );
                     },

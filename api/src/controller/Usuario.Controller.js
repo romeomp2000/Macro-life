@@ -16,6 +16,35 @@ const buscaUsuario = async (req, res) => {
   }
 };
 
+const buscaAuth = async (req, res) => {
+  const { googleId, appleID } = req.body;
+  try {
+    if (!googleId) {
+      const usuario = await UsuarioModel.findOne({ googleId });
+
+      if (!usuario) {
+        return res.status(400).json({ message: 'El usuario no existe.' });
+      }
+      return res.status(200).json({ usuario });
+    }
+
+    if (!appleID) {
+      const usuario = await UsuarioModel.findOne({ appleID });
+
+      if (!usuario) {
+        return res.status(400).json({ message: 'El usuario no existe.' });
+      }
+      return res.status(200).json({ usuario });
+    }
+
+    return res.status(400).json({ message: 'El usuario no existe.' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+  }
+};
+
 module.exports = {
-  buscaUsuario
+  buscaUsuario,
+  buscaAuth
 };

@@ -91,6 +91,7 @@ class NutricionScreen extends StatelessWidget {
                                 if (nombreRaname != null) {
                                   controller.alimento.value.name =
                                       nombreRaname!;
+                                  controller.alimento.refresh();
                                 }
                               },
                               child: Obx(
@@ -370,79 +371,79 @@ class NutricionScreen extends StatelessWidget {
               );
             },
           ),
-          Positioned(
-            top: Get.height - 94,
-            child: Container(
-              decoration: const BoxDecoration(
-                border:
-                    Border.fromBorderSide(BorderSide(color: Colors.black12)),
-                color: Colors.white,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Container(
-                  width: Get.width - 30,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () => Get.back(),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.black,
-                            side: const BorderSide(color: Colors.black),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  'assets/icons/icono_inteligencia_artificial_120x120_negro.png',
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                const SizedBox(width: 8),
-                                // Usar Wrap para manejar el texto largo
-                                const Text(
-                                  'Corregir\n resultados',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 15),
-                                  softWrap:
-                                      true, // Habilitar el ajuste de línea
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            controller.actualizarComidaAlimento();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text('Guardar'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   top: Get.height - 94,
+          //   child: Container(
+          //     decoration: const BoxDecoration(
+          //       border:
+          //           Border.fromBorderSide(BorderSide(color: Colors.black12)),
+          //       color: Colors.white,
+          //     ),
+          //     child: Padding(
+          //       padding: const EdgeInsets.all(15.0),
+          //       child: Container(
+          //         width: Get.width - 30,
+          //         child: Row(
+          //           children: [
+          //             Expanded(
+          //               child: ElevatedButton(
+          //                 onPressed: () => Get.back(),
+          //                 style: ElevatedButton.styleFrom(
+          //                   backgroundColor: Colors.white,
+          //                   foregroundColor: Colors.black,
+          //                   side: const BorderSide(color: Colors.black),
+          //                   shape: RoundedRectangleBorder(
+          //                     borderRadius: BorderRadius.circular(20),
+          //                   ),
+          //                 ),
+          //                 child: Padding(
+          //                   padding: const EdgeInsets.all(8.0),
+          //                   child: Row(
+          //                     children: [
+          //                       Image.asset(
+          //                         'assets/icons/icono_inteligencia_artificial_120x120_negro.png',
+          //                         width: 20,
+          //                         height: 20,
+          //                       ),
+          //                       const SizedBox(width: 8),
+          //                       // Usar Wrap para manejar el texto largo
+          //                       const Text(
+          //                         'Corregir\n resultados',
+          //                         textAlign: TextAlign.center,
+          //                         style: TextStyle(fontSize: 15),
+          //                         softWrap:
+          //                             true, // Habilitar el ajuste de línea
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //             const SizedBox(width: 10),
+          //             Expanded(
+          //               child: ElevatedButton(
+          //                 onPressed: () {
+          //                   controller.actualizarComidaAlimento();
+          //                 },
+          //                 style: ElevatedButton.styleFrom(
+          //                   backgroundColor: Colors.black,
+          //                   foregroundColor: Colors.white,
+          //                   shape: RoundedRectangleBorder(
+          //                     borderRadius: BorderRadius.circular(20),
+          //                   ),
+          //                 ),
+          //                 child: const Padding(
+          //                   padding: EdgeInsets.all(8.0),
+          //                   child: Text('Guardar'),
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Positioned(
             top: 0,
             right: 0,
@@ -476,19 +477,19 @@ class NutricionScreen extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[400],
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(30)),
-                          ),
-                          child: IconButton(
-                            iconSize: 23,
-                            color: Colors.white,
-                            icon: const Icon(Icons.ios_share),
-                            onPressed: () => Get.back(),
-                          ),
-                        ),
+                        // Container(
+                        //   decoration: BoxDecoration(
+                        //     color: Colors.grey[400],
+                        //     borderRadius:
+                        //         const BorderRadius.all(Radius.circular(30)),
+                        //   ),
+                        //   child: IconButton(
+                        //     iconSize: 23,
+                        //     color: Colors.white,
+                        //     icon: const Icon(Icons.ios_share),
+                        //     onPressed: () => Get.back(),
+                        //   ),
+                        // ),
                         const SizedBox(width: 8),
                         Container(
                           decoration: BoxDecoration(

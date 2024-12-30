@@ -51,12 +51,6 @@ class WeeklyCalendarController extends GetxController {
     return startOfWeek.add(Duration(days: finalOffset * 7));
   }
 
-  // Método para verificar si el día es el seleccionado
-  bool isSelected(DateTime day) {
-    return today.value
-        .isSameDay(day); // Usamos la extensión para comparar fechas
-  }
-
   void onRachaDias() {
     Get.bottomSheet(
       isDismissible: true, // Permite cerrar al presionar fuera
@@ -177,23 +171,33 @@ class WeeklyCalendarController extends GetxController {
                                 ),
                               ),
                               const SizedBox(height: 4),
-                              Container(
-                                width: 18, // Ancho del cuadrado
-                                height: 18, // Alto del cuadrado
-                                decoration: BoxDecoration(
+                              if (estado == true)
+                                Container(
+                                  width: 18, // Ancho del cuadrado
+                                  height: 18, // Alto del cuadrado
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
                                     border: Border.all(
                                       color: Colors.black45, // Color del borde
                                       width: 1, // Grosor del borde
                                     ),
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(5))),
-                              ),
-                              // Icon(
-                              //   estado == true ? Icons.star : Icons.gif_box,
-                              //   color: estado == true
-                              //       ? Colors.black
-                              //       : Colors.grey[200],
-                              // ),
+                                        BorderRadius.all(Radius.circular(5)),
+                                  ),
+                                )
+                              else
+                                Container(
+                                  width: 18, // Ancho del cuadrado
+                                  height: 18, // Alto del cuadrado
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color:
+                                            Colors.black45, // Color del borde
+                                        width: 1, // Grosor del borde
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5))),
+                                ),
                             ],
                           );
                         }).toList(),
@@ -244,9 +248,20 @@ class WeeklyCalendarController extends GetxController {
         date.year == current.year;
   }
 
+  bool isSameDay(DateTime date1, DateTime date2) {
+    return date1.day == date2.day &&
+        date1.month == date2.month &&
+        date1.year == date2.year;
+  }
+
+  bool isSelected(DateTime day) {
+    return isSameDay(today.value, day);
+  }
+
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
+    today.value = DateTime.now();
     cargaAlimentos();
   }
 

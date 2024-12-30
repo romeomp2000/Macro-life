@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:macrolife/config/api_service.dart';
+import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 
 class PesoObjetivoController extends GetxController {
@@ -14,6 +15,8 @@ class PesoObjetivoController extends GetxController {
   }
 
   void guardaObjetivoPeso() async {
+    FuncionesGlobales.vibratePress();
+
     controllerUsuario.usuario.value.pesoObjetivo = pesoObjetivo.value;
 
     controllerUsuario.usuario.refresh();
@@ -21,7 +24,6 @@ class PesoObjetivoController extends GetxController {
 
     Get.back();
 
-    // 'peso-objetivo'
     final apiService = ApiService();
 
     await apiService.fetchData(

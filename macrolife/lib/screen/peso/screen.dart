@@ -9,10 +9,15 @@ class PesoActualizarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<int> pesos = List<int>.generate(341, (i) => 20 + i);
-    int defaultPeso = 20;
-    int defaultPesoIndex = pesos.indexOf(defaultPeso);
 
     PesoObjetivoController controller = Get.put(PesoObjetivoController());
+
+    // Obtener el índice inicial correspondiente al peso actual del usuario
+    final initialIndex = pesos.indexOf(controller.peso.value);
+
+    final FixedExtentScrollController scrollController =
+        FixedExtentScrollController(initialItem: initialIndex);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -23,7 +28,7 @@ class PesoActualizarScreen extends StatelessWidget {
           ),
           onPressed: () => Get.back(),
         ),
-        title: const Text('Establacer pesos'),
+        title: const Text('Establecer pesos'),
       ),
       body: Column(
         children: [
@@ -67,12 +72,8 @@ class PesoActualizarScreen extends StatelessWidget {
                                       height: 180,
                                       child: CupertinoPicker(
                                         itemExtent: 32.0,
-                                        scrollController:
-                                            FixedExtentScrollController(
-                                          initialItem: controller.peso.value,
-                                        ),
+                                        scrollController: scrollController,
                                         onSelectedItemChanged: (int index) {
-                                          // onPesoSelected(pesos[index]);
                                           controller.peso.value = pesos[index];
                                         },
                                         children: pesos.map((peso) {
