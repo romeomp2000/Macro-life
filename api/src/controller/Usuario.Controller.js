@@ -46,7 +46,133 @@ const buscaAuth = async (req, res) => {
   }
 };
 
+const actualizarNombre = async (req, res) => {
+  const { idUsuario, nombre } = req.body;
+
+  try {
+    const updatedUsuario = await UsuarioModel.findByIdAndUpdate(
+      idUsuario,
+      { nombre },
+      { new: true }
+    );
+
+    return res.status(200).json({ usuario: updatedUsuario });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+  }
+};
+
+const actualizarTelefono = async (req, res) => {
+  const { idUsuario, telefono } = req.body;
+
+  try {
+    const updatedUsuario = await UsuarioModel.findByIdAndUpdate(
+      idUsuario,
+      { telefono },
+      { new: true }
+    );
+
+    return res.status(200).json({ usuario: updatedUsuario });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+  }
+};
+
+const actualizarCorreo = async (req, res) => {
+  const { idUsuario, correo } = req.body;
+
+  try {
+    const updatedUsuario = await UsuarioModel.findByIdAndUpdate(
+      idUsuario,
+      { correo },
+      { new: true }
+    );
+
+    return res.status(200).json({ usuario: updatedUsuario });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+  }
+};
+
+const actualizarPeso = async (req, res) => {
+  const { idUsuario, peso } = req.body;
+
+  try {
+    const updatedUsuario = await UsuarioModel.findByIdAndUpdate(
+      idUsuario,
+      { peso },
+      { new: true }
+    );
+
+    return res.status(200).json({ usuario: updatedUsuario });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+  }
+};
+
+const actualizarAltura = async (req, res) => {
+  const { idUsuario, altura } = req.body;
+
+  try {
+    const updatedUsuario = await UsuarioModel.findByIdAndUpdate(
+      idUsuario,
+      { altura },
+      { new: true }
+    );
+
+    return res.status(200).json({ usuario: updatedUsuario });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+  }
+};
+
+const actualizarFechaNacimiento = async (req, res) => {
+  const { idUsuario, fechaNacimiento } = req.body;
+
+  try {
+    const updatedUsuario = await UsuarioModel.findByIdAndUpdate(
+      idUsuario,
+      { fechaNacimiento },
+      { new: true }
+    );
+
+    return res.status(200).json({ usuario: updatedUsuario });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+  }
+};
+
+const actualizarGenero = async (req, res) => {
+  const { idUsuario, genero } = req.body;
+
+  try {
+    const updatedUsuario = await UsuarioModel.findByIdAndUpdate(
+      idUsuario,
+      { genero },
+      { new: true }
+    );
+
+    return res.status(200).json({ usuario: updatedUsuario });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+  }
+};
+
 module.exports = {
   buscaUsuario,
-  buscaAuth
+  buscaAuth,
+  actualizarNombre,
+  actualizarTelefono,
+  actualizarCorreo,
+  actualizarAltura,
+  actualizarPeso,
+  actualizarFechaNacimiento,
+  actualizarGenero
 };
