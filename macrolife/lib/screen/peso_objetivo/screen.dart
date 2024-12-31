@@ -21,7 +21,7 @@ class PesoObjetivosScreen extends StatelessWidget {
           ),
           onPressed: () => Get.back(),
         ),
-        title: const Text(' objetivo de peso'),
+        title: const Text(' Objetivo de peso'),
       ),
       body: Column(
         children: [
@@ -69,8 +69,9 @@ class PesoObjetivosScreen extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          Container(
             width: Get.width - 20,
+            margin: EdgeInsets.only(bottom: GetPlatform.isIOS ? 30 : 0),
             child: ElevatedButton(
               onPressed: () => {controller.guardaObjetivoPeso()},
               style: ElevatedButton.styleFrom(

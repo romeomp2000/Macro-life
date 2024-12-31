@@ -443,9 +443,15 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(7, (dayIndex) {
               DateTime day = weekStart.add(Duration(days: dayIndex));
+              // DateTime dayActual = DateTime.now();
               return GestureDetector(
                 onTap: () {
+                  // if (day.isAfter(dayActual)) {
+                  //   print(day);
+                  //   return;
+                  // }
                   controller.today.value = day;
+                  // print(controller.today.value);
                   controller.cargaAlimentos();
                 },
                 child: Padding(

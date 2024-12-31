@@ -10,6 +10,7 @@ import 'package:macrolife/helpers/configuraciones.dart';
 import 'package:macrolife/routes/app_pages.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:macrolife/widgets_home_screen/controller.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -18,6 +19,7 @@ void main() async {
   await GetStorage.init();
 
   final configuracionesController = Get.put(ConfiguracionesController());
+  final controllerWidget = Get.put(WidgetController());
   // await configuracionesController.buscaConfiguraciones();
   Stripe.merchantIdentifier = 'merchant.mx.posibilidades.macrolife';
 

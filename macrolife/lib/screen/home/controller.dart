@@ -208,7 +208,7 @@ class WeeklyCalendarController extends GetxController {
                   const SizedBox(height: 16),
                   // Mensaje
                   const Text(
-                    "¡Estás que ardes! Cada día cuenta para alcanzar tu meta",
+                    "¡Sigue así! Los objetivos se cumplen día tras día",
                     style: TextStyle(fontSize: 15),
                     textAlign: TextAlign.center,
                   ),

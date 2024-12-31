@@ -1,6 +1,8 @@
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:macrolife/routes/app_pages.dart';
+import 'package:macrolife/screen/analitica/info.dart';
 import 'package:macrolife/screen/peso/screen.dart';
 import 'package:macrolife/screen/peso_objetivo/screen.dart';
 
@@ -189,95 +191,112 @@ class AnaliticaScreen extends StatelessWidget {
                 (usuarioController.usuario.value.altura ?? 0) / 100,
               );
 
-              return Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
+              return Stack(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Título y categoría
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        // Título y categoría
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Tu peso es',
-                                ),
-                                const SizedBox(width: 10),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 5,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: resultadoIMC['clasificacion']
-                                        ['color'],
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    '${resultadoIMC['clasificacion']['texto']}',
-                                    style: const TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
+                                Row(
+                                  children: [
+                                    const Text(
+                                      'Tu peso es',
                                     ),
-                                  ),
+                                    const SizedBox(width: 10),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 5,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: resultadoIMC['clasificacion']
+                                            ['color'],
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(
+                                        '${resultadoIMC['clasificacion']['texto']}',
+                                        style: const TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
+                            // const Icon(
+                            //   Icons.help_outline,
+                            //   color: Colors.black54,
+                            // ),
                           ],
                         ),
-                        // const Icon(
-                        //   Icons.help_outline,
-                        //   color: Colors.black54,
-                        // ),
+                        const SizedBox(height: 16),
+
+                        // Peso
+                        Text(
+                          '${resultadoIMC['imc'].toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Indicador de rango
+                        IMCBar(imc: resultadoIMC['imc']),
+
+                        const SizedBox(height: 16),
+
+                        // Etiquetas de rango
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            LegendItem(color: Colors.blue, text: 'Bajo peso'),
+                            LegendItem(color: Colors.green, text: 'Saludable'),
+                            LegendItem(color: Colors.yellow, text: 'Sobrepeso'),
+                            LegendItem(color: Colors.red, text: 'Obeso'),
+                          ],
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 16),
-
-                    // Peso
-                    Text(
-                      '${resultadoIMC['imc'].toStringAsFixed(2)}',
-                      style: const TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Indicador de rango
-                    IMCBar(imc: resultadoIMC['imc']),
-
-                    const SizedBox(height: 16),
-
-                    // Etiquetas de rango
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        LegendItem(color: Colors.blue, text: 'Bajo peso'),
-                        LegendItem(color: Colors.green, text: 'Saludable'),
-                        LegendItem(color: Colors.yellow, text: 'Sobrepeso'),
-                        LegendItem(color: Colors.red, text: 'Obeso'),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 1,
+                    child: IconButton(
+                        onPressed: () async {
+                          await Get.to(() => InfoIMC());
+                        },
+                        icon: Icon(
+                          Icons.question_mark,
+                          size: 20,
+                          color: Colors.black,
+                        )),
+                  )
+                ],
               );
             })
           ],

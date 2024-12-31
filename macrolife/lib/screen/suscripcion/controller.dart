@@ -14,7 +14,7 @@ import 'package:pay/pay.dart';
 
 class SuscripcionController extends GetxController {
   final ConfiguracionesController configuraiones = Get.find();
-  final sucripcion = 'Mensual'.obs;
+  final sucripcion = 'Anual'.obs;
   final UsuarioController usuarioController = Get.find();
   final EscanearAlimentosController escanearAlimentoController =
       Get.put(EscanearAlimentosController());
