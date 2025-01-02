@@ -1,8 +1,16 @@
+import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/screen/peso/screen.dart';
 import 'package:macrolife/screen/peso_objetivo/screen.dart';
+import 'package:macrolife/widgets/EditarAltura.dart';
+import 'package:macrolife/widgets/EditarCorreo.dart';
+import 'package:macrolife/widgets/EditarFechaNacimiento.dart';
+import 'package:macrolife/widgets/EditarGenero.dart';
+import 'package:macrolife/widgets/EditarNombre.dart';
+import 'package:macrolife/widgets/EditarTelefono.dart';
+import 'package:intl/intl.dart';
 
 class DatallesPersonalesScreen extends StatelessWidget {
   const DatallesPersonalesScreen({super.key});
@@ -87,23 +95,72 @@ class DatallesPersonalesScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        Get.to(() => PesoActualizarScreen());
+                      onTap: () async {
+                        await actualizarNombre(controllerUsuario);
                       },
+                      child: Obx(
+                        () => _buildDetailRow('Nombre',
+                            controllerUsuario.usuario.value.nombre ?? ''),
+                      ),
+                    ),
+                    Divider(),
+                    GestureDetector(
+                      onTap: () async {
+                        await actualizarTelefono(controllerUsuario);
+                      },
+                      child: Obx(
+                        () => _buildDetailRow('Teléfono',
+                            controllerUsuario.usuario.value.telefono ?? ''),
+                      ),
+                    ),
+                    Divider(),
+                    GestureDetector(
+                      onTap: () async {
+                        await actualizarCorreo(controllerUsuario);
+                      },
+                      child: Obx(
+                        () => _buildDetailRow('Correo',
+                            controllerUsuario.usuario.value.correo ?? ''),
+                      ),
+                    ),
+                    Divider(),
+                    GestureDetector(
+                      onTap: () => Get.to(() => PesoActualizarScreen()),
                       child: Obx(
                         () => _buildDetailRow('Peso actual',
                             '${controllerUsuario.usuario.value.pesoActual} Kg'),
                       ),
                     ),
                     Divider(),
-                    _buildDetailRow('Altura',
-                        '${controllerUsuario.usuario.value.altura} cm'),
+                    GestureDetector(
+                      onTap: () async {
+                        await actualizarAltura(controllerUsuario);
+                      },
+                      child: Obx(
+                        () => _buildDetailRow('Altura',
+                            '${controllerUsuario.usuario.value.altura} cm'),
+                      ),
+                    ),
                     Divider(),
-                    _buildDetailRow('Fecha de nacimiento',
-                        '${controllerUsuario.usuario.value.fechaNacimientoFormato}'),
+                    GestureDetector(
+                      onTap: () async {
+                        await actualizarFechaNacimiento(controllerUsuario);
+                      },
+                      child: Obx(
+                        () => _buildDetailRow('Fecha de nacimiento',
+                            '${controllerUsuario.usuario.value.fechaNacimientoFormato}'),
+                      ),
+                    ),
                     Divider(),
-                    _buildDetailRow(
-                        'Género', '${controllerUsuario.usuario.value.genero}'),
+                    GestureDetector(
+                      onTap: () async {
+                        await actualizarGenero(controllerUsuario);
+                      },
+                      child: Obx(
+                        () => _buildDetailRow('Género',
+                            controllerUsuario.usuario.value.genero ?? ''),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -112,6 +169,152 @@ class DatallesPersonalesScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> actualizarNombre(UsuarioController controllerUsuario) async {
+    final nombreRaname = await Get.to(
+      () => EditarNombreScreen(
+        nombre: controllerUsuario.usuario.value.nombre ?? '',
+      ),
+    );
+
+    if (nombreRaname != null && nombreRaname != '') {
+      controllerUsuario.usuario.value.nombre = nombreRaname;
+      controllerUsuario.usuario.refresh();
+      final apiService = ApiService();
+
+      await apiService.fetchData(
+        'usuario/nombre',
+        method: Method.PUT,
+        body: {
+          'idUsuario': controllerUsuario.usuario.value.sId,
+          'nombre': nombreRaname
+        },
+      );
+    }
+  }
+
+  Future<void> actualizarTelefono(UsuarioController controllerUsuario) async {
+    final telefonoRename = await Get.to(
+      () => EditarTelefonoScreen(
+        telefono: controllerUsuario.usuario.value.telefono ?? '',
+      ),
+    );
+
+    if (telefonoRename != null && telefonoRename != '') {
+      controllerUsuario.usuario.value.telefono = telefonoRename;
+      controllerUsuario.usuario.refresh();
+      final apiService = ApiService();
+
+      await apiService.fetchData(
+        'usuario/telefono',
+        method: Method.PUT,
+        body: {
+          'idUsuario': controllerUsuario.usuario.value.sId,
+          'telefono': telefonoRename
+        },
+      );
+    }
+  }
+
+  Future<void> actualizarCorreo(UsuarioController controllerUsuario) async {
+    final correoRename = await Get.to(
+      () => EditarCorreoScreen(
+        correo: controllerUsuario.usuario.value.correo ?? '',
+      ),
+    );
+
+    if (correoRename != null && correoRename != '') {
+      controllerUsuario.usuario.value.correo = correoRename;
+      controllerUsuario.usuario.refresh();
+      final apiService = ApiService();
+
+      await apiService.fetchData(
+        'usuario/correo',
+        method: Method.PUT,
+        body: {
+          'idUsuario': controllerUsuario.usuario.value.sId,
+          'correo': correoRename
+        },
+      );
+    }
+  }
+
+  Future<void> actualizarAltura(UsuarioController controllerUsuario) async {
+    final alturaRename = await Get.to(
+      () => EditarAlturaScreen(
+        altura: controllerUsuario.usuario.value.altura ?? 0,
+      ),
+    );
+
+    if (alturaRename != null && alturaRename != '') {
+      controllerUsuario.usuario.value.altura = alturaRename;
+      controllerUsuario.usuario.refresh();
+      final apiService = ApiService();
+
+      await apiService.fetchData(
+        'usuario/altura',
+        method: Method.PUT,
+        body: {
+          'idUsuario': controllerUsuario.usuario.value.sId,
+          'altura': alturaRename
+        },
+      );
+    }
+  }
+
+  Future<void> actualizarGenero(UsuarioController controllerUsuario) async {
+    final generoRename = await Get.to(
+      () => EditarGeneroScreen(
+        genero: controllerUsuario.usuario.value.genero ?? '',
+      ),
+    );
+
+    if (generoRename != null && generoRename != '') {
+      controllerUsuario.usuario.value.genero = generoRename;
+      controllerUsuario.usuario.refresh();
+      final apiService = ApiService();
+
+      await apiService.fetchData(
+        'usuario/genero',
+        method: Method.PUT,
+        body: {
+          'idUsuario': controllerUsuario.usuario.value.sId,
+          'genero': generoRename
+        },
+      );
+    }
+  }
+
+  Future<void> actualizarFechaNacimiento(
+      UsuarioController controllerUsuario) async {
+    DateTime fechaNac =
+        DateTime.parse(controllerUsuario.usuario.value.fechaNacimiento ?? '');
+
+    final fechaNacimientoRename = await Get.to(
+        () => EditarFechaNacimientoScreen(fechaNacimiento: fechaNac));
+
+    if (fechaNacimientoRename != null && fechaNacimientoRename != '') {
+      DateTime fechaParse = DateTime.parse(fechaNacimientoRename);
+
+      controllerUsuario.usuario.value.fechaNacimiento =
+          fechaParse.toIso8601String();
+      controllerUsuario.usuario.value.fechaNacimientoFormato =
+          DateFormat('dd/MM/yyyy').format(fechaParse);
+
+      controllerUsuario.usuario.refresh();
+
+      final apiService = ApiService();
+
+      await apiService.fetchData(
+        'usuario/nacimiento',
+        method: Method.PUT,
+        body: {
+          'idUsuario': controllerUsuario.usuario.value.sId,
+          'fechaNacimiento': fechaNacimientoRename
+        },
+      );
+    }
   }
 
   Widget _buildDetailRow(String label, String value) {
@@ -130,8 +333,8 @@ class DatallesPersonalesScreen extends StatelessWidget {
                 value,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
-              // SizedBox(width: 8),
-              // Icon(Icons.edit, color: Colors.grey, size: 20),
+              SizedBox(width: 6),
+              Icon(Icons.edit, color: Colors.grey, size: 18),
             ],
           ),
         ],

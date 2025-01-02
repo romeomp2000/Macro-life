@@ -9,7 +9,7 @@ import 'package:macrolife/services/auth_service.dart';
 
 class RegistroPasosController extends GetxController {
   final authService = AuthService();
-  final UsuarioController usuarioController = Get.find();
+  final UsuarioController usuarioController = Get.put(UsuarioController());
 
   void signWithApple() async {
     try {

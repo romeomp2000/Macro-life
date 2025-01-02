@@ -4,7 +4,6 @@ import 'package:macrolife/screen/objetivos/controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class IngredienteEditarScreen extends StatelessWidget {

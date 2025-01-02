@@ -563,57 +563,64 @@ class NutritionWidget extends StatelessWidget {
                   )
                 else
                   Container(
-                    height: 30,
+                    padding: EdgeInsets.all(10),
+                    height: 180,
+                    width: width,
+                    child: Image.asset(
+                        'assets/icons/logo_macro_life_1125x207.png'),
                   ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${nutritionInfo.name}',
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500,
+                SizedBox(
+                  height: 210,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${nutritionInfo.name}',
+                          style: const TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Image.asset(
-                            'assets/icons/icono_calorias_negro_99x117_nuevo.png',
-                            width: 18,
-                            height: 18,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            '${nutritionInfo.calories} calorías', // Usamos el parámetro de las calorías
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                              width: 18,
+                              height: 18,
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      _buildNutritionItem(
-                        'assets/icons/icono_filetecarne_90x69_nuevo.png', // Ícono de proteínas
-                        '${nutritionInfo.protein}gr.', // Usamos el parámetro de proteínas
-                      ),
-                      const SizedBox(height: 10),
-                      _buildNutritionItem(
-                        'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png', // Ícono de carbohidratos
-                        '${nutritionInfo.carbs}gr', // Usamos el parámetro de carbohidratos
-                      ),
-                      const SizedBox(height: 10),
-                      _buildNutritionItem(
-                        'assets/icons/icono_almedraazul_74x70_nuevo.png', // Ícono de grasas
-                        '${nutritionInfo.fats}gr.', // Usamos el parámetro de grasas
-                      ),
-                      const SizedBox(height: 10),
-                    ],
+                            const SizedBox(width: 8),
+                            Text(
+                              '${nutritionInfo.calories} calorías', // Usamos el parámetro de las calorías
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        _buildNutritionItem(
+                          'assets/icons/icono_filetecarne_90x69_nuevo.png', // Ícono de proteínas
+                          '${nutritionInfo.protein}gr.', // Usamos el parámetro de proteínas
+                        ),
+                        const SizedBox(height: 10),
+                        _buildNutritionItem(
+                          'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png', // Ícono de carbohidratos
+                          '${nutritionInfo.carbs}gr.', // Usamos el parámetro de carbohidratos
+                        ),
+                        const SizedBox(height: 10),
+                        _buildNutritionItem(
+                          'assets/icons/icono_almedraazul_74x70_nuevo.png', // Ícono de grasas
+                          '${nutritionInfo.fats}gr.', // Usamos el parámetro de grasas
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
                   ),
                 ),
               ],

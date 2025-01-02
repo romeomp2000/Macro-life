@@ -10,7 +10,9 @@ import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/list_tile_model.dart';
 import 'package:macrolife/screen/EditarNutrientes/screen.dart';
 import 'package:macrolife/screen/objetivos/controller.dart';
+import 'package:macrolife/widgets/AlturaPicker.dart';
 import 'package:macrolife/widgets/Cinta_metrica.dart';
+import 'package:macrolife/widgets/FechaNacimientoPicker.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
 import 'package:macrolife/widgets/custom_elevated_selected.dart';
 import 'package:flutter/cupertino.dart';
@@ -1659,28 +1661,26 @@ class Steep extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (title.isNotEmpty)
-                  Text(
-                    title,
-                    style: const TextStyle(
-                        fontSize: 27, fontWeight: FontWeight.bold),
-                  ),
-                if (description != null)
-                  Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      Text(
-                        description ?? '',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ],
-                  ),
-              ],
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (title.isNotEmpty)
+                Text(
+                  title,
+                  style: const TextStyle(
+                      fontSize: 27, fontWeight: FontWeight.bold),
+                ),
+              if (description != null)
+                Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    Text(
+                      description ?? '',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+            ],
           ),
           Column(
             children: [
@@ -1719,260 +1719,6 @@ class Steep extends StatelessWidget {
   }
 }
 
-class AlturaPesoPicker extends StatelessWidget {
-  final ValueChanged<int> onAlturaSelected;
-  final ValueChanged<int> onPesoSelected;
-
-  // Agregar parámetros para los valores predeterminados reales
-  final int defaultAltura;
-  final int defaultPeso;
-
-  // Constructor que recibe las funciones de callback y los valores predeterminados reales
-  AlturaPesoPicker({
-    super.key,
-    required this.onAlturaSelected,
-    required this.onPesoSelected,
-    this.defaultAltura = 60, // Valor por defecto de altura
-    this.defaultPeso = 20, // Valor por defecto de peso
-  });
-
-  final List<int> alturas =
-      List<int>.generate(184, (i) => 60 + i); // Genera alturas de 60 a 243 cm
-  final List<int> pesos =
-      List<int>.generate(341, (i) => 20 + i); // Genera pesos de 20 a 360 kg
-
-  @override
-  Widget build(BuildContext context) {
-    // Encuentra el índice correspondiente al valor de altura y peso predeterminados
-    int defaultAlturaIndex = alturas.indexOf(defaultAltura);
-    int defaultPesoIndex = pesos.indexOf(defaultPeso);
-
-    return Center(
-      child: Column(
-        children: [
-          const Text(
-            "Métrica",
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      "Altura",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold), // Texto en negritas
-                    ),
-                    SizedBox(
-                      height: 170,
-                      child: CupertinoPicker(
-                        itemExtent: 32.0,
-                        scrollController: FixedExtentScrollController(
-                            initialItem:
-                                defaultAlturaIndex), // Índice correspondiente
-                        onSelectedItemChanged: (int index) {
-                          // Llama a la función callback con el valor seleccionado
-                          onAlturaSelected(alturas[index]);
-                        },
-                        children: alturas.map((altura) {
-                          return Center(child: Text('$altura cm'));
-                        }).toList(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      "Peso",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold), // Texto en negritas
-                    ),
-                    SizedBox(
-                      height: 170,
-                      child: CupertinoPicker(
-                        itemExtent: 32.0,
-                        scrollController: FixedExtentScrollController(
-                            initialItem:
-                                defaultPesoIndex), // Índice correspondiente
-                        onSelectedItemChanged: (int index) {
-                          // Llama a la función callback con el valor seleccionado
-                          onPesoSelected(pesos[index]);
-                        },
-                        children: pesos.map((peso) {
-                          return Center(child: Text('$peso kg'));
-                        }).toList(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class FechaNacimientoPicker extends StatelessWidget {
-  final ValueChanged<DateTime> onFechaSeleccionada;
-
-  // Agregar parámetros para los valores predeterminados de fecha
-  final int defaultMes;
-  final int defaultDia;
-  final int defaultAnio;
-
-  // Constructor que recibe las funciones de callback y los valores predeterminados reales
-  FechaNacimientoPicker({
-    super.key,
-    required this.onFechaSeleccionada,
-    this.defaultMes = 1, // Mes por defecto (Enero)
-    this.defaultDia = 1, // Día por defecto (1)
-    this.defaultAnio = 2000, // Año por defecto (2000)
-  });
-
-  final List<String> meses = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre"
-  ];
-
-  final List<int> dias =
-      List<int>.generate(31, (i) => i + 1); // Días del 1 al 31
-  final List<int> anios =
-      List<int>.generate(131, (i) => 1900 + i); // Años de 1900 a 2030
-
-  @override
-  Widget build(BuildContext context) {
-    // Encuentra el índice correspondiente al valor de mes, día y año predeterminados
-    int defaultMesIndex =
-        defaultMes - 1; // Los índices empiezan desde 0, por lo que restamos 1
-    int defaultDiaIndex = dias.indexOf(defaultDia);
-    int defaultAnioIndex = anios.indexOf(defaultAnio);
-
-    return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // const Text(
-                //   "Día",
-                //   style:
-                //       TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                // ),
-                SizedBox(
-                  height: 170,
-                  child: CupertinoPicker(
-                    itemExtent: 32.0,
-                    scrollController: FixedExtentScrollController(
-                        initialItem: defaultDiaIndex), // Índice de día
-                    onSelectedItemChanged: (int index) {
-                      // Llama a la función callback con la fecha seleccionada
-                      DateTime selectedDate = DateTime(
-                          anios[defaultAnioIndex],
-                          meses[defaultMesIndex] == "Enero"
-                              ? 1
-                              : (defaultMesIndex + 1),
-                          index + 1);
-                      onFechaSeleccionada(selectedDate);
-                    },
-                    children: dias.map((dia) {
-                      return Center(child: Text('$dia'));
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // const Text(
-                //   "Mes",
-                //   style:
-                //       TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                // ),
-                SizedBox(
-                  height: 170,
-                  child: CupertinoPicker(
-                    itemExtent: 32.0,
-                    scrollController: FixedExtentScrollController(
-                        initialItem: defaultMesIndex), // Índice de mes
-                    onSelectedItemChanged: (int index) {
-                      // Llama a la función callback con la fecha seleccionada
-                      DateTime selectedDate = DateTime(anios[defaultAnioIndex],
-                          index + 1, dias[defaultDiaIndex]);
-                      onFechaSeleccionada(selectedDate);
-                    },
-                    children: meses.map((mes) {
-                      return Center(child: Text(mes));
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // const Text(
-                //   "Año",
-                //   style:
-                //       TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                // ),
-                SizedBox(
-                  height: 170,
-                  child: CupertinoPicker(
-                    itemExtent: 32.0,
-                    scrollController: FixedExtentScrollController(
-                        initialItem: defaultAnioIndex), // Índice de año
-                    onSelectedItemChanged: (int index) {
-                      // Llama a la función callback con la fecha seleccionada
-                      DateTime selectedDate = DateTime(
-                          anios[index],
-                          meses[defaultMesIndex] == "Enero"
-                              ? 1
-                              : (defaultMesIndex + 1),
-                          dias[defaultDiaIndex]);
-                      onFechaSeleccionada(selectedDate);
-                    },
-                    children: anios.map((anio) {
-                      return Center(child: Text('$anio'));
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 Widget cintaMedirWidget({
   required double pesoActual,

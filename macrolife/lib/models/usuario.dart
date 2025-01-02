@@ -26,6 +26,9 @@ class Usuario {
   String? fechaMeta;
   String? fechaMetaObjetivo;
   bool? vencidoSup;
+  String? nombre;
+  String? telefono;
+  String? correo;
 
   Usuario(
       {
@@ -53,7 +56,10 @@ class Usuario {
       this.edad,
       this.fechaMeta,
       this.fechaMetaObjetivo,
-      this.vencidoSup});
+      this.vencidoSup,
+      this.nombre,
+      this.telefono,
+      this.correo});
 
   Usuario.fromJson(Map<String, dynamic> json) {
     // macronutrientes = json['macronutrientes'] != null
@@ -87,6 +93,9 @@ class Usuario {
     edad = json['edad'];
     fechaMeta = json['fechaMeta'];
     fechaMetaObjetivo = json['fechaMetaObjetivo'];
+    nombre = json['nombre'];
+    correo = json['correo'];
+    telefono = json['telefono'];
   }
 
   Map<String, dynamic> toJson() {
@@ -121,6 +130,10 @@ class Usuario {
     data['fechaMeta'] = this.fechaMeta;
     data['fechaMetaObjetivo'] = this.fechaMetaObjetivo;
     data['vencido'] = this.vencidoSup ?? false;
+    data['nombre'] = this.nombre;
+    data['correo'] = this.correo;
+    data['telefono'] = this.telefono;
+
     return data;
   }
 }
