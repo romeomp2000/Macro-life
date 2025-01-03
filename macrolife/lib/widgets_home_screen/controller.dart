@@ -17,8 +17,11 @@ class WidgetController extends GetxController {
     if (usuarioController.usuario.value.sId != null) {
       title.value =
           usuarioController.macronutrientes.value.caloriasRestantes.toString();
-      caloriasLimite.value =
-          usuarioController.macronutrientes.value.calorias!.toInt();
+
+      if (usuarioController.macronutrientes.value.calorias != null) {
+        caloriasLimite.value =
+            usuarioController.macronutrientes.value.calorias!.toInt();
+      }
     }
     updateHomeWidget(title.value, caloriasLimite.value);
 
@@ -37,9 +40,15 @@ class WidgetController extends GetxController {
   }
 
   double calculateProgress(int caloriasRestantes, int caloriasLimite) {
-    if (caloriasLimite == 0) return 0.0; // Evitar división por cero
-    double progress = caloriasRestantes / caloriasLimite;
-    print(progress);
+    // if (caloriasLimite == 0) return 0.0; // Evitar división por cero
+
+    int limite = caloriasRestantes + caloriasLimite;
+    if (limite == caloriasRestantes) {
+      return 0.0;
+    }
+
+    double progress = caloriasRestantes / limite;
+
     return progress.clamp(0.0, 1.0); // Asegurar que esté entre 0.0 y 1.0
   }
 }
