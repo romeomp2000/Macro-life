@@ -1,37 +1,81 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/config/api_service.dart';
-import 'package:macrolife/models/alimento.psd.dart';
+import 'package:macrolife/helpers/usuario_controller.dart';
+import 'package:macrolife/models/Ejercicio.dart';
+import 'package:macrolife/screen/home/controller.dart';
+import 'package:intl/intl.dart';
 
 class PesasController extends GetxController {
-  final buscadorController = TextEditingController();
+  final elementos = [
+    {
+      'titulo': 'Intenso',
+      'descripcion': 'Entrenando hasta el fallo, respiración rapida',
+      'value': Intensidad.intenso,
+      'intensidad': 2.0
+    },
+    {
+      'titulo': 'Moderado',
+      'descripcion': 'Sudando mucho, muchas repeticiones',
+      'value': Intensidad.moderado,
+      'intensidad': 1.0
+    },
+    {
+      'titulo': 'Ligero',
+      'descripcion': 'Sin despeinarse, dando poco esfuerzo',
+      'value': Intensidad.ligero,
+      'intensidad': 0.0
+    },
+  ];
 
-  RxList<AlimentosPSD> alimentos = <AlimentosPSD>[].obs;
-  RxBool loading = false.obs;
+  RxString id = ''.obs;
 
-  void buscarAlimento(String alimento) async {
+  RxDouble ejercioSlicer = 1.0.obs;
+  Rx<Intensidad> intensidad = Intensidad.moderado.obs;
+  RxInt duracion = 15.obs;
+  RxString ejercicio = 'Levantamiento de pesas'.obs;
+  final UsuarioController usuarioController = Get.find();
+
+  final duracionController = TextEditingController(text: '15');
+  final WeeklyCalendarController controllerCalendario = Get.find();
+
+  void registrarEntrenamiento() async {
     try {
-      if (alimento.isEmpty) {
-        return;
-      }
-      loading.value = true;
       final apiService = ApiService();
 
+      String intensidadString = '';
+
+      if (intensidad.value == Intensidad.intenso) {
+        intensidadString = 'Intenso';
+      } else if (intensidad.value == Intensidad.moderado) {
+        intensidadString = 'Moderado';
+      } else if (intensidad.value == Intensidad.ligero) {
+        intensidadString = 'Ligero';
+      }
+
       final response = await apiService.fetchData(
-        'food-database',
+        'ejercicio/pesas',
         method: Method.POST,
-        body: {'search': alimento.trim()},
+        body: {
+          "id": id.value,
+          "usuario": usuarioController.usuario.value.sId,
+          'tiempo': duracion.value,
+          'intensidad': intensidadString,
+          'nombre': ejercicio.value,
+          'ejercicio': 'Levantamiento de pesas',
+          'fecha':
+              DateFormat('yyyy-MM-dd').format(controllerCalendario.today.value),
+        },
       );
 
-      alimentos.value = AlimentosPSD.fromJsonList(response);
+      Get.back();
+      Get.back();
+
+      controllerCalendario.cargarEntrenamiento();
+
+      print(response);
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    } finally {
-      loading.value = false;
+      print(e);
     }
   }
-  
 }

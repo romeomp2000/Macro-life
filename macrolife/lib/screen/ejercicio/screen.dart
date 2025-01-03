@@ -67,6 +67,9 @@ class EjercicioScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 CupertinoListTile(
+                  onTap: () {
+                    Get.toNamed('/describir_ejercicio');
+                  },
                   padding: EdgeInsets.symmetric(vertical: 18, horizontal: 10),
                   backgroundColor: Colors.grey[100],
                   title: Text('Describir'),

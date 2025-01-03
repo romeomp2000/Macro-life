@@ -1,3 +1,4 @@
+import 'package:health/health.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/Entrenamiento.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:macrolife/models/racha_dias.model.dart';
+import 'package:macrolife/screen/objetivos/controller.dart';
 
 extension DateTimeComparison on DateTime {
   bool isSameDay(DateTime other) {
@@ -16,8 +18,93 @@ extension DateTimeComparison on DateTime {
 }
 
 class WeeklyCalendarController extends GetxController {
+  //? controller helth
+  var healthData = <HealthDataPoint>[].obs; // Observar los datos de salud
+  var isLoading = true.obs; // Estado de carga
+  final RxList<ChartData> charSorce = <ChartData>[].obs;
+  final widht = 1.0.obs;
+  final health = HealthFactory();
+  final pasosHoy = 0.0.obs;
+
+  RxInt caloriasQuemadas = 0.obs;
+  RxInt levantamientoPesass = 0.obs;
+  RxInt pasos = 0.obs;
+  RxInt otro = 0.obs;
+
+  // Método para obtener los datos de salud (pasos en este caso)
+  Future<void> fetchHealthData() async {
+    isLoading(true);
+
+    // Solicitar permisos
+    bool isAuthorized = await health.requestAuthorization([
+      HealthDataType.STEPS,
+    ]);
+
+    if (isAuthorized) {
+      // Obtener la fecha actual
+      // DateTime now = DateTime.now();
+
+      DateTime startDate =
+          today.value.subtract(Duration(days: 6)); // Últimos 7 días
+
+      // Obtener los datos de pasos
+      List<HealthDataPoint> data = await health.getHealthDataFromTypes(
+        startDate,
+        today.value,
+        [HealthDataType.STEPS],
+      );
+
+      healthData.value = data; // Asignar los datos obtenidos
+
+      // Iniciales de los días en español
+      List<String> diasIniciales = ["D", "L", "M", "M", "J", "V", "S"];
+
+      // Mapa para almacenar pasos por día
+      Map<String, int> stepsPerDay = {
+        for (int i = 6; i >= 0; i--)
+          diasIniciales[(today.value.weekday - i + 7) % 7]: 0
+      };
+
+      double pasosHoyTemp = 0.0; // Variable temporal para los pasos de hoy
+
+      // Filtrar pasos y sumarlos por día
+      for (HealthDataPoint element in data) {
+        DateTime date = element.dateFrom;
+        String dia = diasIniciales[date.weekday % 7];
+
+        final json = element.value.toJson();
+        double numericValue = double.parse(json['numericValue']);
+
+        stepsPerDay[dia] = (stepsPerDay[dia] ?? 0) + numericValue.toInt();
+
+        // Si la fecha corresponde al día actual, acumular los pasos
+        if (date.day == today.value.day &&
+            date.month == today.value.month &&
+            date.year == today.value.year) {
+          pasosHoyTemp += numericValue;
+        }
+      }
+
+      pasosHoy.value = pasosHoyTemp; // Asignar los pasos de hoy
+
+      // Crear datos del gráfico en el orden deseado
+      charSorce.clear(); // Limpiar datos anteriores
+      stepsPerDay.entries.forEach((entry) {
+        charSorce
+            .add(ChartData(entry.key, entry.value.toDouble(), Colors.black));
+      });
+    } else {
+      print("No se otorgaron permisos para acceder a los datos.");
+    }
+
+    isLoading(false);
+  }
+
+  //? controller helth
+
   RxList<AlimentoModel> alimentosList = <AlimentoModel>[].obs;
 
+  // final HealthController healthController = Get.put(HealthController());
   final UsuarioController controllerUsuario = Get.find();
 
   final RxBool loader = false.obs;
@@ -263,6 +350,7 @@ class WeeklyCalendarController extends GetxController {
     super.onInit();
     today.value = DateTime.now();
     cargaAlimentos();
+    fetchHealthData();
   }
 
   RxList<Entrenamiento> entrenamientosList = <Entrenamiento>[].obs;
@@ -316,6 +404,15 @@ class WeeklyCalendarController extends GetxController {
 
       final List<Entrenamiento> entrenamientos =
           Entrenamiento.listFromJson(response['ejercicios']);
+
+      // final HealthController healthController = Get.put(HealthController());
+
+      caloriasQuemadas.value = response['caloriasQuemadas'] ?? 0;
+      levantamientoPesass.value = response['levantamientoPesass'] ?? 0;
+      pasos.value = response['pasos'] ?? 0;
+      otro.value = response['otros'] ?? 0;
+
+      // caloriasQuemadas, levantamientoPesass, pasos, otro
       entrenamientosList.value = entrenamientos;
 
       loader.value = false;
@@ -334,6 +431,7 @@ class WeeklyCalendarController extends GetxController {
     try {
       cargarEntrenamiento();
       cargarRacha();
+      fetchHealthData();
 
       final UsuarioController controllerUsuario = Get.find();
 

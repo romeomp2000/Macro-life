@@ -12,6 +12,11 @@ const EjercicioSchema = new Schema({
     required: false,
     trim: true
   },
+  descripcion: { // describe el ejercicio solo IA
+    type: String,
+    required: false,
+    trim: true
+  },
   ejercicio: {
     type: String,
     enum: ['Ejecutar', 'Levantamiento de pesas', 'Describir'],

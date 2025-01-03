@@ -10,6 +10,11 @@ class Entrenamiento {
   String? createdAt;
   String? updatedAt;
   String? ejercicio;
+  String? descripcion;
+  // int? caloriasQuemadas;
+  // int? levantamientoPesass;
+  // int? pasos;
+  // int? otro;
 
   Entrenamiento({
     this.sId,
@@ -22,6 +27,11 @@ class Entrenamiento {
     this.ejercicio,
     this.createdAt,
     this.updatedAt,
+    this.descripcion,
+    // this.caloriasQuemadas,
+    // this.levantamientoPesass,
+    // this.pasos,
+    // this.otro,
   });
 
   Entrenamiento.fromJson(Map<String, dynamic> json) {
@@ -33,9 +43,14 @@ class Entrenamiento {
     tiempo = json['tiempo'];
     fecha = json['fecha'];
     time = json['time'];
+    descripcion = json['descripcion'];
     ejercicio = json['ejercicio'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    // caloriasQuemadas = json['caloriasQuemadas'];
+    // levantamientoPesass = json['levantamientoPesass'];
+    // pasos = json['pasos'];
+    // otro = json['otro'];
   }
 
   Map<String, dynamic> toJson() {
@@ -51,6 +66,12 @@ class Entrenamiento {
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['ejercicio'] = ejercicio;
+    data['descripcion'] = descripcion;
+
+    // data['caloriasQuemadas'] = caloriasQuemadas;
+    // data['levantamientoPesass'] = levantamientoPesass;
+    // data['pasos'] = pasos;
+    // data['otro'] = otro;
 
     return data;
   }
