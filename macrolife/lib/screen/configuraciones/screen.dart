@@ -459,7 +459,9 @@ Widget formCorreo() {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await controller.enviarCorreo();
+                },
                 child: Text(
                   'Enviar correo',
                   style: TextStyle(

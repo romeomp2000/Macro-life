@@ -3,11 +3,11 @@ import SwiftUI
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), title: "Title", content: "Content", progress: 0.7)
+        SimpleEntry(date: Date(), title: "Title", content: "Content", progress: 0.0)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), title: "Sin datos", content: "Para hacer uso de este widget termina de configurar tu perfil", progress: 0.3)
+        let entry = SimpleEntry(date: Date(), title: "Sin datos", content: "Para hacer uso de este widget termina de configurar tu perfil", progress: 0.0)
         completion(entry)
     }
 
@@ -17,7 +17,7 @@ struct Provider: TimelineProvider {
         let sharedDefaults = UserDefaults(suiteName: "group.mx.posibilidades.macrolife")
         let title = sharedDefaults?.string(forKey: "title") ?? "Sin datos"
         let content = sharedDefaults?.string(forKey: "content") ?? "Para hacer uso de este widget termina de configurar tu perfil"
-        let progress = sharedDefaults?.double(forKey: "progress") ?? 0.5
+        let progress = sharedDefaults?.double(forKey: "progress") ?? 0.0
 
         let entryDate = Date()
         let entry = SimpleEntry(date: entryDate, title: title, content: content, progress: progress)
@@ -40,7 +40,6 @@ struct HomeWidgetEntryView: View {
 
     var body: some View {
         VStack {
-          
                 ZStack {
                     Circle()
                         .stroke(Color.gray.opacity(0.3), lineWidth: 10)
@@ -59,7 +58,7 @@ struct HomeWidgetEntryView: View {
                     .font(.subheadline)
            
         }
-        .containerBackground(Color.clear, for: .widget)// Fondo transparente
+        .containerBackground(Color.clear, for: .widget)
     }
 }
 

@@ -11,6 +11,9 @@ class ConfiguracionesScreController extends GetxController {
   var appVersion = ''.obs;
 
   TextEditingController nombre = TextEditingController();
+  TextEditingController correo = TextEditingController();
+  TextEditingController descripcion = TextEditingController();
+
   @override
   void onInit() {
     super.onInit();
@@ -40,6 +43,30 @@ class ConfiguracionesScreController extends GetxController {
 
       Get.snackbar('Cuenta eliminada del boletín', '',
           backgroundColor: whiteTheme_);
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
+  Future enviarCorreo() async {
+    try {
+      ApiService apiService = ApiService();
+      final UsuarioController controllerUsuario = Get.find();
+      Map<String, dynamic> body = {
+        'usuario': controllerUsuario.usuario.value.sId,
+        'correo': correo.text,
+        'nombre': nombre.text,
+        'descripcion': descripcion.text
+      };
+      final response = await apiService.fetchData(
+        'soporte/enviar-correo',
+        method: Method.POST,
+        body: body,
+      );
+
+      Get.snackbar('Correo enviado', '', backgroundColor: whiteTheme_);
     } catch (e) {
       if (kDebugMode) {
         print(e);

@@ -606,7 +606,8 @@ class WeeklyCalendarController extends GetxController {
     controllerUsuario.usuario.value.macronutrientesDiario?.refresh();
 
     widgetController.updateHomeWidget(
-        controllerUsuario.macronutrientes.value.caloriasRestantes.toString());
+        controllerUsuario.macronutrientes.value.caloriasRestantes.toString(),
+        controllerUsuario.macronutrientes.value.calorias!.toInt());
   }
 }
 
