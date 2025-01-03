@@ -56,6 +56,7 @@ class PesoObjetivosScreen extends StatelessWidget {
                           min: 10,
                           max: 300,
                           step: 1,
+                          start: controller.pesoActual.value.toDouble(),
                           value: controller.pesoObjetivo.value.toDouble(),
                           onChanged: (e) {
                             controller.pesoObjetivo.value = e.toInt();

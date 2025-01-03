@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:macrolife/models/racha_dias.model.dart';
+import 'package:macrolife/widgets_home_screen/controller.dart';
 
 extension DateTimeComparison on DateTime {
   bool isSameDay(DateTime other) {
@@ -21,6 +22,7 @@ class WeeklyCalendarController extends GetxController {
   final UsuarioController controllerUsuario = Get.find();
 
   final RxBool loader = false.obs;
+  final widgetController = Get.put(WidgetController());
 
   PageController pageController = PageController(initialPage: 0);
   Rx<DateTime> today = DateTime.now().obs;
@@ -35,20 +37,25 @@ class WeeklyCalendarController extends GetxController {
     dom: false,
   ).obs;
 
-  DateTime getWeekStartDate(int weekOffset) {
-    DateTime current = todayCalendar;
+  // DateTime getWeekStartDate(int weekOffset) {
+  //   DateTime current = todayCalendar;
+  //   // Aseguramos que no se muestre más de 3 semanas antes de la semana actual
+  //   int maxOffset = -3; // No más de 3 semanas atrás
+  //   // Calculamos la fecha del inicio de la semana según el desplazamiento
+  //   DateTime startOfWeek =
+  //       current.subtract(Duration(days: current.weekday - 1));
+  //   // Calculamos el nuevo desplazamiento, respetando el límite de 3 semanas
+  //   int finalOffset = weekOffset < maxOffset ? maxOffset : weekOffset;
+  //   return startOfWeek.add(Duration(days: finalOffset * 7));
+  // }
 
-    // Aseguramos que no se muestre más de 3 semanas antes de la semana actual
-    int maxOffset = -3; // No más de 3 semanas atrás
-
-    // Calculamos la fecha del inicio de la semana según el desplazamiento
-    DateTime startOfWeek =
-        current.subtract(Duration(days: current.weekday - 1));
-
-    // Calculamos el nuevo desplazamiento, respetando el límite de 3 semanas
-    int finalOffset = weekOffset < maxOffset ? maxOffset : weekOffset;
-
-    return startOfWeek.add(Duration(days: finalOffset * 7));
+  DateTime getWeekStartDate(int index) {
+    int adjustedIndex = -index;
+    DateTime today = DateTime.now();
+    int currentWeekDay = today.weekday;
+    DateTime startOfThisWeek =
+        today.subtract(Duration(days: currentWeekDay - 1));
+    return startOfThisWeek.add(Duration(days: 7 * adjustedIndex));
   }
 
   void onRachaDias() {
@@ -499,6 +506,9 @@ class WeeklyCalendarController extends GetxController {
     controllerUsuario.usuario.refresh();
     controllerUsuario.macronutrientes.refresh();
     controllerUsuario.usuario.value.macronutrientesDiario?.refresh();
+
+    widgetController.updateHomeWidget(
+        controllerUsuario.macronutrientes.value.caloriasRestantes.toString());
   }
 }
 

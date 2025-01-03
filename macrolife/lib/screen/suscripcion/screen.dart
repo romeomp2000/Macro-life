@@ -1,4 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/screen/suscripcion/controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -95,8 +97,12 @@ class SuscripcionScreen extends StatelessWidget {
                             () => GestureDetector(
                               onTap: () {
                                 controller.sucripcion.value = 'Mensual';
-                                controller.configuraiones.configuraciones.value
-                                        .suscripcion?.mensual ??
+                                controller.totalAPagar.value = controller
+                                        .configuraiones
+                                        .configuraciones
+                                        .value
+                                        .suscripcion
+                                        ?.mensual ??
                                     0.0;
                               },
                               child: tipoPago(
@@ -111,9 +117,23 @@ class SuscripcionScreen extends StatelessWidget {
                             () => GestureDetector(
                               onTap: () {
                                 controller.sucripcion.value = 'Anual';
-                                controller.configuraiones.configuraciones.value
-                                        .suscripcion?.anual ??
+                                GetStorage box = GetStorage();
+                                bool? isPromoActive = box.read('promo');
+
+                                double anualPrice = controller
+                                        .configuraiones
+                                        .configuraciones
+                                        .value
+                                        .suscripcion
+                                        ?.anual ??
                                     0.0;
+
+                                if (isPromoActive != null && isPromoActive) {
+                                  controller.totalAPagar.value =
+                                      anualPrice * 0.5;
+                                } else {
+                                  controller.totalAPagar.value = anualPrice;
+                                }
                               },
                               child: tipoPago(
                                   precio:
@@ -166,7 +186,10 @@ class SuscripcionScreen extends StatelessWidget {
                 iconSize: 23,
                 color: Colors.white,
                 icon: const Icon(Icons.close),
-                onPressed: () => Get.back(),
+                onPressed: () {
+                  // controller.promocion();
+                  Get.bottomSheet(promoText());
+                },
               ),
             ),
           )
@@ -247,6 +270,143 @@ class SuscripcionScreen extends StatelessWidget {
             ),
           ),
       ],
+    );
+  }
+
+  Widget promoText() {
+    final controller = Get.put(SuscripcionController());
+    return Container(
+      width: Get.width,
+      height: Get.height * 0.7,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: whiteTheme_,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(
+              'Solo por hoy 50% de descuento en la suscripción ANUAL',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+            ),
+            SizedBox(
+              width: Get.width,
+              child: buildTimelineItem(
+                  icon: Icons.check_circle,
+                  iconColor: blackTheme2_,
+                  title: 'Acceso a macrolife IA',
+                  description:
+                      'La mejor IA para cumplir tus metas para tu salud'),
+            ),
+            SizedBox(
+              width: Get.width,
+              child: buildTimelineItem(
+                  icon: Icons.check_circle,
+                  iconColor: blackTheme2_,
+                  title: 'Precio mensual más bajo',
+                  description:
+                      'Solo por este dia el precio mensual será más barato que el actual. Precio nuevo: \$${((double.parse(controller.configuraiones.configuraciones.value.suscripcion!.anual.toString() ?? '0') / 12) / 2).toStringAsFixed(2)}'),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      color: whiteTheme_,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: blackTheme2_)),
+                  child: TextButton(
+                      onPressed: () {
+                        Get.back();
+                        Get.back();
+                      },
+                      child: Text(' Cerrar ')),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: blackTheme2_,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      controller.promocion();
+                      Get.back();
+                    },
+                    child: Text(
+                      'Aceptar oferta',
+                      style: TextStyle(
+                          color: whiteTheme_,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 20),
+              child: Text(
+                'Precio nuevo: \$${(double.parse(controller.configuraiones.configuraciones.value.suscripcion!.anual.toString()) / 2).toStringAsFixed(2)} / anual',
+                style: TextStyle(
+                  color: blackTheme2_,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildTimelineItem({
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    required String description,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            children: [
+              Icon(icon, color: iconColor),
+              Container(
+                width: 2,
+                height: 40,
+                color: greenTheme1_,
+              ),
+            ],
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  description,
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

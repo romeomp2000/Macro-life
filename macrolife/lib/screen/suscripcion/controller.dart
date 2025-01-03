@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/AplePay.dart';
 import 'package:macrolife/helpers/StripePaymentHandle.dart';
@@ -27,16 +29,25 @@ class SuscripcionController extends GetxController {
 
   @override
   void onInit() {
-    totalAPagar.value =
-        configuraiones.configuraciones.value.suscripcion?.mensual ?? 0.0;
+    GetStorage box = GetStorage();
+    bool? isPromoActive = box.read('promo');
 
-    images.add('assets/images/imagen_slider_1.jpg');
-    images.add('assets/images/imagen_slider_2.jpg');
-    images.add('assets/images/imagen_slider_3.jpg');
-    images.add('assets/images/imagen_slider_4.jpg');
+    double anualPrice =
+        configuraiones.configuraciones.value.suscripcion?.anual ?? 0.0;
+
+    if (isPromoActive != null && isPromoActive) {
+      totalAPagar.value = anualPrice * 0.5;
+    } else {
+      totalAPagar.value = anualPrice;
+    }
+
+    images.add('assets/images/foto_carrusel_2160x2200_nuevo_.jpg');
+    images.add('assets/images/foto_carrusel_2160x2200_nuevo_2.jpg');
+    images.add('assets/images/foto_carrusel_2160x2200_nuevo_3.jpg');
+    images.add('assets/images/foto_carrusel_2160x2200_nuevo_4.jpg');
+    images.add('assets/images/foto_carrusel_2160x2200_nuevo_5.jpg');
 
     super.onInit();
-    configuraiones.configuraciones.value.suscripcion?.mensual ?? 0.0.obs;
   }
 
   void suscribirseUsuario({
@@ -69,7 +80,55 @@ class SuscripcionController extends GetxController {
     }
   }
 
-  void pagar() {
+  void pagar() async {
+    if (sucripcion.value == 'Mensual') {
+      await Get.defaultDialog(
+        // title: '¿Estas seguro de escoger el plan Mensual?',
+        title: '¿Estas seguro de escoger el plan Mensual?',
+        // middleText: 'Beneficios del plan anual',
+        content: Container(
+          margin: const EdgeInsets.all(3),
+          child: Column(
+            children: [
+              Text(
+                'Beneficios del plan anual: ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Costo por mes \$${(double.parse(configuraiones.configuraciones.value.suscripcion!.anual.toString() ?? '0') / 12).toStringAsFixed(2)}',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        ),
+        confirmTextColor: Colors.white,
+        textConfirm: 'Cambiar a plan Anual',
+        textCancel: 'Continuar',
+        onConfirm: () {
+          sucripcion.value = 'Anual';
+
+          totalAPagar.value =
+              configuraiones.configuraciones.value.suscripcion?.anual ?? 0.0;
+
+          // Verificar si la promoción está activa
+          GetStorage box = GetStorage();
+          bool? isPromoActive = box.read('promo');
+
+          double anualPrice =
+              configuraiones.configuraciones.value.suscripcion?.anual ?? 0.0;
+
+          if (isPromoActive != null && isPromoActive) {
+            totalAPagar.value = anualPrice * 0.5;
+          } else {
+            totalAPagar.value = anualPrice;
+          }
+          Get.back();
+        },
+        onCancel: () {
+          sucripcion.value = 'Mensual';
+        },
+      );
+    }
     Get.bottomSheet(
       isDismissible: true, // Permite cerrar al presionar fuera
       enableDrag: true, // Permite deslizar para cerrar
@@ -187,5 +246,35 @@ class SuscripcionController extends GetxController {
         ],
       ),
     );
+  }
+
+  Future promocion() async {
+    GetStorage box = GetStorage();
+
+    bool? isPromoActive = box.read('promo');
+    String? activationDate = box.read('promo_date');
+
+    DateTime currentDate = DateTime.now();
+
+    if (isPromoActive == null ||
+        !isPromoActive ||
+        activationDate == null ||
+        isPromoExpired(activationDate, currentDate)) {
+      box.write('promo', true);
+      box.write('promo_date', currentDate.toIso8601String());
+      if (kDebugMode) {
+        print("Promoción activada.");
+      }
+    } else {
+      if (kDebugMode) {
+        print("Promoción aún activa.");
+      }
+    }
+  }
+
+  bool isPromoExpired(String activationDate, DateTime currentDate) {
+    DateTime promoDate = DateTime.parse(activationDate);
+    Duration difference = currentDate.difference(promoDate);
+    return difference.inHours >= 24;
   }
 }
