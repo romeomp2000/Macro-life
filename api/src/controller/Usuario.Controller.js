@@ -165,6 +165,19 @@ const actualizarGenero = async (req, res) => {
   }
 };
 
+const deleteUsuario = async (req, res) => {
+  const { idUsuario } = req.body;
+
+  try {
+    await UsuarioModel.findByIdAndDelete(idUsuario);
+
+    return res.status(200).json({ message: 'Usuario eliminado correctamente' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+  }
+};
+
 module.exports = {
   buscaUsuario,
   buscaAuth,
@@ -174,5 +187,6 @@ module.exports = {
   actualizarAltura,
   actualizarPeso,
   actualizarFechaNacimiento,
-  actualizarGenero
+  actualizarGenero,
+  deleteUsuario
 };

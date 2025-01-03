@@ -1,5 +1,5 @@
 const Router = require('express');
-const { buscaUsuario, buscaAuth, actualizarNombre, actualizarTelefono, actualizarCorreo, actualizarAltura, actualizarPeso, actualizarFechaNacimiento, actualizarGenero } = require('../controller/Usuario.Controller');
+const { buscaUsuario, buscaAuth, actualizarNombre, actualizarTelefono, actualizarCorreo, deleteUsuario, actualizarAltura, actualizarPeso, actualizarFechaNacimiento, actualizarGenero } = require('../controller/Usuario.Controller');
 const router = Router();
 
 router.get('/buscar/:id', buscaUsuario);
@@ -13,5 +13,6 @@ router.put('/altura', actualizarAltura);
 router.put('/peso', actualizarPeso);
 router.put('/nacimiento', actualizarFechaNacimiento);
 router.put('/genero', actualizarGenero);
+router.post('/eliminar-cuenta', deleteUsuario);
 
 module.exports = router;
