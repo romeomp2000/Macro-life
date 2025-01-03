@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -275,9 +276,8 @@ class ConfiguracionesScreen extends StatelessWidget {
                         child: const Text('Cancelar'),
                       ),
                       CupertinoDialogAction(
-                        onPressed: () {
-                          Get.back(); // Cerrar el cuadro de diálogo
-                          Get.offAndToNamed('/registro'); // Realizar la acción
+                        onPressed: () async {
+                          controllerUsuario.logout();
                         },
                         isDestructiveAction: true,
                         child: const Text('Eliminar'),

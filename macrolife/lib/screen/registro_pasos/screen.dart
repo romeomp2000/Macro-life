@@ -1719,7 +1719,6 @@ class Steep extends StatelessWidget {
   }
 }
 
-
 Widget cintaMedirWidget({
   required double pesoActual,
   required Function(double) onPesoChanged,
@@ -1739,9 +1738,10 @@ Widget cintaMedirWidget({
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
-          height: 120,
+          height: 130,
           width: Get.width,
           child: CintaMetrica(
+            start: 60,
             min: 10,
             max: 300,
             step: 1,

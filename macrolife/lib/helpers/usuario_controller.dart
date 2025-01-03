@@ -49,13 +49,25 @@ class UsuarioController extends GetxController {
   }
 
   // cerrar sesion
-  void logout() {
+  void logout() async {
+    Get.back(); // Cerrar el cuadro de diálogo
+    Get.offAndToNamed('/registro'); // Realizar la acción
+
+    final apiService = ApiService();
+
+    await apiService.fetchData(
+      'usuario/eliminar-cuenta',
+      method: Method.POST,
+      body: {
+        "idUsuario": usuario.value.sId,
+      },
+    );
+
     box.remove('usuario');
     box.remove('macronutrientes');
     usuario.value = Usuario();
     macronutrientes.value = MacronutrientesCalculo();
-
-    Get.offAllNamed('/login');
+    refresh();
   }
 
   void onRefresh() {

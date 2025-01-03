@@ -248,7 +248,7 @@ class AnaliticaScreen extends StatelessWidget {
                             ],
                           ),
                           IconButton(
-                            onPressed: ()async{
+                            onPressed: () async {
                               await Get.to(() => InfoIMC());
                             },
                             icon: const Icon(
@@ -358,7 +358,7 @@ class AnaliticaScreen extends StatelessWidget {
                       children: [
                         Obx(
                           () => Text(
-                            '${controller.analiticaNutricion.value.caloriasTotales}',
+                            '${controller.analiticaNutricion.value.caloriasTotales ?? '0'}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
@@ -367,7 +367,7 @@ class AnaliticaScreen extends StatelessWidget {
                         ),
                         Obx(
                           () => Text(
-                            '${controller.analiticaNutricion.value.promedioGeneral}',
+                            '${controller.analiticaNutricion.value.promedioGeneral ?? '0'}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
@@ -380,7 +380,7 @@ class AnaliticaScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Calorias totales',
+                          'Calorías totales',
                           style: TextStyle(
                             fontSize: 18,
                           ),
