@@ -28,7 +28,7 @@ class PesoActualizarScreen extends StatelessWidget {
           ),
           onPressed: () => Get.back(),
         ),
-        title: const Text('Establecer pesos'),
+        title: const Text('Establecer peso'),
       ),
       body: Column(
         children: [
@@ -95,8 +95,9 @@ class PesoActualizarScreen extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          Container(
             width: Get.width - 20,
+            margin: EdgeInsets.only(bottom: GetPlatform.isIOS ? 30 : 0),
             child: ElevatedButton(
               onPressed: () => {controller.guardaPeso()},
               style: ElevatedButton.styleFrom(

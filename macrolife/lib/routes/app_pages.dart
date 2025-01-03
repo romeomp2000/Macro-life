@@ -1,3 +1,4 @@
+import 'package:macrolife/screen/analitica/info.dart';
 import 'package:macrolife/screen/correr/binding.dart';
 import 'package:macrolife/screen/correr/screen.dart';
 import 'package:macrolife/screen/ejercicio/binding.dart';
@@ -107,6 +108,10 @@ abstract class AppPages {
       name: Routes.objetivos,
       page: () => const ObjetivosScreen(),
       binding: ObjetivosBinding(),
+    ),
+    GetPage(
+      name: Routes.info_imc,
+      page: () => const InfoIMC(),
     ),
   ];
 }

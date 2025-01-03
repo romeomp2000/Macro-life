@@ -7,9 +7,11 @@ class PesoObjetivoController extends GetxController {
   final UsuarioController controllerUsuario = Get.find();
 
   final RxInt pesoObjetivo = 0.obs;
+  final RxInt pesoActual = 0.obs;
   @override
   void onInit() {
     pesoObjetivo.value = controllerUsuario.usuario.value.pesoObjetivo ?? 0;
+    pesoActual.value = controllerUsuario.usuario.value.pesoActual ?? 0;
     //aca todo lo que se ejecuta al iniciar el controlador
     super.onInit();
   }

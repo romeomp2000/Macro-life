@@ -6,6 +6,7 @@ import 'package:macrolife/screen/objetivos/controller.dart';
 import 'package:macrolife/screen/peso/screen.dart';
 import 'package:macrolife/screen/peso_objetivo/screen.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:macrolife/screen/analitica/info.dart';
 
 class AnaliticaScreen extends StatelessWidget {
   const AnaliticaScreen({super.key});
@@ -246,10 +247,15 @@ class AnaliticaScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          // const Icon(
-                          //   Icons.help_outline,
-                          //   color: Colors.black54,
-                          // ),
+                          IconButton(
+                            onPressed: ()async{
+                              await Get.to(() => InfoIMC());
+                            },
+                            icon: const Icon(
+                              Icons.help_outline,
+                              color: Colors.black54,
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 16),

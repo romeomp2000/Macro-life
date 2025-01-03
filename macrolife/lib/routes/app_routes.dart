@@ -58,5 +58,7 @@ abstract class Routes {
   static const productos = '/productos';
   static const productos_nuevo = '/productos/nuevo';
 
+  static const info_imc = '/info-imc';
+
   // static const productos_editar = '/productos/editar';
 }

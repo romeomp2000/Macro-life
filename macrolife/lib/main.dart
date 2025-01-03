@@ -4,19 +4,25 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/helpers/configuraciones.dart';
 import 'package:macrolife/routes/app_pages.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:macrolife/widgets_home_screen/controller.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
+  HomeWidget.setAppGroupId('group.mx.posibilidades.macrolife');
 
   final configuracionesController = Get.put(ConfiguracionesController());
+  final controllerWidget = Get.put(WidgetController());
+
+  // WorkMan
   // await configuracionesController.buscaConfiguraciones();
   Stripe.merchantIdentifier = 'merchant.mx.posibilidades.macrolife';
 

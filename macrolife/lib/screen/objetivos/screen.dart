@@ -208,6 +208,7 @@ class ObjetivosScreen extends StatelessWidget {
                         onEditingComplete: () =>
                             controller.toggleKeyboardActions(false),
                         decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.edit),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
                                 const BorderSide(), // Borde cuando está enfocado
@@ -279,6 +280,7 @@ class ObjetivosScreen extends StatelessWidget {
                         onEditingComplete: () =>
                             controller.toggleKeyboardActions(false),
                         decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.edit),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
                                 const BorderSide(), // Borde cuando está enfocado
@@ -350,6 +352,7 @@ class ObjetivosScreen extends StatelessWidget {
                         onEditingComplete: () =>
                             controller.toggleKeyboardActions(false),
                         decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.edit),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
                                 const BorderSide(), // Borde cuando está enfocado
@@ -421,6 +424,7 @@ class ObjetivosScreen extends StatelessWidget {
                         onEditingComplete: () =>
                             controller.toggleKeyboardActions(false),
                         decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.edit),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
                                 const BorderSide(), // Borde cuando está enfocado

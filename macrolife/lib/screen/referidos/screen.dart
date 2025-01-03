@@ -78,7 +78,7 @@ class ReferidosScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   Share.share(
-                      '¡Únete a Macro Life! Mi código de referencia es: ${controllerUsuario.usuario.value.codigo}');
+                      '¡Únete a Macro Life! Mi código de referencia es: ${controllerUsuario.usuario.value.codigo} \n https://macrolife.app/app');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,

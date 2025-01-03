@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/Entrenamiento.dart';
 import 'package:macrolife/models/alimento.model.dart';
@@ -466,8 +465,12 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(7, (dayIndex) {
               DateTime day = weekStart.add(Duration(days: dayIndex));
+              DateTime dayActual = DateTime.now();
               return GestureDetector(
                 onTap: () {
+                  if (day.isAfter(dayActual)) {
+                    return;
+                  }
                   controller.today.value = day;
                   controller.cargaAlimentos();
                 },

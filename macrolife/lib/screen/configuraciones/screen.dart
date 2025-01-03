@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -157,7 +158,8 @@ class ConfiguracionesScreen extends StatelessWidget {
               padding: EdgeInsets.zero,
               onTap: () => Get.toNamed('/objetivos'),
               title: const Text('Ajustar objetivos'),
-              subtitle: const Text('Calorías, carbohidratos, grasas y proteínas'),
+              subtitle:
+                  const Text('Calorías, carbohidratos, grasas y proteínas'),
               trailing: const Icon(
                 Icons.arrow_forward_ios_outlined,
                 color: Colors.black26,
@@ -236,7 +238,17 @@ class ConfiguracionesScreen extends StatelessWidget {
                         'ID de usuario: ${controllerUsuario.usuario.value.sId} Versión: ${packageInfo.version} Enviado desde mi ${Platform.isIOS ? 'iPhone' : 'Android'}'
                   },
                 );
-                launchUrl(emailUri);
+                // launchUrl(emailUri);
+
+                Get.bottomSheet(Container(
+                  width: Get.width,
+                  height: Get.height * 0.7,
+                  decoration: BoxDecoration(
+                      color: whiteTheme_,
+                      borderRadius: BorderRadius.circular(5)),
+                  padding: const EdgeInsets.all(10),
+                  child: formCorreo(),
+                ));
               },
               padding: EdgeInsets.zero,
               title: const Text('Correo de soporte'),
@@ -282,22 +294,49 @@ class ConfiguracionesScreen extends StatelessWidget {
                 size: 20,
               ),
             ),
-            // const SizedBox(height: 20),
-            // const Divider(
-            //   thickness: 0.4,
-            //   color: Colors.grey,
-            // ),
-            // const SizedBox(height: 20),
-            // const CupertinoListTile(
-            //   padding: EdgeInsets.zero,
-            //   title: Text('Dar de baja la cuenta'),
-            //   trailing: Icon(
-            //     Icons.arrow_forward_ios_outlined,
-            //     color: Colors.black26,
-            //     size: 20,
-            //   ),
-            // ),
-            // const SizedBox(height: 20),
+            const SizedBox(height: 20),
+            const Divider(
+              thickness: 0.4,
+              color: Colors.grey,
+            ),
+            const SizedBox(height: 20),
+            CupertinoListTile(
+              onTap: () {
+                Get.dialog(
+                  CupertinoAlertDialog(
+                    title: const Text('Confirmación'),
+                    content: const Text(
+                        '¿Estás seguro de que deseas darte de baja del boletín?'),
+                    actions: [
+                      CupertinoDialogAction(
+                        onPressed: () {
+                          Get.back(); // Cerrar el cuadro de diálogo
+                        },
+                        isDefaultAction: true,
+                        child: const Text('Cancelar'),
+                      ),
+                      CupertinoDialogAction(
+                        onPressed: () async {
+                          await controller.bajaBoletin();
+                          Get.back(); // Cerrar el cuadro de diálogo
+                          // Get.offAndToNamed('/registro'); // Realizar la acción
+                        },
+                        isDestructiveAction: true,
+                        child: const Text('Eliminar'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              padding: EdgeInsets.zero,
+              title: Text('Dar de baja la cuenta del boletín'),
+              trailing: Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: Colors.black26,
+                size: 20,
+              ),
+            ),
+            const SizedBox(height: 20),
             const Divider(
               thickness: 0.4,
               color: Colors.grey,
@@ -309,4 +348,130 @@ class ConfiguracionesScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget formCorreo() {
+  final controller = Get.put(ConfiguracionesScreController());
+  return SingleChildScrollView(
+    child: Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          child: TextField(
+            keyboardType: TextInputType.text,
+            controller: controller.nombre,
+            onTap: () => {},
+            onEditingComplete: () => {},
+            decoration: InputDecoration(
+              label: Text('Nombre'),
+              filled: true,
+              fillColor: Colors.grey[200],
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding: const EdgeInsets.all(16),
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          child: TextField(
+            keyboardType: TextInputType.emailAddress,
+            controller: controller.nombre,
+            onTap: () => {},
+            onEditingComplete: () => {},
+            decoration: InputDecoration(
+              label: Text('Correo electrónico'),
+              filled: true,
+              fillColor: Colors.grey[200],
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding: const EdgeInsets.all(16),
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(bottom: 30),
+          child: TextField(
+            keyboardType: TextInputType.text,
+            controller: controller.nombre,
+            onTap: () => {},
+            onEditingComplete: () => {},
+            maxLines: 4,
+            decoration: InputDecoration(
+              label: Text('Descripción del problema'),
+              filled: true,
+              fillColor: Colors.grey[200],
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide.none,
+              ),
+              contentPadding: const EdgeInsets.all(16),
+            ),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: whiteTheme_,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: blackTheme2_)),
+              child: TextButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: Text(' Cerrar ')),
+            ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: blackTheme2_,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: TextButton(
+                onPressed: () {},
+                child: Text(
+                  'Enviar correo',
+                  style: TextStyle(
+                      color: whiteTheme_,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ),
+              ),
+            ),
+          ],
+        )
+      ],
+    ),
+  );
 }
