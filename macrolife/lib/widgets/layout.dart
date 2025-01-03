@@ -752,8 +752,7 @@ class EscanearAlimentosController extends GetxController {
                   GestureDetector(
                     onTap: () {
                       Get.back();
-                      // Get.toNamed('/ejercicio');
-                      Get.toNamed('/correr');
+                      Get.toNamed('/ejercicio');
                     },
                     child: Container(
                       width: (Get.width / 2) - 50,

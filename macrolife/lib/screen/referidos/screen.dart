@@ -118,8 +118,14 @@ class ReferidosScreen extends StatelessWidget {
                       "* Comparte tu código promocional a tus amigos",
                       style: TextStyle(fontSize: 14),
                     ),
+                    SizedBox(height: 5),
                     Text(
-                      "* Gana \$5 por cada amigo que se registre con tu código",
+                      "Gana un 5% mensual cada vez que tu amigo adquiera una membresía mensual usando tu código.",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      "Gana un 10% anual si tu amigo adquiere una membresía anual usando tu código.",
                       style: TextStyle(fontSize: 14),
                     ),
                   ],

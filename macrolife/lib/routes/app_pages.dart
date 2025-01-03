@@ -3,6 +3,8 @@ import 'package:macrolife/screen/correr/binding.dart';
 import 'package:macrolife/screen/correr/screen.dart';
 import 'package:macrolife/screen/ejercicio/binding.dart';
 import 'package:macrolife/screen/ejercicio/screen.dart';
+import 'package:macrolife/screen/ejercicio_describir/binding.dart';
+import 'package:macrolife/screen/ejercicio_describir/screen.dart';
 import 'package:macrolife/screen/favoritos/binding.dart';
 import 'package:macrolife/screen/favoritos/screen.dart';
 import 'package:macrolife/screen/food_database/binding.dart';
@@ -11,6 +13,8 @@ import 'package:macrolife/screen/loader/binding.dart';
 import 'package:macrolife/screen/loader/screen.dart';
 import 'package:macrolife/screen/objetivos/binding.dart';
 import 'package:macrolife/screen/objetivos/screen.dart';
+import 'package:macrolife/screen/pesas/binding.dart';
+import 'package:macrolife/screen/pesas/screen.dart';
 import 'package:macrolife/screen/registro/registro_binding.dart';
 import 'package:macrolife/screen/registro/registro_screen.dart';
 import 'package:macrolife/screen/registro_pasos/binding.dart';
@@ -51,6 +55,17 @@ abstract class AppPages {
       name: Routes.correr,
       page: () => const CorrerScreen(),
       binding: CorrerBinding(),
+    ),
+
+    GetPage(
+      name: Routes.describir_ejercicio,
+      page: () => const EjercicioDescribirScreen(),
+      binding: EjercicioDescribirBinding(),
+    ),
+    GetPage(
+      name: Routes.pesas,
+      page: () => const PesasScreen(),
+      binding: PesasBinding(),
     ),
     GetPage(
       name: Routes.ejercicio,

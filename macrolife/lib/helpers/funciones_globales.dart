@@ -14,6 +14,42 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
 
 class FuncionesGlobales {
+  static String capitalize(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1).toLowerCase();
+  }
+
+  static Future<void> getHealthData() async {
+    final health = HealthFactory();
+
+    // Solicitar permisos para acceder a los datos de pasos y frecuencia cardíaca
+    bool isAuthorized = await health.requestAuthorization([
+      HealthDataType.STEPS,
+      HealthDataType.HEART_RATE,
+    ]);
+
+    if (isAuthorized) {
+      // Definir el rango de fechas (por ejemplo, los últimos 7 días)
+      DateTime now = DateTime.now();
+      DateTime startDate = now.subtract(Duration(days: 7));
+
+      // Obtener datos de pasos durante los últimos 7 días
+      List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(
+          startDate, now, [
+        HealthDataType.STEPS
+      ] // Puedes agregar más tipos de datos aquí, por ejemplo, HEARTRATE
+          );
+
+      // Procesar los datos
+      for (HealthDataPoint data in healthData) {
+        print(
+            "Fecha: ${data.dateFrom}, Tipo: ${data.type}, Valor: ${data.value}");
+      }
+    } else {
+      print("No se otorgaron permisos para acceder a los datos de salud.");
+    }
+  }
+
   static void appleHealth() async {
 // define the types to get
     List<HealthDataType> types = [

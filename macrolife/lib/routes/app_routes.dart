@@ -30,6 +30,8 @@ abstract class Routes {
   static const food_database = '/food_database';
   static const ejercicio = '/ejercicio';
   static const correr = '/correr';
+  static const pesas = '/pesas';
+  static const describir_ejercicio = '/describir_ejercicio';
 
   static const impuestos = '/impuestos';
   static const impuestos_nuevo = '/impuestos/nuevo';

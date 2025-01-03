@@ -30,14 +30,15 @@ class PrincipalController extends GetxController {
 
   void initVideo() {
     // Configura el video de introducción
-    videoController = VideoPlayerController.asset('assets/videos/intro.mp4')
+    videoController = VideoPlayerController.asset(
+        'assets/videos/video_intro_macrolife_2160x4096_original_HD_5_segs.mp4')
       ..initialize().then((_) {
         videoInitialized = true;
         update(); // Actualiza la UI para reflejar que el video está listo
         playVideo(); // Reproduce el video solo cuando está inicializado
 
         // Configura el temporizador para navegar después de 3 segundos
-        Timer(const Duration(seconds: 3), () {
+        Timer(const Duration(seconds: 6), () {
           asegurarUsuario();
         });
       })

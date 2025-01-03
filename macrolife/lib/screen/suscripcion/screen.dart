@@ -20,7 +20,7 @@ class SuscripcionScreen extends StatelessWidget {
         children: [
           SizedBox(
             width: Get.width,
-            height: 600,
+            // height: 600,
             child: CarouselSlider(
                 items: controller.images.map((e) {
                   return Image.asset(
@@ -34,7 +34,7 @@ class SuscripcionScreen extends StatelessWidget {
                 options: CarouselOptions(
                   disableCenter: false,
                   height: 600,
-                  aspectRatio: 16 / 9,
+                  aspectRatio: 4 / 3,
                   viewportFraction: 1,
                   initialPage: 0,
                   enableInfiniteScroll: true,
