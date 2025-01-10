@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:macrolife/screen/configuraciones/controller.dart';
 import 'package:macrolife/screen/detalles_personales/screen.dart';
 import 'package:macrolife/screen/referidos/screen.dart';
+import 'package:macrolife/screen/widgets/widgets_view.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -167,17 +167,17 @@ class ConfiguracionesScreen extends StatelessWidget {
                 size: 20,
               ),
             ),
-            // const SizedBox(height: 20),
-            // const Divider(
-            //   thickness: 0.4,
-            //   color: Colors.grey,
-            // ),
-            // const SizedBox(height: 20),
-            // const Text(
-            //   'Preferencias',
-            //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            // ),
-            // const SizedBox(height: 15),
+            const SizedBox(height: 20),
+            const Divider(
+              thickness: 0.4,
+              color: Colors.grey,
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Preferencias',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            const SizedBox(height: 15),
             // CupertinoListTile(
             //   padding: EdgeInsets.zero,
             //   title: const Text('Calorías quemadas'),
@@ -185,10 +185,29 @@ class ConfiguracionesScreen extends StatelessWidget {
             //       const Text('Agregar calorías quemadas a la meta diario'),
             //   trailing: CupertinoSwitch(
             //     value: true,
-            //     activeColor: Colors.black,
+            //     activeTrackColor: Colors.black,
             //     onChanged: (e) => {},
             //   ),
             // ),
+            // const SizedBox(height: 20),
+            CupertinoListTile(
+              padding: EdgeInsets.zero,
+              title: const Text('Actividad en vivo'),
+              subtitle: const Text(
+                'Te muestra las calorías y macros diarias en la pantalla de bloqueo y en la dinámica.',
+                maxLines: 2,
+              ),
+              trailing: Obx(
+                () => CupertinoSwitch(
+                  value: controller.actividadLive.value,
+                  activeTrackColor: Colors.black,
+                  onChanged: (e) => {
+                    controller.actividadLive.toggle(),
+                    controller.crear(),
+                  },
+                ),
+              ),
+            ),
             const SizedBox(height: 20),
             const Divider(
               thickness: 0.4,
@@ -336,6 +355,18 @@ class ConfiguracionesScreen extends StatelessWidget {
                 size: 20,
               ),
             ),
+            // CupertinoListTile(
+            //   onTap: () {
+            //     Get.to(() => WidgetsView());
+            //   },
+            //   padding: EdgeInsets.zero,
+            //   title: Text('Preferencias'),
+            //   trailing: Icon(
+            //     Icons.arrow_forward_ios_outlined,
+            //     color: Colors.black26,
+            //     size: 20,
+            //   ),
+            // ),
             const SizedBox(height: 20),
             const Divider(
               thickness: 0.4,

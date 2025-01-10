@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/screen/home/controller.dart';
@@ -59,6 +60,21 @@ class ObjetivosScreen extends StatelessWidget {
           Colors.blueAccent)
     ];
 
+    controller.pro.value = controllerUsuario
+            .usuario.value.macronutrientesDiario?.value.proteina
+            ?.toDouble() ??
+        0.0;
+
+    controller.gra.value = controllerUsuario
+            .usuario.value.macronutrientesDiario?.value.grasas
+            ?.toDouble() ??
+        0.0;
+
+    controller.car.value = controllerUsuario
+            .usuario.value.macronutrientesDiario?.value.carbohidratos
+            ?.toDouble() ??
+        0.0;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -91,60 +107,154 @@ class ObjetivosScreen extends StatelessWidget {
                     Center(
                       child: SizedBox(
                         height: 150,
-                        // width: 300,
-                        child: SfCartesianChart(
-                          primaryYAxis: NumericAxis(
-                            minimum: 0,
-                            maximum: 100,
-                            interval: 50,
-                            opposedPosition: true,
-                            borderColor: Colors.black12,
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Obx(
+                            () => PieChart(
+                              duration: const Duration(seconds: 2),
+                              curve: Curves.easeInBack,
+                              PieChartData(
+                                sectionsSpace: 0,
+                                centerSpaceRadius: 60,
+                                sections: [
+                                  PieChartSectionData(
+                                    value: controller.pro.value,
+                                    showTitle: false,
+                                    color: Colors.red,
+                                    radius: 15,
+                                    badgeWidget: Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          bottom: 3,
+                                          top: 3),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        border: Border.all(color: Colors.white),
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                      child: Text(
+                                        '${controller.pro.toInt()}g',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                    badgePositionPercentageOffset: .98,
+                                  ),
+                                  PieChartSectionData(
+                                    value: controller.car.value,
+                                    color: Colors.orange,
+                                    radius: 15,
+                                    showTitle: false,
+                                    badgeWidget: Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          bottom: 3,
+                                          top: 3),
+                                      decoration: BoxDecoration(
+                                        color: Colors.orange,
+                                        border: Border.all(color: Colors.white),
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                      child: Text(
+                                        '${controller.car.toInt()}g',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
+                                    ),
+                                    badgePositionPercentageOffset: .98,
+                                  ),
+                                  PieChartSectionData(
+                                    value: controller.gra.value,
+                                    showTitle: false,
+                                    color: Colors.blue,
+                                    radius: 15,
+                                    badgeWidget: Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          bottom: 3,
+                                          top: 3),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue,
+                                        border: Border.all(color: Colors.white),
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                      child: Text(
+                                        '${controller.gra.toInt()}g',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
+                                    ),
+                                    badgePositionPercentageOffset: .98,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          plotAreaBackgroundColor: Colors.transparent,
-                          primaryXAxis: CategoryAxis(),
-                          enableSideBySideSeriesPlacement: false,
-                          series: <CartesianSeries>[
-                            // Inicializa la serie de columnas (barras)
-                            ColumnSeries<ChartData, String>(
-                              dataSource: [
-                                ChartData('Calorías', 100, Colors.white)
-                              ],
-                              width: 0.25,
-                              color: Colors.black,
-                              xValueMapper: (ChartData data, _) => data.label,
-                              yValueMapper: (ChartData data, _) => data.value,
-                            ),
-                            ColumnSeries<ChartData, String>(
-                              dataSource: [
-                                ChartData('Proteína', 70, Colors.white)
-                              ],
-                              width: 0.25,
-                              color: Colors.red,
-                              xValueMapper: (ChartData data, _) => data.label,
-                              yValueMapper: (ChartData data, _) => data.value,
-                            ),
-                            ColumnSeries<ChartData, String>(
-                              dataSource: [
-                                ChartData('Carbohidratos', 50, Colors.white)
-                              ],
-                              width: 0.25,
-                              color: Colors.orange,
-                              xValueMapper: (ChartData data, _) => data.label,
-                              yValueMapper: (ChartData data, _) => data.value,
-                            ),
-                            ColumnSeries<ChartData, String>(
-                              dataSource: [
-                                ChartData('Grasas', 25, Colors.white)
-                              ],
-                              width: 0.25,
-                              color: Colors.blue,
-                              xValueMapper: (ChartData data, _) => data.label,
-                              yValueMapper: (ChartData data, _) => data.value,
-                            )
-                          ],
                         ),
                       ),
                     ),
+
+                    const SizedBox(height: 20),
+                    // Center(
+                    //   child: SizedBox(
+                    //     height: 150,
+                    //     // width: 300,
+                    //     child: SfCartesianChart(
+                    //       primaryYAxis: NumericAxis(
+                    //         minimum: 0,
+                    //         maximum: 100,
+                    //         interval: 50,
+                    //         opposedPosition: true,
+                    //         borderColor: Colors.black12,
+                    //       ),
+                    //       plotAreaBackgroundColor: Colors.transparent,
+                    //       primaryXAxis: CategoryAxis(),
+                    //       enableSideBySideSeriesPlacement: false,
+                    //       series: <CartesianSeries>[
+                    //         // Inicializa la serie de columnas (barras)
+                    //         ColumnSeries<ChartData, String>(
+                    //           dataSource: [
+                    //             ChartData('Calorías', 100, Colors.white)
+                    //           ],
+                    //           width: 0.25,
+                    //           color: Colors.black,
+                    //           xValueMapper: (ChartData data, _) => data.label,
+                    //           yValueMapper: (ChartData data, _) => data.value,
+                    //         ),
+                    //         ColumnSeries<ChartData, String>(
+                    //           dataSource: [
+                    //             ChartData('Proteína', 70, Colors.white)
+                    //           ],
+                    //           width: 0.25,
+                    //           color: Colors.red,
+                    //           xValueMapper: (ChartData data, _) => data.label,
+                    //           yValueMapper: (ChartData data, _) => data.value,
+                    //         ),
+                    //         ColumnSeries<ChartData, String>(
+                    //           dataSource: [
+                    //             ChartData('Carbohidratos', 50, Colors.white)
+                    //           ],
+                    //           width: 0.25,
+                    //           color: Colors.orange,
+                    //           xValueMapper: (ChartData data, _) => data.label,
+                    //           yValueMapper: (ChartData data, _) => data.value,
+                    //         ),
+                    //         ColumnSeries<ChartData, String>(
+                    //           dataSource: [
+                    //             ChartData('Grasas', 25, Colors.white)
+                    //           ],
+                    //           width: 0.25,
+                    //           color: Colors.blue,
+                    //           xValueMapper: (ChartData data, _) => data.label,
+                    //           yValueMapper: (ChartData data, _) => data.value,
+                    //         )
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+
                     const SizedBox(height: 20),
                     CupertinoListTile(
                       leadingSize: 80,
@@ -275,6 +385,9 @@ class ObjetivosScreen extends StatelessWidget {
                       ),
                       subtitle: TextField(
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          controller.pro.value = double.parse(value);
+                        },
                         controller: controller.protinae,
                         onTap: () => controller.toggleKeyboardActions(true),
                         onEditingComplete: () =>
@@ -348,6 +461,9 @@ class ObjetivosScreen extends StatelessWidget {
                       subtitle: TextField(
                         keyboardType: TextInputType.number,
                         controller: controller.carbohidratos,
+                        onChanged: (value) {
+                          controller.car.value = double.parse(value);
+                        },
                         onTap: () => controller.toggleKeyboardActions(true),
                         onEditingComplete: () =>
                             controller.toggleKeyboardActions(false),
@@ -420,6 +536,9 @@ class ObjetivosScreen extends StatelessWidget {
                       subtitle: TextField(
                         keyboardType: TextInputType.number,
                         controller: controller.grasas,
+                        onChanged: (value) {
+                          controller.gra.value = double.parse(value);
+                        },
                         onTap: () => controller.toggleKeyboardActions(true),
                         onEditingComplete: () =>
                             controller.toggleKeyboardActions(false),

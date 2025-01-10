@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/Entrenamiento.dart';
@@ -7,7 +9,6 @@ import 'package:macrolife/screen/correr/screen.dart';
 import 'package:macrolife/screen/ejercicio_describir/screen.dart';
 import 'package:macrolife/screen/home/controller.dart';
 import 'package:macrolife/screen/nutricion/screen.dart';
-import 'package:macrolife/screen/objetivos/controller.dart';
 import 'package:macrolife/screen/pesas/screen.dart';
 import 'package:macrolife/services/notification_service.dart';
 import 'package:macrolife/widgets/AppleHealth.dart';
@@ -27,6 +28,7 @@ class HomeScreen extends StatelessWidget {
         GestureDetector(
           onTap: () => Get.toNamed('/objetivos'),
           child: Container(
+            margin: const EdgeInsets.only(top: 5, left: 2, right: 2, bottom: 5),
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -52,43 +54,91 @@ class HomeScreen extends StatelessWidget {
                       SizedBox(
                         width: 85,
                         child: Obx(
-                          () => SfCartesianChart(
-                            primaryYAxis: NumericAxis(
-                              minimum: 0,
-                              maximum: 100,
-                              interval: 50,
-                              opposedPosition: true,
-                              borderColor: Colors.black12,
+                          () =>
+                              // SfCartesianChart(
+                              //   primaryYAxis: NumericAxis(
+                              //     minimum: 0,
+                              //     maximum: 100,
+                              //     interval: 50,
+                              //     opposedPosition: true,
+                              //     borderColor: Colors.black12,
+                              //   ),
+                              //   plotAreaBackgroundColor: Colors.black12,
+                              //   primaryXAxis: CategoryAxis(
+                              //     isVisible: false,
+                              //   ),
+                              //   enableSideBySideSeriesPlacement: false,
+                              //   series: <CartesianSeries>[
+                              //     // Inicializa la serie de columnas (barras)
+                              //     ColumnSeries<ChartData, String>(
+                              //       dataSource: [
+                              //         // Fuente de datos
+                              //         ChartData(
+                              //             '',
+                              //             controllerUsuario.macronutrientes.value
+                              //                     .caloriasPorcentaje
+                              //                     ?.toDouble() ??
+                              //                 0.0,
+                              //             Colors.white),
+                              //       ],
+                              //       width: 1,
+                              //       color: Colors.black,
+                              //       xValueMapper: (ChartData data, _) => data.label,
+                              //       yValueMapper: (ChartData data, _) => data.value,
+                              //     )
+                              //   ],
+                              // ),
+                              BarChart(
+                            BarChartData(
+                              barGroups: [
+                                BarChartGroupData(
+                                  x: 1,
+                                  barRods: [
+                                    BarChartRodData(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(3)),
+                                      toY: controllerUsuario.macronutrientes
+                                                  .value.caloriasPorcentaje !=
+                                              null
+                                          ? controllerUsuario.macronutrientes
+                                              .value.caloriasPorcentaje!
+                                              .toDouble()
+                                          : 0.0,
+                                      fromY: 0,
+                                      color: Colors.black,
+                                      width: 35,
+                                      backDrawRodData:
+                                          BackgroundBarChartRodData(
+                                        show: true,
+                                        toY: 100,
+                                        color: Colors.grey.shade200,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                              titlesData: FlTitlesData(
+                                  show: true,
+                                  leftTitles: AxisTitles(),
+                                  bottomTitles:
+                                      AxisTitles(drawBelowEverything: false),
+                                  topTitles:
+                                      AxisTitles(drawBelowEverything: false)),
+                              gridData: FlGridData(
+                                show: false,
+                              ),
+                              borderData: FlBorderData(
+                                show: false,
+                              ),
+                              barTouchData: BarTouchData(
+                                enabled: false,
+                              ),
                             ),
-                            plotAreaBackgroundColor: Colors.black12,
-                            primaryXAxis: CategoryAxis(
-                              isVisible: false,
-                            ),
-                            enableSideBySideSeriesPlacement: false,
-                            series: <CartesianSeries>[
-                              // Inicializa la serie de columnas (barras)
-                              ColumnSeries<ChartData, String>(
-                                dataSource: [
-                                  // Fuente de datos
-                                  ChartData(
-                                      '',
-                                      controllerUsuario.macronutrientes.value
-                                              .caloriasPorcentaje
-                                              ?.toDouble() ??
-                                          0.0,
-                                      Colors.white),
-                                ],
-                                width: 1,
-                                color: Colors.black,
-                                xValueMapper: (ChartData data, _) => data.label,
-                                yValueMapper: (ChartData data, _) => data.value,
-                              )
-                            ],
                           ),
                         ),
                       ),
                       Image.asset(
-                        'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                        'assets/icons/icono_calorias_outline_120x120_activo.png',
                         width: 25,
                       )
                     ],
@@ -105,15 +155,29 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           Obx(
                             () => Text(
-                              '${controllerUsuario.macronutrientes.value.caloriasRestantes ?? 0}',
+                              controllerUsuario.macronutrientes.value
+                                              .caloriasRestantes !=
+                                          null &&
+                                      controllerUsuario.macronutrientes.value
+                                              .caloriasRestantes! <
+                                          0
+                                  ? '${controllerUsuario.macronutrientes.value.caloriasRestantes!.abs()}'
+                                  : '${controllerUsuario.macronutrientes.value.caloriasRestantes ?? 0}',
                               style: const TextStyle(
                                 fontSize: 36,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          const Text(
-                            'Calorías\nrestantes',
+                          Text(
+                            controllerUsuario.macronutrientes.value
+                                            .caloriasRestantes !=
+                                        null &&
+                                    controllerUsuario.macronutrientes.value
+                                            .caloriasRestantes! <
+                                        0
+                                ? 'Calorías más'
+                                : 'Calorías\nrestantes',
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
@@ -130,66 +194,71 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 15),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Indicador de Proteína
-            GestureDetector(
-              onTap: () => Get.toNamed('/objetivos'),
-              child: Obx(
-                () => NutrientIndicator(
-                  amount: (controllerUsuario
-                          .macronutrientes.value.proteinaRestantes ??
-                      0),
-                  nutrient: "Proteína",
-                  percent: controllerUsuario
-                          .macronutrientes.value.proteinaPorcentaje
-                          ?.toDouble() ??
-                      0.0,
-                  color: Colors.red,
-                  icon: 'assets/icons/icono_filetecarne_90x69_nuevo.png',
+        // const SizedBox(height: 15),
+        Container(
+          margin: const EdgeInsets.only(top: 15, left: 2, right: 2),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Indicador de Proteína
+              GestureDetector(
+                onTap: () => Get.toNamed('/objetivos'),
+                child: Obx(
+                  () => NutrientIndicator(
+                    amount: (controllerUsuario
+                            .macronutrientes.value.proteinaRestantes ??
+                        0),
+                    nutrient: "Proteína",
+                    percent: controllerUsuario
+                            .macronutrientes.value.proteinaPorcentaje
+                            ?.toDouble() ??
+                        0.0,
+                    color: Colors.red,
+                    icon:
+                        'assets/icons/icono_filetecarne_outline_93x93_activo.png',
+                  ),
                 ),
               ),
-            ),
-            // Indicador de Carbohidratos
-            GestureDetector(
-              onTap: () => Get.toNamed('/objetivos'),
-              child: Obx(
-                () => NutrientIndicator(
-                  amount: (controllerUsuario
-                          .macronutrientes.value.carbohidratosRestante ??
-                      0),
-                  nutrient: "Carbohidratos",
-                  percent: controllerUsuario
-                          .macronutrientes.value.caloriasPorcentaje
-                          ?.toDouble() ??
-                      0.0,
-                  color: Colors.orange,
-                  icon:
-                      'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
+              // Indicador de Carbohidratos
+              GestureDetector(
+                onTap: () => Get.toNamed('/objetivos'),
+                child: Obx(
+                  () => NutrientIndicator(
+                    amount: (controllerUsuario
+                            .macronutrientes.value.carbohidratosRestante ??
+                        0),
+                    nutrient: "Carbohidratos",
+                    percent: controllerUsuario
+                            .macronutrientes.value.caloriasPorcentaje
+                            ?.toDouble() ??
+                        0.0,
+                    color: Colors.orange,
+                    icon:
+                        'assets/icons/icono_panintegral_outline_79x79_activo.png',
+                  ),
                 ),
               ),
-            ),
-            // Indicador de Grasa
-            GestureDetector(
-              onTap: () => Get.toNamed('/objetivos'),
-              child: Obx(
-                () => NutrientIndicator(
-                  amount: (controllerUsuario
-                          .macronutrientes.value.grasasRestantes ??
-                      0),
-                  nutrient: "Grasa",
-                  percent: controllerUsuario
-                          .macronutrientes.value.grasasPorcentaje
-                          ?.toDouble() ??
-                      0.0,
-                  color: Colors.blue,
-                  icon: 'assets/icons/icono_almedraazul_74x70_nuevo.png',
+              // Indicador de Grasa
+              GestureDetector(
+                onTap: () => Get.toNamed('/objetivos'),
+                child: Obx(
+                  () => NutrientIndicator(
+                    amount: (controllerUsuario
+                            .macronutrientes.value.grasasRestantes ??
+                        0),
+                    nutrient: "Grasa",
+                    percent: controllerUsuario
+                            .macronutrientes.value.grasasPorcentaje
+                            ?.toDouble() ??
+                        0.0,
+                    color: Colors.blue,
+                    icon:
+                        'assets/icons/icono_almendra_outline_78x78_activo.png',
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
@@ -257,13 +326,13 @@ class HomeScreen extends StatelessWidget {
               //   child: Text('Apple Helth'),
               // ),
               SizedBox(
-                height: 380,
+                height: 400,
                 child: PageView(
                   // physics: NeverScrollableScrollPhysics(),
                   controller: PageController(),
                   children: [
                     puntuaciones(controllerUsuario),
-                    HealthDataChart(),
+                    if (GetPlatform.isIOS) HealthDataChart()
                   ],
                 ),
               ),
@@ -630,13 +699,13 @@ class NutritionWidget extends StatelessWidget {
                         Row(
                           children: [
                             Image.asset(
-                              'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                              'assets/icons/icono_calorias_outline_120x120_activo.png',
                               width: 18,
                               height: 18,
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              '${nutritionInfo.calories} calorías', // Usamos el parámetro de las calorías
+                              '${nutritionInfo.calories} calorías',
                               style: TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.bold,
@@ -646,17 +715,17 @@ class NutritionWidget extends StatelessWidget {
                         ),
                         const SizedBox(height: 15),
                         _buildNutritionItem(
-                          'assets/icons/icono_filetecarne_90x69_nuevo.png', // Ícono de proteínas
+                          'assets/icons/icono_filetecarne_outline_93x93_activo.png',
                           '${nutritionInfo.protein}gr.', // Usamos el parámetro de proteínas
                         ),
                         const SizedBox(height: 10),
                         _buildNutritionItem(
-                          'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png', // Ícono de carbohidratos
+                          'assets/icons/icono_panintegral_outline_79x79_activo.png',
                           '${nutritionInfo.carbs}gr.', // Usamos el parámetro de carbohidratos
                         ),
                         const SizedBox(height: 10),
                         _buildNutritionItem(
-                          'assets/icons/icono_almedraazul_74x70_nuevo.png', // Ícono de grasas
+                          'assets/icons/icono_almendra_outline_78x78_activo.png',
                           '${nutritionInfo.fats}gr.', // Usamos el parámetro de grasas
                         ),
                         const SizedBox(height: 10),

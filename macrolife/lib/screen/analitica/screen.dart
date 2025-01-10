@@ -1,11 +1,10 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/screen/analitica/controller.dart';
-import 'package:macrolife/screen/objetivos/controller.dart';
 import 'package:macrolife/screen/peso/screen.dart';
 import 'package:macrolife/screen/peso_objetivo/screen.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:macrolife/screen/analitica/info.dart';
 
 class AnaliticaScreen extends StatelessWidget {
@@ -398,28 +397,92 @@ class AnaliticaScreen extends StatelessWidget {
                       height: 200,
                       // width: Get.width,
                       child: Obx(
-                        () => SfCartesianChart(
-                          primaryYAxis: NumericAxis(
-                              // isVisible: false,
+                        () => BarChart(
+                          BarChartData(
+                            barGroups: controller.charSorce
+                                .asMap()
+                                .entries
+                                .map(
+                                  (entry) => BarChartGroupData(
+                                    x: entry.key,
+                                    barRods: [
+                                      BarChartRodData(
+                                        toY: entry.value.value,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(5),
+                                          topRight: Radius.circular(5),
+                                        ),
+                                        width: 17,
+                                        color: Colors.transparent,
+                                        rodStackItems: [
+                                          BarChartRodStackItem(
+                                            0,
+                                            entry.value.value * 0.3,
+                                            Colors.black87,
+                                          ),
+                                          BarChartRodStackItem(
+                                            entry.value.value * 0.3,
+                                            (entry.value.value * 0.3) +
+                                                (entry.value.value * 0.27),
+                                            Colors.black,
+                                          ),
+                                          BarChartRodStackItem(
+                                            (entry.value.value * 0.3) +
+                                                (entry.value.value * 0.27),
+                                            (entry.value.value * 0.3) +
+                                                (entry.value.value * 0.27) +
+                                                (entry.value.value * 0.43),
+                                            Colors.black54,
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                                .toList(),
+                            titlesData: FlTitlesData(
+                              show: true,
+                              topTitles: AxisTitles(drawBelowEverything: false),
+                              rightTitles:
+                                  AxisTitles(drawBelowEverything: true),
+                              bottomTitles: AxisTitles(
+                                drawBelowEverything: true,
+                                axisNameSize: 10,
+                                sideTitles: SideTitles(
+                                  showTitles: true,
+                                  getTitlesWidget: (value, meta) =>
+                                      controller.getTitles(value, meta),
+                                ),
                               ),
-                          // borderColor: Colors.black,
-                          plotAreaBackgroundColor: controller.color.value,
-                          primaryXAxis: CategoryAxis(
-                              // borderWidth: 0,
-                              // maximumLabelWidth: 22,
-
-                              ),
-                          series: <CartesianSeries>[
-                            // Inicializa la serie de columnas (barras)
-                            ColumnSeries<ChartData, String>(
-                              dataSource: controller.charSorce.value,
-                              width: 0.3,
-                              color: Colors.black,
-                              xValueMapper: (ChartData data, _) => data.label,
-                              yValueMapper: (ChartData data, _) => data.value,
-                            )
-                          ],
+                            ),
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            barTouchData: BarTouchData(
+                              enabled: false,
+                            ),
+                          ),
                         ),
+
+                        // SfCartesianChart(
+                        //   primaryYAxis: NumericAxis(),
+                        //   // borderColor: Colors.black,
+                        //   plotAreaBackgroundColor: controller.color.value,
+                        //   primaryXAxis: CategoryAxis(),
+                        //   series: <CartesianSeries>[
+                        //     // Inicializa la serie de columnas (barras)
+                        //     ColumnSeries<ChartData, String>(
+                        //       dataSource: controller.charSorce,
+                        //       width: 0.3,
+                        //       color: Colors.black,
+                        //       xValueMapper: (ChartData data, _) => data.label,
+                        //       yValueMapper: (ChartData data, _) => data.value,
+                        //     )
+                        //   ],
+                        // ),
                       ),
                     ),
                   ],

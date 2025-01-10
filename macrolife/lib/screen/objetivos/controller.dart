@@ -14,6 +14,9 @@ class ObjetivosController extends GetxController {
   final carbohidratos = TextEditingController();
   final grasas = TextEditingController();
 
+  RxDouble pro = 0.0.obs;
+  RxDouble car = 0.0.obs;
+  RxDouble gra = 0.0.obs;
   // Datos del gráfico
   var chartData = <ChartData>[].obs;
 

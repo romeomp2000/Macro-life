@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/config/api_service.dart';
@@ -47,11 +48,11 @@ class AnaliticaController extends GetxController {
           'tipoBusqueda': tipoBusqueda.value,
         },
       );
-      print(response);
 
       AnaliticaNutricionModel nutricion =
           AnaliticaNutricionModel.fromJson(response);
 
+      print(response);
       for (Dias dia in nutricion.dias ?? []) {
         charSorce.add(ChartData(
             dia.dia ?? '', dia.promedio?.toDouble() ?? 0, Colors.black));
@@ -59,7 +60,6 @@ class AnaliticaController extends GetxController {
 
       analiticaNutricion.value = nutricion;
 
-      print(nutricion);
       isLoading(false);
       refresh();
     } catch (e) {
@@ -67,5 +67,20 @@ class AnaliticaController extends GetxController {
 
       print(e);
     }
+  }
+
+  Widget getTitles(double value, TitleMeta meta) {
+    const style = TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.normal,
+      fontSize: 10,
+    );
+
+    int index = value.toInt();
+
+    String valor = charSorce[index].label;
+    Widget text;
+    text = Text(valor, style: style);
+    return text;
   }
 }

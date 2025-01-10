@@ -1,6 +1,5 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:macrolife/screen/objetivos/controller.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class NutrientIndicator extends StatelessWidget {
   final int amount;
@@ -48,13 +47,13 @@ class NutrientIndicator extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${amount}g',
+                amount > 0 ? '${amount}g' : '${amount.abs()}g',
                 style:
                     const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text(
-                '$nutrient\nrestante',
+                amount > 0 ? '$nutrient\nrestante' : '$nutrient más',
                 style: const TextStyle(fontSize: 10, color: Colors.black54),
               ),
             ],
@@ -65,39 +64,77 @@ class NutrientIndicator extends StatelessWidget {
               SizedBox(
                 height: 100,
                 width: 38,
-                child: SfCartesianChart(
-                  primaryYAxis: NumericAxis(
-                    minimum: 0,
-                    maximum: 100,
-                    interval: 50,
-                    opposedPosition: true,
-                    borderColor: Colors.black12,
-                    isVisible: false,
+                child:
+                    // SfCartesianChart(
+                    //   primaryYAxis: NumericAxis(
+                    //     minimum: 0,
+                    //     maximum: 100,
+                    //     interval: 50,
+                    //     opposedPosition: true,
+                    //     borderColor: Colors.black12,
+                    //     isVisible: false,
+                    //   ),
+                    //   plotAreaBackgroundColor: Colors.black12,
+                    //   primaryXAxis: CategoryAxis(
+                    //     isVisible: false,
+                    //   ),
+                    //   enableSideBySideSeriesPlacement: false,
+                    //   series: <CartesianSeries>[
+                    //     ColumnSeries<ChartData, String>(
+                    //       dataSource: [
+                    //         ChartData('', percent, Colors.white),
+                    //       ],
+                    //       width: 1,
+                    //       color: color,
+                    //       borderRadius: BorderRadius.only(
+                    //         topLeft: Radius.circular(2),
+                    //         topRight: Radius.circular(2),
+                    //       ),
+                    //       xValueMapper: (ChartData data, _) => data.label,
+                    //       yValueMapper: (ChartData data, _) => data.value,
+                    //     ),
+                    //   ],
+                    // ),
+                    BarChart(
+                  BarChartData(
+                    barGroups: [
+                      BarChartGroupData(
+                        x: 1,
+                        barRods: [
+                          BarChartRodData(
+                            borderRadius: BorderRadius.all(Radius.circular(3)),
+                            toY: percent,
+                            color: Colors.black,
+                            width: 25,
+                            backDrawRodData: BackgroundBarChartRodData(
+                              show: true,
+                              toY: 100,
+                              color: Colors.grey.shade200,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                    titlesData: FlTitlesData(
+                      show: false, // Ocultar títulos de los ejes
+                    ),
+                    gridData: FlGridData(
+                      show: false, // Ocultar líneas de la cuadrícula
+                    ),
+                    borderData: FlBorderData(
+                      show: false, // Ocultar bordes del gráfico
+                    ),
+                    barTouchData: BarTouchData(
+                      enabled: false, // Desactivar interacción con las barras
+                    ),
                   ),
-                  plotAreaBackgroundColor: Colors.black12,
-                  primaryXAxis: CategoryAxis(
-                    isVisible: false,
-                  ),
-                  enableSideBySideSeriesPlacement: false,
-                  series: <CartesianSeries>[
-                    // Inicializa la serie de columnas (barras)
-                    ColumnSeries<ChartData, String>(
-                      dataSource: [
-                        // Fuente de datos
-                        ChartData('', percent, Colors.white),
-                      ],
-                      width: 1,
-                      color: color,
-                      xValueMapper: (ChartData data, _) => data.label,
-                      yValueMapper: (ChartData data, _) => data.value,
-                    )
-                  ],
                 ),
               ),
               Image.asset(
                 icon,
                 width: 30,
                 height: 30,
+                color: Colors.black,
               ),
             ],
           ),
