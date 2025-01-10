@@ -59,7 +59,7 @@ dependencies:
     animated_weight_picker: ^1.0.3
     flutter_round_slider: ^1.0.0
     flutter_local_notifications: ^18.0.1
-    workmanager: ^0.5.2
+    # workmanager: ^0.5.2
 
 
 
