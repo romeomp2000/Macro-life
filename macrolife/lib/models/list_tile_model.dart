@@ -9,7 +9,8 @@ class ListTileModel {
   final Widget? trailing;
   final Function? onTap;
   final Icon? icon;
-  final Widget? widget;
+  final Widget? leading;
+  final bool? check;
 
   final FutureOr<void> Function()? function;
 
@@ -21,7 +22,8 @@ class ListTileModel {
     this.onTap,
     this.icon,
     this.function,
-    this.widget,
+    this.leading,
+    this.check = true,
   });
 
   factory ListTileModel.fromJson(Map<String, dynamic> json) {
@@ -32,7 +34,8 @@ class ListTileModel {
       trailing: json['trailing'],
       onTap: json['onTap'],
       icon: json['icon'],
-      widget: json['widget'],
+      leading: json['leading'],
+      check: json['check'],
     );
   }
 
@@ -44,7 +47,8 @@ class ListTileModel {
       'trailing': trailing,
       'onTap': onTap,
       'icon': icon,
-      'widget': widget
+      'leading': leading,
+      'check': check
     };
   }
 

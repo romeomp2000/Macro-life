@@ -24,10 +24,12 @@ class LoaderScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Personalizando el plan de salud.',
-                textAlign: TextAlign.center,
-                style: TextStyle(),
+              Obx(
+                () => Text(
+                  controller.texto.value,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(),
+                ),
               ),
               const SizedBox(height: 20),
               Obx(() {

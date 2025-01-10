@@ -17,7 +17,7 @@ class Usuario {
   String? objetivo;
   int? pesoObjetivo;
   String? dieta;
-  String? lograr;
+  List<String>? logros;
   double? metaAlcanzar;
   String? impideAlcanzar;
   String? codigo;
@@ -48,7 +48,7 @@ class Usuario {
       this.objetivo,
       this.pesoObjetivo,
       this.dieta,
-      this.lograr,
+      this.logros,
       this.metaAlcanzar,
       this.impideAlcanzar,
       this.codigo,
@@ -85,7 +85,7 @@ class Usuario {
     objetivo = json['objetivo'];
     pesoObjetivo = json['pesoObjetivo'];
     dieta = json['dieta'];
-    lograr = json['lograr'];
+    logros = json['logros'] != null ? List<String>.from(json['logros']) : null;
     metaAlcanzar = json['metaAlcanzar'];
     impideAlcanzar = json['impideAlcanzar'];
     codigo = json['codigo'];
@@ -121,7 +121,7 @@ class Usuario {
     data['objetivo'] = this.objetivo;
     data['pesoObjetivo'] = this.pesoObjetivo;
     data['dieta'] = this.dieta;
-    data['lograr'] = this.lograr;
+    data['logros'] = this.logros;
     data['metaAlcanzar'] = this.metaAlcanzar;
     data['impideAlcanzar'] = this.impideAlcanzar;
     data['codigo'] = this.codigo;

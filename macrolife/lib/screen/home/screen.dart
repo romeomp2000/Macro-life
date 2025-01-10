@@ -10,11 +10,14 @@ import 'package:macrolife/screen/ejercicio_describir/screen.dart';
 import 'package:macrolife/screen/home/controller.dart';
 import 'package:macrolife/screen/nutricion/screen.dart';
 import 'package:macrolife/screen/pesas/screen.dart';
+import 'package:macrolife/services/notification_service.dart';
 import 'package:macrolife/widgets/AppleHealth.dart';
 import 'package:macrolife/widgets/NutrientIndicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:workmanager/workmanager.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
