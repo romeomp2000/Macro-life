@@ -17,13 +17,16 @@ const registroController = async (req, res) => {
     dieta,
     lograr,
     metaVelocidad,
-    metaImpedimento,
+    // metaImpedimento,
     referidoCodigo,
     appleID,
     googleId,
     correo,
     telefono,
-    nombre
+    nombre,
+    alarmaDesayuno,
+    alarmaComida,
+    alarmaCena
   } = req.body;
 
   try {
@@ -62,9 +65,9 @@ const registroController = async (req, res) => {
       return res.status(400).json({ message: 'La meta de velocidad es requerido.' });
     }
 
-    if (!metaImpedimento) {
-      return res.status(400).json({ message: 'El impedimento  es requerido.' });
-    }
+    // if (!metaImpedimento) {
+    //   return res.status(400).json({ message: 'El impedimento  es requerido.' });
+    // }
 
     const fechaNacimientoConZonaHoraria = moment.tz(fechaNacimiento, 'YYYY-MM-DD', 'America/Mexico_City');
 
@@ -74,8 +77,9 @@ const registroController = async (req, res) => {
     const findReferidoPadre = referidoCodigo ? await UsuarioModel.findOne({ codigo: referidoCodigo }) || null : null;
 
     const prompt = `
-      Actúa como un experto en nutrición y entrenamiento físico. Basándote en la siguiente información, calcula los macronutrientes necesarios (calorías, proteínas, carbohidratos, grasas) y otorga una puntuación de salud (del 0 al 10). Considera las metas del usuario, la dieta y el estilo de vida. 
+      Actúa como un experto en nutrición y entrenamiento físico. Basándote en la siguiente información, calcula los macronutrientes necesarios (calorías, proteínas, carbohidratos, grasas) y otorga una puntuación de salud (del 0 al 10). Considera las metas del usuario, la dieta y el estilo de vida.
       Teniendo en cuenta que estamos a ${moment()}
+      Quiero que seas muy especifico con el tiempo entre la velocidad del objetivo dependiendo del día actual dependiendo del peos deeado que quiere llegar
       Información del usuario:
       - Género: ${genero}
       - Días de entrenamiento por semana: ${entrenamiento}
@@ -83,11 +87,10 @@ const registroController = async (req, res) => {
       - Peso actual: ${peso} kg
       - Fecha de nacimiento: ${fechaUTC.toString()}
       - Objetivo: ${objetivo}
-      - Peso deseado: ${pesoDeseado} kg
+      - Peso deseado: ${pesoDeseado} kg tenerlo muy en cuenta
       - Dieta específica: ${dieta || 'Ninguna'}
-      - Qué le gustaría lograr: ${lograr}
-      - Velocidad para alcanzar la meta: ${metaVelocidad}
-      - Impedimento para alcanzar sus metas: ${metaImpedimento}
+      - Qué le gustaría lograr: ${lograr?.split(',') || ''}
+      - Velocidad para alcanzar la meta: ${metaVelocidad} el min es 0.1 y el max 1.5 si no hay es que quiere manter el peso
 
       Solo devuelve un objeto JSON con la siguiente estructura, no devuelvas otra cosa:
       {
@@ -101,6 +104,8 @@ const registroController = async (req, res) => {
         "fechaMeta": "fecha de posible objetivo completar"
       }
     `;
+
+    console.log(prompt);
 
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
@@ -150,15 +155,21 @@ const registroController = async (req, res) => {
       objetivo,
       pesoObjetivo: pesoDeseado,
       dieta,
-      lograr,
+      lograr: lograr?.split(','),
       metaAlcanzar: metaVelocidad,
-      impideAlcanzar: metaImpedimento,
+      // impideAlcanzar: metaImpedimento,
       fechaMeta: jsonResponse?.fechaMeta || null,
       appleID,
       googleId,
       correo,
       telefono,
-      nombre
+      nombre,
+      notificacionesAlarma: {
+        desayuno: alarmaDesayuno,
+        comida: alarmaComida,
+        cenas: alarmaCena
+      }
+
     };
 
     const newUsuario = await UsuarioModel.create(objUsuario);

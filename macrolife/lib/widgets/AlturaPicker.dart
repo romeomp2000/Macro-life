@@ -32,11 +32,6 @@ class AlturaPesoPicker extends StatelessWidget {
     return Center(
       child: Column(
         children: [
-          const Text(
-            "Métrica",
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -51,7 +46,7 @@ class AlturaPesoPicker extends StatelessWidget {
                           fontWeight: FontWeight.bold), // Texto en negritas
                     ),
                     SizedBox(
-                      height: 170,
+                      height: 200,
                       child: CupertinoPicker(
                         itemExtent: 32.0,
                         scrollController: FixedExtentScrollController(
@@ -80,7 +75,7 @@ class AlturaPesoPicker extends StatelessWidget {
                           fontWeight: FontWeight.bold), // Texto en negritas
                     ),
                     SizedBox(
-                      height: 170,
+                      height: 200,
                       child: CupertinoPicker(
                         itemExtent: 32.0,
                         scrollController: FixedExtentScrollController(

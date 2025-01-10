@@ -101,7 +101,7 @@ class FuncionesGlobales {
 
   static void vibratePress() {
     if (Platform.isIOS) {
-      HapticFeedback.lightImpact();
+      HapticFeedback.mediumImpact();
     }
   }
 

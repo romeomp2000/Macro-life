@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -6,15 +7,19 @@ import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/services/auth_service.dart';
+import 'package:health/health.dart';
+import 'package:video_player/video_player.dart';
 
 class RegistroPasosController extends GetxController {
   final authService = AuthService();
   final UsuarioController usuarioController = Get.put(UsuarioController());
+  late VideoPlayerController controllerVideo;
 
   void signWithApple() async {
     try {
       FuncionesGlobales.vibratePress();
 
+      // authService.signOutApple();
       final usuarioAplle = await authService.signWithApple();
 
       String? correoWithApple = usuarioAplle?.user?.email;
@@ -121,13 +126,25 @@ class RegistroPasosController extends GetxController {
 
   var probado = ''.obs; // has probado otras apps
 
-  var peso = 54.obs;
-  var altura = 167.obs;
+  var pesoDeseadoLabel = 'Mantener peso'.obs;
+  var labelGraficaDoble = ''.obs;
+  var mostrarGrafica = false.obs;
+
+  var pesoDeseadoValue = ''.obs;
+
+  Rx<TimeOfDay> desayuno = TimeOfDay(hour: 8, minute: 15).obs;
+  Rx<TimeOfDay> comida = TimeOfDay(hour: 13, minute: 30).obs;
+  Rx<TimeOfDay> cena = TimeOfDay(hour: 20, minute: 45).obs;
+
+  var peso = 70.obs;
+  var altura = 174.obs;
 
   var dia = 1.obs;
   var mes = 1.obs;
-  var anio = 2024.obs;
-  var fechaNacimiento = Rx<DateTime?>(null); // Inicializamos como null
+  var anio = (DateTime.now().year - 20).obs; // Inicializamos 20 años antes
+  var fechaNacimiento = Rx<DateTime?>(
+    DateTime(DateTime.now().year - 20, 1, 1),
+  ); // Inicializamos como null
 
   var pesoDeseado = 54.obs;
 
@@ -137,9 +154,9 @@ class RegistroPasosController extends GetxController {
 
   var dieta = ''.obs;
 
-  var lograr = ''.obs;
+  RxList<String> lograr = <String>[].obs;
 
-  var impedimento = ''.obs;
+  // var impedimento = ''.obs;
 
   final nombreController = TextEditingController();
   final nombre = ''.obs;
@@ -153,7 +170,7 @@ class RegistroPasosController extends GetxController {
   final correoController = TextEditingController();
   final correo = ''.obs;
 
-  var progress = 0.1.obs; // Barra de progreso inicial en 10%
+  var progress = 0.0.obs; // Barra de progreso inicial en 10%
   var currentStep = 1.obs; // Paso actual (1 a 10)
   late PageController pageController; // Controlador para PageView
 
@@ -161,6 +178,13 @@ class RegistroPasosController extends GetxController {
   void onInit() {
     super.onInit();
     pageController = PageController(); // Inicializa el PageController
+  }
+
+  String formatTimeOfDay(TimeOfDay tod) {
+    final now = DateTime.now();
+    final dateTime =
+        DateTime(now.year, now.month, now.day, tod.hour, tod.minute);
+    return DateFormat('h:mm a').format(dateTime); // Formato de 12 horas
   }
 
   @override
@@ -174,34 +198,62 @@ class RegistroPasosController extends GetxController {
     Get.toNamed(
       '/loader',
       arguments: {
-        "genero": selectedGender.value,
-        "entrenamiento": entrenamiento.value, // cuantos días entrena por día
-        "aplicacionSimilar": probado.value, // has probado un aplicación similar
-        "altura": altura.value,
-        "peso": peso.value,
-        "fechaNacimiento":
+        'genero': selectedGender.value,
+        'entrenamiento': entrenamiento.value, // cuantos días entrena por día
+        'aplicacionSimilar': probado.value, // has probado un aplicación similar
+        'altura': altura.value,
+        'peso': peso.value,
+        'fechaNacimiento':
             DateFormat('yyyy-MM-dd').format(fechaNacimiento.value!),
-        "objetivo": objetivo.value, // cual es tu objetivo
-        "pesoDeseado": pesoDeseado.value, // cual es tu peso deseado
-        "dieta": dieta.value, // sigues alguna dieta especifica
-        "lograr": lograr.value, // que te gustaría lograr
-        "metaVelocidad":
+        'objetivo': objetivo.value, // cual es tu objetivo
+        'pesoDeseado': pesoDeseado.value, // cual es tu peso deseado
+        'dieta': dieta.value, // sigues alguna dieta especifica
+        'lograr': lograr.value.join(','), // que te gustaría lograr
+        'metaVelocidad':
             rapidoMeta.value, // que tán rápido quieres que alcance tu meta
-        "metaImpedimento":
-            impedimento.value, // qye te impide alcanzar tus metas
-        "codigo": codigo.value,
-        "appleID": appleUUID.value,
-        "googleId": googleUUID.value,
-        "correo": correo.value,
-        "telefono": telefonoController.text,
-        "nombre": nombreController.text,
+        // 'metaImpedimento':
+        //     impedimento.value, // qye te impide alcanzar tus metas
+        'codigo': codigo.value,
+        'appleID': appleUUID.value,
+        'googleId': googleUUID.value,
+        'correo': correo.value,
+        'telefono': telefonoController.text,
+        'nombre': nombreController.text,
+        'alarmaDesayuno': formatTimeOfDay(desayuno.value),
+        'alarmaComida': formatTimeOfDay(comida.value),
+        'alarmaCena': formatTimeOfDay(comida.value),
       },
     );
   }
 
-  bool iaImpedimentoSelected() {
-    return impedimento.isNotEmpty;
+  void ajustarLabelPeso() {
+    if (peso.value < pesoDeseado.value) {
+      pesoDeseadoLabel.value = 'Subir de peso';
+      pesoDeseadoValue.value = '${pesoDeseado.value - peso.value} kg';
+      labelGraficaDoble.value = 'Gana el doble de peso con Macro Life';
+
+      mostrarGrafica.value = true;
+    }
+
+    if (peso.value == pesoDeseado.value) {
+      pesoDeseadoLabel.value = 'Mantener de peso';
+      pesoDeseadoValue.value = '';
+      labelGraficaDoble.value = '';
+      mostrarGrafica.value = false;
+    }
+
+    if (peso.value > pesoDeseado.value) {
+      pesoDeseadoLabel.value = 'Bajar de peso';
+      pesoDeseadoValue.value = '${peso.value - pesoDeseado.value} kg';
+      labelGraficaDoble.value = 'Baja el doble de peso con Macro Life';
+
+      mostrarGrafica.value = true;
+    }
   }
+
+  // bool iaImpedimentoSelected() {
+  //   return impedimento.isNotEmpty;
+  // }
 
   // Validación del género seleccionado para habilitar el siguiente paso
   bool isGenderSelected() {
@@ -252,33 +304,37 @@ class RegistroPasosController extends GetxController {
 
     if (currentStep.value < 24) {
       currentStep.value++;
-      progress.value = currentStep.value /
-          24; // Actualiza el progreso en función del paso actual
+      progress.value = currentStep.value / 24;
       pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
+    }
+  }
 
-      if (currentStep.value == 20) {
-        final InAppReview inAppReview = InAppReview.instance;
+  void connectAppleHealth() async {
+    // Solicitar permisos
+    final health = HealthFactory();
 
-        await Future.delayed(Duration(seconds: 1));
+    await health.requestAuthorization([
+      HealthDataType.STEPS,
+    ]);
+  }
 
-        if (await inAppReview.isAvailable()) {
-          // Solicitar calificación dentro de la app
-          inAppReview.requestReview();
-        } else {
-          // Redirigir a la tienda de aplicaciones
-          inAppReview.openStoreListing(
-            appStoreId: 'mx.posibilidades.macrolife',
-            // microsoftStoreId: 'mx.posibilidades.macrolife',
-          );
-        }
-      }
+  void calificarApp() async {
+    final InAppReview inAppReview = InAppReview.instance;
 
-      if (currentStep.value == 21) {
-        FuncionesGlobales.getDeviceToken();
-      }
+    await Future.delayed(Duration(seconds: 1));
+
+    if (await inAppReview.isAvailable()) {
+      // Solicitar calificación dentro de la app
+      inAppReview.requestReview();
+    } else {
+      // Redirigir a la tienda de aplicaciones
+      inAppReview.openStoreListing(
+        appStoreId: 'mx.posibilidades.macrolife',
+        // microsoftStoreId: 'mx.posibilidades.macrolife',
+      );
     }
   }
 
@@ -289,13 +345,14 @@ class RegistroPasosController extends GetxController {
     if (currentStep.value > 1) {
       currentStep.value--;
       progress.value = currentStep.value /
-          10; // Actualiza el progreso en función del paso actual
+          21; // Actualiza el progreso en función del paso actual
       pageController.previousPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     } else {
-      Get.back(); // Vuelve a la pantalla anterior si está en el primer paso
+      // Get.back(); // Vuelve a la pantalla anterior si está en el primer paso
+      Get.offAndToNamed('/registro'); // Realizar la acción
     }
   }
 

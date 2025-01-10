@@ -41,7 +41,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
         ),
         fixedSize: WidgetStateProperty.all(const Size.fromWidth(370)),
         padding: WidgetStateProperty.all(
-          const EdgeInsets.symmetric(vertical: 20),
+          const EdgeInsets.symmetric(vertical: 17),
         ),
         backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
           if (states.contains(WidgetState.disabled)) {

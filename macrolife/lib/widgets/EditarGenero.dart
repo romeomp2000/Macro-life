@@ -57,7 +57,7 @@ class EditarGeneroScreen extends StatelessWidget {
                                 () => CustomElevatedSelected(
                                   message: option.title ?? '',
                                   icon: option.icon,
-                                  widget: option.widget,
+                                  widget: option.leading,
                                   subtitle: option.subtitle,
                                   function: () {
                                     controller.genero.value =
