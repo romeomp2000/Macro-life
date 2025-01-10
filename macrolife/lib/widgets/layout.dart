@@ -115,6 +115,10 @@ class EscanearAlimentosController extends GetxController {
   RxList<ImageLabel> labels = <ImageLabel>[].obs;
   final UsuarioController usuarioController = Get.put(UsuarioController());
 
+  RxDouble width = 0.0.obs;
+  RxDouble height = 0.0.obs;
+  RxInt isSeleccionado = 1.obs;
+
   // Asegurarse de que la cámara se inicialice correctamente
   Future<void> initializeCamera() async {
     try {
@@ -124,8 +128,12 @@ class EscanearAlimentosController extends GetxController {
         return;
       }
       cameraController = CameraController(
-          cameras[0], ResolutionPreset.ultraHigh,
-          enableAudio: false, fps: 30, imageFormatGroup: ImageFormatGroup.jpeg);
+        cameras[0],
+        ResolutionPreset.ultraHigh,
+        enableAudio: false,
+        fps: 30,
+        imageFormatGroup: ImageFormatGroup.jpeg,
+      );
       print('Inicializando la cámara...');
       await cameraController?.initialize();
       print('Cámara inicializada');
@@ -488,151 +496,187 @@ class EscanearAlimentosController extends GetxController {
     await initializeCamera(); // Asegúrate de que se haya completado la inicialización
 
     if (!isCameraInitialized.value) {
-      print("La cámara no se ha inicializado correctamente.");
+      // print("La cámara no se ha inicializado correctamente.");
       return; // Si no se ha inicializado correctamente, salimos del método
     }
 
+    width.value = Get.width - 100;
+    height.value = Get.width - 70;
     // Mostrar el bottom sheet solo después de que la cámara esté inicializada
     Get.bottomSheet(
       isScrollControlled: true,
-      SafeArea(
-        child: Stack(
-          alignment: AlignmentDirectional.bottomCenter,
-          children: [
-            // Cámara ocupa todo el espacio
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(
-                    20), // Redondea la esquina superior izquierda
-                topRight:
-                    Radius.circular(20), // Redondea la esquina superior derecha
-              ),
-              child: SizedBox(
-                width: Get.width,
-                height: Get.height - 60,
-                child: cameraController == null
-                    ? const SizedBox.shrink()
-                    : CameraPreview(cameraController!),
-              ),
-            ),
-
-            Positioned(
-              top: 60,
-              left: 0,
-              child: IconButton(
-                icon: ClipOval(
-                  child: Container(
-                    color: Colors.grey.withOpacity(0.3),
-                    child: Image.asset(
-                      'assets/icons/icono_cerrarcamara_130x130_nuevo.png',
-                      width: 40,
+      ignoreSafeArea: false,
+      Stack(
+        alignment: AlignmentDirectional.bottomCenter,
+        children: [
+          ClipRRect(
+            child: SizedBox(
+              width: Get.width,
+              height: Get.height,
+              child: cameraController == null
+                  ? const SizedBox.shrink()
+                  : CameraPreview(
+                      cameraController!,
                     ),
-                  ),
-                ),
-                onPressed: () => {Get.back(), cameraController?.dispose()},
+            ),
+          ),
+
+          Positioned(
+            child: Obx(
+              () => BorderCamera(
+                width: width.value,
+                height: height.value,
               ),
             ),
+          ),
 
-            Positioned(
-              top: 60,
-              right: 0,
-              child: ClipOval(
-                child: IconButton(
-                  icon: Image.asset(
-                    'assets/icons/icono_pregunta_130x130_nuevo.png',
-                    width: 45,
-                  ),
-                  onPressed: () => ayudaEscanear(),
-                ),
-              ),
-            ),
-
-            // Botón de captura centrado
-            Positioned(
-              bottom: 16,
-              left: Get.width / 2 - 30, // Centrado horizontalmente
-              child: IconButton(
-                iconSize: 30,
-                color: whiteTheme_,
-                icon: ClipOval(
+          Positioned(
+            top: 60,
+            left: 0,
+            child: IconButton(
+              icon: ClipOval(
+                child: Container(
+                  color: Colors.grey.withOpacity(0.3),
                   child: Image.asset(
-                    'assets/icons/ciculo-camera.png',
-                    width: 60,
+                    'assets/icons/icono_cerrarcamara_130x130_nuevo.png',
+                    width: 40,
                   ),
                 ),
-                onPressed: () {
-                  captureAndProcessImage();
-                },
+              ),
+              onPressed: () => {Get.back(), cameraController?.dispose()},
+            ),
+          ),
+
+          Positioned(
+            top: 60,
+            right: 0,
+            child: ClipOval(
+              child: IconButton(
+                icon: Image.asset(
+                  'assets/icons/icono_pregunta_130x130_nuevo.png',
+                  width: 45,
+                ),
+                onPressed: () => ayudaEscanear(),
               ),
             ),
+          ),
 
-            Positioned(
-              bottom: 120,
-              left: 0,
-              right: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ClipRRect(
+          // Botón de captura centrado
+          Positioned(
+            bottom: 16,
+            left: Get.width / 2 - 30, // Centrado horizontalmente
+            child: IconButton(
+              iconSize: 30,
+              color: whiteTheme_,
+              icon: ClipOval(
+                child: Image.asset(
+                  'assets/icons/ciculo-camera.png',
+                  width: 60,
+                ),
+              ),
+              onPressed: () {
+                captureAndProcessImage();
+              },
+            ),
+          ),
+
+          Positioned(
+            bottom: 120,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    // print('escanear comida');
+                    isSeleccionado.value = 1;
+                    width.value = Get.width - 100;
+                    height.value = Get.width - 70;
+                  },
+                  child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    child: Container(
-                      width: 80,
-                      height: 70,
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(3),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/icons/icono_escanear_alimento_60x60_nuevo_scan.png',
-                            width: 20,
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Escanear comida',
-                            style: TextStyle(fontSize: 8),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    child: Container(
-                      width: 80,
-                      height: 70,
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(3),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/icons/icono_escanear_alimento_60x60_nuevo_barras.png',
-                            width: 20,
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Código de barras',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 8),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () {
-                      captureAndProcessImage();
-                    },
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      child: Container(
+                    child: Obx(
+                      () => Container(
                         width: 80,
                         height: 70,
-                        color: Colors.white,
+                        color: isSeleccionado.value == 1
+                            ? Colors.white
+                            : Colors.grey.shade300,
+                        padding: const EdgeInsets.all(3),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/icons/icono_escanear_alimento_60x60_nuevo_scan.png',
+                              width: 20,
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Escanear comida',
+                              style: TextStyle(fontSize: 8),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
+                    isSeleccionado.value = 2;
+                    width.value = Get.width - 80;
+                    height.value = Get.height - 650;
+                  },
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    child: Obx(
+                      () => Container(
+                        width: 80,
+                        height: 70,
+                        color: isSeleccionado.value == 2
+                            ? Colors.white
+                            : Colors.grey.shade300,
+                        padding: const EdgeInsets.all(3),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/icons/icono_escanear_alimento_60x60_nuevo_barras.png',
+                              width: 20,
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Código de barras',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 8),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
+                    print('etiqueta');
+                    isSeleccionado.value = 3;
+                    width.value = Get.width - 160;
+                    height.value = Get.height - 450;
+                    // captureAndProcessImage();
+                  },
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    child: Obx(
+                      () => Container(
+                        width: 80,
+                        height: 70,
+                        color: isSeleccionado.value == 3
+                            ? Colors.white
+                            : Colors.grey.shade300,
                         padding: const EdgeInsets.all(3),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -652,74 +696,41 @@ class EscanearAlimentosController extends GetxController {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () {
-                      abrirGaleria();
-                    },
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      child: Container(
-                        width: 80,
-                        height: 70,
-                        color: Colors.white,
-                        padding: const EdgeInsets.all(3),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/icons/icono_escanear_alimento_60x60_nuevo_galeria.png',
-                              width: 20,
-                            ),
-                            const SizedBox(height: 8),
-                            const Text(
-                              'Galería',
-                              style: TextStyle(fontSize: 8),
-                              textAlign: TextAlign.center,
-                            )
-                          ],
-                        ),
+                ),
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
+                    abrirGaleria();
+                  },
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    child: Container(
+                      width: 80,
+                      height: 70,
+                      color: Colors.grey.shade300,
+                      padding: const EdgeInsets.all(3),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/icons/icono_escanear_alimento_60x60_nuevo_galeria.png',
+                            width: 20,
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Galería',
+                            style: TextStyle(fontSize: 8),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-
-            Positioned(
-              child: BorderCamera(
-                width: Get.width - 120,
-                height: Get.width - 120,
-              ),
-            ),
-
-            // Positioned(
-            //   bottom: 16,
-            //   left: 20, // Centrado horizontalmente
-            //   child: IconButton(
-            //     icon: ClipOval(
-            //       child: Obx(
-            //         () => Image.asset(
-            //           'assets/icons/barra_vertical_intensidad_77x77_basica.png',
-            //           width: 30,
-            //           color: linterna.value ? Colors.amber : Colors.white,
-            //           colorBlendMode: BlendMode.srcIn,
-            //         ),
-            //       ),
-            //     ),
-            //     onPressed: () async {
-            //       if (linterna.value == true) {
-            //         linterna.value = false;
-            //         cameraController?.setFlashMode(FlashMode.torch);
-            //       } else {
-            //         linterna.value = true;
-            //         cameraController?.setFlashMode(FlashMode.off);
-            //       }
-            //     },
-            //   ),
-            // ),
-          ],
-        ),
+          ),
+        ],
       ),
     ).whenComplete(() {
       // cameraController?.dispose();

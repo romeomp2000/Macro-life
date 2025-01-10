@@ -60,5 +60,7 @@ abstract class Routes {
 
   static const info_imc = '/info-imc';
 
+  static const prefencias = '/preferencias';
+
   // static const productos_editar = '/productos/editar';
 }

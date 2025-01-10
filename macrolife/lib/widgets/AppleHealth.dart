@@ -1,9 +1,8 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/screen/home/controller.dart';
-import 'package:macrolife/screen/objetivos/controller.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HealthDataChart extends StatelessWidget {
   const HealthDataChart({super.key});
@@ -20,7 +19,9 @@ class HealthDataChart extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              width: Get.width / 2 - 8,
+              width: Get.width * 0.45,
+              margin:
+                  const EdgeInsets.only(top: 5, left: 2, right: 2, bottom: 0),
               height: 230,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -73,46 +74,100 @@ class HealthDataChart extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  Container(
+                    margin: const EdgeInsets.only(top: 1),
                     height: 150,
-                    child: Obx(
-                      () => controller.isLoading.value
-                          ? Center(
-                              child:
-                                  CircularProgressIndicator(), // Muestra un indicador de carga
-                            )
-                          : SfCartesianChart(
-                              primaryYAxis: NumericAxis(
-                                isVisible: false,
-                              ),
-                              // borderColor: Colors.black,
-                              plotAreaBackgroundColor: Colors.transparent,
-                              primaryXAxis: CategoryAxis(
-                                  // borderWidth: 0,
-                                  // maximumLabelWidth: 22,
-
+                    child: Obx(() => controller.isLoading.value
+                            ? Center(
+                                child:
+                                    CircularProgressIndicator(), // Muestra un indicador de carga
+                              )
+                            : BarChart(
+                                BarChartData(
+                                  barGroups: controller.charSorce
+                                      .asMap()
+                                      .entries
+                                      .map(
+                                        (entry) => BarChartGroupData(
+                                          x: entry.key,
+                                          barRods: [
+                                            BarChartRodData(
+                                              toY: entry.value.value,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(5),
+                                                topRight: Radius.circular(5),
+                                              ),
+                                              width: 17,
+                                              color: Colors.black,
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                      .toList(),
+                                  titlesData: FlTitlesData(
+                                    show: true,
+                                    leftTitles: AxisTitles(
+                                      drawBelowEverything: false,
+                                    ),
+                                    topTitles:
+                                        AxisTitles(drawBelowEverything: false),
+                                    rightTitles:
+                                        AxisTitles(drawBelowEverything: false),
+                                    bottomTitles: AxisTitles(
+                                      drawBelowEverything: true,
+                                      axisNameSize: 10,
+                                      sideTitles: SideTitles(
+                                        showTitles: true,
+                                        getTitlesWidget: (value, meta) =>
+                                            controller.getTitles(value, meta),
+                                      ),
+                                    ),
                                   ),
-                              series: <CartesianSeries>[
-                                // Inicializa la serie de columnas (barras)
-                                ColumnSeries<ChartData, String>(
-                                  dataSource: controller.charSorce,
-                                  width: 0.3,
-                                  color: Colors.black,
-                                  xValueMapper: (ChartData data, _) =>
-                                      data.label,
-                                  yValueMapper: (ChartData data, _) =>
-                                      data.value,
-                                )
-                              ],
-                            ),
-                    ),
+                                  gridData: FlGridData(
+                                    show: false,
+                                  ),
+                                  borderData: FlBorderData(
+                                    show: false,
+                                  ),
+                                  barTouchData: BarTouchData(
+                                    enabled: false,
+                                  ),
+                                ),
+                              )
+                        // SfCartesianChart(
+                        //     primaryYAxis: NumericAxis(
+                        //       isVisible: false,
+                        //     ),
+                        //     // borderColor: Colors.black,
+                        //     plotAreaBackgroundColor: Colors.transparent,
+                        //     primaryXAxis: CategoryAxis(
+                        //         // borderWidth: 0,
+                        //         // maximumLabelWidth: 22,
+
+                        //         ),
+                        //     series: <CartesianSeries>[
+                        //       // Inicializa la serie de columnas (barras)
+                        //       ColumnSeries<ChartData, String>(
+                        //         dataSource: controller.charSorce,
+                        //         width: 0.3,
+                        //         color: Colors.black,
+                        //         xValueMapper: (ChartData data, _) =>
+                        //             data.label,
+                        //         yValueMapper: (ChartData data, _) =>
+                        //             data.value,
+                        //       )
+                        //     ],
+                        //   ),
+                        ),
                   ),
                 ],
               ),
             ),
             Container(
               padding: const EdgeInsets.only(left: 15, top: 10),
-              width: Get.width / 2 - 30,
+              margin:
+                  const EdgeInsets.only(top: 5, left: 2, right: 2, bottom: 0),
+              width: Get.width * 0.45,
               height: 230,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -243,7 +298,7 @@ class HealthDataChart extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 10),
                                   const Text(
-                                    'Otroas',
+                                    'Otros',
                                     style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w700,
@@ -274,6 +329,10 @@ class HealthDataChart extends StatelessWidget {
         ),
         Container(
           width: Get.width,
+          margin: const EdgeInsets.only(
+            left: 2,
+            right: 2,
+          ),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -293,6 +352,7 @@ class HealthDataChart extends StatelessWidget {
                   Image.asset(
                     'assets/icons/icono_corazonrosa_50x50_nuevo.png',
                     width: 20,
+                    color: Colors.black,
                   ),
                   const SizedBox(width: 12),
                   Column(
@@ -307,7 +367,7 @@ class HealthDataChart extends StatelessWidget {
                           value:
                               controllerUsuario.usuario.value.puntuacionSalud! /
                                   10,
-                          color: Colors.green,
+                          color: Colors.black,
                           backgroundColor: Colors.grey[100],
                         ),
                       )

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
+import 'package:macrolife/widgets_home_screen/live_activities_controller.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class ConfiguracionesScreController extends GetxController {
@@ -14,10 +15,29 @@ class ConfiguracionesScreController extends GetxController {
   TextEditingController correo = TextEditingController();
   TextEditingController descripcion = TextEditingController();
 
+  final liveController = Get.put(LiveActivitiesController());
+  final usuarioController = Get.put(UsuarioController());
+  RxBool actividadLive = false.obs;
   @override
   void onInit() {
     super.onInit();
     _loadAppVersion();
+  }
+
+  void crear() {
+    int carbohidratos =
+        usuarioController.macronutrientes.value.carbohidratosRestante!;
+    int calorias = usuarioController.macronutrientes.value.caloriasRestantes!;
+    int protein = usuarioController.macronutrientes.value.proteinaRestantes!;
+    int grasas = usuarioController.macronutrientes.value.grasasRestantes!;
+
+    int limiteCal = usuarioController.macronutrientes.value.calorias!;
+    int limiteCarbs = usuarioController.macronutrientes.value.carbohidratos!;
+    int limiteProtein = usuarioController.macronutrientes.value.proteina!;
+    int limiteFats = usuarioController.macronutrientes.value.grasas!;
+
+    liveController.createLiveActivities(calorias, carbohidratos, grasas,
+        protein, limiteProtein, limiteCal, limiteCarbs, limiteFats);
   }
 
   // Método para cargar la versión de la aplicación

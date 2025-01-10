@@ -20,5 +20,9 @@
 	<array>
 		<string>merchant.mx.posibilidades.macrolife</string>
 	</array>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.mx.posibilidades.macrolife</string>
+	</array>
 </dict>
 </plist>

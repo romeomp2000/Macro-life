@@ -21,6 +21,7 @@ import 'package:macrolife/screen/registro_pasos/binding.dart';
 import 'package:macrolife/screen/registro_pasos/screen.dart';
 import 'package:macrolife/screen/suscripcion/binding.dart';
 import 'package:macrolife/screen/suscripcion/screen.dart';
+import 'package:macrolife/screen/widgets/widgets_view.dart';
 import 'package:macrolife/widgets/layout.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/screen/principal/principal_binding.dart';
@@ -112,6 +113,10 @@ abstract class AppPages {
     GetPage(
       name: Routes.info_imc,
       page: () => const InfoIMC(),
+    ),
+    GetPage(
+      name: Routes.prefencias,
+      page: () => const WidgetsView(),
     ),
   ];
 }

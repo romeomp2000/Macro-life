@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:health/health.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
@@ -9,6 +10,8 @@ import 'package:intl/intl.dart';
 import 'package:macrolife/models/racha_dias.model.dart';
 import 'package:macrolife/widgets_home_screen/controller.dart';
 import 'package:macrolife/screen/objetivos/controller.dart';
+import 'package:macrolife/widgets_home_screen/live_activities_controller.dart';
+// import 'package:macrolife/widgets_home_screen/live_activities_controller.dart';
 
 extension DateTimeComparison on DateTime {
   bool isSameDay(DateTime other) {
@@ -32,8 +35,10 @@ class WeeklyCalendarController extends GetxController {
   RxInt pasos = 0.obs;
   RxInt otro = 0.obs;
 
-  // Método para obtener los datos de salud (pasos en este caso)
   Future<void> fetchHealthData() async {
+    if (GetPlatform.isAndroid) {
+      return;
+    }
     isLoading(true);
 
     // Solicitar permisos
@@ -58,7 +63,15 @@ class WeeklyCalendarController extends GetxController {
       healthData.value = data; // Asignar los datos obtenidos
 
       // Iniciales de los días en español
-      List<String> diasIniciales = ["D", "L", "M", "M", "J", "V", "S"];
+      List<String> diasIniciales = [
+        "Dom",
+        "Lun",
+        "Mar",
+        "Mie",
+        "Jue",
+        "Vie",
+        "Sab"
+      ];
 
       // Mapa para almacenar pasos por día
       Map<String, int> stepsPerDay = {
@@ -101,7 +114,20 @@ class WeeklyCalendarController extends GetxController {
     isLoading(false);
   }
 
-  //? controller helth
+  Widget getTitles(double value, TitleMeta meta) {
+    const style = TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.normal,
+      fontSize: 10,
+    );
+
+    int index = value.toInt();
+
+    String valor = charSorce[index].label;
+    Widget text;
+    text = Text(valor, style: style);
+    return text;
+  }
 
   RxList<AlimentoModel> alimentosList = <AlimentoModel>[].obs;
 
@@ -110,6 +136,7 @@ class WeeklyCalendarController extends GetxController {
 
   final RxBool loader = false.obs;
   final widgetController = Get.put(WidgetController());
+  // final liveWidgetController = Get.put(LiveDynamicController());
 
   PageController pageController = PageController(initialPage: 0);
   Rx<DateTime> today = DateTime.now().obs;
@@ -209,12 +236,12 @@ class WeeklyCalendarController extends GetxController {
                     clipBehavior: Clip.none,
                     children: [
                       Image.asset(
-                        'assets/icons/imagen_racha_num_378x462_nuevo_sn.png',
+                        'assets/images/imagen_racha_600x600_sn.png',
                         width: 220,
                         height: 220,
                       ),
                       Positioned(
-                        top: 58,
+                        top: 85,
                         child: Obx(
                           () => NumberWithBorder(
                               number:
@@ -605,9 +632,26 @@ class WeeklyCalendarController extends GetxController {
     controllerUsuario.macronutrientes.refresh();
     controllerUsuario.usuario.value.macronutrientesDiario?.refresh();
 
-    widgetController.updateHomeWidget(
-        controllerUsuario.macronutrientes.value.caloriasRestantes.toString(),
-        controllerUsuario.macronutrientes.value.calorias!.toInt());
+    if (GetPlatform.isIOS) {
+      widgetController.updateHomeWidget(
+          controllerUsuario.macronutrientes.value.caloriasRestantes.toString(),
+          controllerUsuario.macronutrientes.value.calorias!.toInt());
+
+      final liveActivitiesController = Get.put(LiveActivitiesController());
+      int carbohidratos =
+          controllerUsuario.macronutrientes.value.carbohidratosRestante!;
+      int calorias = controllerUsuario.macronutrientes.value.caloriasRestantes!;
+      int protein = controllerUsuario.macronutrientes.value.proteinaRestantes!;
+      int grasas = controllerUsuario.macronutrientes.value.grasasRestantes!;
+
+      int limiteCal = controllerUsuario.macronutrientes.value.calorias!;
+      int limiteCarbs = controllerUsuario.macronutrientes.value.carbohidratos!;
+      int limiteProtein = controllerUsuario.macronutrientes.value.proteina!;
+      int limiteFats = controllerUsuario.macronutrientes.value.grasas!;
+
+      liveActivitiesController.actualizar(calorias, carbohidratos, grasas,
+          protein, limiteProtein, limiteCal, limiteCarbs, limiteFats);
+    }
   }
 }
 
