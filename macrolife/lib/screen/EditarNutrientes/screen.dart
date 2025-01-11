@@ -1,11 +1,9 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:macrolife/screen/EditarNutrientes/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:macrolife/screen/objetivos/controller.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-
 class EditarNutrientesScreen extends StatelessWidget {
-  final Color color;
+  // final Color color;
   final String imageUrl;
   final String title;
   final String textField;
@@ -14,7 +12,7 @@ class EditarNutrientesScreen extends StatelessWidget {
 
   const EditarNutrientesScreen({
     super.key,
-    required this.color,
+    // required this.color,
     required this.imageUrl,
     required this.title,
     required this.initialValue,
@@ -66,32 +64,44 @@ class EditarNutrientesScreen extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: 85,
-                    child: SfCartesianChart(
-                      primaryYAxis: NumericAxis(
-                        minimum: 0,
-                        maximum: 100,
-                        interval: 50,
-                        opposedPosition: true,
-                        borderColor: Colors.black12,
+                    child: BarChart(
+                      BarChartData(
+                        barGroups: [
+                          BarChartGroupData(
+                            x: 1,
+                            barRods: [
+                              BarChartRodData(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(3)),
+                                toY: 50,
+                                fromY: 0,
+                                color: Colors.black,
+                                width: 35,
+                                backDrawRodData: BackgroundBarChartRodData(
+                                  show: true,
+                                  toY: 100,
+                                  color: Colors.grey.shade200,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                        titlesData: FlTitlesData(
+                            show: true,
+                            leftTitles: AxisTitles(),
+                            bottomTitles:
+                                AxisTitles(drawBelowEverything: false),
+                            topTitles: AxisTitles(drawBelowEverything: false)),
+                        gridData: FlGridData(
+                          show: false,
+                        ),
+                        borderData: FlBorderData(
+                          show: false,
+                        ),
+                        barTouchData: BarTouchData(
+                          enabled: false,
+                        ),
                       ),
-                      plotAreaBackgroundColor: Colors.black12,
-                      primaryXAxis: CategoryAxis(
-                        isVisible: false,
-                      ),
-                      enableSideBySideSeriesPlacement: false,
-                      series: <CartesianSeries>[
-                        // Inicializa la serie de columnas (barras)
-                        ColumnSeries<ChartData, String>(
-                          dataSource: [
-                            // Fuente de datos
-                            ChartData('', 50, Colors.white),
-                          ],
-                          width: 1,
-                          color: color,
-                          xValueMapper: (ChartData data, _) => data.label,
-                          yValueMapper: (ChartData data, _) => data.value,
-                        )
-                      ],
                     ),
                   ),
                   Image.asset(

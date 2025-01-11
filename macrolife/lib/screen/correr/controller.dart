@@ -71,7 +71,27 @@ class CorrerController extends GetxController {
       Get.back();
       Get.back();
 
-      controllerCalendario.cargarEntrenamiento();
+      controllerCalendario.cargaAlimentos();
+
+      print(response);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void eliminarEjercicio() async {
+    try {
+      Get.back();
+
+      final apiService = ApiService();
+
+      final response = await apiService.fetchData(
+        'ejercicio/${id.value}',
+        method: Method.DELETE,
+        body: {},
+      );
+
+      controllerCalendario.cargaAlimentos();
 
       print(response);
     } catch (e) {

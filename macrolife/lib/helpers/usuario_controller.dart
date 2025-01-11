@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/models/usuario.dart';
 import 'package:macrolife/widgets_home_screen/live_activities_controller.dart';
+import 'package:macrolife/screen/home/controller.dart';
 
 class UsuarioController extends GetxController {
   Rx<Usuario> usuario = Usuario().obs;
@@ -91,9 +92,18 @@ class UsuarioController extends GetxController {
   void saveUsuarioFromJson(Map<String, dynamic> json) {
     // Guardar el JSON directamente en el almacenamiento
     try {
+      final WeeklyCalendarController controllerCalendario =
+          Get.put(WeeklyCalendarController());
+      int rachaAnterior = usuario.value.rachaDias ?? 0;
+
       box.write('usuario', json);
 
       usuario.value = Usuario.fromJson(json);
+      int rachaNueva = usuario.value.rachaDias ?? 0;
+
+      if (rachaAnterior != rachaNueva) {
+        controllerCalendario.onRachaDias();
+      }
 
       usuario.refresh();
     } on Exception catch (e) {

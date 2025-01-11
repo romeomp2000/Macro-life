@@ -5,6 +5,7 @@ import 'package:macrolife/models/Ejercicio.dart';
 import 'package:macrolife/models/Entrenamiento.dart';
 import 'package:macrolife/screen/pesas/controller.dart';
 import 'package:macrolife/widgets/custom_text_form_field.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 
 class PesasScreen extends StatelessWidget {
   final Entrenamiento? entrenamiento;
@@ -49,6 +50,35 @@ class PesasScreen extends StatelessWidget {
           'Levantamiento de pesas',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        actions: [
+          PullDownButton(
+            routeTheme: PullDownMenuRouteTheme(
+              borderRadius: BorderRadius.circular(10),
+              width: 200,
+            ),
+            itemBuilder: (context) => [
+              PullDownMenuItem(
+                onTap: () {
+                  controller.eliminarEjercicio();
+
+                },
+                title: 'Eliminar ejercicio',
+                isDestructive: true,
+                // icon: Icons.delete_outline_outlined,
+              ),
+            ],
+            buttonBuilder: (context, showMenu) => CupertinoButton(
+              onPressed: showMenu,
+              color: Colors.grey[400],
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              padding: EdgeInsets.all(15),
+              child: const Icon(
+                Icons.more_horiz_outlined,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
         centerTitle: true,
       ),
       body: SingleChildScrollView(

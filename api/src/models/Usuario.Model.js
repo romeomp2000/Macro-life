@@ -29,6 +29,11 @@ const UsuariosSchema = new Schema({
     require: false,
     default: 0
   },
+  ultimoAlimento: {
+    type: String, // YYYY-MM-DD
+    require: false,
+    default: 0
+  },
   fechaNacimiento: {
     type: Date,
     required: true
@@ -94,7 +99,7 @@ const UsuariosSchema = new Schema({
   // mas información
   entrenamientoSemanal: {
     type: String,
-    enum: ['0-2', '3-5', '6+'],
+    enum: ['Minimo', 'Moderadamente', 'Muy activo'],
     require: false
   },
   aplicacionSimilar: {
@@ -110,32 +115,54 @@ const UsuariosSchema = new Schema({
   },
   objetivo: {
     type: String,
-    enum: ['Perder peso', 'Mantener', 'Aumentar de peso'],
+    enum: ['Perder', 'Mantener', 'Aumentar'],
     require: false
   },
   pesoObjetivo: { // no va ser requerido
     type: Number,
     require: false
   },
+  notificaciones: {
+    type: String,
+    enum: ['Si', 'No'],
+    default: 'Si'
+  },
+  notificacionesAlarma: {
+    desayuno: {
+      type: String,
+      required: true, // Es obligatorio guardar una hora
+      match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/ // Validación de formato HH:mm AM/PM
+    },
+    comida: {
+      type: String,
+      required: true, // Es obligatorio guardar una hora
+      match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/ // Validación de formato HH:mm AM/PM
+    },
+    cenas: {
+      type: String,
+      required: true, // Es obligatorio guardar una hora
+      match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/ // Validación de formato HH:mm AM/PM
+    }
+  },
   dieta: {
     type: String,
-    enum: ['Clásico', 'Pescetariana', 'Vegetariano', 'Vegano'],
+    enum: ['Clásico', 'Pescetariana', 'Vegetariano', 'Vegano', 'Otro'],
     require: false
   },
-  lograr: { // que le gustaría lograr
+  logros: [{ // que le gustaría lograr
     type: String,
-    enum: ['Come y vive más sano', 'Aumentar mi energía y estado de ánimo', 'Manténgase motivado y constante', 'Sentir mejor con mi cuerpo'],
+    enum: ['Comer y vivir más sano', 'Aumentar mi energía y mi estado de ánimo', 'Mantener la motivación y la constancia', 'Sentirme mejor con mi cuerpo'],
     require: false
-  },
+  }],
   metaAlcanzar: { // que tán rápido quiere alcanza tu meta 0.1 -> 1.5
     type: Number,
     require: false
   },
-  impideAlcanzar: { // que te impide a alcanzar tu meta
-    type: String,
-    enum: ['Falta de constancia', 'Hábitos alimenticios poco saludables', 'Falta de apoyo', 'Agenda ocupada', 'Falta de inspiración para la comida'],
-    require: false
-  },
+  // impideAlcanzar: { // que te impide a alcanzar tu meta
+  //   type: String,
+  //   enum: ['Falta de constancia', 'Hábitos alimenticios poco saludables', 'Falta de apoyo', 'Agenda ocupada', 'Falta de inspiración para la comida'],
+  //   require: false
+  // },
   googleId: {
     type: String,
     required: false

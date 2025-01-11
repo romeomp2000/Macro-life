@@ -1,11 +1,11 @@
 class IngredienteModel {
-  final String? id;
-  final String? nombre;
-  final double? calorias;
-  final double? proteina;
-  final double? carbohidratos;
-  final double? grasas;
-  final bool? eliminado;
+   String? id;
+   String? nombre;
+   double? calorias;
+   double? proteina;
+   double? carbohidratos;
+   double? grasas;
+   bool? eliminado;
 
   // Constructor
   IngredienteModel({

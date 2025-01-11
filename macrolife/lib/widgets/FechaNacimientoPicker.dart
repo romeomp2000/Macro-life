@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class FechaNacimientoPicker extends StatelessWidget {
   final ValueChanged<DateTime> onFechaSeleccionada;
@@ -45,103 +47,73 @@ class FechaNacimientoPicker extends StatelessWidget {
     int defaultDiaIndex = dias.indexOf(defaultDia);
     int defaultAnioIndex = anios.indexOf(defaultAnio);
 
-    return Center(
+    return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // const Text(
-                //   "Día",
-                //   style:
-                //       TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                // ),
-                SizedBox(
-                  height: 170,
-                  child: CupertinoPicker(
-                    itemExtent: 32.0,
-                    scrollController: FixedExtentScrollController(
-                        initialItem: defaultDiaIndex), // Índice de día
-                    onSelectedItemChanged: (int index) {
-                      // Llama a la función callback con la fecha seleccionada
-                      DateTime selectedDate = DateTime(
-                          anios[defaultAnioIndex],
-                          meses[defaultMesIndex] == "Enero"
-                              ? 1
-                              : (defaultMesIndex + 1),
-                          index + 1);
-                      onFechaSeleccionada(selectedDate);
-                    },
-                    children: dias.map((dia) {
-                      return Center(child: Text('$dia'));
-                    }).toList(),
-                  ),
-                ),
-              ],
+            child: SizedBox(
+              height: 200,
+              child: CupertinoPicker(
+                itemExtent: 32.0,
+                scrollController: FixedExtentScrollController(
+                    initialItem: defaultDiaIndex), // Índice de día
+                onSelectedItemChanged: (int index) {
+                  // Llama a la función callback con la fecha seleccionada
+                  DateTime selectedDate = DateTime(
+                      anios[defaultAnioIndex],
+                      meses[defaultMesIndex] == "Enero"
+                          ? 1
+                          : (defaultMesIndex + 1),
+                      index + 1);
+                  onFechaSeleccionada(selectedDate);
+                },
+                children: dias.map((dia) {
+                  return Center(child: Text('$dia'));
+                }).toList(),
+              ),
             ),
           ),
           Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // const Text(
-                //   "Mes",
-                //   style:
-                //       TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                // ),
-                SizedBox(
-                  height: 170,
-                  child: CupertinoPicker(
-                    itemExtent: 32.0,
-                    scrollController: FixedExtentScrollController(
-                        initialItem: defaultMesIndex), // Índice de mes
-                    onSelectedItemChanged: (int index) {
-                      // Llama a la función callback con la fecha seleccionada
-                      DateTime selectedDate = DateTime(anios[defaultAnioIndex],
-                          index + 1, dias[defaultDiaIndex]);
-                      onFechaSeleccionada(selectedDate);
-                    },
-                    children: meses.map((mes) {
-                      return Center(child: Text(mes));
-                    }).toList(),
-                  ),
-                ),
-              ],
+            child: SizedBox(
+              height: 200,
+              child: CupertinoPicker(
+                itemExtent: 32.0,
+                scrollController: FixedExtentScrollController(
+                    initialItem: defaultMesIndex), // Índice de mes
+                onSelectedItemChanged: (int index) {
+                  // Llama a la función callback con la fecha seleccionada
+                  DateTime selectedDate = DateTime(anios[defaultAnioIndex],
+                      index + 1, dias[defaultDiaIndex]);
+                  onFechaSeleccionada(selectedDate);
+                },
+                children: meses.map((mes) {
+                  return Center(child: Text(mes));
+                }).toList(),
+              ),
             ),
           ),
           Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // const Text(
-                //   "Año",
-                //   style:
-                //       TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                // ),
-                SizedBox(
-                  height: 170,
-                  child: CupertinoPicker(
-                    itemExtent: 32.0,
-                    scrollController: FixedExtentScrollController(
-                        initialItem: defaultAnioIndex), // Índice de año
-                    onSelectedItemChanged: (int index) {
-                      // Llama a la función callback con la fecha seleccionada
-                      DateTime selectedDate = DateTime(
-                          anios[index],
-                          meses[defaultMesIndex] == "Enero"
-                              ? 1
-                              : (defaultMesIndex + 1),
-                          dias[defaultDiaIndex]);
-                      onFechaSeleccionada(selectedDate);
-                    },
-                    children: anios.map((anio) {
-                      return Center(child: Text('$anio'));
-                    }).toList(),
-                  ),
-                ),
-              ],
+            child: SizedBox(
+              height: 200,
+              child: CupertinoPicker(
+                itemExtent: 32.0,
+                scrollController: FixedExtentScrollController(
+                    initialItem: defaultAnioIndex), // Índice de año
+                onSelectedItemChanged: (int index) {
+                  // Llama a la función callback con la fecha seleccionada
+                  DateTime selectedDate = DateTime(
+                      anios[index],
+                      meses[defaultMesIndex] == "Enero"
+                          ? 1
+                          : (defaultMesIndex + 1),
+                      dias[defaultDiaIndex]);
+                  onFechaSeleccionada(selectedDate);
+                },
+                children: anios.map((anio) {
+                  return Center(child: Text('$anio'));
+                }).toList(),
+              ),
             ),
           ),
         ],

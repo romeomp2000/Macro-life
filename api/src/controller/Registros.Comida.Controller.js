@@ -5,6 +5,7 @@ const { Types } = require('mongoose');
 const { buildFileUri } = require('../config/s3');
 const mongoose = require('mongoose');
 const IngredienteModel = require('../models/Ingredientes.Model');
+const EjercicioModel = require('../models/Ejercicio.Model');
 
 const obtenerHistorialUsuario = async (req, res) => {
   const { idUsuario, fecha } = req.body;
@@ -125,10 +126,10 @@ const getNutrientesPorUsuario = async (usuarioId, todayStart, todayEnd) => {
       },
       {
         $project: {
-          caloriasTotales: { $multiply: ['$calorias', '$porciones'] },
-          proteinaTotal: { $multiply: ['$proteina', '$porciones'] },
-          carbohidratosTotales: { $multiply: ['$carbohidratos', '$porciones'] },
-          grasasTotales: { $multiply: ['$grasas', '$porciones'] }
+          caloriasTotales: '$calorias', // Eliminamos la multiplicación
+          proteinaTotal: '$proteina',
+          carbohidratosTotales: '$carbohidratos',
+          grasasTotales: '$grasas'
         }
       },
       {
@@ -142,18 +143,43 @@ const getNutrientesPorUsuario = async (usuarioId, todayStart, todayEnd) => {
       }
     ]);
 
-    // Verificamos si existen los resultados y si el usuario tiene los carbohidratos diarios establecidos
+    const ejercicios = await EjercicioModel.aggregate([
+      {
+        $match: {
+          usuario: new mongoose.Types.ObjectId(usuarioId),
+          fecha: { $gte: todayStart, $lte: todayEnd }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalCaloriasQuemadas: { $sum: '$calorias' }
+        }
+      }
+    ]);
+
+    const caloriasQuemadas = ejercicios.length
+      ? Math.floor(ejercicios[0].totalCaloriasQuemadas)
+      : 0;
+
+    // console.log(Math.floor(resultados[0].totalCalorias), 'calorias totales');
+    // console.log(caloriasQuemadas, 'calorias quemada');
+    // console.log(((Math.floor(resultados[0].totalCalorias)) - (caloriasQuemadas)), 'resta');
+
+    // Verificamos si existen los resultados
     if (resultados.length) {
       // Redondeamos los valores a enteros
       return {
-        totalCalorias: Math.floor(resultados[0].totalCalorias), // Redondeamos hacia abajo
+        totalCalorias: ((Math.floor(resultados[0].totalCalorias)) - (caloriasQuemadas)), // Redondeamos hacia abajo
         totalProteina: Math.floor(resultados[0].totalProteina),
         totalCarbohidratos: Math.floor(resultados[0].totalCarbohidratos),
-        totalGrasas: Math.floor(resultados[0].totalGrasas)
+        totalGrasas: Math.floor(resultados[0].totalGrasas),
+        caloriasQuemadas
       };
     } else {
       return {
         _id: null,
+        caloriasQuemadas: 0,
         totalCalorias: 0,
         totalProteina: 0,
         totalCarbohidratos: 0,
@@ -233,6 +259,68 @@ const deleteIngrediente = async (req, res) => {
   }
 };
 
+const actualizarIngrediente = async (req, res) => {
+  const { id, calorias, proteina, carbohidratos, grasas } = req.body;
+
+  try {
+    // Actualizar el ingrediente directamente
+    const ingrediente = await IngredienteModel.findByIdAndUpdate(
+      id,
+      {
+        calorias: Math.floor(calorias),
+        proteina: Math.floor(proteina),
+        carbohidratos: Math.floor(carbohidratos),
+        grasas: Math.floor(grasas)
+      },
+      { new: true } // Devuelve el documento actualizado
+    );
+
+    if (!ingrediente) {
+      return res.status(404).json({ message: 'No se encontró el ingrediente.' });
+    }
+
+    // Buscar el alimento relacionado con el ingrediente actualizado
+    const alimento = await AlimentoModel.findOne({ ingredientes: ingrediente._id }).populate('ingredientes');
+
+    if (!alimento) {
+      return res.status(404).json({ message: 'No se encontró el alimento.' });
+    }
+
+    return res.status(200).json({ ingrediente, alimento });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+  }
+};
+
+const actualizarAlimento = async (req, res) => {
+  const { id, calorias, proteina, carbohidratos, grasas, porciones } = req.body;
+
+  try {
+    // Actualizar el ingrediente directamente
+    const alimento = await AlimentoModel.findByIdAndUpdate(
+      id,
+      {
+        calorias: Math.floor(calorias),
+        proteina: Math.floor(proteina),
+        carbohidratos: Math.floor(carbohidratos),
+        grasas: Math.floor(grasas),
+        porciones
+      },
+      { new: true } // Devuelve el documento actualizado
+    );
+
+    if (!alimento) {
+      return res.status(404).json({ message: 'No se encontró el alimento.' });
+    }
+
+    return res.status(200).json({ alimento });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+  }
+};
+
 const agregarIngrediente = async (req, res) => {
   const { id } = req.params;
 
@@ -298,5 +386,7 @@ module.exports = {
   deleteComida,
   reportarComida,
   deleteIngrediente,
-  agregarIngrediente
+  agregarIngrediente,
+  actualizarIngrediente,
+  actualizarAlimento
 };

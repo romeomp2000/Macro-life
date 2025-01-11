@@ -10,6 +10,7 @@ import 'package:macrolife/widgets/puntuacion_salud.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 
 class NutricionScreen extends StatelessWidget {
   final AlimentoModel alimento;
@@ -30,20 +31,31 @@ class NutricionScreen extends StatelessWidget {
             CachedNetworkImage(
               imageUrl: controller.alimento.value.imageUrl ?? '',
               fit: BoxFit.cover,
-              alignment: Alignment.center,
+              alignment: Alignment.bottomCenter,
               width: Get.width,
-              height: 600,
+              height: 550,
+            )
+          else
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.black,
+              ),
+              padding: EdgeInsets.all(20),
+              height: 400,
+              width: Get.width,
+              child: Image.asset(
+                'assets/icons/logo_macro_life_1125x207.png',
+                color: Colors.white,
+              ),
             ),
           DraggableScrollableSheet(
             snap: false,
             initialChildSize:
-                controller.alimento.value.imageUrl != null ? 0.5 : 0.9,
-            minChildSize: 0.5, // Tamaño mínimo (20% de la pantalla)
-            maxChildSize: 0.95, // Tamaño máximo (90% de la pantalla)
+                controller.alimento.value.imageUrl != null ? 0.5 : 0.89,
+            minChildSize: 0.5,
+            maxChildSize: 0.89,
             builder: (context, scrollController) {
               return Container(
-                // padding:
-                //     const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -53,9 +65,10 @@ class NutricionScreen extends StatelessWidget {
                 ),
                 child: SingleChildScrollView(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   controller: scrollController,
                   child: Column(
+                    spacing: 15,
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -70,7 +83,6 @@ class NutricionScreen extends StatelessWidget {
                                   : const Icon(Icons.bookmark_border),
                             ),
                           ),
-                          const SizedBox(width: 10),
                           Text(controller.alimento.value.time ?? '')
                         ],
                       ),
@@ -127,6 +139,26 @@ class NutricionScreen extends StatelessWidget {
 
                                     controller.alimento.update((alimento) {
                                       if (alimento != null) {
+                                        double caloriasUnitaria = (controller
+                                                    .alimento.value.calories ??
+                                                0) /
+                                            (alimento.porcion ?? 0);
+
+                                        double proteinaUnitaria = (controller
+                                                    .alimento.value.calories ??
+                                                0) /
+                                            (alimento.porcion ?? 0);
+
+                                        double carbohidratosUnitaria =
+                                            (controller.alimento.value.carbs ??
+                                                    0) /
+                                                (alimento.porcion ?? 0);
+
+                                        double grasaUnitaria =
+                                            (controller.alimento.value.fats ??
+                                                    0) /
+                                                (alimento.porcion ?? 0);
+
                                         if (alimento.porcion! == 0.25) {
                                           alimento.porcion =
                                               alimento.porcion! - 0.25;
@@ -137,6 +169,36 @@ class NutricionScreen extends StatelessWidget {
                                           alimento.porcion =
                                               alimento.porcion! - 0.5;
                                         }
+
+                                        double nuevoCaloria =
+                                            (alimento.porcion ?? 0) *
+                                                (caloriasUnitaria);
+
+                                        double nuevoProteina =
+                                            (alimento.porcion ?? 0) *
+                                                (proteinaUnitaria);
+
+                                        double nuevoCarbohidratoss =
+                                            (alimento.porcion ?? 0) *
+                                                (carbohidratosUnitaria);
+
+                                        double nuevoGrasas =
+                                            (alimento.porcion ?? 0) *
+                                                (grasaUnitaria);
+
+                                        controller.alimento.value.calories =
+                                            nuevoCaloria.toInt();
+
+                                        controller.alimento.value.protein =
+                                            nuevoProteina.toInt();
+
+                                        controller.alimento.value.carbs =
+                                            nuevoCarbohidratoss.toInt();
+
+                                        controller.alimento.value.fats =
+                                            nuevoGrasas.toInt();
+
+                                        // controller.editarAlimento();
                                       }
                                     });
                                   },
@@ -152,6 +214,26 @@ class NutricionScreen extends StatelessWidget {
                                   icon: const Icon(Icons.add),
                                   onPressed: () {
                                     controller.alimento.update((alimento) {
+                                      double caloriasUnitaria =
+                                          (controller.alimento.value.calories ??
+                                                  0) /
+                                              (alimento?.porcion ?? 0);
+
+                                      double proteinaUnitaria =
+                                          (controller.alimento.value.calories ??
+                                                  0) /
+                                              (alimento?.porcion ?? 0);
+
+                                      double carbohidratosUnitaria =
+                                          (controller.alimento.value.carbs ??
+                                                  0) /
+                                              (alimento?.porcion ?? 0);
+
+                                      double grasaUnitaria =
+                                          (controller.alimento.value.fats ??
+                                                  0) /
+                                              (alimento?.porcion ?? 0);
+
                                       if (alimento != null) {
                                         if (alimento.porcion! == 0.25) {
                                           alimento.porcion =
@@ -163,6 +245,35 @@ class NutricionScreen extends StatelessWidget {
                                           alimento.porcion =
                                               alimento.porcion! + 0.5;
                                         }
+
+                                        double nuevoCaloria =
+                                            (alimento.porcion ?? 0) *
+                                                (caloriasUnitaria);
+
+                                        double nuevoProteina =
+                                            (alimento.porcion ?? 0) *
+                                                (proteinaUnitaria);
+
+                                        double nuevoCarbohidratoss =
+                                            (alimento.porcion ?? 0) *
+                                                (carbohidratosUnitaria);
+
+                                        double nuevoGrasas =
+                                            (alimento.porcion ?? 0) *
+                                                (grasaUnitaria);
+
+                                        controller.alimento.value.calories =
+                                            nuevoCaloria.toInt();
+
+                                        controller.alimento.value.protein =
+                                            nuevoProteina.toInt();
+
+                                        controller.alimento.value.carbs =
+                                            nuevoCarbohidratoss.toInt();
+
+                                        controller.alimento.value.fats =
+                                            nuevoGrasas.toInt();
+                                        // controller.editarAlimento();
                                       }
                                     });
                                   },
@@ -173,23 +284,21 @@ class NutricionScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 15),
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.black12, // Color del borde
-                            width: 1.0, // Grosor del borde
+                            color: Colors.black12,
+                            width: 1.2,
                           ),
-                          borderRadius: BorderRadius.circular(
-                              15), // Borde redondeado para todo el contenedor
+                          borderRadius: BorderRadius.circular(15),
                         ),
                         child: CupertinoListTile(
                           title: const Text('Calorías'),
                           subtitle: Obx(
                             () => Text(
-                              '${controller.alimento.value.calories}g',
+                              '${controller.alimento.value.calories}',
                               style: const TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
@@ -197,55 +306,52 @@ class NutricionScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          // trailing: const Icon(
-                          //   Icons.edit,
-                          //   color: Colors.blue,
-                          // ),
-                          leadingSize: 40,
-                          leading: Container(
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(10), // Borde redondeado
-                              color: Colors.grey[100],
-                            ),
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(
-                              'assets/icons/icono_calorias_negro_99x117_nuevo.png', // Ícono de calorías
-                            ),
+                          trailing: const Icon(
+                            Icons.edit,
+                            color: Colors.black87,
+                          ),
+                          leadingSize: 25,
+                          leading: Image.asset(
+                            'assets/icons/icono_calorias_outline_120x120_activo.png',
+                            width: Get.width,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          NutritionalInfoRow(
-                            icon: Image.asset(
-                              'assets/icons/icono_filetecarne_90x69_nuevo.png',
-                              width: 13,
+                          Obx(
+                            () => NutritionalInfoRow(
+                              icon: Image.asset(
+                                'assets/icons/icono_filetecarne_outline_93x93_activo.png',
+                                width: 13,
+                              ),
+                              label: 'Proteína',
+                              value: '${controller.alimento.value.protein}g',
                             ),
-                            label: 'Proteína',
-                            value: '${alimento.protein}g',
                           ),
-                          NutritionalInfoRow(
-                            icon: Image.asset(
-                              'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
-                              width: 13,
+                          Obx(
+                            () => NutritionalInfoRow(
+                              icon: Image.asset(
+                                'assets/icons/icono_panintegral_outline_79x79_activo.png',
+                                width: 13,
+                              ),
+                              label: 'Carbohidratos',
+                              value: '${controller.alimento.value.carbs}g',
                             ),
-                            label: 'Carbohidratos',
-                            value: '${alimento.carbs}g',
                           ),
-                          NutritionalInfoRow(
-                            icon: Image.asset(
-                              'assets/icons/icono_almedraazul_74x70_nuevo.png',
-                              width: 13,
+                          Obx(
+                            () => NutritionalInfoRow(
+                              icon: Image.asset(
+                                'assets/icons/icono_almendra_outline_78x78_activo.png',
+                                width: 13,
+                              ),
+                              label: 'Grasas',
+                              value: '${controller.alimento.value.fats}g',
                             ),
-                            label: 'Grasas',
-                            value: '${alimento.fats}g',
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
                       if (controller.alimento.value.puntuacionSalud?.score != 0)
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -253,15 +359,17 @@ class NutricionScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.black12, // Color del borde
-                              width: 1.0, // Grosor del borde
+                              width: 1.2, // Grosor del borde
                             ),
                             borderRadius: BorderRadius.circular(
                                 15), // Borde redondeado para todo el contenedor
                           ),
                           child: CupertinoListTile(
-                            onTap: () => Get.to(() => PuntuacionSaludScreen(
-                                puntuacion: controller
-                                    .alimento.value.puntuacionSalud!)),
+                            onTap: () => Get.to(
+                              () => PuntuacionSaludScreen(
+                                  puntuacion: controller
+                                      .alimento.value.puntuacionSalud!),
+                            ),
                             title: const Text('Puntuación de salud'),
                             subtitle: LinearProgressIndicator(
                               backgroundColor: Colors.grey[200],
@@ -270,7 +378,7 @@ class NutricionScreen extends StatelessWidget {
                                           0) as num)
                                       .toDouble() *
                                   0.1,
-                              color: Colors.green,
+                              color: Colors.black,
                             ),
                             trailing: Text(
                               '${controller.alimento.value.puntuacionSalud?.score}/10',
@@ -279,21 +387,12 @@ class NutricionScreen extends StatelessWidget {
                                 color: Colors.black,
                               ),
                             ),
-                            leadingSize: 40,
-                            leading: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    10), // Borde redondeado
-                                color: Colors.grey[100],
-                              ),
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.asset(
-                                'assets/icons/icono_rutina_60x60_nuevo.png', // Ícono de calorías
-                              ),
+                            leadingSize: 25,
+                            leading: Image.asset(
+                              'assets/icons/icono_logros_alimenticios_outline_63x63_4.png',
                             ),
                           ),
                         ),
-                      const SizedBox(height: 20),
                       if (controller.alimento.value.ingredientes?.isNotEmpty ??
                           false)
                         const Text(
@@ -304,11 +403,10 @@ class NutricionScreen extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                      const SizedBox(height: 20),
                       Obx(
                         () => Wrap(
-                          spacing: 8, // Espacio horizontal entre contenedores
-                          runSpacing: 8, // Espacio vertical entre filas
+                          spacing: 8,
+                          runSpacing: 8,
                           children: [
                             if (controller.alimento.value.ingredientes != null)
                               for (var ingrediente
@@ -351,99 +449,101 @@ class NutricionScreen extends StatelessWidget {
 
                                         controller.alimento.value =
                                             alimentoRespuesta;
+                                        controllerCalendario.cargaAlimentos();
                                         controller.alimento.refresh();
                                       }
                                     }
                                   },
                                   child: NutritionalInfoRow(
                                     label: '${ingrediente.nombre}',
-                                    value: '${ingrediente.calorias}g',
+                                    value: '${ingrediente.calorias?.floor()}g',
                                     eliminado: ingrediente.eliminado,
                                   ),
                                 ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 120),
                     ],
                   ),
                 ),
               );
             },
           ),
-          // Positioned(
-          //   top: Get.height - 94,
-          //   child: Container(
-          //     decoration: const BoxDecoration(
-          //       border:
-          //           Border.fromBorderSide(BorderSide(color: Colors.black12)),
-          //       color: Colors.white,
-          //     ),
-          //     child: Padding(
-          //       padding: const EdgeInsets.all(15.0),
-          //       child: Container(
-          //         width: Get.width - 30,
-          //         child: Row(
-          //           children: [
-          //             Expanded(
-          //               child: ElevatedButton(
-          //                 onPressed: () => Get.back(),
-          //                 style: ElevatedButton.styleFrom(
-          //                   backgroundColor: Colors.white,
-          //                   foregroundColor: Colors.black,
-          //                   side: const BorderSide(color: Colors.black),
-          //                   shape: RoundedRectangleBorder(
-          //                     borderRadius: BorderRadius.circular(20),
-          //                   ),
-          //                 ),
-          //                 child: Padding(
-          //                   padding: const EdgeInsets.all(8.0),
-          //                   child: Row(
-          //                     children: [
-          //                       Image.asset(
-          //                         'assets/icons/icono_inteligencia_artificial_120x120_negro.png',
-          //                         width: 20,
-          //                         height: 20,
-          //                       ),
-          //                       const SizedBox(width: 8),
-          //                       // Usar Wrap para manejar el texto largo
-          //                       const Text(
-          //                         'Corregir\n resultados',
-          //                         textAlign: TextAlign.center,
-          //                         style: TextStyle(fontSize: 15),
-          //                         softWrap:
-          //                             true, // Habilitar el ajuste de línea
-          //                       ),
-          //                     ],
-          //                   ),
-          //                 ),
-          //               ),
-          //             ),
-          //             const SizedBox(width: 10),
-          //             Expanded(
-          //               child: ElevatedButton(
-          //                 onPressed: () {
-          //                   controller.actualizarComidaAlimento();
-          //                 },
-          //                 style: ElevatedButton.styleFrom(
-          //                   backgroundColor: Colors.black,
-          //                   foregroundColor: Colors.white,
-          //                   shape: RoundedRectangleBorder(
-          //                     borderRadius: BorderRadius.circular(20),
-          //                   ),
-          //                 ),
-          //                 child: const Padding(
-          //                   padding: EdgeInsets.all(8.0),
-          //                   child: Text('Guardar'),
-          //                 ),
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          Positioned(
+            top: Get.height - 94,
+            child: Container(
+              decoration: const BoxDecoration(
+                border:
+                    Border.fromBorderSide(BorderSide(color: Colors.black12)),
+                color: Colors.white,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SizedBox(
+                  width: Get.width - 30,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => Get.back(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            side: const BorderSide(color: Colors.black),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  'assets/icons/icono_inteligencia_artificial_120x120_negro.png',
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                // Usar Wrap para manejar el texto largo
+                                const Text(
+                                  'Corregir\n resultados',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 15),
+                                  softWrap:
+                                      true, // Habilitar el ajuste de línea
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // controller.actualizarComidaAlimento();
+                            controller.editarAlimento();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Guardar'),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
           Positioned(
             top: 0,
             right: 0,
@@ -490,146 +590,47 @@ class NutricionScreen extends StatelessWidget {
                         //     onPressed: () => Get.back(),
                         //   ),
                         // ),
-                        const SizedBox(width: 8),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[400],
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(30)),
+                        // const SizedBox(width: 8),
+                        PullDownButton(
+                          routeTheme: PullDownMenuRouteTheme(
+                            borderRadius: BorderRadius.circular(15),
+                            shadow: BoxShadow(
+                              color: Colors.black26,
+                              offset: const Offset(
+                                1.0,
+                                1.0,
+                              ),
+                              blurRadius: 15.0,
+                              spreadRadius: 1.0,
+                            ), //BoxShadow
                           ),
-                          child: PopupMenuButton(
-                            icon: const Icon(
-                              Icons.more_horiz,
-                              size: 23,
+                          itemBuilder: (context) => [
+                            PullDownMenuItem(
+                              onTap: () {
+                                reportarComida(controller);
+                                // Lógica para Reportar comida
+                              },
+                              title: 'Reportar comida',
+                              icon: Icons.comment_outlined,
+                            ),
+                            PullDownMenuItem(
+                              onTap: () {
+                                controller.deleteAlimento();
+                              },
+                              title: 'Eliminar alimento',
+                              isDestructive: true,
+                              icon: Icons.delete_outline_outlined,
+                            ),
+                          ],
+                          buttonBuilder: (context, showMenu) => CupertinoButton(
+                            onPressed: showMenu,
+                            color: Colors.grey[400],
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            padding: EdgeInsets.all(15),
+                            child: const Icon(
+                              Icons.more_horiz_outlined,
                               color: Colors.white,
                             ),
-                            onSelected: (value) {
-                              // Acción cuando se selecciona una opción
-                              if (value == 'Reportar comida') {
-                                Get.dialog(
-                                  Dialog(
-                                    elevation: 0,
-                                    alignment: Alignment.bottomCenter,
-                                    backgroundColor: Colors.transparent,
-                                    child: Center(
-                                      child: Container(
-                                        width: Get.width,
-                                        padding: EdgeInsets.all(20),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          color: Colors.white,
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              'Reportar comida',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 24,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 25),
-                                            CustomTextFormField(
-                                              hinttext:
-                                                  '¿Cuál es el problema con este registro de alimento?',
-                                              focus: true,
-                                              controller: controller
-                                                  .reportarComidaController,
-                                            ),
-                                            const SizedBox(height: 25),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: ElevatedButton(
-                                                    onPressed: () => Get.back(),
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                      foregroundColor:
-                                                          Colors.black,
-                                                      side: const BorderSide(
-                                                          color: Colors.black),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                      ),
-                                                    ),
-                                                    child:
-                                                        const Text('Cancelar'),
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Expanded(
-                                                  child: ElevatedButton(
-                                                    onPressed: () => controller
-                                                        .reporteAlimento(),
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor:
-                                                          Colors.black,
-                                                      foregroundColor:
-                                                          Colors.white,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                      ),
-                                                    ),
-                                                    child:
-                                                        const Text('Reportar'),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                                // Lógica para Reportar comida
-                              } else if (value == 'Eliminar alimento') {
-                                controller.deleteAlimento();
-                              }
-                            },
-                            itemBuilder: (BuildContext context) => [
-                              const PopupMenuItem<String>(
-                                value: 'Reportar comida',
-                                child: Row(
-                                  children: [
-                                    Text('Reportar comida'),
-                                    SizedBox(width: 10),
-                                    Icon(Icons.comment_outlined),
-                                  ],
-                                ),
-                              ),
-                              const PopupMenuItem<String>(
-                                value: 'Eliminar alimento',
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Eliminar alimento',
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Icon(
-                                      Icons.delete_outline_outlined,
-                                      color: Colors.red,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                       ],
@@ -640,6 +641,79 @@ class NutricionScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void reportarComida(NutricionController controller) {
+    Get.dialog(
+      Dialog(
+        elevation: 0,
+        alignment: Alignment.bottomCenter,
+        backgroundColor: Colors.transparent,
+        child: Center(
+          child: Container(
+            width: Get.width,
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Reportar comida',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
+                const SizedBox(height: 25),
+                CustomTextFormField(
+                  hinttext:
+                      '¿Cuál es el problema con este registro de alimento?',
+                  focus: true,
+                  controller: controller.reportarComidaController,
+                ),
+                const SizedBox(height: 25),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => Get.back(),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          side: const BorderSide(color: Colors.black),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: const Text('Cancelar'),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => controller.reporteAlimento(),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: const Text('Reportar'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -662,7 +736,7 @@ class NutritionalInfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: (Get.width / 3) - 16,
+      width: (Get.width / 3) - 14,
       // height: 70,
       padding: eliminado == true
           ? EdgeInsets.zero
@@ -670,7 +744,7 @@ class NutritionalInfoRow extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.black12,
-          width: 1.0,
+          width: 1.2,
         ),
         borderRadius: BorderRadius.circular(15),
       ),
@@ -680,7 +754,7 @@ class NutritionalInfoRow extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 11.5),
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,
@@ -689,9 +763,9 @@ class NutritionalInfoRow extends StatelessWidget {
                 Text(
                   value,
                   style: const TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.bold,
-                    decoration: TextDecoration
-                        .lineThrough, // Hace que el texto aparezca tachado
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.lineThrough,
                   ),
                 ),
                 Container(
@@ -714,15 +788,15 @@ class NutritionalInfoRow extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
+                  spacing: 5,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     if (icon != null)
                       Container(color: Colors.grey[100], child: icon),
-                    const SizedBox(width: 8),
                     Flexible(
                       child: Text(
                         label,
-                        style: const TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: 11.5),
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
@@ -732,14 +806,19 @@ class NutritionalInfoRow extends StatelessWidget {
                   ],
                 ),
                 Row(
+                  spacing: 8,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const SizedBox(width: 8),
                     Text(
                       value,
                       style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 15, fontWeight: FontWeight.bold),
                     ),
-                    // const Icon(Icons.edit, size: 12, color: Colors.blue),
+                    const Icon(
+                      Icons.edit,
+                      size: 12,
+                      color: Colors.black87,
+                    ),
                   ],
                 ),
               ],

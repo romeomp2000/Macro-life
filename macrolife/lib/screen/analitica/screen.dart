@@ -25,7 +25,10 @@ class AnaliticaScreen extends StatelessWidget {
               const SizedBox(height: 20),
               const Text(
                 'Vista general',
-                style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 27,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 20),
               Row(
@@ -36,6 +39,7 @@ class AnaliticaScreen extends StatelessWidget {
                       Image.asset(
                         'assets/icons/icono_checkverde_53x53_nuevo.png',
                         width: 27,
+                        colorBlendMode: BlendMode.color,
                       ),
                       const SizedBox(width: 10),
                       Obx(

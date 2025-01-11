@@ -23,6 +23,7 @@ extension DateTimeComparison on DateTime {
 }
 
 class WeeklyCalendarController extends GetxController {
+  final verAppleHealth = false.obs;
   //? controller helth
   var healthData = <HealthDataPoint>[].obs; // Observar los datos de salud
   var isLoading = true.obs; // Estado de carga
@@ -35,6 +36,16 @@ class WeeklyCalendarController extends GetxController {
   RxInt levantamientoPesass = 0.obs;
   RxInt pasos = 0.obs;
   RxInt otro = 0.obs;
+
+  final List<String> daysOfWeek = [
+    'lunes',
+    'martes',
+    'miércoles',
+    'jueves',
+    'viernes',
+    'sábado',
+    'domingo'
+  ];
 
   Future<void> fetchHealthData() async {
     if (GetPlatform.isAndroid) {
@@ -398,6 +409,9 @@ class WeeklyCalendarController extends GetxController {
 
   Future cargarRacha() async {
     try {
+      if (controllerUsuario.usuario.value.sId == null) {
+        return;
+      }
       final apiService = ApiService();
 
       // Realiza la llamada a la API
@@ -414,13 +428,13 @@ class WeeklyCalendarController extends GetxController {
       rechaDias.value = racha;
     } catch (e) {
       // Manejo de errores
-      Get.snackbar(
-        'Racha Días',
-        e.toString(),
-        snackPosition: SnackPosition.TOP,
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-      );
+      // Get.snackbar(
+      //   'Racha Días',
+      //   e.toString(),
+      //   snackPosition: SnackPosition.TOP,
+      //   colorText: Colors.white,
+      //   backgroundColor: Colors.red,
+      // );
     }
   }
 
@@ -493,6 +507,8 @@ class WeeklyCalendarController extends GetxController {
           response['macronutrientes']['totalCarbohidratos'];
       controllerUsuario.macronutrientes.value.grasas =
           response['macronutrientes']['totalGrasas'];
+      controllerUsuario.macronutrientes.value.caloriasQuemadas =
+          response['macronutrientes']['caloriasQuemadas'];
 
       refreshCantadorMacronutrientes(controllerUsuario);
 
@@ -687,11 +703,12 @@ class NumberWithBorder extends StatelessWidget {
         Text(
           number,
           style: TextStyle(
-            fontSize: 70,
+            fontSize: 60,
             fontWeight: FontWeight.bold,
+            letterSpacing: 5,
             foreground: Paint()
               ..style = PaintingStyle.stroke
-              ..strokeWidth = 14
+              ..strokeWidth = 8
               ..color = Colors.white,
           ),
         ),
@@ -699,7 +716,8 @@ class NumberWithBorder extends StatelessWidget {
         Text(
           number,
           style: const TextStyle(
-            fontSize: 70,
+            fontSize: 60,
+            letterSpacing: 5,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),

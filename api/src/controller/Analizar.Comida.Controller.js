@@ -1,12 +1,14 @@
 /* eslint-disable indent */
 /* eslint-disable array-callback-return */
 const { OPENAI_API_KEY, API_KEY_CODE_BAR } = require('../config/index');
-const { Types } = require('mongoose');
+// const { Types } = require('mongoose');
 const { uploadFile } = require('../config/s3');
 const AlimentoModel = require('../models/Alimentos.Model');
 const IngredienteModel = require('../models/Ingredientes.Model');
 const UsuarioModel = require('../models/Usuario.Model');
-const moment = require('moment');
+// const moment = require('moment');
+const moment2 = require('moment-timezone');
+
 const OpenAI = require('openai');
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 const axios = require('axios');
@@ -15,14 +17,16 @@ const MODEL = 'gpt-4o-mini';
 
 const prompt = `
     Describe esta comida basada en la imagen y proporciona una estimación general de los valores nutricionales.
-    No pongas comentarios ya que se va JSON.parse lo que respondas.
+    No pongas comentarios ya que se va JSON.parse lo que respondas. DEBE ER UN JSON VALIDO.
     En español siempre responde.
+    Debe ser el mimo calorís, proteínas, grasas totales por los ingredientes y porciones.
     {
       "nombre": "Nombre del plato global",
       "calorias": Calorías totales,
       "proteina": Proteína total (g),
       "carbohidratos": Carbohidratos totales (g),
       "grasas": Grasas totales (g),
+      "porciones": Debes analizar el alimento y ver cuanta porsión es, ejemeplo 0.5, 1, 3, si vemos 3 huevos, o 3 llemas o 3 galleta
       "puntuacion_salud": {
         "score": Calificación del 1 al 10 dependiendo si es saludable,
         "nombre": "Descripción breve según la calificación, por ejemplo, 'Algo saludable' si la calificación es 4",
@@ -31,11 +35,12 @@ const prompt = `
       },
       "ingredientes": [
         {
-          "nombre": "Nombre del ingrediente (e.g., hamburguesa, papas)",
+          "nombre": "Nombre del ingrediente (e.g., platano, huevo)",
           "calorias": Calorías,
           "proteina": Proteína (g),
           "carbohidratos": Carbohidratos (g),
-          "grasas": Grasas (g)
+          "grasas": Grasas (g),
+          "porciones": Debes analizar el ingrediente y ver cuanta porsión es, ejemeplo 0.5, 1, 3, si vemos 3 huevos, o 3 llemas o 3 galleta
         }
       ]
     }
@@ -45,26 +50,60 @@ const promptMacronutrientes = `
     Describe esta comida basada en el JSON proporcionado una estimación general de los valores nutricionales.
     No pongas comentarios ya que se va JSON.parse lo que respondas.
     En español siempre responde.
+    Debe ser el mimo calorís, proteínas, grasas totales por los ingredientes y porciones.
     {
       "nombre": "Nombre del plato global",
       "calorias": Calorías totales,
       "proteina": Proteína total (g),
+      "porciones": Debes analizar el alimento y ver cuanta porsión es, ejemeplo 0.5, 1, 3, si vemos 3 huevos, o 3 llemas o 3 galleta
       "carbohidratos": Carbohidratos totales (g),
       "grasas": Grasas totales (g),
       "puntuacion_salud": {
         "score": Calificación del 1 al 10 dependiendo si es saludable,
         "nombre": "Descripción breve según la calificación, por ejemplo, 'Algo saludable' si la calificación es 4",
         "descripcion": "Esta comida incluye aspectos que podrían no ser los mejores para la salud si se consume con frecuencia. Considere moderación...",
-        "caracteristicas" ["Danos máximo 5 una caracterices ejemplo: Alto en proteínas (32g) que es beneficioso para la reparación muscular.", "Contenido moderado en grasas (21g)"]
-
+        "caracteristicas" ["Danos máximo 5 una caracterices ejemplo: Alto en proteínas (32g) que es beneficioso para la reparación muscular.", "Contenido moderado en grasas (21g)"],
       },
       "ingredientes": [
         {
-          "nombre": "Nombre del ingrediente (e.g., hamburguesa, papas)",
+          "nombre":"Nombre del ingrediente (e.g., hamburguesa, papas)",
           "calorias": Calorías,
           "proteina": Proteína (g),
           "carbohidratos": Carbohidratos (g),
-          "grasas": Grasas (g)
+          "grasas": Grasas (g),
+          "porciones": Debes analizar el ingrediente y ver cuanta porsión es, ejemeplo 0.5, 1, 3, si vemos 3 huevos, o 3 llemas o 3 galleta
+        }
+      ]
+    }
+  `;
+
+const promptTexto = (comida) => `
+    El usuario dijo: ${comida}
+    Describe esta comida basada en el JSON proporcionado una estimación general de los valores nutricionales.
+    No pongas comentarios ya que se va JSON.parse lo que respondas.
+    En español siempre responde.
+    Debe ser el mimo calorís, proteínas, grasas totales por los ingredientes y porciones.
+    {
+      "nombre": "Nombre del plato global no le pongas el mismo nombre del usuario coloco, mejora la redacción",
+      "calorias": Calorías totales,
+      "proteina": Proteína total (g),
+      "porciones": Debes analizar el alimento y ver cuanta porsión es, ejemeplo 0.5, 1, 3, si vemos 3 huevos, o 3 llemas o 3 galleta
+      "carbohidratos": Carbohidratos totales (g),
+      "grasas": Grasas totales (g),
+      "puntuacion_salud": {
+        "score": Calificación del 1 al 10 dependiendo si es saludable,
+        "nombre": "Descripción breve según la calificación, por ejemplo, 'Algo saludable' si la calificación es 4",
+        "descripcion": "Esta comida incluye aspectos que podrían no ser los mejores para la salud si se consume con frecuencia. Considere moderación...",
+        "caracteristicas" ["Danos máximo 5 una caracterices ejemplo: Alto en proteínas (32g) que es beneficioso para la reparación muscular.", "Contenido moderado en grasas (21g)"],
+      },
+      "ingredientes": [
+        {
+          "nombre":"Nombre del ingrediente (e.g., hamburguesa, papas)",
+          "calorias": Calorías,
+          "proteina": Proteína (g),
+          "carbohidratos": Carbohidratos (g),
+          "grasas": Grasas (g),
+          "porciones": Debes analizar el ingrediente y ver cuanta porsión es, ejemeplo 0.5, 1, 3, si vemos 3 huevos, o 3 llemas o 3 galleta
         }
       ]
     }
@@ -112,6 +151,10 @@ const analizarComida = async (req, res) => {
       // Flujo para análisis directo de la imagen del alimento
       const response = await openai.chat.completions.create({
         model: MODEL,
+        // temperature: 0.9, // Moderadamente creativo
+        // top_p: 0.1, // Usa el núcleo de muestreo para más variedad
+        // frequency_penalty: 0.5, // Penaliza repeticiones leves
+        // presence_penalty: 0.3, // Fomenta ideas
         messages: [
           {
             role: 'user',
@@ -130,6 +173,7 @@ const analizarComida = async (req, res) => {
       });
 
       const rawResponse = response.choices[0].message.content;
+      console.log(rawResponse);
       const jsonResponse = extractJson(rawResponse);
 
       const ingredientes = jsonResponse?.ingredientes?.map((ingrediente) => ({
@@ -138,7 +182,8 @@ const analizarComida = async (req, res) => {
         proteina: ingrediente?.proteina || 0,
         carbohidratos: ingrediente?.carbohidratos || 0,
         grasas: ingrediente?.grasas || 0,
-        usuario: idUsuario
+        usuario: idUsuario,
+        porciones: ingrediente.porciones || 0
       })) || [];
 
       const ingredientesInsert = ingredientes.length > 0
@@ -160,7 +205,7 @@ const analizarComida = async (req, res) => {
         usuario: idUsuario,
         nombre: jsonResponse?.nombre || '',
         foto: comidaS3.path,
-        porciones: 1,
+        porciones: jsonResponse.porciones || 0,
         calorias: jsonResponse.calorias || 0,
         proteina: jsonResponse?.proteina || 0,
         carbohidratos: jsonResponse?.carbohidratos || 0,
@@ -193,43 +238,98 @@ const extractJson = (rawResponse) => {
 
 const rachaPuntosContador = async (idUsuario) => {
   try {
-    let rachaDias = 0;
-    const todayStart = moment().startOf('day').toDate();
+    const fechaHoyMexico = moment2().tz('America/Mexico_City').format('YYYY-MM-DD');
 
-    // Obtén la fecha de fin de hoy (23:59:59)
-    const todayEnd = moment().endOf('day').toDate();
-
-    const query = {
-      usuario: new Types.ObjectId(idUsuario),
-      createdAt: {
-        $gte: moment(todayStart),
-        $lte: moment(todayEnd)
-      }
-    };
-
-    const findAlimentosDiario = await AlimentoModel.countDocuments(query);
-
-    if (findAlimentosDiario === 0) {
-      // Actualiza el campo 'rachaDias' sumando 1
-      const updatedUsuario = await UsuarioModel.findByIdAndUpdate(
-        idUsuario, // El ID del usuario que quieres actualizar
-        { $inc: { rachaDias: 1 } }, // Incrementa 'rachaDias' en 1
-        { new: true } // Devuelve el documento actualizado
-      );
-
-      rachaDias = updatedUsuario.rachaDias;
-
-      return rachaDias;
-    } else {
-      console.log('ya se había registrado');
+    const findUsuario = await UsuarioModel.findById(idUsuario);
+    if (!findUsuario) {
       return null;
+    }
+
+    if (findUsuario.ultimoAlimento === fechaHoyMexico) {
+      return false;
+    } else {
+      findUsuario.rachaDias = findUsuario.rachaDias + 1;
+      findUsuario.ultimoAlimento = fechaHoyMexico;
+      await findUsuario.save();
+      return true;
     }
   } catch (error) {
     console.log(error);
-    return null;
+    return false;
+  }
+};
+
+const analizarComidaTexto = async (req, res) => {
+  const { usuario, comida, fecha } = req.body;
+  try {
+    rachaPuntosContador(usuario);
+
+    const responseChatNutri = await openai.chat.completions.create({
+      model: MODEL,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: promptTexto(comida) }
+          ]
+        }
+      ]
+    });
+
+    const rawResponse = responseChatNutri.choices[0].message.content;
+    const jsonResponse = extractJson(rawResponse);
+
+    const ingredientes = jsonResponse?.ingredientes?.map((ingrediente) => ({
+      nombre: ingrediente?.nombre || '',
+      calorias: ingrediente?.calorias || 0,
+      proteina: ingrediente?.proteina || 0,
+      carbohidratos: ingrediente?.carbohidratos || 0,
+      grasas: ingrediente?.grasas || 0,
+      usuario,
+      porciones: ingrediente.porciones || 0
+    })) || [];
+
+    const ingredientesInsert = ingredientes.length > 0
+      ? await IngredienteModel.insertMany(ingredientes)
+      : [];
+
+    const ingredienteIds = ingredientesInsert.map((ingrediente) => ingrediente._id);
+
+    const puntuacionSalud = jsonResponse?.puntuacion_salud
+      ? {
+        nombre: jsonResponse?.puntuacion_salud?.nombre || '',
+        descripcion: jsonResponse?.puntuacion_salud?.descripcion || '',
+        score: jsonResponse?.puntuacion_salud?.score || 0,
+        caracteristicas: jsonResponse?.puntuacion_salud?.caracteristicas || []
+      }
+      : null;
+
+    const alimento = {
+      usuario,
+      nombre: jsonResponse?.nombre || '',
+      foto: null,
+      porciones: jsonResponse.porciones || 0,
+      calorias: jsonResponse.calorias || 0,
+      proteina: jsonResponse?.proteina || 0,
+      carbohidratos: jsonResponse?.carbohidratos || 0,
+      grasas: jsonResponse?.grasas || 0,
+      puntuacionSalud,
+      ingredientes: ingredienteIds,
+      fecha
+    };
+
+    await AlimentoModel.create(alimento);
+
+    // const findUsuario = await UsuarioModel.findById(usuario);
+
+    return res.status(200).json({ message: 'Comida analizada' });
+  } catch (error) {
+    console.error('Error al procesar la solicitud:', error);
+    return res.status(500).json({ message: 'Error interno al procesar la solicitud.' });
   }
 };
 
 module.exports = {
-  analizarComida
+  analizarComida,
+  analizarComidaTexto
 };

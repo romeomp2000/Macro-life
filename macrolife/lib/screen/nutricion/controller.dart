@@ -13,21 +13,21 @@ class NutricionController extends GetxController {
   final WeeklyCalendarController controllerCalendario = Get.find();
   final UsuarioController usuarioController = Get.put(UsuarioController());
 
-  void actualizarComidaAlimento() async {
-    final apiService = ApiService();
-    Get.back();
+  // void actualizarComidaAlimento() async {
+  //   final apiService = ApiService();
+  //   Get.back();
 
-    await apiService.fetchData(
-      'alimentos/porciones',
-      method: Method.PUT,
-      body: {
-        'id': alimento.value.id,
-        'porciones': alimento.value.porcion,
-      },
-    );
+  //   await apiService.fetchData(
+  //     'alimentos/porciones',
+  //     method: Method.PUT,
+  //     body: {
+  //       'id': alimento.value.id,
+  //       'porciones': alimento.value.porcion,
+  //     },
+  //   );
 
-    controllerCalendario.cargaAlimentos();
-  }
+  //   controllerCalendario.cargaAlimentos();
+  // }
 
   void actualizarFavoritoAlimento() async {
     final apiService = ApiService();
@@ -85,5 +85,35 @@ class NutricionController extends GetxController {
     );
 
     ScaffoldMessenger.of(Get.context!).showSnackBar(snackBar);
+  }
+
+  Future editarAlimento() async {
+    try {
+      Get.back();
+
+      final apiService = ApiService();
+
+      await apiService.fetchData(
+        'alimentos/alimento',
+        method: Method.PUT,
+        body: {
+          'id': alimento.value.id,
+          'calorias': alimento.value.calories,
+          'proteina': alimento.value.protein,
+          'carbohidratos': alimento.value.carbs,
+          'grasas': alimento.value.fats,
+          'porciones': alimento.value.porcion
+        },
+      );
+
+      // Get.back(result: {
+      //   'alimento': alimentoResponse,
+      //   'ingrediente': ingredienteResponse,
+      // });
+
+      controllerCalendario.cargaAlimentos();
+    } catch (e) {
+      print(e);
+    }
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
@@ -153,10 +155,55 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Image.asset(
-                        'assets/icons/icono_calorias_outline_120x120_activo.png',
-                        width: 25,
-                      )
+                      Obx(
+                        () => SizedBox(
+                          // width: 50,
+                          child: Column(
+                            spacing: 10,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/icons/icono_calorias_outline_120x120_activo.png',
+                                width: 25,
+                              ),
+                              if (controllerUsuario.macronutrientes.value
+                                          .caloriasQuemadas !=
+                                      null &&
+                                  controllerUsuario.macronutrientes.value
+                                          .caloriasQuemadas !=
+                                      0)
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 3, horizontal: 6),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    border: Border.all(
+                                      color: Colors.transparent,
+                                      width: 0.5,
+                                    ),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: Row(
+                                    spacing: 8,
+                                    children: [
+                                      Image.asset(
+                                        'assets/icons/icono_cajon_ejercicio_88x88_registrar.png',
+                                        width: 13,
+                                      ),
+                                      Text(
+                                        '+${controllerUsuario.macronutrientes.value.caloriasQuemadas ?? ''}',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   VerticalDivider(
@@ -294,9 +341,9 @@ class HomeScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
           child: Column(
+            spacing: 15,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -333,7 +380,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 15),
               calendario(controller),
               // ElevatedButton(
               //   onPressed: () {
@@ -346,6 +392,14 @@ class HomeScreen extends StatelessWidget {
               SizedBox(
                 height: 400,
                 child: PageView(
+                  onPageChanged: (value) {
+                    if (value == 0) {
+                      controller.verAppleHealth.value = false;
+                    }
+                    if (value == 1) {
+                      controller.verAppleHealth.value = true;
+                    }
+                  },
                   // physics: NeverScrollableScrollPhysics(),
                   controller: PageController(),
                   children: [
@@ -355,7 +409,27 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 15),
+              Obx(() {
+                if (Platform.isIOS) {
+                  return Row(
+                    spacing: 5,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (controller.verAppleHealth.value == false)
+                        Icon(Icons.circle, size: 10)
+                      else
+                        Icon(Icons.circle_outlined, size: 10),
+                      if (controller.verAppleHealth.value == true)
+                        Icon(Icons.circle, size: 10)
+                      else
+                        Icon(Icons.circle_outlined, size: 10),
+                    ],
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              }),
+
               Obx(
                 () => controller.alimentosList.isEmpty &&
                         controller.entrenamientosList.isEmpty
@@ -439,7 +513,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                 );
               }),
-              const SizedBox(height: 20),
               Obx(() {
                 return SingleChildScrollView(
                   // Permite que el contenido sea desplazable
@@ -861,7 +934,7 @@ class AjercicioWidget extends StatelessWidget {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            '${nutritionInfo.calories} calorías', // Usamos el parámetro de las calorías
+                            '${nutritionInfo.calories} calorías',
                             style: TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,

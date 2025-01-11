@@ -43,9 +43,9 @@ const obtenerNutricion = async (req, res) => {
 
     const alimentos = await AlimentoModel.find(query);
 
-    if (!alimentos.length) {
-      return res.status(404).json({ message: 'No se encontraron alimentos para esta semana.' });
-    }
+    // if (!alimentos.length) {
+    //   return res.status(404).json({ message: 'No se encontraron alimentos para esta semana.' });
+    // }
 
     // Inicializar las iniciales de los días de la semana
     const diasSemana = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'];

@@ -34,9 +34,9 @@ class PuntuacionSaludScreen extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(15),
         child: Column(
+          spacing: 20,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 10),
             const Text(
               'Puntuación de salud',
               style: TextStyle(
@@ -44,13 +44,10 @@ class PuntuacionSaludScreen extends StatelessWidget {
                 fontSize: 32,
               ),
             ),
-            const SizedBox(height: 25),
             Text('${puntuacion.nombre}',
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-            const SizedBox(height: 25),
             Text('${puntuacion.descripcion}'),
-            const SizedBox(height: 25),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 15),
               decoration: BoxDecoration(
@@ -66,7 +63,7 @@ class PuntuacionSaludScreen extends StatelessWidget {
                 subtitle: LinearProgressIndicator(
                   backgroundColor: Colors.grey[200],
                   value: (puntuacion.score ?? 0) * 0.100,
-                  color: Colors.green,
+                  color: Colors.black,
                 ),
                 trailing: Text(
                   '${puntuacion.score}/10',
@@ -75,44 +72,45 @@ class PuntuacionSaludScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                leadingSize: 40,
-                leading: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10), // Borde redondeado
-                    color: Colors.grey[100],
-                  ),
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    'assets/icons/icono_corazonrosa_50x50_nuevo.png',
-                  ),
+                leadingSize: 25,
+                leading: Image.asset(
+                  'assets/icons/icono_logros_alimenticios_outline_63x63_4.png',
                 ),
               ),
             ),
-            const SizedBox(height: 25),
+            // ListTile(
+            //   title: Container(
+            //     padding: const EdgeInsets.all(10),
+            //     decoration: BoxDecoration(
+            //       color: Colors.grey[100],
+            //       borderRadius: const BorderRadius.all(Radius.circular(15)),
+            //     ),
+            //     child: Text('d'),
+            //   ),
+            //   minLeadingWidth: 20,
+            //   leading: Image.asset(
+            //     'assets/icons/icono_estrella_61x61_negro.png',
+            //     width: 20,
+            //   ),
+            // ),
             Column(
-              // Se puede usar Column para manejar el tamaño dinámico
               children: [
                 for (var caracteristica in puntuacion.caracteristicas ?? [])
-                  Column(
-                    children: [
-                      ListTile(
-                        title: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[100],
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                          ),
-                          child: Text(caracteristica),
-                        ),
-                        minLeadingWidth: 8,
-                        leading: Image.asset(
-                          'assets/icons/icono_rutina_60x60_nuevo.png',
-                          width: 25,
-                        ),
+                  ListTile(
+                    title: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                       ),
-                      const SizedBox(height: 10)
-                    ],
+                      child: Text(caracteristica),
+                    ),
+                    minLeadingWidth: 20,
+                    leading: Image.asset(
+                      'assets/icons/icono_estrella_61x61_negro.png',
+                      width: 20,
+                    ),
                   )
               ],
             ),

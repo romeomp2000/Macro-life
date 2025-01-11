@@ -17,7 +17,7 @@ class Usuario {
   String? objetivo;
   int? pesoObjetivo;
   String? dieta;
-  String? lograr;
+  List<String>? logros;
   double? metaAlcanzar;
   String? impideAlcanzar;
   String? codigo;
@@ -48,7 +48,7 @@ class Usuario {
       this.objetivo,
       this.pesoObjetivo,
       this.dieta,
-      this.lograr,
+      this.logros,
       this.metaAlcanzar,
       this.impideAlcanzar,
       this.codigo,
@@ -85,7 +85,7 @@ class Usuario {
     objetivo = json['objetivo'];
     pesoObjetivo = json['pesoObjetivo'];
     dieta = json['dieta'];
-    lograr = json['lograr'];
+    logros = json['logros'] != null ? List<String>.from(json['logros']) : null;
     metaAlcanzar = json['metaAlcanzar'];
     impideAlcanzar = json['impideAlcanzar'];
     codigo = json['codigo'];
@@ -121,7 +121,7 @@ class Usuario {
     data['objetivo'] = this.objetivo;
     data['pesoObjetivo'] = this.pesoObjetivo;
     data['dieta'] = this.dieta;
-    data['lograr'] = this.lograr;
+    data['logros'] = this.logros;
     data['metaAlcanzar'] = this.metaAlcanzar;
     data['impideAlcanzar'] = this.impideAlcanzar;
     data['codigo'] = this.codigo;
@@ -167,6 +167,8 @@ class Macronutrientes {
 class MacronutrientesCalculo {
   int? calorias;
   int? caloriasRestantes;
+  int? caloriasQuemadas;
+
   double? caloriasPorcentaje;
 
   int? proteina;
@@ -194,6 +196,7 @@ class MacronutrientesCalculo {
     this.carbohidratosPorcentaje,
     this.grasasRestantes,
     this.grasasPorcentaje,
+    this.caloriasQuemadas,
   });
 
   MacronutrientesCalculo.fromJson(Map<String, dynamic> json) {
@@ -212,6 +215,7 @@ class MacronutrientesCalculo {
     grasas = json['grasas'];
     grasasRestantes = json['grasasRestantes'];
     grasasPorcentaje = json['grasasPorcentaje'];
+    caloriasQuemadas = json['caloriasQuemadas'];
   }
 
   Map<String, dynamic> toJson() {
@@ -231,6 +235,7 @@ class MacronutrientesCalculo {
     data['grasas'] = grasas;
     data['grasas'] = grasasRestantes;
     data['grasasPorcentaje'] = grasasPorcentaje;
+    data['caloriasQuemadas'] = caloriasQuemadas;
 
     return data;
   }

@@ -10,6 +10,8 @@ class CustomElevatedSelected extends StatelessWidget {
   final Icon? icon;
   final Widget? widget;
   final String? subtitle;
+  final bool? check;
+  final Widget? trailing;
 
   const CustomElevatedSelected({
     super.key,
@@ -19,6 +21,8 @@ class CustomElevatedSelected extends StatelessWidget {
     this.icon,
     this.subtitle,
     this.widget,
+    this.check,
+    this.trailing,
   });
 
   @override
@@ -29,30 +33,39 @@ class CustomElevatedSelected extends StatelessWidget {
         onPressed: function,
         style: ButtonStyle(
           side: WidgetStatePropertyAll(
-              BorderSide(color: activo! ? Colors.black : Colors.transparent)),
-          shape: WidgetStatePropertyAll(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            BorderSide(
+              color: activo! ? Colors.black : Colors.black12,
+              width: 1,
+            ),
           ),
-          fixedSize: const WidgetStatePropertyAll(Size.fromWidth(370)),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          fixedSize: const WidgetStatePropertyAll(
+            Size.fromWidth(370),
+          ),
           padding: (icon == null && subtitle == null && widget == null)
               ? const WidgetStatePropertyAll(
                   EdgeInsets.symmetric(vertical: 17),
                 )
               : null,
-          backgroundColor:
-              WidgetStatePropertyAll(activo! ? Colors.black : Colors.grey[200]),
+          backgroundColor: WidgetStatePropertyAll(
+              activo! ? Colors.white : Colors.transparent),
           shadowColor: const WidgetStatePropertyAll(Colors.transparent),
         ),
         child: (icon != null || subtitle != null || widget != null)
             ? Column(
                 children: [
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 25),
                   Row(
+                    spacing: 10,
                     children: [
                       icon ??
-                          widget!, // Esto es el ícono o el widget que defines
-                      const SizedBox(
-                          width: 15), // Espaciado entre el ícono y el texto
+                          widget ??
+                          SizedBox
+                              .shrink(), // Esto es el ícono o el widget que defines
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,8 +74,7 @@ class CustomElevatedSelected extends StatelessWidget {
                               message,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color:
-                                    activo! ? Colors.white : Colors.grey[800],
+                                fontSize: 16,
                               ),
                             ),
                             if (subtitle != null)
@@ -70,18 +82,25 @@ class CustomElevatedSelected extends StatelessWidget {
                                 subtitle!,
                                 style: TextStyle(
                                   fontWeight: FontWeight.normal,
-                                  fontSize: 12,
-                                  color: activo!
-                                      ? Colors.white70
-                                      : Colors.grey[600],
+                                  // fontSize: 12,
+                                  // color: activo!
+                                  //     ? Colors.white70
+                                  //     : Colors.grey[600],
                                 ),
                               ),
                           ],
                         ),
                       ),
+                      if (activo == true && check == true)
+                        Image.asset(
+                          'assets/icons/icono_check_genero_115x115_2025_negro.png',
+                          width: 40,
+                        ),
+
+                      if (trailing != null) trailing!
                     ],
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 25),
                 ],
               )
             : Column(

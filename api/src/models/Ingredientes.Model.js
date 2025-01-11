@@ -12,6 +12,11 @@ const IngredientesSchema = new Schema({
     required: false,
     trim: true
   },
+  porciones: {
+    type: Number,
+    required: false,
+    default: 1
+  },
   calorias: {
     type: Number,
     required: true
@@ -33,7 +38,6 @@ const IngredientesSchema = new Schema({
     required: true,
     default: false
   }
-
 }, {
   versionKey: false,
   timestamps: true // Añade las fechas de creación y actualización

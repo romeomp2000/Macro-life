@@ -418,7 +418,7 @@ class NutricionScreen extends StatelessWidget {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            controller.actualizarComidaAlimento();
+                            // controller.actualizarComidaAlimento();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,

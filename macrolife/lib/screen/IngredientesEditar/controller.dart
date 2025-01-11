@@ -51,4 +51,37 @@ class IngredientesEditarController extends GetxController {
       print(e);
     }
   }
+
+  Future editarIngrediente() async {
+    try {
+      final apiService = ApiService();
+
+      final response = await apiService.fetchData(
+        'alimentos/ingrediente/',
+        method: Method.PUT,
+        body: {
+          'id': ingrediente.value.id,
+          'calorias': double.parse(calorias.text),
+          'proteina': double.parse(protinae.text),
+          'carbohidratos': double.parse(carbohidratos.text),
+          'grasas': double.parse(grasas.text),
+        },
+      );
+
+      final AlimentoModel alimentoResponse =
+          AlimentoModel.fromJson(response['alimento']);
+
+      final IngredienteModel ingredienteResponse =
+          IngredienteModel.fromJson(response['ingrediente']);
+
+      Get.back(result: {
+        'alimento': alimentoResponse,
+        'ingrediente': ingredienteResponse,
+      });
+
+      controllerCalendario.cargaAlimentos();
+    } catch (e) {
+      print(e);
+    }
+  }
 }
