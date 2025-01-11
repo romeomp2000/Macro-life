@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
@@ -17,14 +18,41 @@ class ConfiguracionesScreController extends GetxController {
 
   final liveController = Get.put(LiveActivitiesController());
   final usuarioController = Get.put(UsuarioController());
+
+  RxInt currentPageIndex = 0.obs;
   RxBool actividadLive = false.obs;
+  GetStorage box = GetStorage();
+
+  List<String> images = [
+    'assets/icons/imagen_02_mini_tutorial_1060x476_1.png',
+    'assets/icons/imagen_03_minitutorial_1060x476_1.png',
+    'assets/icons/imagen_04_mini_tutorial_1060x476_1.png',
+  ];
+
   @override
   void onInit() {
     super.onInit();
+    bool? activoLive = box.read('liveActivitiesEnable');
+    if (activoLive != null) {
+      actividadLive.value = activoLive;
+    }
+
     _loadAppVersion();
   }
 
-  void crear() {
+  void crear(value) {
+    bool? activoLive = box.read('liveActivitiesEnable');
+    if (activoLive == null) {
+      box.write('liveActivitiesEnable', value);
+      // box.save();
+    }
+
+    if (value == false) {
+      box.remove('liveActivitiesEnable');
+      liveController.eliminar();
+      return;
+    }
+
     int carbohidratos =
         usuarioController.macronutrientes.value.carbohidratosRestante!;
     int calorias = usuarioController.macronutrientes.value.caloriasRestantes!;
@@ -55,7 +83,7 @@ class ConfiguracionesScreController extends GetxController {
       Map<String, dynamic> body = {
         'usuario': controllerUsuario.usuario.value.sId
       };
-      final response = await apiService.fetchData(
+      await apiService.fetchData(
         'blog-baja',
         method: Method.POST,
         body: body,
@@ -80,7 +108,7 @@ class ConfiguracionesScreController extends GetxController {
         'nombre': nombre.text,
         'descripcion': descripcion.text
       };
-      final response = await apiService.fetchData(
+      await apiService.fetchData(
         'soporte/enviar-correo',
         method: Method.POST,
         body: body,

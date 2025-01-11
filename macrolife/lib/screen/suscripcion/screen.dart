@@ -36,10 +36,10 @@ class SuscripcionScreen extends StatelessWidget {
                   height: 600,
                   aspectRatio: 4 / 3,
                   viewportFraction: 1,
-                  initialPage: 0,
+                  initialPage: 3,
                   enableInfiniteScroll: true,
                   reverse: false,
-                  autoPlay: true,
+                  autoPlay: false,
                   autoPlayInterval: const Duration(seconds: 2),
                   autoPlayAnimationDuration: const Duration(milliseconds: 800),
                   autoPlayCurve: Curves.linear,
@@ -307,7 +307,7 @@ class SuscripcionScreen extends StatelessWidget {
                   iconColor: blackTheme2_,
                   title: 'Precio mensual más bajo',
                   description:
-                      'Solo por este dia el precio mensual será más barato que el actual. Precio nuevo: \$${((double.parse(controller.configuraiones.configuraciones.value.suscripcion!.anual.toString() ?? '0') / 12) / 2).toStringAsFixed(2)}'),
+                      'Solo por este dia el precio mensual será más barato que el actual. Precio nuevo: \$${((double.parse(controller.configuraiones.configuraciones.value.suscripcion!.anual?.toString() ?? '0') / 12) / 2).toStringAsFixed(2)}'),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,8 +7,6 @@ import 'package:get/get.dart';
 import 'package:macrolife/screen/configuraciones/controller.dart';
 import 'package:macrolife/screen/detalles_personales/screen.dart';
 import 'package:macrolife/screen/referidos/screen.dart';
-import 'package:macrolife/screen/widgets/widgets_view.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ConfiguracionesScreen extends StatelessWidget {
@@ -172,48 +169,90 @@ class ConfiguracionesScreen extends StatelessWidget {
               thickness: 0.4,
               color: Colors.grey,
             ),
-            const SizedBox(height: 20),
-            const Text(
-              'Preferencias',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-            const SizedBox(height: 15),
-            // CupertinoListTile(
-            //   padding: EdgeInsets.zero,
-            //   title: const Text('Calorías quemadas'),
-            //   subtitle:
-            //       const Text('Agregar calorías quemadas a la meta diario'),
-            //   trailing: CupertinoSwitch(
-            //     value: true,
-            //     activeTrackColor: Colors.black,
-            //     onChanged: (e) => {},
-            //   ),
-            // ),
-            // const SizedBox(height: 20),
-            CupertinoListTile(
-              padding: EdgeInsets.zero,
-              title: const Text('Actividad en vivo'),
-              subtitle: const Text(
-                'Te muestra las calorías y macros diarias en la pantalla de bloqueo y en la dinámica.',
-                maxLines: 2,
-              ),
-              trailing: Obx(
-                () => CupertinoSwitch(
-                  value: controller.actividadLive.value,
-                  activeTrackColor: Colors.black,
-                  onChanged: (e) => {
-                    controller.actividadLive.toggle(),
-                    controller.crear(),
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Divider(
-              thickness: 0.4,
-              color: Colors.grey,
-            ),
-            const SizedBox(height: 20),
+            GetPlatform.isIOS
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Preferencias',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      const SizedBox(height: 15),
+                      // CupertinoListTile(
+                      //   padding: EdgeInsets.zero,
+                      //   title: const Text('Calorías quemadas'),
+                      //   subtitle:
+                      //       const Text('Agregar calorías quemadas a la meta diario'),
+                      //   trailing: CupertinoSwitch(
+                      //     value: true,
+                      //     activeTrackColor: Colors.black,
+                      //     onChanged: (e) => {},
+                      //   ),
+                      // ),
+                      // const SizedBox(height: 20),
+                      CupertinoListTile(
+                        padding: EdgeInsets.zero,
+                        title: const Text('Actividad en vivo'),
+                        subtitle: const Text(
+                          'Te muestra las calorías y macros diarias en la pantalla de bloqueo y en la dinámica.',
+                          maxLines: 2,
+                        ),
+                        trailing: Obx(
+                          () => CupertinoSwitch(
+                            value: controller.actividadLive.value,
+                            activeTrackColor: Colors.black,
+                            onChanged: (e) => {
+                              controller.actividadLive.toggle(),
+                              controller.crear(e),
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Divider(
+                        thickness: 0.4,
+                        color: Colors.grey,
+                      ),
+                      const SizedBox(height: 20),
+
+                      GestureDetector(
+                        onTap: () {
+                          Get.bottomSheet(widgetMenu(),
+                                  isScrollControlled: true)
+                              .whenComplete(() {
+                            controller.currentPageIndex.value = 0;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Widgets',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                                Text('¿Cómo agregar?'),
+                              ],
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 15),
+                              child: Image.asset(
+                                  'assets/icons/imagen_01_mini_tutorial_1060x476_1.png'),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  )
+                : SizedBox(),
+
             const Text(
               'Legal',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -247,17 +286,17 @@ class ConfiguracionesScreen extends StatelessWidget {
             const SizedBox(height: 15),
             CupertinoListTile(
               onTap: () async {
-                PackageInfo packageInfo = await PackageInfo.fromPlatform();
+                // PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-                final Uri emailUri = Uri(
-                  scheme: 'mailto',
-                  path: 'soporte@macrolife.com',
-                  queryParameters: {
-                    'subject': 'Describe tu problema encima de esta línea',
-                    'body':
-                        'ID de usuario: ${controllerUsuario.usuario.value.sId} Versión: ${packageInfo.version} Enviado desde mi ${Platform.isIOS ? 'iPhone' : 'Android'}'
-                  },
-                );
+                // final Uri emailUri = Uri(
+                //   scheme: 'mailto',
+                //   path: 'soporte@macrolife.com',
+                //   queryParameters: {
+                //     'subject': 'Describe tu problema encima de esta línea',
+                //     'body':
+                //         'ID de usuario: ${controllerUsuario.usuario.value.sId} Versión: ${packageInfo.version} Enviado desde mi ${Platform.isIOS ? 'iPhone' : 'Android'}'
+                //   },
+                // );
                 // launchUrl(emailUri);
 
                 Get.bottomSheet(Container(
@@ -505,6 +544,113 @@ Widget formCorreo() {
           ],
         )
       ],
+    ),
+  );
+}
+
+Widget widgetMenu() {
+  final controller = Get.put(ConfiguracionesScreController());
+  return Container(
+    width: Get.width,
+    height: Get.height * 0.6,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10),
+      color: whiteTheme_,
+    ),
+    padding: const EdgeInsets.only(
+      left: 10,
+      right: 10,
+    ),
+    child: SingleChildScrollView(
+      child: Column(
+        children: [
+          CarouselSlider(
+            items: controller.images.map((e) {
+              return Container(
+                margin: const EdgeInsets.only(left: 5, right: 5),
+                child: Image.asset(e),
+              );
+            }).toList(),
+            options: CarouselOptions(
+              aspectRatio: 4 / 3,
+              viewportFraction: 1,
+              initialPage: 0,
+              enableInfiniteScroll: false,
+              reverse: false,
+              autoPlay: false,
+              autoPlayCurve: Curves.linear,
+              enlargeCenterPage: true,
+              enlargeFactor: 0,
+              scrollDirection: Axis.horizontal,
+              onPageChanged: (index, reason) {
+                controller.currentPageIndex.value = index;
+              },
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: controller.images.asMap().entries.map((entry) {
+              return Obx(() => Container(
+                    width: 12.0,
+                    height: 12.0,
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 4.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color:
+                          (Theme.of(Get.context!).brightness == Brightness.dark
+                                  ? whiteTheme_
+                                  : blackTheme_)
+                              .withOpacity(
+                                  controller.currentPageIndex.value == entry.key
+                                      ? 0.9
+                                      : 0.4),
+                    ),
+                  ));
+            }).toList(),
+          ),
+          Container(
+            alignment: Alignment.topLeft,
+            child: const Text(
+              'Añadir el widget de descripción general...',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 23,
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 5),
+            child: const Text(
+              'Siga los pasos anteriores para agregar el widget de descripción general',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+              ),
+            ),
+          ),
+          Container(
+            width: Get.width,
+            padding: const EdgeInsets.only(
+              top: 5,
+            ),
+            margin: const EdgeInsets.only(top: 15),
+            decoration: BoxDecoration(
+                color: Colors.black, borderRadius: BorderRadius.circular(20)),
+            child: TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text(
+                'Hecho',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }

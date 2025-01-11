@@ -5,7 +5,6 @@ import 'package:macrolife/screen/home/controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'controller.dart';
 
 class ObjetivosScreen extends StatelessWidget {
@@ -120,7 +119,7 @@ class ObjetivosScreen extends StatelessWidget {
                                   PieChartSectionData(
                                     value: controller.pro.value,
                                     showTitle: false,
-                                    color: Colors.red,
+                                    color: Colors.black38,
                                     radius: 15,
                                     badgeWidget: Container(
                                       padding: const EdgeInsets.only(
@@ -129,7 +128,7 @@ class ObjetivosScreen extends StatelessWidget {
                                           bottom: 3,
                                           top: 3),
                                       decoration: BoxDecoration(
-                                        color: Colors.red,
+                                        color: Colors.black,
                                         border: Border.all(color: Colors.white),
                                         borderRadius: BorderRadius.circular(50),
                                       ),
@@ -142,7 +141,7 @@ class ObjetivosScreen extends StatelessWidget {
                                   ),
                                   PieChartSectionData(
                                     value: controller.car.value,
-                                    color: Colors.orange,
+                                    color: Colors.black54,
                                     radius: 15,
                                     showTitle: false,
                                     badgeWidget: Container(
@@ -152,7 +151,7 @@ class ObjetivosScreen extends StatelessWidget {
                                           bottom: 3,
                                           top: 3),
                                       decoration: BoxDecoration(
-                                        color: Colors.orange,
+                                        color: Colors.black,
                                         border: Border.all(color: Colors.white),
                                         borderRadius: BorderRadius.circular(50),
                                       ),
@@ -167,7 +166,7 @@ class ObjetivosScreen extends StatelessWidget {
                                   PieChartSectionData(
                                     value: controller.gra.value,
                                     showTitle: false,
-                                    color: Colors.blue,
+                                    color: Colors.black87,
                                     radius: 15,
                                     badgeWidget: Container(
                                       padding: const EdgeInsets.only(
@@ -176,7 +175,7 @@ class ObjetivosScreen extends StatelessWidget {
                                           bottom: 3,
                                           top: 3),
                                       decoration: BoxDecoration(
-                                        color: Colors.blue,
+                                        color: Colors.black87,
                                         border: Border.all(color: Colors.white),
                                         borderRadius: BorderRadius.circular(50),
                                       ),
@@ -260,44 +259,66 @@ class ObjetivosScreen extends StatelessWidget {
                       leadingSize: 80,
                       padding: EdgeInsets.zero,
                       leading: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
                             height: 100,
                             width: 40,
-                            child: SfCartesianChart(
-                              primaryYAxis: NumericAxis(
-                                minimum: 0,
-                                maximum: 100,
-                                interval: 50,
-                                opposedPosition: true,
-                                borderColor: Colors.black12,
-                                isVisible: false,
-                              ),
-                              plotAreaBackgroundColor: Colors.black12,
-                              primaryXAxis: CategoryAxis(
-                                isVisible: false,
-                              ),
-                              enableSideBySideSeriesPlacement: false,
-                              series: <CartesianSeries>[
-                                // Inicializa la serie de columnas (barras)
-                                ColumnSeries<ChartData, String>(
-                                  dataSource: [
-                                    // Fuente de datos
-                                    ChartData('', 50, Colors.white),
-                                  ],
-                                  width: 1,
-                                  color: Colors.black,
-                                  xValueMapper: (ChartData data, _) =>
-                                      data.label,
-                                  yValueMapper: (ChartData data, _) =>
-                                      data.value,
-                                )
-                              ],
+                            child: PieChart(
+                              duration: const Duration(seconds: 2),
+                              curve: Curves.easeInBack,
+                              PieChartData(
+                                  sectionsSpace: 0,
+                                  centerSpaceRadius: 15,
+                                  startDegreeOffset: -90,
+                                  sections: [
+                                    PieChartSectionData(
+                                      value: 50,
+                                      showTitle: false,
+                                      color: Colors.black,
+                                      radius: 5,
+                                    ),
+                                    PieChartSectionData(
+                                      value: 50,
+                                      showTitle: false,
+                                      color: Colors.grey.shade300,
+                                      radius: 5,
+                                    )
+                                  ]),
                             ),
+                            // SfCartesianChart(
+                            //   primaryYAxis: NumericAxis(
+                            //     minimum: 0,
+                            //     maximum: 100,
+                            //     interval: 50,
+                            //     opposedPosition: true,
+                            //     borderColor: Colors.black12,
+                            //     isVisible: false,
+                            //   ),
+                            //   plotAreaBackgroundColor: Colors.black12,
+                            //   primaryXAxis: CategoryAxis(
+                            //     isVisible: false,
+                            //   ),
+                            //   enableSideBySideSeriesPlacement: false,
+                            //   series: <CartesianSeries>[
+                            //     // Inicializa la serie de columnas (barras)
+                            //     ColumnSeries<ChartData, String>(
+                            //       dataSource: [
+                            //         // Fuente de datos
+                            //         ChartData('', 50, Colors.white),
+                            //       ],
+                            //       width: 1,
+                            //       color: Colors.black,
+                            //       xValueMapper: (ChartData data, _) =>
+                            //           data.label,
+                            //       yValueMapper: (ChartData data, _) =>
+                            //           data.value,
+                            //     )
+                            //   ],
+                            // ),
                           ),
                           Image.asset(
-                            'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                            'assets/icons/icono_calorias_outline_120x120_activo.png',
                             width: 30,
                             height: 30,
                           ),
@@ -332,44 +353,67 @@ class ObjetivosScreen extends StatelessWidget {
                       leadingSize: 80,
                       padding: EdgeInsets.zero,
                       leading: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
                             height: 100,
+                            // margin: const EdgeInsets.only(right: 2),
                             width: 40,
-                            child: SfCartesianChart(
-                              primaryYAxis: NumericAxis(
-                                minimum: 0,
-                                maximum: 100,
-                                interval: 50,
-                                opposedPosition: true,
-                                borderColor: Colors.black12,
-                                isVisible: false,
-                              ),
-                              plotAreaBackgroundColor: Colors.black12,
-                              primaryXAxis: CategoryAxis(
-                                isVisible: false,
-                              ),
-                              enableSideBySideSeriesPlacement: false,
-                              series: <CartesianSeries>[
-                                // Inicializa la serie de columnas (barras)
-                                ColumnSeries<ChartData, String>(
-                                  dataSource: [
-                                    // Fuente de datos
-                                    ChartData('', 50, Colors.white),
-                                  ],
-                                  width: 1,
-                                  color: Colors.red,
-                                  xValueMapper: (ChartData data, _) =>
-                                      data.label,
-                                  yValueMapper: (ChartData data, _) =>
-                                      data.value,
-                                )
-                              ],
+                            child: PieChart(
+                              duration: const Duration(seconds: 2),
+                              curve: Curves.easeInBack,
+                              PieChartData(
+                                  sectionsSpace: 0,
+                                  centerSpaceRadius: 15,
+                                  startDegreeOffset: -90,
+                                  sections: [
+                                    PieChartSectionData(
+                                      value: 50,
+                                      showTitle: false,
+                                      color: Colors.black38,
+                                      radius: 5,
+                                    ),
+                                    PieChartSectionData(
+                                      value: 50,
+                                      showTitle: false,
+                                      color: Colors.grey.shade300,
+                                      radius: 5,
+                                    )
+                                  ]),
                             ),
+                            // SfCartesianChart(
+                            //   primaryYAxis: NumericAxis(
+                            //     minimum: 0,
+                            //     maximum: 100,
+                            //     interval: 50,
+                            //     opposedPosition: true,
+                            //     borderColor: Colors.black12,
+                            //     isVisible: false,
+                            //   ),
+                            //   plotAreaBackgroundColor: Colors.black12,
+                            //   primaryXAxis: CategoryAxis(
+                            //     isVisible: false,
+                            //   ),
+                            //   enableSideBySideSeriesPlacement: false,
+                            //   series: <CartesianSeries>[
+                            //     // Inicializa la serie de columnas (barras)
+                            //     ColumnSeries<ChartData, String>(
+                            //       dataSource: [
+                            //         // Fuente de datos
+                            //         ChartData('', 50, Colors.white),
+                            //       ],
+                            //       width: 1,
+                            //       color: Colors.red,
+                            //       xValueMapper: (ChartData data, _) =>
+                            //           data.label,
+                            //       yValueMapper: (ChartData data, _) =>
+                            //           data.value,
+                            //     )
+                            //   ],
+                            // ),
                           ),
                           Image.asset(
-                            'assets/icons/icono_filetecarne_90x69_nuevo.png',
+                            'assets/icons/icono_filetecarne_outline_93x93_activo.png',
                             width: 30,
                             height: 30,
                           ),
@@ -407,44 +451,66 @@ class ObjetivosScreen extends StatelessWidget {
                       leadingSize: 80,
                       padding: EdgeInsets.zero,
                       leading: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
                             height: 100,
                             width: 40,
-                            child: SfCartesianChart(
-                              primaryYAxis: NumericAxis(
-                                minimum: 0,
-                                maximum: 100,
-                                interval: 50,
-                                opposedPosition: true,
-                                borderColor: Colors.black12,
-                                isVisible: false,
-                              ),
-                              plotAreaBackgroundColor: Colors.black12,
-                              primaryXAxis: CategoryAxis(
-                                isVisible: false,
-                              ),
-                              enableSideBySideSeriesPlacement: false,
-                              series: <CartesianSeries>[
-                                // Inicializa la serie de columnas (barras)
-                                ColumnSeries<ChartData, String>(
-                                  dataSource: [
-                                    // Fuente de datos
-                                    ChartData('', 50, Colors.white),
-                                  ],
-                                  width: 1,
-                                  color: Colors.orange,
-                                  xValueMapper: (ChartData data, _) =>
-                                      data.label,
-                                  yValueMapper: (ChartData data, _) =>
-                                      data.value,
-                                )
-                              ],
+                            child: PieChart(
+                              duration: const Duration(seconds: 2),
+                              curve: Curves.easeInBack,
+                              PieChartData(
+                                  sectionsSpace: 0,
+                                  centerSpaceRadius: 15,
+                                  startDegreeOffset: -90,
+                                  sections: [
+                                    PieChartSectionData(
+                                      value: 50,
+                                      showTitle: false,
+                                      color: Colors.black54,
+                                      radius: 5,
+                                    ),
+                                    PieChartSectionData(
+                                      value: 50,
+                                      showTitle: false,
+                                      color: Colors.grey.shade300,
+                                      radius: 5,
+                                    )
+                                  ]),
                             ),
+                            // SfCartesianChart(
+                            //   primaryYAxis: NumericAxis(
+                            //     minimum: 0,
+                            //     maximum: 100,
+                            //     interval: 50,
+                            //     opposedPosition: true,
+                            //     borderColor: Colors.black12,
+                            //     isVisible: false,
+                            //   ),
+                            //   plotAreaBackgroundColor: Colors.black12,
+                            //   primaryXAxis: CategoryAxis(
+                            //     isVisible: false,
+                            //   ),
+                            //   enableSideBySideSeriesPlacement: false,
+                            //   series: <CartesianSeries>[
+                            //     // Inicializa la serie de columnas (barras)
+                            //     ColumnSeries<ChartData, String>(
+                            //       dataSource: [
+                            //         // Fuente de datos
+                            //         ChartData('', 50, Colors.white),
+                            //       ],
+                            //       width: 1,
+                            //       color: Colors.orange,
+                            //       xValueMapper: (ChartData data, _) =>
+                            //           data.label,
+                            //       yValueMapper: (ChartData data, _) =>
+                            //           data.value,
+                            //     )
+                            //   ],
+                            // ),
                           ),
                           Image.asset(
-                            'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
+                            'assets/icons/icono_panintegral_outline_79x79_activo.png',
                             width: 30,
                             height: 30,
                           ),
@@ -479,47 +545,39 @@ class ObjetivosScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 25),
                     CupertinoListTile(
-                      leadingSize: 70,
+                      leadingSize: 80,
                       padding: EdgeInsets.zero,
                       leading: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
                             height: 100,
                             width: 40,
-                            child: SfCartesianChart(
-                              primaryYAxis: NumericAxis(
-                                minimum: 0,
-                                maximum: 100,
-                                interval: 50,
-                                opposedPosition: true,
-                                borderColor: Colors.black12,
-                                isVisible: false,
-                              ),
-                              plotAreaBackgroundColor: Colors.black12,
-                              primaryXAxis: CategoryAxis(
-                                isVisible: false,
-                              ),
-                              enableSideBySideSeriesPlacement: false,
-                              series: <CartesianSeries>[
-                                // Inicializa la serie de columnas (barras)
-                                ColumnSeries<ChartData, String>(
-                                  dataSource: [
-                                    // Fuente de datos
-                                    ChartData('', 50, Colors.white),
-                                  ],
-                                  width: 1,
-                                  color: Colors.blue,
-                                  xValueMapper: (ChartData data, _) =>
-                                      data.label,
-                                  yValueMapper: (ChartData data, _) =>
-                                      data.value,
-                                )
-                              ],
+                            child: PieChart(
+                              duration: const Duration(seconds: 2),
+                              curve: Curves.easeInBack,
+                              PieChartData(
+                                  sectionsSpace: 0,
+                                  centerSpaceRadius: 15,
+                                  startDegreeOffset: -90,
+                                  sections: [
+                                    PieChartSectionData(
+                                      value: 50,
+                                      showTitle: false,
+                                      color: Colors.black87,
+                                      radius: 5,
+                                    ),
+                                    PieChartSectionData(
+                                      value: 50,
+                                      showTitle: false,
+                                      color: Colors.grey.shade300,
+                                      radius: 5,
+                                    )
+                                  ]),
                             ),
                           ),
                           Image.asset(
-                            'assets/icons/icono_almedraazul_74x70_nuevo.png',
+                            'assets/icons/icono_almendra_outline_78x78_activo.png',
                             width: 30,
                             height: 30,
                           ),

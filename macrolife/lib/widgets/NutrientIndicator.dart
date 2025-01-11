@@ -103,7 +103,10 @@ class NutrientIndicator extends StatelessWidget {
                         barRods: [
                           BarChartRodData(
                             borderRadius: BorderRadius.all(Radius.circular(3)),
-                            toY: percent,
+                            fromY: 0,
+                            toY: percent == 100.0 || percent == 0
+                                ? percent
+                                : (100 - percent),
                             color: Colors.black,
                             width: 25,
                             backDrawRodData: BackgroundBarChartRodData(
