@@ -29,6 +29,11 @@ const UsuariosSchema = new Schema({
     require: false,
     default: 0
   },
+  ultimoAlimento: {
+    type: String, // YYYY-MM-DD
+    require: false,
+    default: 0
+  },
   fechaNacimiento: {
     type: Date,
     required: true

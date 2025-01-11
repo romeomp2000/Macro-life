@@ -1,5 +1,5 @@
 const Router = require('express');
-const { obtenerHistorialUsuario, editarNombreComida, editarPorcionComida, favoritoComida, deleteComida, reportarComida, deleteIngrediente, agregarIngrediente } = require('../controller/Registros.Comida.Controller');
+const { obtenerHistorialUsuario, editarNombreComida, editarPorcionComida, actualizarAlimento, actualizarIngrediente, favoritoComida, deleteComida, reportarComida, deleteIngrediente, agregarIngrediente } = require('../controller/Registros.Comida.Controller');
 
 const router = Router();
 
@@ -11,5 +11,7 @@ router.delete('/eliminar-alimento/:id', deleteComida);
 router.post('/reporte', reportarComida);
 router.delete('/eliminar-ingrediente/:id', deleteIngrediente);
 router.put('/agregar-ingrediente/:id', agregarIngrediente);
+router.put('/ingrediente', actualizarIngrediente);
+router.put('/alimento', actualizarAlimento);
 
 module.exports = router;

@@ -233,9 +233,20 @@ const calcularCalorias = (met, peso, tiempo) => {
   return caloriasQuemadas;
 };
 
+const eliminarEjercicio = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await EjercicioModel.findByIdAndDelete(id);
+    return res.status(200).json({ message: 'Se ha elimiado el ejercicio' });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+};
+
 module.exports = {
   createEjercicio,
   obtenerEjercicio,
   createEjercicioPesas,
-  describirEjercicioIA
+  describirEjercicioIA,
+  eliminarEjercicio
 };

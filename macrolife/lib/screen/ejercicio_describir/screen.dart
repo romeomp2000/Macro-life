@@ -29,7 +29,7 @@ class EjercicioDescribirScreen extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          'Describir ejercicio',
+          'Describe tu ejercicio',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,

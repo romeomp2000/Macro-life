@@ -846,12 +846,12 @@ class EscanearAlimentosController extends GetxController {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Image.asset(
-                            'assets/icons/icono_menu_secundario_90x90_nuevo_base_alimentos.png',
+                            'assets/icons/icono_inteligencia_artificial_120x120_negro.png',
                             width: 35,
                           ),
                           const SizedBox(height: 8),
                           const Text(
-                            'Base de datos de alimentos',
+                            'Describe tu comida',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),

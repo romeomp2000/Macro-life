@@ -167,6 +167,8 @@ class Macronutrientes {
 class MacronutrientesCalculo {
   int? calorias;
   int? caloriasRestantes;
+  int? caloriasQuemadas;
+
   double? caloriasPorcentaje;
 
   int? proteina;
@@ -194,6 +196,7 @@ class MacronutrientesCalculo {
     this.carbohidratosPorcentaje,
     this.grasasRestantes,
     this.grasasPorcentaje,
+    this.caloriasQuemadas,
   });
 
   MacronutrientesCalculo.fromJson(Map<String, dynamic> json) {
@@ -212,6 +215,7 @@ class MacronutrientesCalculo {
     grasas = json['grasas'];
     grasasRestantes = json['grasasRestantes'];
     grasasPorcentaje = json['grasasPorcentaje'];
+    caloriasQuemadas = json['caloriasQuemadas'];
   }
 
   Map<String, dynamic> toJson() {
@@ -231,6 +235,7 @@ class MacronutrientesCalculo {
     data['grasas'] = grasas;
     data['grasas'] = grasasRestantes;
     data['grasasPorcentaje'] = grasasPorcentaje;
+    data['caloriasQuemadas'] = caloriasQuemadas;
 
     return data;
   }

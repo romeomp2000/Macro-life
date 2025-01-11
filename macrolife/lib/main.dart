@@ -10,7 +10,7 @@ import 'package:macrolife/helpers/configuraciones.dart';
 import 'package:macrolife/routes/app_pages.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:macrolife/services/notification_service.dart';
+// import 'package:macrolife/services/notification_service.dart';
 import 'package:macrolife/widgets_home_screen/controller.dart';
 import 'firebase_options.dart';
 
@@ -19,7 +19,7 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
-  NotificationService().initNotification();
+  // NotificationService().initNotification();
 
   HomeWidget.setAppGroupId('group.mx.posibilidades.macrolife');
 

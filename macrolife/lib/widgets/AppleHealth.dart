@@ -62,11 +62,13 @@ class HealthDataChart extends StatelessWidget {
                         Row(
                           children: [
                             SizedBox(width: 30),
-                            Text(
-                              'Pasos de hoy',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 13,
+                            Obx(
+                              () => Text(
+                                'Pasos de ${controller.daysOfWeek[controller.today.value.weekday - 1]}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 13,
+                                ),
                               ),
                             ),
                           ],
@@ -167,7 +169,7 @@ class HealthDataChart extends StatelessWidget {
               padding: const EdgeInsets.only(left: 15, top: 10),
               margin:
                   const EdgeInsets.only(top: 5, left: 2, right: 2, bottom: 0),
-              width: Get.width * 0.45,
+              width: Get.width * 0.40,
               height: 230,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -206,7 +208,7 @@ class HealthDataChart extends StatelessWidget {
                     children: [
                       SizedBox(width: 20),
                       Text(
-                        'Calorías quedamadas',
+                        'Calorías quemadas',
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w700,
