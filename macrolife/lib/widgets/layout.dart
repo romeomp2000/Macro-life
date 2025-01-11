@@ -500,8 +500,8 @@ class EscanearAlimentosController extends GetxController {
       return; // Si no se ha inicializado correctamente, salimos del método
     }
 
-    width.value = Get.width - 100;
-    height.value = Get.width - 70;
+    width.value = Get.width * 0.75;
+    height.value = Get.height * 0.5;
     // Mostrar el bottom sheet solo después de que la cámara esté inicializada
     Get.bottomSheet(
       isScrollControlled: true,
@@ -591,8 +591,8 @@ class EscanearAlimentosController extends GetxController {
                   onTap: () {
                     // print('escanear comida');
                     isSeleccionado.value = 1;
-                    width.value = Get.width - 100;
-                    height.value = Get.width - 70;
+                    width.value = Get.width * 0.75;
+                    height.value = Get.height * 0.5;
                   },
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -627,8 +627,8 @@ class EscanearAlimentosController extends GetxController {
                 GestureDetector(
                   onTap: () {
                     isSeleccionado.value = 2;
-                    width.value = Get.width - 80;
-                    height.value = Get.height - 650;
+                    width.value = Get.width * 0.8;
+                    height.value = Get.height * 0.3;
                   },
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -662,10 +662,11 @@ class EscanearAlimentosController extends GetxController {
                 const SizedBox(width: 10),
                 GestureDetector(
                   onTap: () {
-                    print('etiqueta');
                     isSeleccionado.value = 3;
-                    width.value = Get.width - 160;
-                    height.value = Get.height - 450;
+                    width.value = Get.width * 0.6;
+                    height.value = Get.height * 0.65;
+                    // width.value = Get.width - 160;
+                    // height.value = Get.height - 450;
                     // captureAndProcessImage();
                   },
                   child: ClipRRect(

@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:health/health.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
@@ -633,10 +634,6 @@ class WeeklyCalendarController extends GetxController {
     controllerUsuario.usuario.value.macronutrientesDiario?.refresh();
 
     if (GetPlatform.isIOS) {
-      widgetController.updateHomeWidget(
-          controllerUsuario.macronutrientes.value.caloriasRestantes.toString(),
-          controllerUsuario.macronutrientes.value.calorias!.toInt());
-
       final liveActivitiesController = Get.put(LiveActivitiesController());
       int carbohidratos =
           controllerUsuario.macronutrientes.value.carbohidratosRestante!;
@@ -648,9 +645,28 @@ class WeeklyCalendarController extends GetxController {
       int limiteCarbs = controllerUsuario.macronutrientes.value.carbohidratos!;
       int limiteProtein = controllerUsuario.macronutrientes.value.proteina!;
       int limiteFats = controllerUsuario.macronutrientes.value.grasas!;
+      GetStorage box = GetStorage();
 
-      liveActivitiesController.actualizar(calorias, carbohidratos, grasas,
-          protein, limiteProtein, limiteCal, limiteCarbs, limiteFats);
+      widgetController.updateHomeWidget(calorias.toString(), limiteCal,
+          carbohidratos.toString(), grasas.toString(), protein.toString());
+
+      bool? estado = box.read('liveActivitiesEnable');
+      if (estado != null && estado == true) {
+        if (estado == true) {
+          liveActivitiesController.createLiveActivities(
+              calorias,
+              carbohidratos,
+              grasas,
+              protein,
+              limiteProtein,
+              limiteCal,
+              limiteCarbs,
+              limiteFats);
+        }
+
+        liveActivitiesController.actualizar(calorias, carbohidratos, grasas,
+            protein, limiteProtein, limiteCal, limiteCarbs, limiteFats);
+      }
     }
   }
 }

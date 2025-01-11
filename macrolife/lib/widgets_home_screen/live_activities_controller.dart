@@ -63,13 +63,13 @@ class LiveActivitiesController extends GetxController {
         logo: LiveActivityFileFromAsset.image(
             'assets/icons/icono_macrolife_99x117_blanco.png'),
         logoProt: LiveActivityFileFromAsset.image(
-            'assets/icons/icono_filetecarne_90x69_nuevo.png'),
+            'assets/icons/icono_filetecarne_outline_93x93_activo.png'),
         logoCal: LiveActivityFileFromAsset.image(
-            'assets/icons/icono_calorias_negro_99x117_nuevo.png'),
+            'assets/icons/icono_calorias_outline_120x120_activo.png'),
         logoCar: LiveActivityFileFromAsset.image(
-            'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png'),
+            'assets/icons/icono_panintegral_outline_79x79_activo.png'),
         logoGrasa: LiveActivityFileFromAsset.image(
-            'assets/icons/icono_almedraazul_74x70_nuevo.png'),
+            'assets/icons/icono_almendra_outline_78x78_activo.png'),
       );
 
       final resp =
@@ -123,7 +123,7 @@ class LiveActivitiesController extends GetxController {
       return 0.0;
     }
 
-    double progress = restantes / limite;
+    double progress = 1 - (restantes / limite);
 
     return progress.clamp(0.0, 1.0);
   }

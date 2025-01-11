@@ -94,13 +94,32 @@ class HomeScreen extends StatelessWidget {
                                     BarChartRodData(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(3)),
-                                      toY: controllerUsuario.macronutrientes
-                                                  .value.caloriasPorcentaje !=
-                                              null
-                                          ? controllerUsuario.macronutrientes
-                                              .value.caloriasPorcentaje!
-                                              .toDouble()
-                                          : 0.0,
+                                      toY: (100 -
+                                                  (controllerUsuario
+                                                              .macronutrientes
+                                                              .value
+                                                              .caloriasPorcentaje !=
+                                                          null
+                                                      ? controllerUsuario
+                                                          .macronutrientes
+                                                          .value
+                                                          .caloriasPorcentaje!
+                                                          .toDouble()
+                                                      : 0.0)) ==
+                                              0
+                                          ? 100
+                                          : (100 -
+                                              (controllerUsuario
+                                                          .macronutrientes
+                                                          .value
+                                                          .caloriasPorcentaje !=
+                                                      null
+                                                  ? controllerUsuario
+                                                      .macronutrientes
+                                                      .value
+                                                      .caloriasPorcentaje!
+                                                      .toDouble()
+                                                  : 0.0)),
                                       fromY: 0,
                                       color: Colors.black,
                                       width: 35,
@@ -166,19 +185,21 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Text(
-                            controllerUsuario.macronutrientes.value
-                                            .caloriasRestantes !=
-                                        null &&
-                                    controllerUsuario.macronutrientes.value
-                                            .caloriasRestantes! <
-                                        0
-                                ? 'Calorías más'
-                                : 'Calorías\nrestantes',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                          Obx(
+                            () => Text(
+                              controllerUsuario.macronutrientes.value
+                                              .caloriasRestantes !=
+                                          null &&
+                                      controllerUsuario.macronutrientes.value
+                                              .caloriasRestantes! <
+                                          0
+                                  ? 'Calorías más'
+                                  : 'Calorías\nrestantes',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],
@@ -226,7 +247,7 @@ class HomeScreen extends StatelessWidget {
                         0),
                     nutrient: "Carbohidratos",
                     percent: controllerUsuario
-                            .macronutrientes.value.caloriasPorcentaje
+                            .macronutrientes.value.carbohidratosPorcentaje
                             ?.toDouble() ??
                         0.0,
                     color: Colors.orange,

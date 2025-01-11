@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+// import 'package:live_activities/live_activities.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/models/usuario.dart';
+import 'package:macrolife/widgets_home_screen/live_activities_controller.dart';
 
 class UsuarioController extends GetxController {
   Rx<Usuario> usuario = Usuario().obs;
@@ -65,6 +67,12 @@ class UsuarioController extends GetxController {
 
     box.remove('usuario');
     box.remove('macronutrientes');
+    box.remove('liveActivitiesEnable');
+    box.remove('macronutrientes');
+
+    final liveActivities = Get.put(LiveActivitiesController());
+
+    liveActivities.eliminar();
     usuario.value = Usuario();
     macronutrientes.value = MacronutrientesCalculo();
     refresh();
