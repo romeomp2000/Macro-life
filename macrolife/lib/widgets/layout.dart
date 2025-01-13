@@ -311,8 +311,8 @@ class EscanearAlimentosController extends GetxController {
                       ),
                       Image.asset(
                         'assets/icons/pantalla_proceso_1125x2436_corto.png',
-                        width: Get.width,
-                        height: 250,
+                        width: 380,
+                        height: 240,
                         fit: BoxFit.cover,
                         alignment: Alignment.topCenter,
                       ),
@@ -383,7 +383,7 @@ class EscanearAlimentosController extends GetxController {
                         width: Get.width,
                         child: CustomElevatedButton(
                           message: 'Escanear ahora',
-                          function: () => Get.back(),
+                          function: () => {escanearAlimentos()},
                         ),
                       ),
                     ],
@@ -492,6 +492,8 @@ class EscanearAlimentosController extends GetxController {
 
   void escanearAlimentos() async {
     Get.back();
+    Get.back();
+
     // Esperar la inicialización de la cámara
     await initializeCamera(); // Asegúrate de que se haya completado la inicialización
 

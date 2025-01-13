@@ -15,7 +15,8 @@ import 'package:macrolife/widgets/layout.dart';
 import 'package:pay/pay.dart';
 
 class SuscripcionController extends GetxController {
-  final ConfiguracionesController configuraiones = Get.find();
+  final ConfiguracionesController configuraiones =
+      Get.put(ConfiguracionesController());
   final sucripcion = 'Anual'.obs;
   final UsuarioController usuarioController = Get.find();
   final EscanearAlimentosController escanearAlimentoController =
@@ -72,6 +73,8 @@ class SuscripcionController extends GetxController {
 
       Get.back();
       Get.back();
+      // escanearAlimentoController.
+      
       escanearAlimentoController.ayudaEscanear();
       usuarioController.usuario.value.vencidoSup = true;
       usuarioController.usuario.refresh();
@@ -95,13 +98,14 @@ class SuscripcionController extends GetxController {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                'Costo por mes \$${(double.parse(configuraiones.configuraciones.value.suscripcion!.anual.toString() ?? '0') / 12).toStringAsFixed(2)}',
+                'Costo por mes \$${(double.parse(configuraiones.configuraciones.value.suscripcion?.anual.toString() ?? '') / 12).toStringAsFixed(2)}',
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
             ],
           ),
         ),
         confirmTextColor: Colors.white,
+        buttonColor: Colors.black,
         textConfirm: 'Cambiar a plan Anual',
         textCancel: 'Continuar',
         onConfirm: () {

@@ -137,11 +137,11 @@ class SuscripcionScreen extends StatelessWidget {
                               },
                               child: tipoPago(
                                   precio:
-                                      '\$${NumberFormat.decimalPattern().format((controller.configuraiones.configuraciones.value.suscripcion?.anual ?? 0 * controller.configuraiones.configuraciones.value.suscripcion!.descuentoAnual!).toDouble())} /año',
+                                      '\$${NumberFormat.decimalPattern().format((controller.configuraiones.configuraciones.value.suscripcion?.anual ?? 0 * (controller.configuraiones.configuraciones.value.suscripcion?.descuentoAnual ?? 0)).toDouble())} /año',
                                   tipo: 'Anual',
                                   valor: controller.sucripcion.value,
                                   descuento:
-                                      '${controller.configuraiones.configuraciones.value.suscripcion!.descuentoAnual!.toStringAsFixed(0)}'),
+                                      '${controller.configuraiones.configuraciones.value.suscripcion?.descuentoAnual?.toStringAsFixed(0)}'),
                             ),
                           )
                         ],
