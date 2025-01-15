@@ -6,10 +6,18 @@ import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/list_tile_model.dart';
 import 'package:macrolife/screen/EditarNutrientes/screen.dart';
-import 'package:macrolife/screen/objetivos/controller.dart';
-import 'package:macrolife/widgets/AnimatedWeightPicker.dart';
+import 'package:macrolife/screen/registro_pasos/paso_1.dart';
+import 'package:macrolife/screen/registro_pasos/paso_2.dart';
+import 'package:macrolife/screen/registro_pasos/paso_3.dart';
+import 'package:macrolife/screen/registro_pasos/paso_4.dart';
+import 'package:macrolife/screen/registro_pasos/paso_5.dart';
+import 'package:macrolife/screen/registro_pasos/paso_6.dart';
+import 'package:macrolife/screen/registro_pasos/paso_7.dart';
+import 'package:macrolife/screen/registro_pasos/paso_8.dart';
+// import 'package:macrolife/screen/objetivos/controller.dart';
+// import 'package:macrolife/widgets/AnimatedWeightPicker.dart';
 import 'package:macrolife/widgets/Cinta_metrica.dart';
-import 'package:macrolife/widgets/FechaNacimientoPicker.dart';
+// import 'package:macrolife/widgets/FechaNacimientoPicker.dart';
 import 'package:macrolife/widgets/SinpleRulerPicker.dart';
 import 'package:macrolife/widgets/TimerPicker.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
@@ -18,7 +26,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/widgets/custom_text_form_field.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+// import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:video_player/video_player.dart';
 import 'controller.dart';
 
@@ -33,15 +41,23 @@ class RegistroPasosScreen extends StatelessWidget {
     final UsuarioController controllerUsuario = Get.put(UsuarioController());
     final TimerPickerController timePic = Get.put(TimerPickerController());
     return Scaffold(
+      // backgroundColor: Colors.grey.shade100,
+      backgroundColor: const Color.fromARGB(255, 252, 252, 252),
       appBar: AppBar(
         toolbarHeight: 45,
+        // backgroundColor: Colors.grey.shade100,
+        backgroundColor: const Color.fromARGB(255, 252, 252, 252),
+
         title: Row(
           spacing: 15,
           children: [
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(100),
+                  boxShadow: [
+                  
+                ]
               ),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -77,357 +93,20 @@ class RegistroPasosScreen extends StatelessWidget {
           onPageChanged: (index) => controller.currentStep.value = index + 1,
           children: [
             // Paso 1: Selección de género
-            Obx(
-              () => Steep(
-                enableScroll: true,
-                title: '¿Cúal es tu genero?',
-                description:
-                    'Utilizamos esta información para crear su perfil personalizado',
-                options: [],
-                body: Column(
-                  spacing: 20,
-                  children: [
-                    GeneroSelect(
-                      selected: controller.selectedGender.value == 'Masculino',
-                      onTap: () {
-                        controller.selectedGender.value = 'Masculino';
-                      },
-                      genero: 'Masculino',
-                      icon:
-                          'assets/icons/icono_seleccion_genero_161x161_2025_masculino_activo.png',
-                    ),
-                    GeneroSelect(
-                      selected: controller.selectedGender.value == 'Femenino',
-                      onTap: () {
-                        controller.selectedGender.value = 'Femenino';
-                      },
-                      genero: 'Femenino',
-                      icon:
-                          'assets/icons/icono_seleccion_genero_161x161_2025_femenino_activo.png',
-                    ),
-                    GeneroSelect(
-                      selected: controller.selectedGender.value == 'Otro',
-                      onTap: () {
-                        controller.selectedGender.value = 'Otro';
-                      },
-                      genero: 'Otro',
-                      icon:
-                          'assets/icons/icono_seleccion_genero_161x161_2025_sn_activo.png',
-                    ),
-                    const SizedBox(height: 10)
-                  ],
-                ),
-                onOptionSelected: (gender) {
-                  controller.selectedGender.value = gender;
-                },
-                selectedOption: controller.selectedGender.value,
-                onNext:
-                    controller.isGenderSelected() ? controller.nextStep : null,
-              ),
-            ),
-            Obx(
-              () => Steep(
-                enableScroll: true,
-                title: 'Seleccione el nivel de actividad',
-                description:
-                    'Utilizamos esta información para crear su perfil personalizado',
-                options: [
-                  ListTileModel(
-                    title: 'Minimo',
-                    subtitle:
-                        'Perfecto para aquellos con un estilo de vida predominantemente estacionario.',
-                  ),
-                  ListTileModel(
-                    title: 'Moderadamente',
-                    subtitle:
-                        'Diseñado para quienes realizan ejercicio regularmente.',
-                  ),
-                  ListTileModel(
-                    title: 'Muy activo',
-                    subtitle:
-                        'Diseñado para deportistas, entusiastas del fitness o personas con rutinas muy activas.',
-                  ),
-                ],
-                onOptionSelected: (entrenamiento) async {
-                  controller.entrenamiento.value = entrenamiento;
-                  FuncionesGlobales.vibratePress();
-                },
-                selectedOption: controller.entrenamiento.value,
-                onNext: controller.isEntrenamientoSelected()
-                    ? controller.nextStep
-                    : null,
-              ),
-            ),
-            Obx(
-              () => Steep(
-                title:
-                    '¿Has probado otras aplicaciones de seguimiento de calorías?',
-                options: [],
-                enableScroll: true,
-                body: Column(
-                  spacing: 20,
-                  children: [
-                    GeneroSelect(
-                      selected: controller.probado.value == 'Si',
-                      onTap: () {
-                        controller.probado.value = 'Si';
-                      },
-                      genero: 'Si',
-                      icon: 'assets/icons/icono_like_137x137_01_activo.png',
-                    ),
-                    GeneroSelect(
-                      selected: controller.probado.value == 'No',
-                      onTap: () {
-                        controller.probado.value = 'No';
-                      },
-                      genero: 'No',
-                      icon: 'assets/icons/icono_like_137x137_02_activo.png',
-                    ),
-                  ],
-                ),
-                onOptionSelected: (probado) {
-                  controller.probado.value = probado;
-                  FuncionesGlobales.vibratePress();
-                },
-                selectedOption: controller.probado.value,
-                onNext:
-                    controller.isProbadoSelected() ? controller.nextStep : null,
-              ),
-            ),
 
-            Obx(
-              () => Steep(
-                enablePadding: true,
-                body: Column(
-                  spacing: 20,
-                  children: [
-                    Image.asset(
-                      'assets/icons/icono_circulo_estrella_217x217_activo.png',
-                      width: 65,
-                    ),
-                    GifView.asset(
-                      'assets/gifs/grafica_inicial_902x474.gif',
-                      width: Get.width - 50,
-                      loop: false,
-                      filterQuality: FilterQuality.high,
-                      frameRate: 20,
-                      fadeDuration: Duration(seconds: 0),
-                    ),
-                    Text(
-                        'Según los datos de Macro Life, la pérdida de peso es un proceso integral basado en dieta, ejercicio y hábitos saludables.'),
-                  ],
-                ),
-                title: 'Tienes un gran potencial para alcanzar tu objetivo',
-                options: const [],
-                onOptionSelected: (probado) =>
-                    controller.probado.value = probado,
-                selectedOption: controller.probado.value,
-                onNext: controller.nextStep,
-              ),
-            ),
+            paso_1(controller),
 
-            Obx(
-              () => Steep(
-                // enableScroll: true,
-                body: Column(
-                  children: [
-                    FechaNacimientoPicker(
-                      defaultAnio: controller.anio.value,
-                      defaultMes: controller.mes.value,
-                      defaultDia: controller.dia.value,
-                      onFechaSeleccionada: (fecha) =>
-                          {controller.fechaNacimiento.value = fecha},
-                    ),
-                  ],
-                ),
-                title: '¿Cuántos años tiene?',
-                description:
-                    'Utilizamos esta información para crear su perfil personalizado',
-                options: const [],
-                onOptionSelected: (probado) =>
-                    controller.probado.value = probado,
-                selectedOption: controller.probado.value,
-                onNext: controller.isFechaNacimientoSelected()
-                    ? controller.nextStep
-                    : null,
-              ),
-            ),
+            paso_2(controller),
 
-            Obx(
-              () => Steep(
-                enableScroll: true,
-                title: '¿Cúal es tu altura?',
-                description: '',
-                options: [],
-                body: SizedBox(
-                  width: Get.width,
-                  child: SimpleRulerPicker(
-                    unitString: 'cm',
-                    axis: Axis.vertical,
-                    minValue: 1,
-                    maxValue: 300,
-                    initialValue: controller.altura.value,
-                    onValueChanged: (value) {
-                      controller.altura.value = value;
-                    },
-                    scaleLabelSize: 16,
-                    scaleBottomPadding: 10,
-                    scaleItemWidth: 12,
-                    longLineHeight: 35,
-                    shortLineHeight: 14,
-                    lineColor: Colors.grey,
-                    selectedColor: Colors.black,
-                    labelColor: Colors.black,
-                    lineStroke: 2,
-                    height: Get.height - 231,
-                  ),
-                ),
-                onOptionSelected: (gender) {},
-                onNext: controller.nextStep,
-              ),
-            ),
+            paso_3(controller),
 
-            Obx(
-              () => Steep(
-                enableScroll: true,
-                title: '¿Cuál es tu peso?',
-                description: '',
-                options: [],
-                body: SizedBox(
-                  height: Get.height - 290,
-                  child: Column(
-                    spacing: 100,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '${controller.peso.value}',
-                            style: TextStyle(
-                              fontSize: 55,
-                              letterSpacing: 3.5,
-                            ),
-                          ),
-                          Text(
-                            ' kg',
-                            style: TextStyle(
-                              fontSize: 35,
-                              letterSpacing: 3.5,
-                            ),
-                          ),
-                        ],
-                      ),
-                      AnimatedWeightPicker(
-                        initialValue: controller.peso.value != 70.0
-                            ? controller.peso.value.toDouble()
-                            : 70.0,
-                        showSelectedValue: false,
-                        subIntervalTextSize: 20,
-                        majorIntervalTextSize: 11,
-                        minorIntervalTextSize: 10,
-                        dialColor: Colors.red,
-                        dialThickness: 4,
-                        dialHeight: 75,
-                        subIntervalHeight: 35,
-                        majorIntervalHeight: 35,
-                        minorIntervalHeight: 25,
-                        showSuffix: true,
-                        majorIntervalTextColor: Colors.black,
-                        suffixTextColor: Colors.black,
-                        subIntervalColor: Colors.black,
-                        majorIntervalColor: Colors.black,
-                        selectedValueColor: Colors.black,
-                        subIntervalTextColor: Colors.black,
-                        minorIntervalTextColor: Colors.black,
-                        minorIntervalColor: Colors.black26,
-                        min: 0,
-                        division: 1,
-                        max: 300,
-                        onChange: (newValue) {
-                          debugPrint('Nuevo valor seleccionado: $newValue');
-                          controller.peso.value = int.parse(newValue);
-                          controller.pesoDeseado.value = int.parse(newValue);
-                          controller.pesoDeseadoLabel.value =
-                              'Mantener de peso';
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                onOptionSelected: (gender) {},
-                onNext: controller.nextStep,
-              ),
-            ),
-            Obx(
-              () => Steep(
-                enableScroll: true,
-                title: '¿Cuál es tu objetivo?',
-                description:
-                    'Esto se utilizará para calibrar tu plan personalizado',
-                options: [],
-                body: Column(
-                  spacing: 20,
-                  children: [
-                    GeneroSelect(
-                      selected: controller.objetivo.value == 'Perder',
-                      onTap: () {
-                        controller.objetivo.value = 'Perder';
-                        // controller.labelGraficaDoble.value =
-                        //     'Baja el doble de peso con Macro Life';
-                        controller.pesoDeseado.value =
-                            controller.peso.value - 5;
-                        controller.pesoDeseadoLabel.value = 'Bajar de peso';
-                        controller.mostrarGrafica.value = true;
-                        controller.ajustarLabelPeso();
-                      },
-                      genero: 'Perder',
-                      icon: 'assets/icons/icono_bascula_157x57_bajo_activo.png',
-                    ),
-                    GeneroSelect(
-                      selected: controller.objetivo.value == 'Mantener',
-                      onTap: () {
-                        controller.objetivo.value = 'Mantener';
-                        // controller.labelGraficaDoble.value = '';
-                        controller.mostrarGrafica.value = false;
-                        controller.pesoDeseado.value = controller.peso.value;
-                        controller.pesoDeseadoLabel.value = 'Mantener de peso';
-                        controller.ajustarLabelPeso();
-                      },
-                      genero: 'Mantener',
-                      icon:
-                          'assets/icons/icono_bascula_157x57_medio_activo.png',
-                    ),
-                    GeneroSelect(
-                      selected: controller.objetivo.value == 'Aumentar',
-                      onTap: () {
-                        controller.objetivo.value = 'Aumentar';
-                        controller.pesoDeseado.value =
-                            controller.peso.value + 9;
-                        controller.pesoDeseadoLabel.value = 'Subir de peso';
-                        controller.mostrarGrafica.value = true;
-                        controller.ajustarLabelPeso();
+            paso_4(controller),
 
-                        // controller.labelGraficaDoble.value =
-                        //     'Gana el doble de peso con Macro Life';
-                      },
-                      genero: 'Aumentar',
-                      icon: 'assets/icons/icono_bascula_157x57_alto_activo.png',
-                    ),
-                    const SizedBox(height: 10)
-                  ],
-                ),
-                onOptionSelected: (objetivo) {
-                  controller.objetivo.value = objetivo;
-                  FuncionesGlobales.vibratePress();
-                  controller.ajustarLabelPeso();
-                },
-                selectedOption: controller.objetivo.value,
-                onNext: controller.isObjetivoSelected()
-                    ? controller.nextStep
-                    : null,
-              ),
-            ),
+            paso_5(controller),
+
+            paso_6(controller),
+
+            paso_7(controller),
 
             if (controller.objetivo.value == 'Aumentar' ||
                 controller.objetivo.value == 'Perder')
@@ -436,6 +115,7 @@ class RegistroPasosScreen extends StatelessWidget {
                   // Verifica si el objetivo es 'Aumentar'
                   return Steep(
                     enableScroll: false,
+                    isActivo: true.obs,
                     title: '¿Cuál es tu objetivo de peso?',
                     options: const [],
                     body: SizedBox(
@@ -491,6 +171,7 @@ class RegistroPasosScreen extends StatelessWidget {
               Obx(
                 () => Steep(
                   enableScroll: false,
+                  isActivo: true.obs,
                   enablePadding: true,
                   body: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -595,6 +276,7 @@ class RegistroPasosScreen extends StatelessWidget {
                 return Steep(
                   enableScroll: true,
                   enablePadding: true,
+                  isActivo: true.obs,
                   body: Column(
                     spacing: 30,
                     children: [
@@ -603,15 +285,22 @@ class RegistroPasosScreen extends StatelessWidget {
                       //   height: 250,
                       //   loop: false,
                       //   filterQuality: FilterQuality.high,
-                      //   frameRate: 7,
-                      //   // fadeDuration: Duration(seconds: 0),
+                      //   frameRate: 20,
+                      //   fadeDuration: Duration(seconds: 1),
+                      // ),
+                      // GifView.asset(
+                      //   'assets/gifs/grafica_inicial_902x474.gif',
+                      //   width: Get.width - 50,
+                      //   loop: false,
+                      //   filterQuality: FilterQuality.high,
+                      //   frameRate: 30,
+                      //   fadeDuration: Duration(seconds: 2),
                       // ),
                       SizedBox(
                         width: 220,
                         height: 300,
                         child: VideoPlayer(controller.controllerVideo),
                       ),
-
                       Text(
                         'Macro Life lo hace fácil y te hace responsable',
                         textAlign: TextAlign.center,
@@ -631,9 +320,10 @@ class RegistroPasosScreen extends StatelessWidget {
                 () => Steep(
                   enableScroll: false,
                   enablePadding: true,
+                  isActivo: true.obs,
                   body: Center(
                     child: SizedBox(
-                      height: Get.height - 230,
+                      // height: Get.height - 230,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
@@ -663,16 +353,13 @@ class RegistroPasosScreen extends StatelessWidget {
                           ),
                           // const SizedBox(height: 30),
                           // e
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 40),
-                            child: Text(
-                              'El 90% de los usuarios informan de resultados notables después de usar Macro Life, con un progreso sostenido que es difícil de revertir.',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  // fontSize: 20,
-                                  ),
-                            ),
+                          // Spacer(),
+                          Text(
+                            'El 90% de los usuarios informan de resultados notables después de usar Macro Life, con un progreso sostenido que es difícil de revertir.',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                // fontSize: 20,
+                                ),
                           )
                         ],
                       ),
@@ -686,10 +373,12 @@ class RegistroPasosScreen extends StatelessWidget {
                   onNext: controller.nextStep,
                 ),
               ),
+
             Obx(
               () => Steep(
                 enablePadding: false,
                 enableScroll: true,
+                isActivo: true.obs,
                 body: Column(
                   spacing: 20,
                   children: [
@@ -726,63 +415,66 @@ class RegistroPasosScreen extends StatelessWidget {
               ),
             ),
 
-            Obx(
-              () => Steep(
-                enableScroll: true,
-                title: '¿Qué le gustaría conseguir?',
-                options: [
-                  ListTileModel(
-                    check: false,
-                    title: 'Comer y vivir más sano',
-                    // subtitle: '',
-                    leading: Image.asset(
-                      'assets/icons/icono_logros_alimenticios_outline_63x63_5.png',
-                      height: 25,
-                    ),
-                  ),
-                  ListTileModel(
-                    title: 'Aumentar mi energía y mi estado de ánimo',
-                    check: false,
-                    leading: Image.asset(
-                      'assets/icons/icono_logros_alimenticios_outline_63x63_6.png',
-                      height: 25,
-                    ),
-                  ),
-                  ListTileModel(
-                    check: false,
-                    title: 'Mantener la motivación y la constancia',
-                    leading: Image.asset(
-                      'assets/icons/icono_logros_alimenticios_outline_63x63_7.png',
-                      height: 25,
-                    ),
-                  ),
-                  ListTileModel(
-                    check: false,
-                    title: 'Sentirme mejor con mi cuerpo',
-                    leading: Image.asset(
-                      'assets/icons/icono_brazo_outline_100x100_activo.png',
-                      height: 25,
-                    ),
-                  ),
-                ],
-                body: null,
-                selectedOptions: controller.lograr.value,
-                onOptionSelected: (lograr) {
-                  if (controller.lograr.value.contains(lograr)) {
-                    controller.lograr.value.remove(lograr);
-                  } else {
-                    controller.lograr.value.add(lograr);
-                  }
-                  controller.lograr.refresh();
-                },
-                onNext:
-                    controller.isLograrSelected() ? controller.nextStep : null,
-              ),
-            ),
+            paso_8(controller),
+            // Obx(
+            //   () => Steep(
+            //     enableScroll: true,
+            //     title: '¿Qué le gustaría conseguir?',
+            //     isActivo: true.obs,
+            //     options: [
+            //       ListTileModel(
+            //         check: false,
+            //         title: 'Comer y vivir más sano',
+            //         // subtitle: '',
+            //         leading: Image.asset(
+            //           'assets/icons/icono_logros_alimenticios_outline_63x63_5.png',
+            //           height: 25,
+            //         ),
+            //       ),
+            //       ListTileModel(
+            //         title: 'Aumentar mi energía y mi estado de ánimo',
+            //         check: false,
+            //         leading: Image.asset(
+            //           'assets/icons/icono_logros_alimenticios_outline_63x63_6.png',
+            //           height: 25,
+            //         ),
+            //       ),
+            //       ListTileModel(
+            //         check: false,
+            //         title: 'Mantener la motivación y la constancia',
+            //         leading: Image.asset(
+            //           'assets/icons/icono_logros_alimenticios_outline_63x63_7.png',
+            //           height: 25,
+            //         ),
+            //       ),
+            //       ListTileModel(
+            //         check: false,
+            //         title: 'Sentirme mejor con mi cuerpo',
+            //         leading: Image.asset(
+            //           'assets/icons/icono_brazo_outline_100x100_activo.png',
+            //           height: 25,
+            //         ),
+            //       ),
+            //     ],
+            //     body: null,
+            //     selectedOptions: controller.lograr.value,
+            //     onOptionSelected: (lograr) {
+            //       if (controller.lograr.value.contains(lograr)) {
+            //         controller.lograr.value.remove(lograr);
+            //       } else {
+            //         controller.lograr.value.add(lograr);
+            //       }
+            //       controller.lograr.refresh();
+            //     },
+            //     onNext:
+            //         controller.isLograrSelected() ? controller.nextStep : null,
+            //   ),
+            // ),
 
             Obx(
               () => Steep(
                 enableScroll: true,
+                isActivo: true.obs,
                 title: '¿Sigue una dieta específica?',
                 options: [
                   ListTileModel(
@@ -839,6 +531,7 @@ class RegistroPasosScreen extends StatelessWidget {
               return Steep(
                 enableScroll: true,
                 enablePadding: true,
+                isActivo: true.obs,
                 body: Column(
                   spacing: 10,
                   children: [
@@ -875,6 +568,7 @@ class RegistroPasosScreen extends StatelessWidget {
 
                 return Steep(
                   enablePadding: true,
+                  isActivo: true.obs,
                   title: 'Danos tu opinión',
                   description: '¿Está satisfecho con nuestra aplicación?',
                   options: const [],
@@ -917,6 +611,7 @@ class RegistroPasosScreen extends StatelessWidget {
             ),
             Steep(
               enablePadding: true,
+              isActivo: true.obs,
               enableScroll: true,
               title: '¿Qué hora te viene bien?',
               options: [
@@ -1016,6 +711,7 @@ class RegistroPasosScreen extends StatelessWidget {
             Steep(
               enablePadding: true,
               enableScroll: true,
+              isActivo: true.obs,
               body: Column(
                 spacing: 50,
                 children: [
@@ -1055,6 +751,7 @@ class RegistroPasosScreen extends StatelessWidget {
 
               return Steep(
                 enablePadding: true,
+                isActivo: true.obs,
                 enableScroll: true,
                 body: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1081,6 +778,7 @@ class RegistroPasosScreen extends StatelessWidget {
             }),
 
             Steep(
+              isActivo: true.obs,
               body: Center(
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
@@ -1132,6 +830,7 @@ class RegistroPasosScreen extends StatelessWidget {
             ),
             Obx(
               () => Steep(
+                isActivo: true.obs,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
@@ -1537,6 +1236,7 @@ class RegistroPasosScreen extends StatelessWidget {
               ),
             ),
             Steep(
+              isActivo: true.obs,
               body: Center(
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
@@ -1669,12 +1369,14 @@ class GeneroSelect extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            padding: EdgeInsets.all(30),
+            padding: EdgeInsets.all(35),
             decoration: BoxDecoration(
-              color: selected == true ? Colors.white : Colors.transparent,
+              color: selected == true ? Colors.white : Colors.white,
               border: Border.all(
-                width: 2,
-                color: selected == true ? Colors.black : Colors.black26,
+                width: selected == true ? 2 : 1,
+                color: selected == true
+                    ? Colors.black
+                    : Color.fromARGB(255, 237, 237, 237),
               ),
               borderRadius: BorderRadius.circular(300),
             ),
@@ -1688,14 +1390,18 @@ class GeneroSelect extends StatelessWidget {
                     icon,
                     width: 47,
                     height: 47,
-                    color: selected == true ? Colors.black : Colors.black26,
+                    color: selected == true
+                        ? Colors.black
+                        : const Color.fromARGB(255, 246, 246, 246),
                   ),
                   Text(
                     genero,
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                      color: selected == true ? Colors.black : Colors.black26,
+                      fontSize: 14,
+                      color: selected == true
+                          ? Colors.black
+                          : const Color.fromARGB(255, 246, 246, 246),
                     ),
                   )
                 ],
@@ -1858,7 +1564,9 @@ class Steep extends StatelessWidget {
   final BoxDecoration? decoration;
   final bool? enableScroll; // Bandera para habilitar o deshabilitar el scroll
   final bool? enablePadding;
+  final bool? isBascula;
   final bool? enabledButtonSaltar;
+  final RxBool isActivo;
   const Steep({
     super.key,
     required this.title,
@@ -1872,8 +1580,10 @@ class Steep extends StatelessWidget {
     this.enableScroll = false, // Inicializar la bandera
     this.decoration,
     this.enablePadding = false,
+    this.isBascula = false,
     this.selectedOptions,
     this.enabledButtonSaltar = false,
+    required this.isActivo,
   });
 
   @override
@@ -1887,11 +1597,8 @@ class Steep extends StatelessWidget {
               child: _buildContent(),
             )
           : _buildContent(), // Si no, simplemente mostrar el contenido sin scroll
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12.0,
-          vertical: 7,
-        ),
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
         child: Row(
           spacing: 10,
           mainAxisSize: MainAxisSize.min,
@@ -1913,11 +1620,13 @@ class Steep extends StatelessWidget {
                 ),
               ),
             Expanded(
-              child: CustomElevatedButton(
-                message: textBTN ?? 'Siguiente',
-                function: onNext,
-              ),
-            ),
+                child:
+                    buttonTest(textBTN ?? 'Siguiente', onNext, isActivo.value)
+                // CustomElevatedButton(
+                //   message: textBTN ?? 'Siguiente',
+                //   function: onNext,
+                // ),
+                ),
           ],
         ),
       ),
@@ -1926,93 +1635,110 @@ class Steep extends StatelessWidget {
 
   // Método que construye todo el contenido
   Widget _buildContent() {
-    return Stack(
-      children: [
-        Container(
-          decoration: decoration,
-          // height: Get.height - 90,
-          child: Column(
-            spacing: 15,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12.0,
-                  vertical: 10,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    if (title.isNotEmpty)
-                      Text(
-                        title,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 27,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    if (description != null)
-                      Text(
-                        description ?? '',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: enablePadding == true ? 12.0 : 0.0,
-                  vertical: enablePadding == true ? 10 : 0.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    body != null ? body! : Container(),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12.0,
-                  vertical: 10,
-                ),
-                child: Column(
-                  spacing: 15,
-                  children: [
-                    ...options.map(
-                      (option) => Column(
-                        children: [
-                          CustomElevatedSelected(
-                            check: option.check,
-                            message: option.title ?? '',
-                            icon: option.icon,
-                            widget: option.leading,
-                            subtitle: option.subtitle,
-                            trailing: option.trailing,
-                            function: () {
-                              if (onOptionSelected != null) {
-                                onOptionSelected!(option.title ?? '');
-                              }
-                            },
-                            activo: selectedOption == option.title ||
-                                (selectedOptions?.contains(option.title) ??
-                                    false),
-                          ),
-                        ],
+    return Container(
+      decoration: decoration,
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(
+          left: isBascula! ? 0 : 10, right: isBascula! ? 0 : 10),
+      // height: Get.height - 90,
+      child: Column(
+        spacing: isBascula! ? 0 : 15,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment:
+            isBascula! ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+            child: Column(
+              children: [
+                if (title.isNotEmpty)
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    // maxLines: 2,
+                    // overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                if (description != null)
+                  Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      description ?? '',
+                      textAlign: TextAlign.center,
+                      // maxLines: 1,
+                      // overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w300,
                       ),
                     ),
-                    if (options.length > 2) const SizedBox(height: 10)
-                  ],
-                ),
-              ),
-            ],
+                  ),
+              ],
+            ),
           ),
-        ),
-      ],
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: enablePadding == true ? 12.0 : 0.0,
+              vertical: enablePadding == true ? 10 : 0.0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                body != null ? body! : Container(),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 10,
+            ),
+            child: Column(
+              spacing: 15,
+              children: [
+                ...options.map(
+                  (option) => Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        // decoration: BoxDecoration(
+                        //   color: Colors.transparent,
+                        //   boxShadow: [
+                        //     BoxShadow(
+                        //         color: Colors.black,
+                        //         offset: Offset(1, 1),
+                        //         blurRadius: 1)
+                        //   ],
+                        // ),
+                        child: CustomElevatedSelected(
+                          check: option.check,
+                          message: option.title ?? '',
+                          icon: option.icon,
+                          widget: option.leading,
+                          subtitle: option.subtitle,
+                          trailing: option.trailing,
+                          function: () {
+                            if (onOptionSelected != null) {
+                              onOptionSelected!(option.title ?? '');
+                            }
+                          },
+                          activo: selectedOption == option.title ||
+                              (selectedOptions?.contains(option.title) ??
+                                  false),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (options.length > 2) const SizedBox(height: 10)
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

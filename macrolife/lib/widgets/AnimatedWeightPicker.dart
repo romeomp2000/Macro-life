@@ -201,157 +201,257 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.topCenter,
-      clipBehavior: Clip.none,
+      // alignment: AlignmentDirectional.bottomEnd,
+      // mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Positioned(
-          top: -30,
-          left: 0,
-          right: 0,
-          child: Image.asset(
-            'assets/icons/fondo_circular_bascula_2800x1400_ (1) (1).png',
+        ClipPath(
+          clipper: ClipPathCustom(),
+          child: Container(
             width: double.infinity,
-            // opacity: const AlwaysStoppedAnimation(.5),
-          ),
-        ),
-        SizedBox(
-          height: 120,
-          width: double.infinity,
-          child: RotatedBox(
-            quarterTurns: -45,
-            child: ListWheelScrollView.useDelegate(
-              physics: const FixedExtentScrollPhysics(),
-              controller: _scrollController,
-              offAxisFraction: 3.5,
-              perspective: 0.003,
-              itemExtent: 20,
-              squeeze: widget.squeeze,
-              overAndUnderCenterOpacity: 1,
-              clipBehavior: Clip.none,
-              onSelectedItemChanged: (index) {
-                setState(() => _selectedIndex = index);
-                if (Platform.isIOS) {
-                  HapticFeedback.mediumImpact();
-                }
-                if (widget.onChange == null) return;
-                widget.onChange!(_valueList[index].value);
-              },
-              renderChildrenOutsideViewport: true,
-              childDelegate: ListWheelChildLoopingListDelegate(
-                children: List<Widget>.generate(
-                  _valueList.length,
-                  growable: false,
-                  (index) {
-                    bool isSelected = _selectedIndex == index;
-                    bool isMajorInterval = !isSelected &&
-                        _valueList[index].interval == INTERVAL_TYPE.MAJOR &&
-                        (_selectedIndex != 0 || _valueList.length - 1 != index);
-                    bool isSubInterval = !isSelected &&
-                        !isMajorInterval &&
-                        _valueList[index].interval == INTERVAL_TYPE.SUB &&
-                        index != _valueList.length - 1;
-                    bool isMinorInterval = !isSelected &&
-                        !isMajorInterval &&
-                        !isSubInterval &&
-                        (_valueList[index].interval == INTERVAL_TYPE.MINOR ||
-                            index == _valueList.length - 1);
-
-                    return RotatedBox(
-                      quarterTurns: 45,
-                      child: Container(
-                        height: double.infinity - 10,
-                        alignment: Alignment.topCenter,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              height: isSelected
-                                  ? widget.dialHeight
-                                  : isMajorInterval
-                                      ? widget.majorIntervalHeight
-                                      : isSubInterval
-                                          ? widget.subIntervalHeight
-                                          : isMinorInterval
-                                              ? widget.minorIntervalHeight
-                                              : null,
-                              child: VerticalDivider(
-                                thickness: isSelected
-                                    ? widget.dialThickness
-                                    : isMajorInterval
-                                        ? widget.majorIntervalThickness
-                                        : isSubInterval
-                                            ? widget.subIntervalThickness
-                                            : isMinorInterval
-                                                ? widget.minorIntervalThickness
-                                                : null,
-                                color: isSelected
-                                    ? widget.dialColor
-                                    : isMajorInterval
-                                        ? widget.majorIntervalColor
-                                        : isSubInterval
-                                            ? widget.subIntervalColor
-                                            : isMinorInterval
-                                                ? widget.minorIntervalColor
-                                                : null,
-                                endIndent: 0,
-                                indent: 0,
-                              ),
-                            ),
-                            if ((widget.showMajorIntervalText && isMajorInterval) ||
-                                (widget.showMinorIntervalText &&
-                                    isMinorInterval) ||
-                                (widget.showSubIntervalText && isSubInterval))
-                              Text(
-                                _valueList[index].value,
-                                maxLines: 1,
-                                overflow: TextOverflow.fade,
-                                style: TextStyle(
-                                  fontSize: _valueList[index].value.length >= 4
-                                      ? 12
-                                      : isMajorInterval
-                                          ? widget.majorIntervalTextSize
-                                          : isSubInterval
-                                              ? widget.subIntervalTextSize
-                                              : widget.minorIntervalTextSize,
-                                  color: isMajorInterval
-                                      ? widget.majorIntervalTextColor
-                                      : isSubInterval
-                                          ? widget.subIntervalTextColor
-                                          : widget.minorIntervalTextColor,
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                    );
+            height: 290,
+            padding: const EdgeInsets.only(top: 100, bottom: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              child: RotatedBox(
+                quarterTurns: -45,
+                child: ListWheelScrollView.useDelegate(
+                  physics: const FixedExtentScrollPhysics(),
+                  controller: _scrollController,
+                  offAxisFraction: 2.8,
+                  perspective: 0.002,
+                  itemExtent: 20,
+                  squeeze: widget.squeeze,
+                  overAndUnderCenterOpacity: 1,
+                  clipBehavior: Clip.none,
+                  onSelectedItemChanged: (index) {
+                    setState(() => _selectedIndex = index);
+                    if (Platform.isIOS) {
+                      HapticFeedback.mediumImpact();
+                    }
+                    if (widget.onChange == null) return;
+                    widget.onChange!(_valueList[index].value);
                   },
+                  renderChildrenOutsideViewport: true,
+                  childDelegate: ListWheelChildLoopingListDelegate(
+                    children: List<Widget>.generate(
+                      _valueList.length,
+                      growable: false,
+                      (index) {
+                        bool isSelected = _selectedIndex == index;
+                        bool isMajorInterval = !isSelected &&
+                            _valueList[index].interval == INTERVAL_TYPE.MAJOR &&
+                            (_selectedIndex != 0 ||
+                                _valueList.length - 1 != index);
+                        bool isSubInterval = !isSelected &&
+                            !isMajorInterval &&
+                            _valueList[index].interval == INTERVAL_TYPE.SUB &&
+                            index != _valueList.length - 1;
+                        bool isMinorInterval = !isSelected &&
+                            !isMajorInterval &&
+                            !isSubInterval &&
+                            (_valueList[index].interval ==
+                                    INTERVAL_TYPE.MINOR ||
+                                index == _valueList.length - 1);
+
+                        return RotatedBox(
+                          quarterTurns: 45,
+                          child: Container(
+                            height: double.infinity - 10,
+                            alignment: Alignment.topCenter,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  height: isSelected
+                                      ? widget.dialHeight
+                                      : isMajorInterval
+                                          ? widget.majorIntervalHeight
+                                          : isSubInterval
+                                              ? widget.subIntervalHeight
+                                              : isMinorInterval
+                                                  ? widget.minorIntervalHeight
+                                                  : null,
+                                  child: VerticalDivider(
+                                    thickness: isSelected
+                                        ? widget.dialThickness
+                                        : isMajorInterval
+                                            ? widget.majorIntervalThickness
+                                            : isSubInterval
+                                                ? widget.subIntervalThickness
+                                                : isMinorInterval
+                                                    ? widget
+                                                        .minorIntervalThickness
+                                                    : null,
+                                    color: isSelected
+                                        ? widget.dialColor
+                                        : isMajorInterval
+                                            ? widget.majorIntervalColor
+                                            : isSubInterval
+                                                ? widget.subIntervalColor
+                                                : isMinorInterval
+                                                    ? widget.minorIntervalColor
+                                                    : null,
+                                    endIndent: 0,
+                                    indent: 0,
+                                  ),
+                                ),
+                                if ((widget.showMajorIntervalText && isMajorInterval) ||
+                                    (widget.showMinorIntervalText &&
+                                        isMinorInterval) ||
+                                    (widget.showSubIntervalText &&
+                                        isSubInterval))
+                                  Text(
+                                    _valueList[index].value,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.fade,
+                                    style: TextStyle(
+                                      fontSize: _valueList[index]
+                                                  .value
+                                                  .length >=
+                                              4
+                                          ? 12
+                                          : isMajorInterval
+                                              ? widget.majorIntervalTextSize
+                                              : isSubInterval
+                                                  ? widget.subIntervalTextSize
+                                                  : widget
+                                                      .minorIntervalTextSize,
+                                      color: isMajorInterval
+                                          ? widget.majorIntervalTextColor
+                                          : isSubInterval
+                                              ? widget.subIntervalTextColor
+                                              : widget.minorIntervalTextColor,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
         ),
-        if (widget.showSelectedValue)
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                _valueList[_selectedIndex].value,
-                style: widget.selectedValueStyle ??
-                    TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 30,
-                      height: 1,
-                      color: widget.selectedValueColor,
-                    ),
-              ),
-              if (widget.showSuffix && widget.suffix == null)
-                Text(widget.suffixText,
-                    style: TextStyle(color: widget.suffixTextColor))
-              else if (widget.showSuffix && widget.suffix != null)
-                widget.suffix!
-            ],
+        Positioned(
+          bottom: -210,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 290,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(200),
+                    topRight: Radius.circular(200))),
           ),
+        ),
       ],
     );
   }
 }
+
+class ClipPathCustom extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path_0 = Path();
+    path_0.moveTo(size.width * 0.0021000, size.height * 0.4089000);
+    path_0.lineTo(size.width * -0.0035000, size.height * 1);
+    path_0.quadraticBezierTo(size.width * 0.5, size.height * 0.3548000,
+        size.width * 1, size.height * 0.9870000);
+    path_0.cubicTo(size.width * 1, size.height * 0.7378750, size.width * 1,
+        size.height * 0.5748000, size.width * 1, size.height * 0.4374000);
+    path_0.quadraticBezierTo(size.width * 0.5, size.height * -0.0580000,
+        size.width * 0.0021000, size.height * 0.4089000);
+    path_0.close();
+
+    return path_0;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
+// class ClipPathCustom2 extends CustomClipper<Path> {
+//   @override
+//   Path getClip(Size size) {
+//     // Layer 1
+
+//     Path path_0 = Path();
+//     path_0.moveTo(size.width * 0.0021000, size.height * 0.4089000);
+//     path_0.lineTo(size.width * -0.0035000, size.height * 0.9877000);
+//     path_0.quadraticBezierTo(size.width * 0.5110000, size.height * 0.9721000,
+//         size.width * 0.9951000, size.height * 0.9870000);
+//     path_0.cubicTo(
+//         size.width * 0.9981250,
+//         size.height * 0.7378750,
+//         size.width * 1.0015500,
+//         size.height * 0.5748000,
+//         size.width * 1.0037000,
+//         size.height * 0.4374000);
+//     path_0.quadraticBezierTo(size.width * 0.5, size.height * -10.100001,
+//         size.width * 0.0021000, size.height * 0.4089000);
+//     path_0.close();
+
+//     return path_0;
+//   }
+
+//   @override
+//   bool shouldReclip(CustomClipper<Path> oldClipper) {
+//     return false;
+//   }
+// }
+class ClipPathCustom2 extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path_0 = Path();
+    path_0.moveTo(size.width * -0.0025000, size.height * 0.3270700);
+    path_0.lineTo(size.width * -0.0004667, size.height * 0.3509500);
+    path_0.lineTo(size.width * 1, size.height * 0.3502200);
+    path_0.quadraticBezierTo(size.width * 0.9989667, size.height * 0.3334600,
+        size.width * 0.9986667, size.height * 0.3304000);
+    path_0.quadraticBezierTo(size.width * 0.5227667, size.height * 0.1644800,
+        size.width * -0.0025000, size.height * 0.3270700);
+    path_0.close();
+
+    // Layer 1
+
+    return path_0;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
+
+
+
+// if (widget.showSelectedValue)
+        //   Column(
+        //     mainAxisSize: MainAxisSize.min,
+        //     children: [
+        //       Text(
+        //         _valueList[_selectedIndex].value,
+        //         style: widget.selectedValueStyle ??
+        //             TextStyle(
+        //               fontWeight: FontWeight.w700,
+        //               fontSize: 30,
+        //               height: 1,
+        //               color: widget.selectedValueColor,
+        //             ),
+        //       ),
+        //       if (widget.showSuffix && widget.suffix == null)
+        //         Text(widget.suffixText,
+        //             style: TextStyle(color: widget.suffixTextColor))
+        //       else if (widget.showSuffix && widget.suffix != null)
+        //         widget.suffix!
+        //     ],
+        //   ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:get/get.dart';
+
 class CustomElevatedButton extends StatefulWidget {
   final String message;
   final FutureOr<void> Function()? function;
@@ -66,4 +68,40 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
             ),
     );
   }
+}
+
+Widget buttonTest(
+    String message, FutureOr<void> Function()? function, bool isActivo) {
+  return Container(
+    width: Get.width,
+    padding: const EdgeInsets.only(top: 10, bottom: 10),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(50),
+      color: isActivo ? null : const Color.fromARGB(255, 246, 246, 246),
+      gradient: isActivo
+          ? LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color.fromRGBO(48, 45, 64, 1),
+                Color.fromRGBO(1, 1, 1, 1),
+              ],
+            )
+          : null,
+    ),
+    child: TextButton(
+      onPressed: isActivo ? function : () {},
+      child: Text(
+        message,
+        style: TextStyle(
+          color: isActivo
+              ? Colors.white
+              : const Color.fromARGB(255, 193, 193, 193),
+          letterSpacing: 1.2,
+          fontWeight: FontWeight.bold,
+          fontSize: 17,
+        ),
+      ),
+    ),
+  );
 }

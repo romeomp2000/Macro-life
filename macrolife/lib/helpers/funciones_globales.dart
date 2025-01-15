@@ -422,4 +422,13 @@ class FuncionesGlobales {
 
     return confirm ?? false;
   }
+
+  static String formatedCantidad(int value) {
+    String valor = value.toString();
+    String result = valor.replaceAllMapped(
+      RegExp(r'(\d)(?=(\d{3})+$)'),
+      (match) => '${match[1]},',
+    );
+    return result;
+  }
 }

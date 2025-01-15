@@ -663,8 +663,8 @@ class WeeklyCalendarController extends GetxController {
       int limiteFats = controllerUsuario.macronutrientes.value.grasas!;
       GetStorage box = GetStorage();
 
-      widgetController.updateHomeWidget(calorias.toString(), limiteCal,
-          carbohidratos.toString(), grasas.toString(), protein.toString());
+      // widgetController.updateHomeWidget(calorias.toString(), limiteCal,
+      //     carbohidratos.toString(), grasas.toString(), protein.toString());
 
       bool? estado = box.read('liveActivitiesEnable');
       if (estado != null && estado == true) {
@@ -680,8 +680,8 @@ class WeeklyCalendarController extends GetxController {
               limiteFats);
         }
 
-        liveActivitiesController.actualizar(calorias, carbohidratos, grasas,
-            protein, limiteProtein, limiteCal, limiteCarbs, limiteFats);
+        // liveActivitiesController.actualizar(calorias, carbohidratos, grasas,
+        //     protein, limiteProtein, limiteCal, limiteCarbs, limiteFats);
       }
     }
   }
