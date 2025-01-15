@@ -72,10 +72,10 @@ class LiveActivitiesController extends GetxController {
             'assets/icons/icono_almendra_outline_78x78_activo.png'),
       );
 
-      final resp =
-          await liveActivitiesPlugin.createActivity(liveDynamicData!.toMap());
+      // final resp =
+      //     await liveActivitiesPlugin.createActivity(liveDynamicData!.toMap());
 
-      latestActivityId = resp;
+      // latestActivityId = resp;
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -95,6 +95,7 @@ class LiveActivitiesController extends GetxController {
     if (liveDynamicData == null) {
       return;
     }
+    return;
 
     double progressCal = calculateProgress(calorias, limiteCal);
     double progressCarbs = calculateProgress(carbohidratos, limiteCarbs);

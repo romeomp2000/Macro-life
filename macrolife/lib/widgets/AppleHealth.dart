@@ -19,7 +19,8 @@ class HealthDataChart extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              width: Get.width * 0.45,
+              alignment: Alignment.center,
+              width: Get.width * 0.48,
               margin:
                   const EdgeInsets.only(top: 5, left: 2, right: 2, bottom: 0),
               height: 230,
@@ -35,38 +36,36 @@ class HealthDataChart extends StatelessWidget {
                 ],
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 15, top: 10),
-                    child: Column(
+                    padding: const EdgeInsets.only(left: 15, top: 15),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          spacing: 10,
+                        Image.asset(
+                          'assets/icons/icono_registrar_ejercicio_68x68_correr.png',
+                          width: 22,
+                        ),
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Image.asset(
-                              'assets/icons/icono_registrar_ejercicio_68x68_correr.png',
-                              width: 22,
-                            ),
                             Obx(
                               () => Text(
                                 '${controller.pasosHoy.toInt()}',
-                                style: TextStyle(
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 15,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(width: 30),
                             Obx(
                               () => Text(
                                 'Pasos de ${controller.daysOfWeek[controller.today.value.weekday - 1]}',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w300,
                                   fontSize: 13,
                                 ),
                               ),
@@ -77,7 +76,7 @@ class HealthDataChart extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 1),
+                    margin: const EdgeInsets.only(top: 10),
                     height: 150,
                     child: Obx(() => controller.isLoading.value
                             ? Center(
@@ -86,35 +85,99 @@ class HealthDataChart extends StatelessWidget {
                               )
                             : BarChart(
                                 BarChartData(
+                                  //   barGroups: controller.charSorce
+                                  //       .asMap()
+                                  //       .entries
+                                  //       .map(
+                                  //         (entry) => BarChartGroupData(
+                                  //           x: entry.key,
+                                  //           barRods: [
+                                  //             BarChartRodData(
+                                  //               toY: entry.value.value,
+                                  // borderRadius: BorderRadius.only(
+                                  //   topLeft: Radius.circular(5),
+                                  //   topRight: Radius.circular(5),
+                                  // ),
+                                  //               width: 17,
+                                  //               backDrawRodData:
+                                  //                   BackgroundBarChartRodData(
+                                  //                 fromY: 0,
+                                  //                 toY: 100,
+                                  //                 color: Colors.red,
+                                  //                 show: true,
+                                  //               ),
+                                  //               color: Colors.black,
+                                  //             ),
+                                  //           ],
+                                  //         ),
+                                  //       )
+                                  //       .toList(),
+                                  // barGroups: controller.charSorce
+                                  //     .asMap()
+                                  //     .entries
+                                  //     .map(
+                                  //       (entry) => BarChartGroupData(
+                                  //         x: entry.key,
+                                  //         barRods: [
+                                  //           BarChartRodData(
+                                  //             toY: entry.value.value,
+                                  //             borderRadius: BorderRadius.only(
+                                  //               topLeft: Radius.circular(5),
+                                  //               topRight: Radius.circular(5),
+                                  //             ),
+                                  //             width: 17,
+                                  //             color: Colors.transparent,
+                                  //             rodStackItems: [
+                                  //               BarChartRodStackItem(
+                                  //                 0,
+                                  //                 entry.value.value + 200.0,
+                                  //                 Colors.black12,
+                                  //               ),
+                                  //               BarChartRodStackItem(
+                                  //                 0,
+                                  //                 entry.value.value * 0.3,
+                                  //                 Colors.black,
+                                  //               ),
+                                  //             ],
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     )
+                                  //     .toList(),
                                   barGroups: controller.charSorce
                                       .asMap()
                                       .entries
                                       .map(
                                         (entry) => BarChartGroupData(
-                                          x: entry.key,
-                                          barRods: [
-                                            BarChartRodData(
-                                              toY: entry.value.value,
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(5),
-                                                topRight: Radius.circular(5),
-                                              ),
-                                              width: 17,
-                                              color: Colors.black,
-                                            ),
-                                          ],
-                                        ),
+                                            x: entry.key,
+                                            barRods: [
+                                              BarChartRodData(
+                                                toY: entry.value.value,
+                                                color: Colors.black,
+                                                width: 10,
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(2),
+                                                  topRight: Radius.circular(2),
+                                                ),
+                                                backDrawRodData:
+                                                    BackgroundBarChartRodData(
+                                                  show: true,
+                                                  toY: 15000,
+                                                  color: Colors.grey.shade300,
+                                                ),
+                                              )
+                                            ]),
                                       )
                                       .toList(),
                                   titlesData: FlTitlesData(
                                     show: true,
-                                    leftTitles: AxisTitles(
-                                      drawBelowEverything: false,
-                                    ),
+                                    // leftTitles: AxisTitles(
+                                    //   drawBelowEverything: false,
+                                    // ),
                                     topTitles:
                                         AxisTitles(drawBelowEverything: false),
                                     rightTitles:
-                                        AxisTitles(drawBelowEverything: false),
+                                        AxisTitles(drawBelowEverything: true),
                                     bottomTitles: AxisTitles(
                                       drawBelowEverything: true,
                                       axisNameSize: 10,

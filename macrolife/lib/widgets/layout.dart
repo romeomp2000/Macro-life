@@ -25,6 +25,8 @@ class LayoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // extendBodyBehindAppBar: true,
+      // extendBody: true,
       body: Obx(() {
         switch (controller.selectedIndex.value) {
           case 0:
@@ -58,6 +60,126 @@ class LayoutScreen extends StatelessWidget {
         yOffset: 10, // Mantén el eje vertical sin cambios
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      // floatingActionButton: ClipOval(
+      //   child: GestureDetector(
+      //     onTap: () {
+      //       escanearController.onPressPlus();
+      //     },
+      //     child: Container(
+      //       padding: const EdgeInsets.all(20.0),
+      //       decoration: BoxDecoration(
+      //         color: Colors.black,
+      //       ),
+      //       child: Image.asset(
+      //         'assets/icons_2/icono_escanear_principal_76x76_blanco.png',
+      //         width: 30,
+      //         height: 30,
+      //       ),
+      //     ),
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // bottomNavigationBar: Container(
+      //   decoration: BoxDecoration(
+      //     boxShadow: <BoxShadow>[
+      //       BoxShadow(
+      //         color: Colors.black26,
+      //         blurRadius: 6,
+      //         offset: Offset(1, -5),
+      //       ),
+      //       BoxShadow(
+      //         color: Colors.white,
+      //         blurRadius: 100,
+      //         offset: Offset(1, -1),
+      //       ),
+      //     ],
+      //   ),
+      //   child: BottomAppBar(
+      //     // color: Colors.white,
+      //     shape: const CircularNotchedRectangle(),
+      //     notchMargin: 15,
+      //     elevation: 0,
+      //     child: Row(
+      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //       children: [
+      //         GestureDetector(
+      //           onTap: () {
+      //             controller.selectedIndex.value = 0;
+      //           },
+      //           child: Container(
+      //             // width: (Get.width * 0.5),
+      //             alignment: Alignment.center,
+      //             margin: EdgeInsets.only(left: Get.width * 0.1, top: 10),
+      //             child: Obx(
+      //               () => Column(
+      //                 children: [
+      //                   Image.asset(
+      //                     'assets/icons_2/icono_home_55x55_negro.png',
+      //                     width: 20,
+      //                     color: controller.selectedIndex.value == 0
+      //                         ? Colors.black
+      //                         : Colors.grey,
+      //                   ),
+      //                   Container(
+      //                     margin: const EdgeInsets.only(top: 5),
+      //                     child: Text(
+      //                       'Inicio',
+      //                       style: TextStyle(
+      //                         fontWeight: FontWeight.bold,
+      //                         color: controller.selectedIndex.value == 0
+      //                             ? Colors.black
+      //                             : Colors.grey,
+      //                       ),
+      //                     ),
+      //                   )
+      //                 ],
+      //               ),
+      //             ),
+      //           ),
+      //         ),
+      //         GestureDetector(
+      //           onTap: () {
+      //             controller.selectedIndex.value = 1;
+      //           },
+      //           child: Container(
+      //             margin: EdgeInsets.only(right: Get.width * 0.1, top: 10),
+      //             alignment: Alignment.center,
+      //             child: Column(
+      //               children: [
+      //                 Obx(
+      //                   () => Column(
+      //                     children: [
+      //                       Image.asset(
+      //                         'assets/icons_2/icono_plan_56x56_negro.png',
+      //                         width: 20,
+      //                         color: controller.selectedIndex.value == 1
+      //                             ? Colors.black
+      //                             : Colors.grey,
+      //                       ),
+      //                       Container(
+      //                         margin: const EdgeInsets.only(top: 5),
+      //                         child: Text(
+      //                           'Plan',
+      //                           style: TextStyle(
+      //                             fontWeight: FontWeight.bold,
+      //                             color: controller.selectedIndex.value == 1
+      //                                 ? Colors.black
+      //                                 : Colors.grey,
+      //                           ),
+      //                         ),
+      //                       )
+      //                     ],
+      //                   ),
+      //                 ),
+      //               ],
+      //             ),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
+
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           backgroundColor: Colors.white,

@@ -15,6 +15,13 @@ class RegistroPasosController extends GetxController {
   final UsuarioController usuarioController = Get.put(UsuarioController());
   late VideoPlayerController controllerVideo;
 
+  RxBool isActivoGenero = false.obs;
+  RxBool isNivelActividad = false.obs;
+  RxBool isOtraApp = false.obs;
+  RxBool isObjetivoPeso = false.obs;
+
+  RxBool isConseguir = false.obs;
+
   void signWithApple() async {
     try {
       FuncionesGlobales.vibratePress();

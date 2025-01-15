@@ -32,8 +32,8 @@ class WidgetController extends GetxController {
             usuarioController.macronutrientes.value.calorias!.toInt();
       }
     }
-    updateHomeWidget(title.value, caloriasLimite.value, carbs.value, fats.value,
-        protein.value);
+    // updateHomeWidget(title.value, caloriasLimite.value, carbs.value, fats.value,
+    //     protein.value);
 
     super.onInit();
   }

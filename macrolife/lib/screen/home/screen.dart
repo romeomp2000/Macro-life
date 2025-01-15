@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +11,8 @@ import 'package:macrolife/screen/home/controller.dart';
 import 'package:macrolife/screen/nutricion/screen.dart';
 import 'package:macrolife/screen/pesas/screen.dart';
 import 'package:macrolife/widgets/AppleHealth.dart';
+// import 'package:macrolife/widgets/appBarML2.dart';
+// import 'package:macrolife/widgets/AppleHealth.dart';
 import 'package:macrolife/widgets/NutrientIndicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -259,7 +259,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        // const SizedBox(height: 15),
+        const SizedBox(height: 15),
         Container(
           margin: const EdgeInsets.only(top: 15, left: 2, right: 2),
           child: Row(
@@ -328,6 +328,242 @@ class HomeScreen extends StatelessWidget {
       ],
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   final UsuarioController controllerUsuario = Get.find();
+  //   final WeeklyCalendarController controller =
+  //       Get.put(WeeklyCalendarController());
+
+  //   return Container(
+  //     width: Get.width,
+  //     height: Get.height,
+  //     padding: const EdgeInsets.all(10),
+  //     decoration: BoxDecoration(
+  //       gradient: LinearGradient(
+  //         begin: Alignment.topRight,
+  //         end: Alignment.bottomCenter,
+  //         colors: [
+  //           const Color.fromARGB(255, 82, 71, 99),
+  //           const Color.fromARGB(255, 149, 143, 159),
+  //           Colors.white38,
+  //           Colors.white60,
+  //         ],
+  //       ),
+  //     ),
+  //     child: SingleChildScrollView(
+  //       child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.start,
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           SizedBox(
+  //             child: AppBar2(
+  //               title: 'Macro Life',
+  //               isHome: true,
+  //             ),
+  //           ),
+  //           Container(
+  //             margin: const EdgeInsets.only(top: 5),
+  //             child: calendario(controller),
+  //           ),
+  //           Container(
+  //             margin: const EdgeInsets.only(top: 5),
+  //             child: Row(
+  //               crossAxisAlignment: CrossAxisAlignment.end,
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 Container(
+  //                   alignment: Alignment.center,
+  //                   margin: const EdgeInsets.only(left: 5),
+  //                   child: Column(
+  //                     children: [
+  //                       Image.asset(
+  //                         'assets/icons_2/icono_rango_55x55_negro.png',
+  //                         color: Colors.white,
+  //                         width: 18,
+  //                         height: 18,
+  //                       ),
+  //                       Padding(
+  //                         padding: const EdgeInsets.all(8.0),
+  //                         child: Obx(
+  //                           () => Text(
+  //                             controllerUsuario
+  //                                     .macronutrientes.value.caloriasQuemadas
+  //                                     ?.toString() ??
+  //                                 '0',
+  //                             style: TextStyle(
+  //                               color: Colors.white,
+  //                               fontWeight: FontWeight.bold,
+  //                             ),
+  //                             textAlign: TextAlign.center,
+  //                           ),
+  //                         ),
+  //                       ),
+  //                       Text(
+  //                         'Calorías\nquemadas',
+  //                         textAlign: TextAlign.center,
+  //                         style: TextStyle(
+  //                           fontWeight: FontWeight.bold,
+  //                           color: Colors.white,
+  //                         ),
+  //                       )
+  //                     ],
+  //                   ),
+  //                 ),
+  //                 SizedBox(
+  //                   child: Column(
+  //                     children: [
+  //                       Obx(
+  //                         () => Text(
+  //                           FuncionesGlobales.formatedCantidad(controller
+  //                                   .controllerUsuario
+  //                                   .macronutrientes
+  //                                   .value
+  //                                   .caloriasRestantes
+  //                                   ?.toInt() ??
+  //                               0),
+  //                           textAlign: TextAlign.center,
+  //                           style: TextStyle(
+  //                             color: Colors.white,
+  //                             fontWeight: FontWeight.bold,
+  //                             fontSize: 75,
+  //                           ),
+  //                         ),
+  //                       ),
+  //                       Text(
+  //                         'Calorías\nrestantes',
+  //                         textAlign: TextAlign.center,
+  //                         style: TextStyle(
+  //                           color: Colors.white,
+  //                           fontWeight: FontWeight.bold,
+  //                         ),
+  //                       )
+  //                     ],
+  //                   ),
+  //                 ),
+  //                 Container(
+  //                   margin: const EdgeInsets.only(right: 5),
+  //                   child: Column(
+  //                     children: [
+  //                       Image.asset(
+  //                         'assets/icons_2/icono_caloria_chico_60x60_negro.png',
+  //                         color: Colors.white,
+  //                         width: 18,
+  //                         height: 18,
+  //                       ),
+  //                       Padding(
+  //                         padding: const EdgeInsets.all(8.0),
+  //                         child: Text(
+  //                           '1',
+  //                           textAlign: TextAlign.center,
+  //                           style: TextStyle(
+  //                             color: Colors.white,
+  //                             fontWeight: FontWeight.bold,
+  //                           ),
+  //                         ),
+  //                       ),
+  //                       Text(
+  //                         'Racha\n',
+  //                         textAlign: TextAlign.center,
+  //                         style: TextStyle(
+  //                           color: Colors.white,
+  //                           fontWeight: FontWeight.bold,
+  //                         ),
+  //                       )
+  //                     ],
+  //                   ),
+  //                 )
+  //               ],
+  //             ),
+  //           ),
+  //           Container(
+  //             margin: const EdgeInsets.only(top: 15),
+  //             child: puntuaciones(controllerUsuario),
+  //           ),
+  //           Container(
+  //             margin: const EdgeInsets.only(top: 10, bottom: 10, left: 3),
+  //             child: Obx(
+  //               () => controller.alimentosList.isEmpty &&
+  //                       controller.entrenamientosList.isEmpty
+  //                   ? Stack(
+  //                       clipBehavior: Clip.none,
+  //                       children: [
+  //                         Center(
+  //                           child: Container(
+  //                             width: Get.width,
+  //                             padding: const EdgeInsets.symmetric(
+  //                                 horizontal: 20.0, vertical: 15.0),
+  //                             child: Column(
+  //                               crossAxisAlignment: CrossAxisAlignment.center,
+  //                               children: [
+  //                                 Image.asset(
+  //                                   'assets/icons_2/icono_escanear_principal_76x76_blanco.png',
+  //                                   width: 30,
+  //                                   height: 30,
+  //                                   color: Colors.black,
+  //                                 ),
+  //                                 Padding(
+  //                                   padding: const EdgeInsets.only(top: 10),
+  //                                   child: Text(
+  //                                     '¡Escanea tu comida!',
+  //                                     style: TextStyle(
+  //                                       fontWeight: FontWeight.bold,
+  //                                       fontSize: 18.0,
+  //                                     ),
+  //                                   ),
+  //                                 ),
+  //                                 SizedBox(height: 8.0),
+  //                                 SizedBox(
+  //                                   width: Get.width - 200,
+  //                                   child: Text(
+  //                                     'Empieza a seguir tu progreso añadiendo tu primera comida',
+  //                                     textAlign: TextAlign.center,
+  //                                     style: TextStyle(
+  //                                       fontSize: 15.0,
+  //                                       color: Colors.black87,
+  //                                     ),
+  //                                   ),
+  //                                 ),
+  //                                 Image.asset(
+  //                                   'assets/icons_2/down-arrow.png',
+  //                                   height: 100,
+  //                                 )
+  //                               ],
+  //                             ),
+  //                           ),
+  //                         ),
+  //                         // Positioned(
+  //                         //   right: Get.width / 2 - 80,
+  //                         //   bottom: -60,
+  //                         //   child: Image.asset(
+  //                         //     'assets/icons/flecha_curva_negra_227x222_nuevo_1.png',
+  //                         //     width: 70,
+  //                         //   ),
+  //                         // ),
+  //                       ],
+  //                     )
+  //                   : Column(
+  //                       children: [
+  //                         Text(
+  //                           'Registros recientes',
+  //                           style: TextStyle(
+  //                             fontSize: 22,
+  //                             fontWeight: FontWeight.bold,
+  //                           ),
+  //                         ),
+  //                         const SizedBox(height: 15),
+  //                       ],
+  //                     ),
+  //             ),
+  //           ),
+  //           Container(
+  //             height: Get.height * 0.3,
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -410,7 +646,7 @@ class HomeScreen extends StatelessWidget {
               ),
 
               Obx(() {
-                if (Platform.isIOS) {
+                if (GetPlatform.isIOS) {
                   return Row(
                     spacing: 5,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -618,79 +854,96 @@ class HomeScreen extends StatelessWidget {
   SizedBox calendario(WeeklyCalendarController controller) {
     return SizedBox(
       height: 80,
-      child: PageView.builder(
-        controller: controller.pageController,
-        reverse: true,
-        itemCount: 4,
-        itemBuilder: (context, index) {
-          DateTime weekStart = controller.getWeekStartDate(index);
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(7, (dayIndex) {
-              DateTime day = weekStart.add(Duration(days: dayIndex));
-              DateTime dayActual = DateTime.now();
-              return GestureDetector(
-                onTap: () {
-                  if (day.isAfter(dayActual)) {
-                    return;
-                  }
-                  controller.today.value = day;
-                  controller.cargaAlimentos();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Obx(() {
-                    bool isSelected =
-                        controller.isSameDay(controller.today.value, day);
+      child: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.white10),
+            boxShadow: [
+              // BoxShadow(
+              //   color: Colors.black12,
+              //   offset: Offset(0, 0.0),
+              //   spreadRadius: 0.3,
+              //   blurStyle: BlurStyle.outer,
+              // )
+            ]),
+        child: PageView.builder(
+          controller: controller.pageController,
+          reverse: true,
+          itemCount: 4,
+          itemBuilder: (context, index) {
+            DateTime weekStart = controller.getWeekStartDate(index);
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(7, (dayIndex) {
+                DateTime day = weekStart.add(Duration(days: dayIndex));
+                DateTime dayActual = DateTime.now();
+                return GestureDetector(
+                  onTap: () {
+                    if (day.isAfter(dayActual)) {
+                      return;
+                    }
+                    controller.today.value = day;
+                    controller.cargaAlimentos();
+                  },
+                  child: Padding(
+                    // padding: const EdgeInsets.symmetric(horizontal: 4),
+                    padding: const EdgeInsets.all(1),
+                    child: Obx(() {
+                      bool isSelected =
+                          controller.isSameDay(controller.today.value, day);
 
-                    return Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: isSelected ? Colors.black : Colors.black26,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                            color: isSelected ? Colors.black : Colors.white54,
+                      return Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color:
+                                isSelected ? Colors.white : Colors.transparent,
                           ),
-                          child: Container(
-                            width: 35,
-                            height: 35,
-                            alignment: Alignment.center,
-                            child: Text(
-                              DateFormat.E('es')
-                                  .format(day)
-                                  .substring(0, 1)
-                                  .toUpperCase(),
-                              style: TextStyle(
-                                color:
-                                    isSelected ? Colors.white : Colors.black54,
-                                fontWeight: isSelected
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.transparent,
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 35,
+                              height: 35,
+                              alignment: Alignment.center,
+                              child: Text(
+                                DateFormat.E('es')
+                                    .format(day)
+                                    .substring(0, 1)
+                                    .toUpperCase(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                ),
                               ),
                             ),
-                          ),
+                            const SizedBox(height: 4),
+                            // Número del día
+                            Text(
+                              day.day.toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 4),
-                        // Número del día
-                        Text(
-                          day.day.toString(),
-                          style: TextStyle(
-                            color: isSelected ? Colors.black : Colors.black54,
-                            fontWeight: isSelected
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    );
-                  }),
-                ),
-              );
-            }),
-          );
-        },
+                      );
+                    }),
+                  ),
+                );
+              }),
+            );
+          },
+        ),
       ),
     );
   }

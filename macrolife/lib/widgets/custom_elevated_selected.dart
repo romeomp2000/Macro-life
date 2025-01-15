@@ -27,20 +27,31 @@ class CustomElevatedSelected extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: Get.width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(40),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            offset: Offset(0.01, -0.01),
+            blurRadius: 0.01,
+          ),
+        ],
+        color: Colors.white,
+      ),
       child: ElevatedButton(
         onPressed: function,
         style: ButtonStyle(
           side: WidgetStatePropertyAll(
             BorderSide(
-              color: activo! ? Colors.black : Colors.black12,
-              width: 1,
+              color: activo! ? Colors.black : Colors.white,
+              width: activo! ? 2 : 1,
             ),
           ),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(40),
             ),
           ),
           fixedSize: const WidgetStatePropertyAll(
