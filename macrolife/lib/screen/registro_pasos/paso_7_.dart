@@ -8,7 +8,7 @@ Widget paso_7(RegistroPasosController controller) {
   return SizedBox(
     child: Obx(
       () => Steep(
-        enableScroll: true,
+        enableScroll: false,
         isActivo: controller.isObjetivoPeso,
         title: '¿Cuál es tu objetivo?',
         description: 'Esto se utilizará para calibrar tu plan personalizado',

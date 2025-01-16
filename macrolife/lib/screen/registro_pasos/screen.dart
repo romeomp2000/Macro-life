@@ -1,33 +1,35 @@
-import 'dart:io';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gif_view/gif_view.dart';
 import 'package:macrolife/helpers/funciones_globales.dart';
-import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/list_tile_model.dart';
-import 'package:macrolife/screen/EditarNutrientes/screen.dart';
 import 'package:macrolife/screen/registro_pasos/paso_1.dart';
+import 'package:macrolife/screen/registro_pasos/paso_10.dart';
+import 'package:macrolife/screen/registro_pasos/paso_11.dart';
+import 'package:macrolife/screen/registro_pasos/paso_12.dart';
+import 'package:macrolife/screen/registro_pasos/paso_13.dart';
+import 'package:macrolife/screen/registro_pasos/paso_14.dart';
+import 'package:macrolife/screen/registro_pasos/paso_15.dart';
+import 'package:macrolife/screen/registro_pasos/paso_16.dart';
+import 'package:macrolife/screen/registro_pasos/paso_17.dart';
+import 'package:macrolife/screen/registro_pasos/paso_18.dart';
 import 'package:macrolife/screen/registro_pasos/paso_2.dart';
 import 'package:macrolife/screen/registro_pasos/paso_3.dart';
 import 'package:macrolife/screen/registro_pasos/paso_4.dart';
-import 'package:macrolife/screen/registro_pasos/paso_5.dart';
+import 'package:macrolife/screen/registro_pasos/paso_5_.dart';
+import 'package:macrolife/screen/registro_pasos/paso_5_5.dart';
 import 'package:macrolife/screen/registro_pasos/paso_6.dart';
-import 'package:macrolife/screen/registro_pasos/paso_7.dart';
+import 'package:macrolife/screen/registro_pasos/paso_7_.dart';
+import 'package:macrolife/screen/registro_pasos/paso_7_1.dart';
+import 'package:macrolife/screen/registro_pasos/paso_7_2.dart';
+import 'package:macrolife/screen/registro_pasos/paso_7_3.dart';
+import 'package:macrolife/screen/registro_pasos/paso_7_4.dart';
 import 'package:macrolife/screen/registro_pasos/paso_8.dart';
-// import 'package:macrolife/screen/objetivos/controller.dart';
-// import 'package:macrolife/widgets/AnimatedWeightPicker.dart';
+import 'package:macrolife/screen/registro_pasos/paso_9.dart';
 import 'package:macrolife/widgets/Cinta_metrica.dart';
-// import 'package:macrolife/widgets/FechaNacimientoPicker.dart';
-import 'package:macrolife/widgets/SinpleRulerPicker.dart';
-import 'package:macrolife/widgets/TimerPicker.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
 import 'package:macrolife/widgets/custom_elevated_selected.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:macrolife/widgets/custom_text_form_field.dart';
 // import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:video_player/video_player.dart';
 import 'controller.dart';
 
 class RegistroPasosScreen extends StatelessWidget {
@@ -38,27 +40,27 @@ class RegistroPasosScreen extends StatelessWidget {
     final RegistroPasosController controller =
         Get.put(RegistroPasosController());
 
-    final UsuarioController controllerUsuario = Get.put(UsuarioController());
-    final TimerPickerController timePic = Get.put(TimerPickerController());
+    // final UsuarioController controllerUsuario = Get.put(UsuarioController());
+    // final TimerPickerController timePic = Get.put(TimerPickerController());
     return Scaffold(
-      // backgroundColor: Colors.grey.shade100,
       backgroundColor: const Color.fromARGB(255, 252, 252, 252),
       appBar: AppBar(
         toolbarHeight: 45,
-        // backgroundColor: Colors.grey.shade100,
         backgroundColor: const Color.fromARGB(255, 252, 252, 252),
-
         title: Row(
           spacing: 15,
           children: [
             Container(
+              margin: EdgeInsets.only(top: 1, bottom: 1),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(100),
                   boxShadow: [
-                  
-                ]
-              ),
+                    BoxShadow(
+                        color: Color.fromARGB(255, 237, 237, 237),
+                        offset: Offset(0.1, 0.1),
+                        blurRadius: 1),
+                  ]),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.black),
                 onPressed: () => {controller.back()},
@@ -69,9 +71,15 @@ class RegistroPasosScreen extends StatelessWidget {
                 height: 40,
                 width: Get.width - 95,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100),
-                ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(100),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromARGB(255, 237, 237, 237),
+                        offset: Offset(0.1, 0.1),
+                        blurRadius: 1,
+                      ),
+                    ]),
                 padding: EdgeInsets.symmetric(vertical: 19, horizontal: 15),
                 child: LinearProgressIndicator(
                   minHeight: 3.5,
@@ -92,1200 +100,77 @@ class RegistroPasosScreen extends StatelessWidget {
           controller: controller.pageController, // Controlador de PageView
           onPageChanged: (index) => controller.currentStep.value = index + 1,
           children: [
-            // Paso 1: Selección de género
-
+            //Genero
             paso_1(controller),
 
+            //Nivel de actividad
             paso_2(controller),
 
+            //Otras apps de calorías
             paso_3(controller),
 
+            //Grafica de potencial
             paso_4(controller),
 
+            //Edad
             paso_5(controller),
 
+            //Altura
+            paso_5_5(controller),
+
+            //Peso
             paso_6(controller),
 
+            //Cual es tu objetivo
             paso_7(controller),
 
+            //Objetivo de peso
             if (controller.objetivo.value == 'Aumentar' ||
                 controller.objetivo.value == 'Perder')
-              Obx(
-                () {
-                  // Verifica si el objetivo es 'Aumentar'
-                  return Steep(
-                    enableScroll: false,
-                    isActivo: true.obs,
-                    title: '¿Cuál es tu objetivo de peso?',
-                    options: const [],
-                    body: SizedBox(
-                      height: 270,
-                      child: Column(
-                        spacing: 15,
-                        children: [
-                          // Otros widgets dentro del Column
-                          SizedBox(
-                            width: Get.width,
-                            child: SimpleRulerPicker(
-                              unitString: 'kg',
-                              axis: Axis.horizontal,
-                              minValue: 1,
-                              currentWeight: controller.peso.value,
-                              maxValue: 300,
-                              initialValue: controller.pesoDeseado.value,
-                              onValueChanged: (value) {
-                                controller.pesoDeseado.value = value;
-                                controller.ajustarLabelPeso();
-                              },
-                              scaleLabelSize: 16,
-                              scaleBottomPadding: 20,
-                              scaleItemWidth: 12,
-                              longLineHeight: 50,
-                              shortLineHeight: 14,
-                              lineColor: Colors.grey,
-                              selectedColor: Colors.black,
-                              labelColor: Colors.black,
-                              lineStroke: 2,
-                              height: 200,
-                            ),
-                          ),
-                          Text(controller.pesoDeseadoLabel.value),
-                          Text(
-                            controller.pesoDeseadoValue.value,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    onOptionSelected: (probado) {
-                      controller.probado.value = probado;
-                    },
-                    selectedOption: controller.probado.value,
-                    onNext: controller.isProbadoSelected()
-                        ? controller.nextStep
-                        : null,
-                  );
-                },
-              ),
-            if (controller.objetivo.value != 'Mantener')
-              Obx(
-                () => Steep(
-                  enableScroll: false,
-                  isActivo: true.obs,
-                  enablePadding: true,
-                  body: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Velocidad de pérdida de peso por semana',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        '${((controller.rapidoMeta * 10).truncateToDouble()) / 10} Kg',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Image.asset(
-                            'assets/icons/icono_tortuga_outline_200x98_activo.png',
-                            color: Colors.black,
-                            height: 25,
-                          ),
-                          Image.asset(
-                            'assets/icons/icono_ardilla_outline_144x137_activo.png',
-                            color: Colors.black,
-                            height: 25,
-                          ),
-                          Image.asset(
-                            'assets/icons/icono_gacela_outline_200x137_activo.png',
-                            color: Colors.black,
-                            height: 25,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: Get.width,
-                        child: CupertinoSlider(
-                          min: 0.1,
-                          max: 1.5,
-                          thumbColor: Colors.black, // Color del círculo
+              paso_7_1(controller),
 
-                          value: controller.rapidoMeta.value,
-                          onChanged: (meta) {
-                            controller.rapidoMeta.value = meta;
-                            FuncionesGlobales.vibratePress();
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Container(
-                        width: Get.width,
-                        padding: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: Text(
-                          // ignore: unrelated_type_equality_checks
-                          controller.rapidoMeta == 0.1
-                              ? 'Lento y constante'
-                              : controller.rapidoMeta > 0.1 &&
-                                      controller.rapidoMeta < 1.5
-                                  ? 'Recomendado'
-                                  : 'Puede sentirse muy cansado',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  title: '¿Qué tan rápido quieres alcanzar tu meta?',
-                  options: const [],
-                  onOptionSelected: (probado) =>
-                      controller.probado.value = probado,
-                  selectedOption: controller.probado.value,
-                  onNext: controller.nextStep,
-                ),
-              ),
+            //Velocidad para la meta
+            if (controller.objetivo.value != 'Mantener') paso_7_2(controller),
 
-            if (controller.mostrarGrafica.value == true)
-              Obx(() {
-                controller.controllerVideo = VideoPlayerController.asset(
-                  'assets/videos/animacion_barras_comparativas_658x984_.mp4', // Use 'VideoPlayerController.network' for URLs
-                )
-                  ..initialize().then((_) {})
-                  ..setLooping(false)
-                  ..play();
-                return Steep(
-                  enableScroll: true,
-                  enablePadding: true,
-                  isActivo: true.obs,
-                  body: Column(
-                    spacing: 30,
-                    children: [
-                      // GifView.asset(
-                      //   'assets/gifs/animacion_barras_comparativas_658x984_ (2).gif',
-                      //   height: 250,
-                      //   loop: false,
-                      //   filterQuality: FilterQuality.high,
-                      //   frameRate: 20,
-                      //   fadeDuration: Duration(seconds: 1),
-                      // ),
-                      // GifView.asset(
-                      //   'assets/gifs/grafica_inicial_902x474.gif',
-                      //   width: Get.width - 50,
-                      //   loop: false,
-                      //   filterQuality: FilterQuality.high,
-                      //   frameRate: 30,
-                      //   fadeDuration: Duration(seconds: 2),
-                      // ),
-                      SizedBox(
-                        width: 220,
-                        height: 300,
-                        child: VideoPlayer(controller.controllerVideo),
-                      ),
-                      Text(
-                        'Macro Life lo hace fácil y te hace responsable',
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                  title: controller.labelGraficaDoble.value,
-                  options: const [],
-                  onOptionSelected: (probado) =>
-                      controller.probado.value = probado,
-                  selectedOption: controller.probado.value,
-                  onNext: controller.nextStep,
-                );
-              }),
-            if (controller.objetivo.value != 'Mantener')
-              Obx(
-                () => Steep(
-                  enableScroll: false,
-                  enablePadding: true,
-                  isActivo: true.obs,
-                  body: Center(
-                    child: SizedBox(
-                      // height: Get.height - 230,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        spacing: 30,
-                        children: [
-                          Text(
-                            controller.objetivo.value == 'Aumentar'
-                                ? 'Ganando'
-                                : 'Perdiendo',
-                            style: const TextStyle(
-                              fontSize: 27,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            controller.pesoDeseadoValue.value,
-                            style: const TextStyle(
-                              fontSize: 60,
-                            ),
-                          ),
-                          Text(
-                            'Es un objetivo realista.\nNo es nada difícil.',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                          // const SizedBox(height: 30),
-                          // e
-                          // Spacer(),
-                          Text(
-                            'El 90% de los usuarios informan de resultados notables después de usar Macro Life, con un progreso sostenido que es difícil de revertir.',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                // fontSize: 20,
-                                ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  title: '',
-                  options: [],
-                  onOptionSelected: (probado) =>
-                      controller.probado.value = probado,
-                  selectedOption: controller.probado.value,
-                  onNext: controller.nextStep,
-                ),
-              ),
+            //Grafica de barras para mostrar el uso de la app
+            if (controller.mostrarGrafica.value == true) paso_7_3(controller),
 
-            Obx(
-              () => Steep(
-                enablePadding: false,
-                enableScroll: true,
-                isActivo: true.obs,
-                body: Column(
-                  spacing: 20,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        'El 80% de los usuarios de Macro Life mantienen su peso ideal incluso 6 meses después',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Text(
-                      'Tu peso',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    GifView.asset(
-                      'assets/gifs/grafica_dieta_mes_952x780.gif',
-                      width: Get.width - 50,
-                      loop: false,
-                      filterQuality: FilterQuality.high,
-                      frameRate: 20,
-                      fadeDuration: Duration(seconds: 0),
-                    ),
-                  ],
-                ),
-                title: 'Crea resultados a largo plazo',
-                options: const [],
-                onOptionSelected: (probado) =>
-                    controller.probado.value = probado,
-                selectedOption: controller.probado.value,
-                onNext: controller.nextStep,
-              ),
-            ),
+            //Vista para  mostrar el objetivo y mensaje
+            if (controller.objetivo.value != 'Mantener') paso_7_4(controller),
 
+            //GRafica de resultados a largo plazo
             paso_8(controller),
-            // Obx(
-            //   () => Steep(
-            //     enableScroll: true,
-            //     title: '¿Qué le gustaría conseguir?',
-            //     isActivo: true.obs,
-            //     options: [
-            //       ListTileModel(
-            //         check: false,
-            //         title: 'Comer y vivir más sano',
-            //         // subtitle: '',
-            //         leading: Image.asset(
-            //           'assets/icons/icono_logros_alimenticios_outline_63x63_5.png',
-            //           height: 25,
-            //         ),
-            //       ),
-            //       ListTileModel(
-            //         title: 'Aumentar mi energía y mi estado de ánimo',
-            //         check: false,
-            //         leading: Image.asset(
-            //           'assets/icons/icono_logros_alimenticios_outline_63x63_6.png',
-            //           height: 25,
-            //         ),
-            //       ),
-            //       ListTileModel(
-            //         check: false,
-            //         title: 'Mantener la motivación y la constancia',
-            //         leading: Image.asset(
-            //           'assets/icons/icono_logros_alimenticios_outline_63x63_7.png',
-            //           height: 25,
-            //         ),
-            //       ),
-            //       ListTileModel(
-            //         check: false,
-            //         title: 'Sentirme mejor con mi cuerpo',
-            //         leading: Image.asset(
-            //           'assets/icons/icono_brazo_outline_100x100_activo.png',
-            //           height: 25,
-            //         ),
-            //       ),
-            //     ],
-            //     body: null,
-            //     selectedOptions: controller.lograr.value,
-            //     onOptionSelected: (lograr) {
-            //       if (controller.lograr.value.contains(lograr)) {
-            //         controller.lograr.value.remove(lograr);
-            //       } else {
-            //         controller.lograr.value.add(lograr);
-            //       }
-            //       controller.lograr.refresh();
-            //     },
-            //     onNext:
-            //         controller.isLograrSelected() ? controller.nextStep : null,
-            //   ),
-            // ),
 
-            Obx(
-              () => Steep(
-                enableScroll: true,
-                isActivo: true.obs,
-                title: '¿Sigue una dieta específica?',
-                options: [
-                  ListTileModel(
-                    check: false,
-                    title: 'Clásico',
-                    leading: Image.asset(
-                      'assets/icons/icono_dietas_alimenticias_outline_60x60_clasico.png',
-                      height: 25,
-                    ),
-                  ),
-                  ListTileModel(
-                    check: false,
-                    title: 'Pescetariana',
-                    leading: Image.asset(
-                      'assets/icons/icono_dietas_alimenticias_outline_60x60_pescetario.png',
-                      height: 25,
-                    ),
-                  ),
-                  ListTileModel(
-                    check: false,
-                    title: 'Vegetariano',
-                    leading: Image.asset(
-                      'assets/icons/icono_dietas_alimenticias_outline_60x60_vegetariano.png',
-                      height: 25,
-                    ),
-                  ),
-                  ListTileModel(
-                    check: false,
-                    title: 'Vegano',
-                    leading: Image.asset(
-                      'assets/icons/icono_dietas_alimenticias_outline_60x60_vegano.png',
-                      height: 25,
-                    ),
-                  ),
-                  ListTileModel(
-                    check: false,
-                    title: 'Otro',
-                    leading: SizedBox.shrink(),
-                  ),
-                ],
-                body: null,
-                onOptionSelected: (dieta) {
-                  controller.dieta.value = dieta;
-                  FuncionesGlobales.vibratePress();
-                },
-                selectedOption: controller.dieta.value,
-                onNext:
-                    controller.isDietadoSelected() ? controller.nextStep : null,
-              ),
-            ),
-            Obx(() {
-              FuncionesGlobales.getDeviceToken();
+            //Que le gustaria conseguir
+            paso_9(controller),
 
-              return Steep(
-                enableScroll: true,
-                enablePadding: true,
-                isActivo: true.obs,
-                body: Column(
-                  spacing: 10,
-                  children: [
-                    const Text(
-                      'Desactivar las notificaciones en cualquier momento en ajustes',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      padding: EdgeInsets.all(30),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(
-                            color: Colors.black12,
-                          )),
-                      child: Image.asset(
-                        'assets/icons/icono_campana_notificacion_156x156_activo.png',
-                        width: 40,
-                      ),
-                    ),
-                  ],
-                ),
-                title: '¡Recibe notificaciones!',
-                options: const [],
-                onOptionSelected: (probado) =>
-                    controller.probado.value = probado,
-                selectedOption: controller.probado.value,
-                onNext: controller.nextStep,
-              );
-            }),
-            Obx(
-              () {
-                controller.calificarApp();
+            //Dieta
+            paso_10(controller),
 
-                return Steep(
-                  enablePadding: true,
-                  isActivo: true.obs,
-                  title: 'Danos tu opinión',
-                  description: '¿Está satisfecho con nuestra aplicación?',
-                  options: const [],
-                  body: Scrollable(
-                    axisDirection: AxisDirection.down,
-                    viewportBuilder: (context, offset) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 30),
-                          Container(
-                            padding: const EdgeInsets.all(22),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black12),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: const Row(
-                              spacing: 5,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.star, color: Colors.black, size: 40),
-                                Icon(Icons.star, color: Colors.black, size: 40),
-                                Icon(Icons.star, color: Colors.black, size: 40),
-                                Icon(Icons.star, color: Colors.black, size: 40),
-                                Icon(Icons.star, color: Colors.black, size: 40),
-                              ],
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                  onOptionSelected: (entrenamiento) =>
-                      controller.entrenamiento.value = entrenamiento,
-                  selectedOption: controller.entrenamiento.value,
-                  onNext: controller.nextStep,
-                  enableScroll: true,
-                );
-              },
-            ),
-            Steep(
-              enablePadding: true,
-              isActivo: true.obs,
-              enableScroll: true,
-              title: '¿Qué hora te viene bien?',
-              options: [
-                ListTileModel(
-                  check: false,
-                  title: 'Desayuno',
-                  subtitle: 'Define la hora de tu desayuno',
-                  trailing: Row(
-                    spacing: 10,
-                    children: [
-                      Text(
-                        controller.formatTimeOfDay(controller.desayuno.value),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      RotatedBox(
-                        quarterTurns: 1,
-                        child: Icon(Icons.arrow_forward_ios),
-                      ),
-                    ],
-                  ),
-                ),
-                ListTileModel(
-                  check: false,
-                  title: 'Comida',
-                  subtitle: 'Define la hora de tu comida',
-                  trailing: Row(
-                    spacing: 10,
-                    children: [
-                      Text(
-                        controller.formatTimeOfDay(controller.comida.value),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      RotatedBox(
-                        quarterTurns: 1,
-                        child: Icon(Icons.arrow_forward_ios),
-                      ),
-                    ],
-                  ),
-                ),
-                ListTileModel(
-                  check: false,
-                  title: 'Cena',
-                  subtitle: 'Define la hora de tu cena',
-                  trailing: Row(
-                    spacing: 10,
-                    children: [
-                      Text(
-                        controller.formatTimeOfDay(controller.cena.value),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      RotatedBox(
-                        quarterTurns: 1,
-                        child: Icon(Icons.arrow_forward_ios),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              onOptionSelected: (value) {
-                if (value == 'Desayuno') {
-                  timePic.onChagueHorario(
-                    controller.desayuno.value,
-                    title: 'Desayuno',
-                    onSave: (TimeOfDay horaSeleccionada) {
-                      controller.desayuno.value = horaSeleccionada;
-                    },
-                  );
-                }
+            //Notificaciones
+            paso_11(controller),
 
-                if (value == 'Comida') {
-                  timePic.onChagueHorario(
-                    controller.comida.value,
-                    title: 'Comida',
-                    onSave: (TimeOfDay horaSeleccionada) {
-                      controller.comida.value = horaSeleccionada;
-                    },
-                  );
-                }
+            //Opiniones
+            paso_12(controller),
 
-                if (value == 'Cena') {
-                  timePic.onChagueHorario(
-                    controller.cena.value,
-                    title: 'Cena',
-                    onSave: (TimeOfDay horaSeleccionada) {
-                      controller.cena.value = horaSeleccionada;
-                    },
-                  );
-                }
-              },
-              selectedOption: controller.codigoController.value.text,
-              onNext: controller.nextStep,
-            ),
+            //Hora de notificaciones
+            paso_13(controller),
 
-            Steep(
-              enablePadding: true,
-              enableScroll: true,
-              isActivo: true.obs,
-              body: Column(
-                spacing: 50,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(30),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      border: Border.all(
-                        color: Colors.black12,
-                      ),
-                    ),
-                    child: Image.asset(
-                      'assets/icons/icono_usuarios_80x80_activo.png',
-                      width: 40,
-                    ),
-                  ),
-                  CustomTextFormField(
-                    focus: false,
-                    keyboardType: TextInputType.text,
-                    controller: controller.codigoController,
-                    onChanged: (p0) {
-                      controller.correo.value = p0;
-                    },
-                    label: 'Código de referencia',
-                  ),
-                ],
-              ),
-              enabledButtonSaltar: true,
-              title: '¿Tienes un código de referencia?',
-              options: const [],
-              selectedOption: controller.codigoController.value.text,
-              onNext: controller.nextStep,
-            ),
+            //Codigo de referencia
+            paso_14(controller),
 
-            Builder(builder: (context) {
-              controller.connectAppleHealth();
+            //Apple Health
+            if (GetPlatform.isIOS) paso_15(controller),
 
-              return Steep(
-                enablePadding: true,
-                isActivo: true.obs,
-                enableScroll: true,
-                body: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 20,
-                  children: [
-                    Image.asset(
-                      'assets/images/imagen_health_1125x1125_original (1).png',
-                      width: Get.width - 50,
-                    ),
-                    Text(
-                      'Macro Life realiza un seguimiento de tus ascensos y ajusta tus objetivos en consecuencia.',
-                      textAlign: TextAlign.center,
-                    )
-                  ],
-                ),
-                enabledButtonSaltar: true,
-                title: 'Conectar con Apple Health',
-                description:
-                    'puede cambiarlo en cualquier momento en la configuración',
-                options: const [],
-                selectedOption: controller.codigoController.value.text,
-                onNext: controller.nextStep,
-              );
-            }),
+            //Inicio de sesión
+            paso_16(controller),
 
-            Steep(
-              isActivo: true.obs,
-              body: Center(
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
-                    spacing: 25,
-                    children: [
-                      if (Platform.isIOS)
-                        SizedBox(
-                          width: Get.width,
-                          height: 50,
-                          child: ElevatedButton.icon(
-                            icon: Icon(FontAwesomeIcons.apple),
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  WidgetStateProperty.all(Colors.black),
-                              iconColor: WidgetStateProperty.all(Colors.white),
-                              foregroundColor:
-                                  WidgetStateProperty.all(Colors.white),
-                            ),
-                            onPressed: controller.signWithApple,
-                            label: Text('Iniciar sesión con Apple'),
-                          ),
-                        ),
-                      SizedBox(
-                        width: Get.width,
-                        height: 50,
-                        child: ElevatedButton.icon(
-                          icon: Icon(FontAwesomeIcons.google),
-                          style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStateProperty.all(Colors.black),
-                            iconColor: WidgetStateProperty.all(Colors.white),
-                            foregroundColor:
-                                WidgetStateProperty.all(Colors.white),
-                          ),
-                          onPressed: controller.signWithGoogle,
-                          label: Text('Iniciar sesión con Google'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              title: 'Crear una cuenta',
-              options: const [],
-              onOptionSelected: (nombre) {},
-              selectedOption: controller.correoController.value.text,
-              onNext: null,
-            ),
-            Obx(
-              () => Steep(
-                isActivo: true.obs,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      'assets/icons/confetti3.gif',
-                    ),
-                  ),
-                ),
-                body: Column(
-                  spacing: 20,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Gracias por confiar en nosotros',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 28,
-                        ),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 30),
-                      child: Text(
-                        'Prometemos mantener siempre su información personal privada y segura.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                title: '',
-                options: const [],
-                onOptionSelected: (probado) =>
-                    controller.probado.value = probado,
-                selectedOption: controller.probado.value,
-                onNext: () => controller.onRegistrarLoader(),
-              ),
-            ),
+            //Felicidades del registro
+            paso_17(controller),
 
-            Obx(
-              () => Stack(
-                children: [
-                  SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 7,
-                    ),
-                    child: Column(
-                      children: [
-                        ClipOval(
-                          child: Image.asset(
-                            'assets/icons/icono_check_genero_115x115_2025_negro (1).png',
-                            width: 40,
-                            height: 40,
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                        const Text(
-                          '¡Felicidades, tu plan personalizado está listo!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 23,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                        Text(
-                          'Tu objetivo es: ',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: Colors.grey[100],
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(15))),
-                          child: Text(
-                            (controller.peso.value -
-                                            controller.pesoDeseado.value)
-                                        .abs() ==
-                                    0
-                                ? 'Mantener tu peso'
-                                : '${controller.objetivo.value == 'Aumentar' ? 'Ganando' : 'Perdiendo'} ${(controller.peso.value - controller.pesoDeseado.value).abs()} Kg antes del ${controllerUsuario.usuario.value.fechaMetaObjetivo ?? ''}',
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                        Container(
-                          width: Get.width,
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                              color: Colors.grey[100],
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(15))),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Recomendación diaría Puedes',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const Text(
-                                'estar esto en cualquier momento',
-                              ),
-                              const SizedBox(height: 25),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Obx(
-                                    () => Recomendaciones(
-                                        imagen:
-                                            'assets/icons/icono_calorias_outline_120x120_activo.png',
-                                        title: 'Calorías',
-                                        puntaje:
-                                            '${controllerUsuario.usuario.value.macronutrientesDiario?.value.calorias ?? 0}',
-                                        onPressed: () {
-                                          Get.to(
-                                            () => EditarNutrientesScreen(
-                                              textField: 'Calorías',
-                                              // color: Colors.black,
-                                              imageUrl:
-                                                  'assets/icons/icono_calorias_outline_120x120_activo.png',
-                                              title:
-                                                  'Editar Objetivo de Calorías',
-                                              initialValue: controllerUsuario
-                                                      .usuario
-                                                      .value
-                                                      .macronutrientesDiario
-                                                      ?.value
-                                                      .calorias ??
-                                                  0,
-                                              onSave: (value) {
-                                                controllerUsuario
-                                                    .usuario
-                                                    .value
-                                                    .macronutrientesDiario
-                                                    ?.value
-                                                    .calorias = value;
-
-                                                Get.back();
-                                                controllerUsuario.usuario
-                                                    .refresh();
-                                              },
-                                            ),
-                                          );
-                                        }),
-                                  ),
-                                  Obx(
-                                    () => Recomendaciones(
-                                      imagen:
-                                          'assets/icons/icono_panintegral_outline_79x79_activo.png',
-                                      title: 'Carbohidratos',
-                                      puntaje:
-                                          '${controllerUsuario.usuario.value.macronutrientesDiario?.value.carbohidratos ?? 0}g',
-                                      onPressed: () {
-                                        Get.to(
-                                          () => EditarNutrientesScreen(
-                                            textField: 'Carbohidratos',
-                                            // color: Colors.orange,
-                                            imageUrl:
-                                                'assets/icons/icono_panintegral_outline_79x79_activo.png',
-                                            title:
-                                                'Editar Objetivo de Carbohidratos',
-                                            initialValue: controllerUsuario
-                                                    .usuario
-                                                    .value
-                                                    .macronutrientesDiario
-                                                    ?.value
-                                                    .carbohidratos ??
-                                                0,
-                                            onSave: (value) {
-                                              controllerUsuario
-                                                  .usuario
-                                                  .value
-                                                  .macronutrientesDiario
-                                                  ?.value
-                                                  .carbohidratos = value;
-
-                                              Get.back();
-                                              controllerUsuario.usuario
-                                                  .refresh();
-                                            },
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 25),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Obx(
-                                    () => Recomendaciones(
-                                        imagen:
-                                            'assets/icons/icono_filetecarne_outline_93x93_activo.png',
-                                        title: 'Proteínas',
-                                        puntaje:
-                                            '${controllerUsuario.usuario.value.macronutrientesDiario?.value.proteina ?? 0}g',
-                                        onPressed: () {
-                                          Get.to(
-                                            () => EditarNutrientesScreen(
-                                              textField: 'Proteínas',
-                                              // color: Colors.red,
-                                              imageUrl:
-                                                  'assets/icons/icono_filetecarne_outline_93x93_activo.png',
-                                              title:
-                                                  'Editar Objetivo de Proteínas',
-                                              initialValue: controllerUsuario
-                                                      .usuario
-                                                      .value
-                                                      .macronutrientesDiario
-                                                      ?.value
-                                                      .proteina ??
-                                                  0,
-                                              onSave: (value) {
-                                                controllerUsuario
-                                                    .usuario
-                                                    .value
-                                                    .macronutrientesDiario
-                                                    ?.value
-                                                    .proteina = value;
-
-                                                Get.back();
-                                                controllerUsuario.usuario
-                                                    .refresh();
-                                              },
-                                            ),
-                                          );
-                                        }),
-                                  ),
-                                  Obx(
-                                    () => Recomendaciones(
-                                      imagen:
-                                          'assets/icons/icono_almendra_outline_78x78_activo.png',
-                                      title: 'Grasas',
-                                      puntaje:
-                                          '${controllerUsuario.usuario.value.macronutrientesDiario?.value.grasas ?? 0}g',
-                                      onPressed: () {
-                                        Get.to(
-                                          () => EditarNutrientesScreen(
-                                            textField: 'Grasas',
-                                            imageUrl:
-                                                'assets/icons/icono_almendra_outline_78x78_activo.png',
-                                            title: 'Editar Objetivo de Grasas',
-                                            initialValue: controllerUsuario
-                                                    .usuario
-                                                    .value
-                                                    .macronutrientesDiario
-                                                    ?.value
-                                                    .grasas ??
-                                                0,
-                                            onSave: (value) {
-                                              controllerUsuario
-                                                  .usuario
-                                                  .value
-                                                  .macronutrientesDiario
-                                                  ?.value
-                                                  .grasas = value;
-
-                                              Get.back();
-                                              controllerUsuario.usuario
-                                                  .refresh();
-                                            },
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 25),
-                              Container(
-                                width: Get.width,
-                                padding: const EdgeInsets.all(12),
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          'assets/icons/icono_logros_alimenticios_outline_63x63_4.png',
-                                          width: 20,
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const SizedBox(width: 8),
-                                            const Text('Puntuación de salud'),
-                                            const SizedBox(height: 8),
-                                            SizedBox(
-                                              width: Get.width - 110,
-                                              child: LinearProgressIndicator(
-                                                value: controllerUsuario
-                                                        .usuario
-                                                        .value
-                                                        .puntuacionSalud! /
-                                                    10,
-                                                color: Colors.black,
-                                                backgroundColor:
-                                                    Colors.grey[100],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    Positioned(
-                                      top: 0,
-                                      right: 0,
-                                      child: Text(
-                                        '${controllerUsuario.usuario.value.puntuacionSalud!}/10',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // const SizedBox(height: 25),
-                        // Container(
-                        //   width: Get.width,
-                        //   padding: const EdgeInsets.all(12),
-                        //   decoration: BoxDecoration(
-                        //       color: Colors.grey[100],
-                        //       borderRadius:
-                        //           const BorderRadius.all(Radius.circular(15))),
-                        //   child: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       const Text(
-                        //         'Cómo alcanzar tus objetivos:',
-                        //         style: TextStyle(
-                        //           fontSize: 18,
-                        //           fontWeight: FontWeight.bold,
-                        //         ),
-                        //       ),
-                        //       const SizedBox(height: 15),
-                        //       objetivos(
-                        //           'assets/icons/icono_corazonrosa_50x50_nuevo.png',
-                        //           'Utilice puntuaciones de salud para mejorar su rutina.'),
-                        //       const SizedBox(height: 15),
-                        //       objetivos(
-                        //         'assets/icons/icono_almedraazul_74x70_nuevo.png',
-                        //         'Sigue tu comida.',
-                        //       ),
-                        //       const SizedBox(height: 15),
-                        //       objetivos(
-                        //           'assets/icons/icono_calorias_negro_99x117_nuevo.png',
-                        //           'Sigue tu recomendación diaria de calorías.'),
-                        //       const SizedBox(height: 15),
-                        //       objetivos(
-                        //           'assets/icons/icono_calendario_azul_94x104_nuevo.png',
-                        //           'Equilibra tus carbohidratos, proteínas y grasas.'),
-                        //       const SizedBox(height: 15),
-                        //     ],
-                        //   ),
-                        // ),
-                        const SizedBox(height: 75),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      color: Colors.grey[100],
-                      // width: Get.width - 20,
-                      child: CustomElevatedButton(
-                        message: 'Siguiente',
-                        function: () {
-                          FuncionesGlobales.actualizarMacronutrientes();
-                          Get.offAllNamed('/layout');
-                        },
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Steep(
-              isActivo: true.obs,
-              body: Center(
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
-                    spacing: 25,
-                    children: [
-                      if (Platform.isIOS)
-                        SizedBox(
-                          width: Get.width,
-                          height: 50,
-                          child: ElevatedButton.icon(
-                            icon: Icon(FontAwesomeIcons.apple),
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  WidgetStateProperty.all(Colors.black),
-                              iconColor: WidgetStateProperty.all(Colors.white),
-                              foregroundColor:
-                                  WidgetStateProperty.all(Colors.white),
-                            ),
-                            onPressed: controller.signWithApple,
-                            label: Text('Iniciar sesión con Apple'),
-                          ),
-                        ),
-                      SizedBox(
-                        width: Get.width,
-                        height: 50,
-                        child: ElevatedButton.icon(
-                          icon: Icon(FontAwesomeIcons.google),
-                          style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStateProperty.all(Colors.black),
-                            iconColor: WidgetStateProperty.all(Colors.white),
-                            foregroundColor:
-                                WidgetStateProperty.all(Colors.white),
-                          ),
-                          onPressed: controller.signWithGoogle,
-                          label: Text('Iniciar sesión con Google'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              title: 'Crear una cuenta',
-              options: const [],
-              onOptionSelected: (nombre) {},
-              selectedOption: controller.correoController.value.text,
-              onNext: null,
-            ),
+            //Plan muestra
+            paso_18(controller),
+            // paso_19(controller),
           ],
         ),
       ),
@@ -1371,15 +256,21 @@ class GeneroSelect extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(35),
             decoration: BoxDecoration(
-              color: selected == true ? Colors.white : Colors.white,
-              border: Border.all(
-                width: selected == true ? 2 : 1,
-                color: selected == true
-                    ? Colors.black
-                    : Color.fromARGB(255, 237, 237, 237),
-              ),
-              borderRadius: BorderRadius.circular(300),
-            ),
+                color: selected == true ? Colors.white : Colors.white,
+                border: Border.all(
+                  width: selected == true ? 2 : 1,
+                  color: selected == true
+                      ? Colors.black
+                      : Color.fromARGB(255, 237, 237, 237),
+                ),
+                borderRadius: BorderRadius.circular(300),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromARGB(255, 237, 237, 237),
+                    offset: Offset(0.1, 0.1),
+                    blurRadius: 0.0001,
+                  ),
+                ]),
             child: SizedBox(
               width: 78,
               height: 78,
@@ -1392,7 +283,7 @@ class GeneroSelect extends StatelessWidget {
                     height: 47,
                     color: selected == true
                         ? Colors.black
-                        : const Color.fromARGB(255, 246, 246, 246),
+                        : Color.fromARGB(255, 193, 193, 193),
                   ),
                   Text(
                     genero,
@@ -1401,7 +292,7 @@ class GeneroSelect extends StatelessWidget {
                       fontSize: 14,
                       color: selected == true
                           ? Colors.black
-                          : const Color.fromARGB(255, 246, 246, 246),
+                          : Color.fromARGB(255, 193, 193, 193),
                     ),
                   )
                 ],
@@ -1441,111 +332,51 @@ class Recomendaciones extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
-      child: Stack(
-        children: [
-          Container(
-            width: 155,
-            height: 180,
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+      child: Container(
+        width: Get.width * 0.4,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Color.fromARGB(255, 246, 246, 246)),
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 15),
-                    SizedBox(
-                      width: 80,
-                      height: 110,
-                      child: BarChart(
-                        BarChartData(
-                          barGroups: [
-                            BarChartGroupData(
-                              x: 1,
-                              barRods: [
-                                BarChartRodData(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(3)),
-                                  toY: 50,
-                                  fromY: 0,
-                                  color: Colors.black,
-                                  width: 35,
-                                  backDrawRodData: BackgroundBarChartRodData(
-                                    show: true,
-                                    toY: 100,
-                                    color: Colors.grey.shade200,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                          titlesData: FlTitlesData(
-                            show: false,
-                            leftTitles: AxisTitles(),
-                            bottomTitles:
-                                AxisTitles(drawBelowEverything: false),
-                            topTitles: AxisTitles(drawBelowEverything: false),
-                          ),
-                          gridData: FlGridData(
-                            show: false,
-                          ),
-                          borderData: FlBorderData(
-                            show: false,
-                          ),
-                          barTouchData: BarTouchData(
-                            enabled: false,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
                 Image.asset(
                   imagen,
                   width: 25,
-                )
+                ),
+                VerticalDivider(
+                  color: Colors.grey.shade800,
+                  width: 10,
+                ),
+                Column(
+                  children: [
+                    Text(
+                      puntaje,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      title,
+                      style: TextStyle(fontWeight: FontWeight.w300),
+                    ),
+                  ],
+                ),
               ],
             ),
-          ),
-          // Container(
-          //   width: 180,
-          //   height: 180,
-          //   padding: const EdgeInsets.all(10),
-          //   decoration: const BoxDecoration(
-          //     color: Colors.white,
-          //     borderRadius: BorderRadius.all(Radius.circular(15)),
-          //   ),
-          //   child: Column(
-          //     children: [
-          //       Text(title),
-          //       const SizedBox(height: 15),
-          //       CircularPercentIndicator(
-          //         radius: 45.0,
-          //         lineWidth: 5.0,
-          //         percent: 0.5, // Ajusta el valor de progreso
-          //         center: Text(
-          //           puntaje,
-          //         ),
-          //         progressColor: color, // Color del progreso
-          //         backgroundColor:
-          //             Colors.black12, // Color del fondo del círculo
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          const Positioned(
-            bottom: 35,
-            right: 10,
-            child: Icon(Icons.edit),
-          ),
-        ],
+            Container(
+              margin: const EdgeInsets.only(top: 15, bottom: 15),
+              child: LinearProgressIndicator(
+                backgroundColor: Colors.grey[200],
+                value: .5,
+                color: Colors.black,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -1562,9 +393,10 @@ class Steep extends StatelessWidget {
   final List<String>? selectedOptions;
   final VoidCallback? onNext;
   final BoxDecoration? decoration;
-  final bool? enableScroll; // Bandera para habilitar o deshabilitar el scroll
+  final bool? enableScroll;
   final bool? enablePadding;
   final bool? isBascula;
+  final bool? isRuler;
   final bool? enabledButtonSaltar;
   final RxBool isActivo;
   const Steep({
@@ -1577,58 +409,109 @@ class Steep extends StatelessWidget {
     this.selectedOption,
     required this.onNext,
     this.body,
-    this.enableScroll = false, // Inicializar la bandera
+    this.enableScroll = false,
     this.decoration,
     this.enablePadding = false,
     this.isBascula = false,
     this.selectedOptions,
     this.enabledButtonSaltar = false,
     required this.isActivo,
+    this.isRuler = false,
   });
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     backgroundColor: Colors.transparent,
+  //     body: enableScroll ?? false
+  //         ? SingleChildScrollView(
+  //             child: _buildContent(),
+  //           )
+  //         : _buildContent(),
+  //     extendBody: false,
+  //     bottomNavigationBar: Container(
+  //       margin: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+  //       child: Row(
+  //         spacing: 10,
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           if (enabledButtonSaltar == true)
+  //             Expanded(
+  //               child: Container(
+  //                 padding: const EdgeInsets.only(top: 10, bottom: 10),
+  //                 decoration: BoxDecoration(
+  //                     color: Colors.white,
+  //                     borderRadius: BorderRadius.circular(50),
+  //                     border: Border.all(
+  //                       color: Color.fromARGB(255, 237, 237, 237),
+  //                     )),
+  //                 child: TextButton(
+  //                   onPressed: onNext,
+  //                   child: Text(
+  //                     'Saltar',
+  //                     style: TextStyle(
+  //                         color: Colors.black, fontWeight: FontWeight.bold),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           Expanded(
+  //             child: buttonTest(textBTN ?? 'Siguiente', onNext, isActivo.value),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
   @override
   Widget build(BuildContext context) {
-    // Usar SingleChildScrollView solo si enableScroll es true
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: enableScroll ?? false
-          ? SingleChildScrollView(
-              // Envolver en un SingleChildScrollView si enableScroll es true
+    return Container(
+      margin: EdgeInsets.only(bottom: 30),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(left: 20, right: 20),
               child: _buildContent(),
-            )
-          : _buildContent(), // Si no, simplemente mostrar el contenido sin scroll
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-        child: Row(
-          spacing: 10,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (enabledButtonSaltar == true)
-              Expanded(
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    shadowColor: WidgetStateProperty.all(Colors.transparent),
-                    side: WidgetStateProperty.all(
-                      BorderSide(color: Colors.black12, width: 1.5),
-                    ),
-                    padding: WidgetStateProperty.all(
-                      const EdgeInsets.symmetric(vertical: 17),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 20, right: 20),
+            child: Row(
+              spacing: 10,
+              children: [
+                if (enabledButtonSaltar == true)
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border.all(
+                            color: Color.fromARGB(255, 237, 237, 237),
+                          )),
+                      child: TextButton(
+                        onPressed: onNext,
+                        child: Text(
+                          'Saltar',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ),
-                  onPressed: onNext,
-                  child: Text('Saltar'),
+                Expanded(
+                  child: buttonTest(
+                    textBTN ?? 'Siguiente',
+                    onNext,
+                    isActivo.value,
+                  ),
                 ),
-              ),
-            Expanded(
-                child:
-                    buttonTest(textBTN ?? 'Siguiente', onNext, isActivo.value)
-                // CustomElevatedButton(
-                //   message: textBTN ?? 'Siguiente',
-                //   function: onNext,
-                // ),
-                ),
-          ],
-        ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1636,19 +519,20 @@ class Steep extends StatelessWidget {
   // Método que construye todo el contenido
   Widget _buildContent() {
     return Container(
-      decoration: decoration,
+      // decoration: decoration,
       alignment: Alignment.center,
       margin: EdgeInsets.only(
           left: isBascula! ? 0 : 10, right: isBascula! ? 0 : 10),
-      // height: Get.height - 90,
       child: Column(
-        spacing: isBascula! ? 0 : 15,
+        spacing: isBascula! || isRuler! ? 0 : 15,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment:
             isBascula! ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+          Container(
+            padding: const EdgeInsets.only(
+              top: 10,
+            ),
             child: Column(
               children: [
                 if (title.isNotEmpty)
@@ -1658,7 +542,7 @@ class Steep extends StatelessWidget {
                     // maxLines: 2,
                     // overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontSize: 25,
+                      fontSize: 35,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1668,8 +552,6 @@ class Steep extends StatelessWidget {
                     child: Text(
                       description ?? '',
                       textAlign: TextAlign.center,
-                      // maxLines: 1,
-                      // overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w300,
@@ -1679,68 +561,105 @@ class Steep extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: enablePadding == true ? 12.0 : 0.0,
-              vertical: enablePadding == true ? 10 : 0.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                body != null ? body! : Container(),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12.0,
-              vertical: 10,
-            ),
-            child: Column(
-              spacing: 15,
-              children: [
-                ...options.map(
-                  (option) => Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        // decoration: BoxDecoration(
-                        //   color: Colors.transparent,
-                        //   boxShadow: [
-                        //     BoxShadow(
-                        //         color: Colors.black,
-                        //         offset: Offset(1, 1),
-                        //         blurRadius: 1)
-                        //   ],
-                        // ),
-                        child: CustomElevatedSelected(
-                          check: option.check,
-                          message: option.title ?? '',
-                          icon: option.icon,
-                          widget: option.leading,
-                          subtitle: option.subtitle,
-                          trailing: option.trailing,
-                          function: () {
-                            if (onOptionSelected != null) {
-                              onOptionSelected!(option.title ?? '');
-                            }
-                          },
-                          activo: selectedOption == option.title ||
-                              (selectedOptions?.contains(option.title) ??
-                                  false),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (options.length > 2) const SizedBox(height: 10)
-              ],
-            ),
-          ),
+          // if (body != null)
+          //   Container(
+          //     padding: EdgeInsets.symmetric(
+          //       horizontal: enablePadding == true ? 12.0 : 0.0,
+          //       vertical: enablePadding == true ? 10 : 0.0,
+          //     ),
+          //     child: Column(
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: [
+          //         body != null ? body! : Container(),
+          //       ],
+          //     ),
+          //   ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(
+          //     horizontal: 12.0,
+          //     vertical: 10,
+          //   ),
+          //   child: Column(
+          //     spacing: 15,
+          //     children: [
+          //       ...options.map(
+          //         (option) => Column(
+          //           children: [
+          //             Container(
+          //               margin: const EdgeInsets.only(bottom: 20),
+          //               child: CustomElevatedSelected(
+          //                 check: option.check,
+          //                 message: option.title ?? '',
+          //                 icon: option.icon,
+          //                 widget: option.leading,
+          //                 subtitle: option.subtitle,
+          //                 trailing: option.trailing,
+          //                 function: () {
+          //                   if (onOptionSelected != null) {
+          //                     onOptionSelected!(option.title ?? '');
+          //                   }
+          //                 },
+          //                 activo: selectedOption == option.title ||
+          //                     (selectedOptions?.contains(option.title) ??
+          //                         false),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //       if (options.length > 2) const SizedBox(height: 10)
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );
   }
+
+  // Widget _buildContent() {
+  //   return Column(
+  //     mainAxisAlignment: MainAxisAlignment.start,
+  //     children: [
+  //       if (title.isNotEmpty)
+  //         Container(
+  //           margin: const EdgeInsets.only(top: 10),
+  //           child: Text(
+  //             title,
+  //             textAlign: TextAlign.center,
+  //             // maxLines: 1,
+  //             // overflow: TextOverflow.ellipsis,
+  //             style: const TextStyle(
+  //               fontSize: 35,
+  //               fontWeight: FontWeight.bold,
+  //             ),
+  //           ),
+  //         ),
+  //       Column(
+  //         children: List.generate(options.length, (index) {
+  //           var option = options[index];
+  //           return Container(
+  //             margin: const EdgeInsets.only(bottom: 20),
+  //             child: CustomElevatedSelected(
+  //               check: option.check,
+  //               message: option.title ?? '',
+  //               icon: option.icon,
+  //               widget: option.leading,
+  //               subtitle: option.subtitle,
+  //               trailing: option.trailing,
+  //               function: () {
+  //                 if (onOptionSelected != null) {
+  //                   onOptionSelected!(option.title ?? '');
+  //                 }
+  //               },
+  //               activo: selectedOption == option.title ||
+  //                   (selectedOptions?.contains(option.title) ?? false),
+  //             ),
+  //           );
+  //         }),
+  //       )
+  //     ],
+  //   );
+  // }
 }
 
 Widget cintaMedirWidget({

@@ -21,7 +21,7 @@ Widget paso_5(RegistroPasosController controller) {
             ),
           ],
         ),
-        title: '¿Cuántos años tiene?',
+        title: '¿Cuántos años tienes?',
         description:
             'Utilizamos esta información para crear su perfil personalizado',
         options: const [],

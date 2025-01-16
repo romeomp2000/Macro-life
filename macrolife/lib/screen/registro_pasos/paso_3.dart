@@ -8,21 +8,24 @@ Widget paso_3(RegistroPasosController controller) {
   return SizedBox(
     child: Obx(
       () => Steep(
-        title: '¿Has probado otras aplicaciones de seguimiento de calorías?',
+        title: '¿Has probado otras apps de seguimiento de calorías?',
         options: [],
         isActivo: controller.isOtraApp,
         enableScroll: true,
         body: Column(
           spacing: 20,
           children: [
-            GeneroSelect(
-              selected: controller.probado.value == 'Si',
-              onTap: () {
-                controller.isOtraApp.value = true;
-                controller.probado.value = 'Si';
-              },
-              genero: 'Si',
-              icon: 'assets/icons/icono_like_137x137_01_activo.png',
+            Container(
+              margin: const EdgeInsets.only(top: 20),
+              child: GeneroSelect(
+                selected: controller.probado.value == 'Si',
+                onTap: () {
+                  controller.isOtraApp.value = true;
+                  controller.probado.value = 'Si';
+                },
+                genero: 'Si',
+                icon: 'assets/icons/icono_like_137x137_01_activo.png',
+              ),
             ),
             GeneroSelect(
               selected: controller.probado.value == 'No',

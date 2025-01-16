@@ -9,13 +9,14 @@ Widget paso_4(RegistroPasosController controller) {
     child: Obx(
       () => Steep(
         enablePadding: true,
+        enableScroll: true,
         isActivo: true.obs,
         body: Column(
-          spacing: 20,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Image.asset(
               'assets/icons/icono_circulo_estrella_217x217_activo.png',
-              width: 65,
+              width: 80,
             ),
             GifView.asset(
               'assets/gifs/grafica_inicial_902x474.gif',
@@ -26,11 +27,18 @@ Widget paso_4(RegistroPasosController controller) {
               fadeDuration: Duration(seconds: 1),
             ),
             Container(
-              margin: const EdgeInsets.only(top: 60),
+              margin: const EdgeInsets.only(
+                top: 70,
+                left: 30,
+                right: 30,
+              ),
               child: Text(
                 'Según los datos de Macro Life, la pérdida de peso es un proceso integral basado en dieta, ejercicio y hábitos saludables.',
-                textAlign: TextAlign.justify,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
                 style: TextStyle(
+                  fontSize: 15,
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
                 ),

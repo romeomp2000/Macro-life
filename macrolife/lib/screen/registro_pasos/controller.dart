@@ -21,6 +21,7 @@ class RegistroPasosController extends GetxController {
   RxBool isObjetivoPeso = false.obs;
 
   RxBool isConseguir = false.obs;
+  RxBool isDieta = false.obs;
 
   void signWithApple() async {
     try {
