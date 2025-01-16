@@ -66,7 +66,10 @@ class RegistroScreen extends StatelessWidget {
                             mode: LaunchMode.externalApplication);
                       },
                       child: Text(
-                        'Términos y condiciones',
+                        'Términos y condiciones'.length > 14
+                            ? '${'Términos y condiciones'.substring(0, 14)}...'
+                            : 'Términos y condiciones',
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -78,7 +81,9 @@ class RegistroScreen extends StatelessWidget {
                             mode: LaunchMode.externalApplication);
                       },
                       child: Text(
-                        'Aviso de privacidad',
+                        'Aviso de privacidad'.length > 14
+                            ? '${'Aviso de privacidad'.substring(0, 14)}...'
+                            : 'Aviso de privacidad',
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
                     )

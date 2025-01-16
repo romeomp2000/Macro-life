@@ -12,7 +12,7 @@ Widget paso_4(RegistroPasosController controller) {
         enableScroll: true,
         isActivo: true.obs,
         body: Column(
-          spacing: 20,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Image.asset(
               'assets/icons/icono_circulo_estrella_217x217_activo.png',
@@ -28,7 +28,7 @@ Widget paso_4(RegistroPasosController controller) {
             ),
             Container(
               margin: const EdgeInsets.only(
-                top: 110,
+                top: 70,
                 left: 30,
                 right: 30,
               ),

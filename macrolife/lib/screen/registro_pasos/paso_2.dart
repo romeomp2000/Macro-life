@@ -12,8 +12,7 @@ Widget paso_2(RegistroPasosController controller) {
         enableScroll: true,
         isActivo: controller.isNivelActividad,
         title: 'Seleccione el nivel de actividad',
-        description:
-            'Utilizamos esta información para crear su perfil personalizado',
+        description: 'Utilizamos esta información para crear tu perfil',
         options: [
           ListTileModel(
             title: 'Mínimo',

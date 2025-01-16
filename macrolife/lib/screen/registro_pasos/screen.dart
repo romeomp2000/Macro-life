@@ -471,7 +471,10 @@ class Steep extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Expanded(
-            child: _buildContent(),
+            child: Container(
+              margin: EdgeInsets.only(left: 20, right: 20),
+              child: _buildContent(),
+            ),
           ),
           Container(
             margin: EdgeInsets.only(left: 20, right: 20),
@@ -516,7 +519,7 @@ class Steep extends StatelessWidget {
   // Método que construye todo el contenido
   Widget _buildContent() {
     return Container(
-      decoration: decoration,
+      // decoration: decoration,
       alignment: Alignment.center,
       margin: EdgeInsets.only(
           left: isBascula! ? 0 : 10, right: isBascula! ? 0 : 10),
@@ -527,7 +530,9 @@ class Steep extends StatelessWidget {
             isBascula! ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+            padding: const EdgeInsets.only(
+              top: 10,
+            ),
             child: Column(
               children: [
                 if (title.isNotEmpty)
@@ -556,59 +561,105 @@ class Steep extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: enablePadding == true ? 12.0 : 0.0,
-              vertical: enablePadding == true ? 10 : 0.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                body != null ? body! : Container(),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12.0,
-              vertical: 10,
-            ),
-            child: Column(
-              spacing: 15,
-              children: [
-                ...options.map(
-                  (option) => Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        child: CustomElevatedSelected(
-                          check: option.check,
-                          message: option.title ?? '',
-                          icon: option.icon,
-                          widget: option.leading,
-                          subtitle: option.subtitle,
-                          trailing: option.trailing,
-                          function: () {
-                            if (onOptionSelected != null) {
-                              onOptionSelected!(option.title ?? '');
-                            }
-                          },
-                          activo: selectedOption == option.title ||
-                              (selectedOptions?.contains(option.title) ??
-                                  false),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (options.length > 2) const SizedBox(height: 10)
-              ],
-            ),
-          ),
+          // if (body != null)
+          //   Container(
+          //     padding: EdgeInsets.symmetric(
+          //       horizontal: enablePadding == true ? 12.0 : 0.0,
+          //       vertical: enablePadding == true ? 10 : 0.0,
+          //     ),
+          //     child: Column(
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: [
+          //         body != null ? body! : Container(),
+          //       ],
+          //     ),
+          //   ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(
+          //     horizontal: 12.0,
+          //     vertical: 10,
+          //   ),
+          //   child: Column(
+          //     spacing: 15,
+          //     children: [
+          //       ...options.map(
+          //         (option) => Column(
+          //           children: [
+          //             Container(
+          //               margin: const EdgeInsets.only(bottom: 20),
+          //               child: CustomElevatedSelected(
+          //                 check: option.check,
+          //                 message: option.title ?? '',
+          //                 icon: option.icon,
+          //                 widget: option.leading,
+          //                 subtitle: option.subtitle,
+          //                 trailing: option.trailing,
+          //                 function: () {
+          //                   if (onOptionSelected != null) {
+          //                     onOptionSelected!(option.title ?? '');
+          //                   }
+          //                 },
+          //                 activo: selectedOption == option.title ||
+          //                     (selectedOptions?.contains(option.title) ??
+          //                         false),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //       if (options.length > 2) const SizedBox(height: 10)
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );
   }
+
+  // Widget _buildContent() {
+  //   return Column(
+  //     mainAxisAlignment: MainAxisAlignment.start,
+  //     children: [
+  //       if (title.isNotEmpty)
+  //         Container(
+  //           margin: const EdgeInsets.only(top: 10),
+  //           child: Text(
+  //             title,
+  //             textAlign: TextAlign.center,
+  //             // maxLines: 1,
+  //             // overflow: TextOverflow.ellipsis,
+  //             style: const TextStyle(
+  //               fontSize: 35,
+  //               fontWeight: FontWeight.bold,
+  //             ),
+  //           ),
+  //         ),
+  //       Column(
+  //         children: List.generate(options.length, (index) {
+  //           var option = options[index];
+  //           return Container(
+  //             margin: const EdgeInsets.only(bottom: 20),
+  //             child: CustomElevatedSelected(
+  //               check: option.check,
+  //               message: option.title ?? '',
+  //               icon: option.icon,
+  //               widget: option.leading,
+  //               subtitle: option.subtitle,
+  //               trailing: option.trailing,
+  //               function: () {
+  //                 if (onOptionSelected != null) {
+  //                   onOptionSelected!(option.title ?? '');
+  //                 }
+  //               },
+  //               activo: selectedOption == option.title ||
+  //                   (selectedOptions?.contains(option.title) ?? false),
+  //             ),
+  //           );
+  //         }),
+  //       )
+  //     ],
+  //   );
+  // }
 }
 
 Widget cintaMedirWidget({
