@@ -417,7 +417,6 @@ class HealthDataChart extends StatelessWidget {
                   Image.asset(
                     'assets/icons/icono_corazonrosa_50x50_nuevo.png',
                     width: 20,
-                    color: Colors.black,
                   ),
                   const SizedBox(width: 12),
                   Column(
@@ -432,7 +431,7 @@ class HealthDataChart extends StatelessWidget {
                           value:
                               controllerUsuario.usuario.value.puntuacionSalud! /
                                   10,
-                          color: Colors.black,
+                          color: Colors.amber,
                           backgroundColor: Colors.grey[100],
                         ),
                       )

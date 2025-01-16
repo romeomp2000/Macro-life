@@ -34,442 +34,27 @@ class NutricionScreen extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               width: Get.width,
               height: 550,
+            ),
+          if (controller.alimento.value.imageUrl != null)
+            DraggableScrollableSheet(
+              snap: false,
+              initialChildSize: 0.63,
+              minChildSize: 0.63,
+              maxChildSize: 1,
+              builder: (context, scrollController) {
+                return contenido(
+                  scrollController: scrollController,
+                  controller: controller,
+                  controllerCalendario: controllerCalendario,
+                );
+              },
             )
           else
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.black,
-              ),
-              padding: EdgeInsets.all(20),
-              height: 400,
-              width: Get.width,
-              child: Image.asset(
-                'assets/icons/logo_macro_life_1125x207.png',
-                color: Colors.white,
-              ),
+            contenido(
+              scrollController: ScrollController(),
+              controller: controller,
+              controllerCalendario: controllerCalendario,
             ),
-          DraggableScrollableSheet(
-            snap: false,
-            initialChildSize:
-                controller.alimento.value.imageUrl != null ? 0.5 : 0.89,
-            minChildSize: 0.5,
-            maxChildSize: 0.89,
-            builder: (context, scrollController) {
-              return Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                ),
-                child: SingleChildScrollView(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  controller: scrollController,
-                  child: Column(
-                    spacing: 15,
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Obx(
-                            () => IconButton(
-                              onPressed: () =>
-                                  controller.actualizarFavoritoAlimento(),
-                              icon: controller.alimento.value.favorito == true
-                                  ? const Icon(Icons.bookmark)
-                                  : const Icon(Icons.bookmark_border),
-                            ),
-                          ),
-                          Text(controller.alimento.value.time ?? '')
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: GestureDetector(
-                              onTap: () async {
-                                final nombreRaname = await Get.to(
-                                  () => IngredienteEditarNombreScreen(
-                                    nombre:
-                                        controller.alimento.value.name ?? '',
-                                    id: controller.alimento.value.id ?? '',
-                                  ),
-                                );
-
-                                if (nombreRaname != null) {
-                                  controller.alimento.value.name =
-                                      nombreRaname!;
-                                  controller.alimento.refresh();
-                                }
-                              },
-                              child: Obx(
-                                () => Text(
-                                  '${controller.alimento.value.name}${controller.alimento.value.porcion != 1 ? ' x${controller.alimento.value.porcion}' : ''}',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  overflow: TextOverflow.clip,
-                                  softWrap: true,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.black, width: 1.0),
-                              borderRadius:
-                                  BorderRadius.circular(20), // Borde redondeado
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.remove),
-                                  onPressed: () {
-                                    if (controller.alimento.value.porcion ==
-                                        0.0) return;
-                                    if (controller.alimento.value.porcion ==
-                                        0.25) return;
-
-                                    controller.alimento.update((alimento) {
-                                      if (alimento != null) {
-                                        double caloriasUnitaria = (controller
-                                                    .alimento.value.calories ??
-                                                0) /
-                                            (alimento.porcion ?? 0);
-
-                                        double proteinaUnitaria = (controller
-                                                    .alimento.value.calories ??
-                                                0) /
-                                            (alimento.porcion ?? 0);
-
-                                        double carbohidratosUnitaria =
-                                            (controller.alimento.value.carbs ??
-                                                    0) /
-                                                (alimento.porcion ?? 0);
-
-                                        double grasaUnitaria =
-                                            (controller.alimento.value.fats ??
-                                                    0) /
-                                                (alimento.porcion ?? 0);
-
-                                        if (alimento.porcion! == 0.25) {
-                                          alimento.porcion =
-                                              alimento.porcion! - 0.25;
-                                        } else if (alimento.porcion! == 0.5) {
-                                          alimento.porcion =
-                                              alimento.porcion! - 0.25;
-                                        } else {
-                                          alimento.porcion =
-                                              alimento.porcion! - 0.5;
-                                        }
-
-                                        double nuevoCaloria =
-                                            (alimento.porcion ?? 0) *
-                                                (caloriasUnitaria);
-
-                                        double nuevoProteina =
-                                            (alimento.porcion ?? 0) *
-                                                (proteinaUnitaria);
-
-                                        double nuevoCarbohidratoss =
-                                            (alimento.porcion ?? 0) *
-                                                (carbohidratosUnitaria);
-
-                                        double nuevoGrasas =
-                                            (alimento.porcion ?? 0) *
-                                                (grasaUnitaria);
-
-                                        controller.alimento.value.calories =
-                                            nuevoCaloria.toInt();
-
-                                        controller.alimento.value.protein =
-                                            nuevoProteina.toInt();
-
-                                        controller.alimento.value.carbs =
-                                            nuevoCarbohidratoss.toInt();
-
-                                        controller.alimento.value.fats =
-                                            nuevoGrasas.toInt();
-
-                                        // controller.editarAlimento();
-                                      }
-                                    });
-                                  },
-                                  iconSize: 18,
-                                ),
-                                Obx(
-                                  () => Text(
-                                    '${controller.alimento.value.porcion}',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.add),
-                                  onPressed: () {
-                                    controller.alimento.update((alimento) {
-                                      double caloriasUnitaria =
-                                          (controller.alimento.value.calories ??
-                                                  0) /
-                                              (alimento?.porcion ?? 0);
-
-                                      double proteinaUnitaria =
-                                          (controller.alimento.value.calories ??
-                                                  0) /
-                                              (alimento?.porcion ?? 0);
-
-                                      double carbohidratosUnitaria =
-                                          (controller.alimento.value.carbs ??
-                                                  0) /
-                                              (alimento?.porcion ?? 0);
-
-                                      double grasaUnitaria =
-                                          (controller.alimento.value.fats ??
-                                                  0) /
-                                              (alimento?.porcion ?? 0);
-
-                                      if (alimento != null) {
-                                        if (alimento.porcion! == 0.25) {
-                                          alimento.porcion =
-                                              alimento.porcion! + 0.25;
-                                        } else if (alimento.porcion! == 0.5) {
-                                          alimento.porcion =
-                                              alimento.porcion! + 0.5;
-                                        } else {
-                                          alimento.porcion =
-                                              alimento.porcion! + 0.5;
-                                        }
-
-                                        double nuevoCaloria =
-                                            (alimento.porcion ?? 0) *
-                                                (caloriasUnitaria);
-
-                                        double nuevoProteina =
-                                            (alimento.porcion ?? 0) *
-                                                (proteinaUnitaria);
-
-                                        double nuevoCarbohidratoss =
-                                            (alimento.porcion ?? 0) *
-                                                (carbohidratosUnitaria);
-
-                                        double nuevoGrasas =
-                                            (alimento.porcion ?? 0) *
-                                                (grasaUnitaria);
-
-                                        controller.alimento.value.calories =
-                                            nuevoCaloria.toInt();
-
-                                        controller.alimento.value.protein =
-                                            nuevoProteina.toInt();
-
-                                        controller.alimento.value.carbs =
-                                            nuevoCarbohidratoss.toInt();
-
-                                        controller.alimento.value.fats =
-                                            nuevoGrasas.toInt();
-                                        // controller.editarAlimento();
-                                      }
-                                    });
-                                  },
-                                  iconSize: 18,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 15),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black12,
-                            width: 1.2,
-                          ),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: CupertinoListTile(
-                          title: const Text('Calorías'),
-                          subtitle: Obx(
-                            () => Text(
-                              '${controller.alimento.value.calories}',
-                              style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          trailing: const Icon(
-                            Icons.edit,
-                            color: Colors.black87,
-                          ),
-                          leadingSize: 25,
-                          leading: Image.asset(
-                            'assets/icons/icono_calorias_outline_120x120_activo.png',
-                            width: Get.width,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Obx(
-                            () => NutritionalInfoRow(
-                              icon: Image.asset(
-                                'assets/icons/icono_filetecarne_outline_93x93_activo.png',
-                                width: 13,
-                              ),
-                              label: 'Proteína',
-                              value: '${controller.alimento.value.protein}g',
-                            ),
-                          ),
-                          Obx(
-                            () => NutritionalInfoRow(
-                              icon: Image.asset(
-                                'assets/icons/icono_panintegral_outline_79x79_activo.png',
-                                width: 13,
-                              ),
-                              label: 'Carbohidratos',
-                              value: '${controller.alimento.value.carbs}g',
-                            ),
-                          ),
-                          Obx(
-                            () => NutritionalInfoRow(
-                              icon: Image.asset(
-                                'assets/icons/icono_almendra_outline_78x78_activo.png',
-                                width: 13,
-                              ),
-                              label: 'Grasas',
-                              value: '${controller.alimento.value.fats}g',
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (controller.alimento.value.puntuacionSalud?.score != 0)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 15),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black12, // Color del borde
-                              width: 1.2, // Grosor del borde
-                            ),
-                            borderRadius: BorderRadius.circular(
-                                15), // Borde redondeado para todo el contenedor
-                          ),
-                          child: CupertinoListTile(
-                            onTap: () => Get.to(
-                              () => PuntuacionSaludScreen(
-                                  puntuacion: controller
-                                      .alimento.value.puntuacionSalud!),
-                            ),
-                            title: const Text('Puntuación de salud'),
-                            subtitle: LinearProgressIndicator(
-                              backgroundColor: Colors.grey[200],
-                              value: ((controller.alimento.value.puntuacionSalud
-                                              ?.score ??
-                                          0) as num)
-                                      .toDouble() *
-                                  0.1,
-                              color: Colors.black,
-                            ),
-                            trailing: Text(
-                              '${controller.alimento.value.puntuacionSalud?.score}/10',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                            leadingSize: 25,
-                            leading: Image.asset(
-                              'assets/icons/icono_logros_alimenticios_outline_63x63_4.png',
-                            ),
-                          ),
-                        ),
-                      if (controller.alimento.value.ingredientes?.isNotEmpty ??
-                          false)
-                        const Text(
-                          'Ingredientes',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      Obx(
-                        () => Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: [
-                            if (controller.alimento.value.ingredientes != null)
-                              for (var ingrediente
-                                  in controller.alimento.value.ingredientes!)
-                                GestureDetector(
-                                  onTap: () async {
-                                    if (ingrediente.eliminado == true) {
-                                      try {
-                                        final apiService = ApiService();
-
-                                        final response =
-                                            await apiService.fetchData(
-                                          'alimentos/agregar-ingrediente/${ingrediente.id}',
-                                          body: {},
-                                          method: Method.PUT,
-                                        );
-
-                                        final AlimentoModel alimentoResponse =
-                                            AlimentoModel.fromJson(
-                                                response['alimento']);
-
-                                        controller.alimento.value =
-                                            alimentoResponse;
-                                        controller.alimento.refresh();
-
-                                        controllerCalendario.cargaAlimentos();
-                                      } catch (e) {
-                                        print(e);
-                                      }
-                                    } else {
-                                      final respuesta = await Get.to(
-                                        () => IngredienteEditarScreen(
-                                          ingrediente: ingrediente,
-                                        ),
-                                      );
-
-                                      if (respuesta != null) {
-                                        AlimentoModel alimentoRespuesta =
-                                            respuesta['alimento'];
-
-                                        controller.alimento.value =
-                                            alimentoRespuesta;
-                                        controllerCalendario.cargaAlimentos();
-                                        controller.alimento.refresh();
-                                      }
-                                    }
-                                  },
-                                  child: NutritionalInfoRow(
-                                    label: '${ingrediente.nombre}',
-                                    value: '${ingrediente.calorias?.floor()}g',
-                                    eliminado: ingrediente.eliminado,
-                                  ),
-                                ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 120),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
           Positioned(
             top: Get.height - 94,
             child: Container(
@@ -641,6 +226,390 @@ class NutricionScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Container contenido({
+    ScrollController? scrollController,
+    required NutricionController controller,
+    required WeeklyCalendarController controllerCalendario,
+  }) {
+    return Container(
+      margin: EdgeInsets.only(top: scrollController == null ? 0 : 70),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        controller: scrollController,
+        child: Column(
+          spacing: 10,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              child: Row(
+                children: [
+                  Obx(
+                    () => IconButton(
+                      onPressed: () => controller.actualizarFavoritoAlimento(),
+                      icon: controller.alimento.value.favorito == true
+                          ? const Icon(Icons.bookmark)
+                          : const Icon(Icons.bookmark_border),
+                    ),
+                  ),
+                  Text(controller.alimento.value.time ?? '')
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: GestureDetector(
+                    onTap: () async {
+                      final nombreRaname = await Get.to(
+                        () => IngredienteEditarNombreScreen(
+                          nombre: controller.alimento.value.name ?? '',
+                          id: controller.alimento.value.id ?? '',
+                        ),
+                      );
+
+                      if (nombreRaname != null) {
+                        controller.alimento.value.name = nombreRaname!;
+                        controller.alimento.refresh();
+                      }
+                    },
+                    child: Obx(
+                      () => Text(
+                        '${controller.alimento.value.name}${controller.alimento.value.porcion != 1 ? ' x${controller.alimento.value.porcion}' : ''}',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.clip,
+                        softWrap: true,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 1.0),
+                    borderRadius: BorderRadius.circular(20), // Borde redondeado
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: () {
+                          if (controller.alimento.value.porcion == 0.0) return;
+                          if (controller.alimento.value.porcion == 0.25) return;
+
+                          controller.alimento.update((alimento) {
+                            if (alimento != null) {
+                              double caloriasUnitaria =
+                                  (controller.alimento.value.calories ?? 0) /
+                                      (alimento.porcion ?? 0);
+
+                              double proteinaUnitaria =
+                                  (controller.alimento.value.calories ?? 0) /
+                                      (alimento.porcion ?? 0);
+
+                              double carbohidratosUnitaria =
+                                  (controller.alimento.value.carbs ?? 0) /
+                                      (alimento.porcion ?? 0);
+
+                              double grasaUnitaria =
+                                  (controller.alimento.value.fats ?? 0) /
+                                      (alimento.porcion ?? 0);
+
+                              if (alimento.porcion! == 0.25) {
+                                alimento.porcion = alimento.porcion! - 0.25;
+                              } else if (alimento.porcion! == 0.5) {
+                                alimento.porcion = alimento.porcion! - 0.25;
+                              } else {
+                                alimento.porcion = alimento.porcion! - 0.5;
+                              }
+
+                              double nuevoCaloria =
+                                  (alimento.porcion ?? 0) * (caloriasUnitaria);
+
+                              double nuevoProteina =
+                                  (alimento.porcion ?? 0) * (proteinaUnitaria);
+
+                              double nuevoCarbohidratoss =
+                                  (alimento.porcion ?? 0) *
+                                      (carbohidratosUnitaria);
+
+                              double nuevoGrasas =
+                                  (alimento.porcion ?? 0) * (grasaUnitaria);
+
+                              controller.alimento.value.calories =
+                                  nuevoCaloria.toInt();
+
+                              controller.alimento.value.protein =
+                                  nuevoProteina.toInt();
+
+                              controller.alimento.value.carbs =
+                                  nuevoCarbohidratoss.toInt();
+
+                              controller.alimento.value.fats =
+                                  nuevoGrasas.toInt();
+                            }
+                          });
+                        },
+                        iconSize: 18,
+                      ),
+                      Obx(
+                        () => Text(
+                          '${controller.alimento.value.porcion}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () {
+                          controller.alimento.update((alimento) {
+                            double caloriasUnitaria =
+                                (controller.alimento.value.calories ?? 0) /
+                                    (alimento?.porcion ?? 0);
+
+                            double proteinaUnitaria =
+                                (controller.alimento.value.calories ?? 0) /
+                                    (alimento?.porcion ?? 0);
+
+                            double carbohidratosUnitaria =
+                                (controller.alimento.value.carbs ?? 0) /
+                                    (alimento?.porcion ?? 0);
+
+                            double grasaUnitaria =
+                                (controller.alimento.value.fats ?? 0) /
+                                    (alimento?.porcion ?? 0);
+
+                            if (alimento != null) {
+                              if (alimento.porcion! == 0.25) {
+                                alimento.porcion = alimento.porcion! + 0.25;
+                              } else if (alimento.porcion! == 0.5) {
+                                alimento.porcion = alimento.porcion! + 0.5;
+                              } else {
+                                alimento.porcion = alimento.porcion! + 0.5;
+                              }
+
+                              double nuevoCaloria =
+                                  (alimento.porcion ?? 0) * (caloriasUnitaria);
+
+                              double nuevoProteina =
+                                  (alimento.porcion ?? 0) * (proteinaUnitaria);
+
+                              double nuevoCarbohidratoss =
+                                  (alimento.porcion ?? 0) *
+                                      (carbohidratosUnitaria);
+
+                              double nuevoGrasas =
+                                  (alimento.porcion ?? 0) * (grasaUnitaria);
+
+                              controller.alimento.value.calories =
+                                  nuevoCaloria.toInt();
+
+                              controller.alimento.value.protein =
+                                  nuevoProteina.toInt();
+
+                              controller.alimento.value.carbs =
+                                  nuevoCarbohidratoss.toInt();
+
+                              controller.alimento.value.fats =
+                                  nuevoGrasas.toInt();
+                              // controller.editarAlimento();
+                            }
+                          });
+                        },
+                        iconSize: 18,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 15),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black12,
+                  width: 1.2,
+                ),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: CupertinoListTile(
+                title: const Text('Calorías'),
+                subtitle: Obx(
+                  () => Text(
+                    '${controller.alimento.value.calories}',
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                trailing: const Icon(
+                  Icons.edit,
+                  color: Colors.black87,
+                ),
+                leadingSize: 25,
+                leading: Image.asset(
+                  'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                  width: Get.width,
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Obx(
+                  () => NutritionalInfoRow(
+                    icon: Image.asset(
+                      'assets/icons/icono_filetecarne_90x69_nuevo.png',
+                      width: 13,
+                    ),
+                    label: 'Proteína',
+                    value: '${controller.alimento.value.protein}g',
+                  ),
+                ),
+                Obx(
+                  () => NutritionalInfoRow(
+                    icon: Image.asset(
+                      'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
+                      width: 13,
+                    ),
+                    label: 'Carbohidratos',
+                    value: '${controller.alimento.value.carbs}g',
+                  ),
+                ),
+                Obx(
+                  () => NutritionalInfoRow(
+                    icon: Image.asset(
+                      'assets/icons/icono_almedraazul_74x70_nuevo.png',
+                      width: 13,
+                    ),
+                    label: 'Grasas',
+                    value: '${controller.alimento.value.fats}g',
+                  ),
+                ),
+              ],
+            ),
+            if (controller.alimento.value.puntuacionSalud?.score != 0)
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 0, vertical: 15),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black12, // Color del borde
+                    width: 1.2, // Grosor del borde
+                  ),
+                  borderRadius: BorderRadius.circular(
+                      15), // Borde redondeado para todo el contenedor
+                ),
+                child: CupertinoListTile(
+                  onTap: () => Get.to(
+                    () => PuntuacionSaludScreen(
+                        puntuacion: controller.alimento.value.puntuacionSalud!),
+                  ),
+                  title: const Text('Puntuación de salud'),
+                  subtitle: LinearProgressIndicator(
+                    backgroundColor: Colors.grey[200],
+                    value: ((controller.alimento.value.puntuacionSalud?.score ??
+                                0) as num)
+                            .toDouble() *
+                        0.1,
+                    color: Colors.yellow,
+                  ),
+                  trailing: Text(
+                    '${controller.alimento.value.puntuacionSalud?.score}/10',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  leadingSize: 25,
+                  leading: Image.asset(
+                    'assets/icons/icono_corazonrosa_50x50_nuevo.png',
+                  ),
+                ),
+              ),
+            if (controller.alimento.value.ingredientes?.isNotEmpty ?? false)
+              const Text(
+                'Ingredientes',
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            Obx(
+              () => Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  if (controller.alimento.value.ingredientes != null)
+                    for (var ingrediente
+                        in controller.alimento.value.ingredientes!)
+                      GestureDetector(
+                        onTap: () async {
+                          if (ingrediente.eliminado == true) {
+                            try {
+                              final apiService = ApiService();
+
+                              final response = await apiService.fetchData(
+                                'alimentos/agregar-ingrediente/${ingrediente.id}',
+                                body: {},
+                                method: Method.PUT,
+                              );
+
+                              final AlimentoModel alimentoResponse =
+                                  AlimentoModel.fromJson(response['alimento']);
+
+                              controller.alimento.value = alimentoResponse;
+                              controller.alimento.refresh();
+
+                              controllerCalendario.cargaAlimentos();
+                            } catch (e) {
+                              print(e);
+                            }
+                          } else {
+                            final respuesta = await Get.to(
+                              () => IngredienteEditarScreen(
+                                ingrediente: ingrediente,
+                              ),
+                            );
+
+                            if (respuesta != null) {
+                              AlimentoModel alimentoRespuesta =
+                                  respuesta['alimento'];
+
+                              controller.alimento.value = alimentoRespuesta;
+                              controllerCalendario.cargaAlimentos();
+                              controller.alimento.refresh();
+                            }
+                          }
+                        },
+                        child: NutritionalInfoRow(
+                          label: '${ingrediente.nombre}',
+                          value: '${ingrediente.calorias?.floor()}g',
+                          eliminado: ingrediente.eliminado,
+                        ),
+                      ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 120),
+          ],
+        ),
       ),
     );
   }

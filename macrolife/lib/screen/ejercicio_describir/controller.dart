@@ -7,7 +7,6 @@ import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/screen/home/controller.dart';
 
 class EjercicioDescribirController extends GetxController {
-
   String obtenerActividadAleatoria() {
     final random = Random();
     final indiceAleatorio = random.nextInt(actividades.length);
@@ -54,8 +53,6 @@ class EjercicioDescribirController extends GetxController {
     try {
       final apiService = ApiService();
 
-
-      
       final response = await apiService.fetchData(
         'ejercicio/describir',
         method: Method.POST,
@@ -70,6 +67,26 @@ class EjercicioDescribirController extends GetxController {
       Get.back();
 
       controllerCalendario.cargarEntrenamiento();
+
+      print(response);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void eliminarEjercicio(String id) async {
+    try {
+      Get.back();
+
+      final apiService = ApiService();
+
+      final response = await apiService.fetchData(
+        'ejercicio/$id',
+        method: Method.DELETE,
+        body: {},
+      );
+
+      controllerCalendario.cargaAlimentos();
 
       print(response);
     } catch (e) {

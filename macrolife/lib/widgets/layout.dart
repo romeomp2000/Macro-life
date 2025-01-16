@@ -544,7 +544,8 @@ class EscanearAlimentosController extends GetxController {
     try {
       String? barocde = null;
 
-      final WeeklyCalendarController cargaMacro = Get.find();
+      final WeeklyCalendarController cargaMacro =
+          Get.put(WeeklyCalendarController());
       cargaMacro.loader.value = true;
 
       final XFile? imagen =
@@ -645,14 +646,14 @@ class EscanearAlimentosController extends GetxController {
             ),
           ),
 
-          Positioned(
-            child: Obx(
-              () => BorderCamera(
-                width: width.value,
-                height: height.value,
-              ),
-            ),
-          ),
+          // Positioned(
+          //   child: Obx(
+          //     () => BorderCamera(
+          //       width: width.value,
+          //       height: height.value,
+          //     ),
+          //   ),
+          // ),
 
           Positioned(
             top: 60,
@@ -979,7 +980,9 @@ class EscanearAlimentosController extends GetxController {
                             'Describe tu comida',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
                           ),
                         ],
                       ),

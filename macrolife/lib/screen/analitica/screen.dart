@@ -516,7 +516,7 @@ class AnaliticaScreen extends StatelessWidget {
               margin: const EdgeInsets.only(top: 15, left: 2),
 
               child: Text(
-                'Macro Nutrientes',
+                'MacroNutrientes',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
