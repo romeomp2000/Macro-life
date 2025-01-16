@@ -13,6 +13,7 @@ import 'package:macrolife/screen/loader/binding.dart';
 import 'package:macrolife/screen/loader/screen.dart';
 import 'package:macrolife/screen/objetivos/binding.dart';
 import 'package:macrolife/screen/objetivos/screen.dart';
+import 'package:macrolife/screen/pago/screen.dart';
 import 'package:macrolife/screen/pesas/binding.dart';
 import 'package:macrolife/screen/pesas/screen.dart';
 import 'package:macrolife/screen/registro/registro_binding.dart';
@@ -117,6 +118,10 @@ abstract class AppPages {
     GetPage(
       name: Routes.prefencias,
       page: () => const WidgetsView(),
+    ),
+    GetPage(
+      name: Routes.pago,
+      page: () => const PagoVista(),
     ),
   ];
 }

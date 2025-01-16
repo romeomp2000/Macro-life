@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:macrolife/screen/EditarNutrientes/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 class EditarNutrientesScreen extends StatelessWidget {
   // final Color color;
   final String imageUrl;

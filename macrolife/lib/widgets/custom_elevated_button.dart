@@ -91,16 +91,45 @@ Widget buttonTest(
     ),
     child: TextButton(
       onPressed: isActivo ? function : () {},
-      child: Text(
-        message,
-        style: TextStyle(
-          color: isActivo
-              ? Colors.white
-              : const Color.fromARGB(255, 193, 193, 193),
-          letterSpacing: 1.2,
-          fontWeight: FontWeight.bold,
-          fontSize: 17,
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            message,
+            style: TextStyle(
+              color: isActivo
+                  ? Colors.white
+                  : const Color.fromARGB(255, 193, 193, 193),
+              letterSpacing: 1.0,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            // child: Image.asset(
+            //   'assets/icons_2/down-arrow.png',
+            //   width: Get.width * 0.1,
+            //   color: isActivo
+            //       ? Colors.white
+            //       : const Color.fromARGB(255, 193, 193, 193),
+            // )
+            child: Image.asset(
+              'assets/icons/right-arrow.png',
+              width: 26,
+              color: isActivo
+                  ? Colors.white
+                  : const Color.fromARGB(255, 193, 193, 193),
+            ),
+            // Icon(
+            //   FontAwesomeIcons.arrowRightLong,
+            //   size: 20,
+            //   color: isActivo
+            //       ? Colors.white
+            //       : const Color.fromARGB(255, 193, 193, 193),
+            // ),
+          )
+        ],
       ),
     ),
   );

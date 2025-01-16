@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:macrolife/helpers/funciones_globales.dart';
-import 'package:macrolife/models/list_tile_model.dart';
+import 'package:gif_view/gif_view.dart';
 import 'package:macrolife/screen/registro_pasos/controller.dart';
 import 'package:macrolife/screen/registro_pasos/screen.dart';
 
@@ -9,60 +8,41 @@ Widget paso_8(RegistroPasosController controller) {
   return SizedBox(
     child: Obx(
       () => Steep(
+        enablePadding: false,
         enableScroll: true,
-        title: '¿Qué le gustaría conseguir?',
-        isActivo: controller.isConseguir,
-        options: [
-          ListTileModel(
-            check: false,
-            title: 'Comer y vivir más sano',
-            // subtitle: '',
-            leading: Image.asset(
-              'assets/icons/icono_logros_alimenticios_outline_63x63_5.png',
-              height: 25,
+        isActivo: true.obs,
+        body: Column(
+          spacing: 20,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                'El 80% de los usuarios de Macro Life mantienen su peso ideal incluso 6 meses después',
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
-          ListTileModel(
-            title: 'Aumentar mi energía y mi estado de ánimo',
-            check: false,
-            leading: Image.asset(
-              'assets/icons/icono_logros_alimenticios_outline_63x63_6.png',
-              height: 25,
+            Text(
+              'Tu peso',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
             ),
-          ),
-          ListTileModel(
-            check: false,
-            title: 'Mantener la motivación y la constancia',
-            leading: Image.asset(
-              'assets/icons/icono_logros_alimenticios_outline_63x63_7.png',
-              height: 25,
+            GifView.asset(
+              'assets/gifs/grafica_dieta_mes_952x780.gif',
+              width: Get.width - 50,
+              loop: false,
+              filterQuality: FilterQuality.high,
+              frameRate: 30,
+              fadeDuration: Duration(seconds: 1),
             ),
-          ),
-          ListTileModel(
-            check: false,
-            title: 'Sentirme mejor con mi cuerpo',
-            leading: Image.asset(
-              'assets/icons/icono_brazo_outline_100x100_activo.png',
-              height: 25,
-            ),
-          ),
-        ],
-        body: null,
-        selectedOptions: controller.lograr.value,
-        onOptionSelected: (lograr) {
-          if (controller.lograr.value.contains(lograr)) {
-            controller.lograr.value.remove(lograr);
-          } else {
-            controller.lograr.value.add(lograr);
-          }
-          if (controller.isLograrSelected() == true) {
-            controller.isConseguir.value = true;
-          } else {
-            controller.isConseguir.value = false;
-          }
-          controller.lograr.refresh();
-        },
-        onNext: controller.isLograrSelected() ? controller.nextStep : null,
+          ],
+        ),
+        title: 'Crea resultados a largo plazo',
+        options: const [],
+        onOptionSelected: (probado) => controller.probado.value = probado,
+        selectedOption: controller.probado.value,
+        onNext: controller.nextStep,
       ),
     ),
   );

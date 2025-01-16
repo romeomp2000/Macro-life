@@ -62,5 +62,7 @@ abstract class Routes {
 
   static const prefencias = '/preferencias';
 
+  static const pago = '/pago';
+
   // static const productos_editar = '/productos/editar';
 }

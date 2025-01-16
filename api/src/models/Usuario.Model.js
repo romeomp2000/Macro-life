@@ -1,196 +1,210 @@
-const { Schema, model } = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2');
-const moment = require('moment'); // Asegúrate de instalar moment.js
+const { Schema, model } = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
+const moment = require("moment"); // Asegúrate de instalar moment.js
 
-const UsuariosSchema = new Schema({
-  referenciaUsuario: {
-    type: Schema.Types.ObjectId,
-    ref: 'usuarios',
-    required: false,
-    default: null
-  },
-  fechaVencimiento: { // suscripción
-    type: Date,
-    required: false,
-    default: null
-  },
-  codigo: { // de invitado
-    type: String,
-    required: false,
-    unique: true
-  },
-  balance: { // balance de dinero
-    type: Number,
-    require: false,
-    default: 0
-  },
-  rachaDias: {
-    type: Number,
-    require: false,
-    default: 0
-  },
-  ultimoAlimento: {
-    type: String, // YYYY-MM-DD
-    require: false,
-    default: 0
-  },
-  fechaNacimiento: {
-    type: Date,
-    required: true
-  },
-  altura: {
-    type: Number,
-    require: true
-  },
-  pesoActual: {
-    type: Number,
-    require: true
-  },
-  genero: {
-    type: String,
-    enum: ['Masculino', 'Femenino', 'Otro'],
-    require: true
-  },
-  puntuacionSalud: {
-    type: Number,
-    require: true
-  },
-  macronutrientes: {
-    calorias: {
-      type: Number,
-      require: true,
-      default: 0
+const UsuariosSchema = new Schema(
+  {
+    referenciaUsuario: {
+      type: Schema.Types.ObjectId,
+      ref: "usuarios",
+      required: false,
+      default: null,
     },
-    proteina: {
-      type: Number,
-      require: true,
-      default: 0
-
+    fechaVencimiento: {
+      // suscripción
+      type: Date,
+      required: false,
+      default: null,
     },
-    carbohidratos: {
-      type: Number,
-      require: true,
-      default: 0
-    },
-    grasas: {
-      type: Number,
-      require: true,
-      default: 0
-    }
-  },
-  macronutrientesDiario: {
-    calorias: {
-      type: Number,
-      require: true
-    },
-    proteina: {
-      type: Number,
-      require: true
-    },
-    carbohidratos: {
-      type: Number,
-      require: true
-    },
-    grasas: {
-      type: Number,
-      require: true
-    }
-  },
-  // mas información
-  entrenamientoSemanal: {
-    type: String,
-    enum: ['Minimo', 'Moderadamente', 'Muy activo'],
-    require: false
-  },
-  aplicacionSimilar: {
-    type: String,
-    enum: ['No', 'Si'],
-    default: 'No',
-    require: false
-  },
-  fechaMeta: { // que día se cumple el objetivp
-    type: Date,
-    required: false,
-    default: null
-  },
-  objetivo: {
-    type: String,
-    enum: ['Perder', 'Mantener', 'Aumentar'],
-    require: false
-  },
-  pesoObjetivo: { // no va ser requerido
-    type: Number,
-    require: false
-  },
-  notificaciones: {
-    type: String,
-    enum: ['Si', 'No'],
-    default: 'Si'
-  },
-  notificacionesAlarma: {
-    desayuno: {
+    codigo: {
+      // de invitado
       type: String,
-      required: true, // Es obligatorio guardar una hora
-      match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/ // Validación de formato HH:mm AM/PM
+      required: false,
+      unique: true,
     },
-    comida: {
-      type: String,
-      required: true, // Es obligatorio guardar una hora
-      match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/ // Validación de formato HH:mm AM/PM
+    balance: {
+      // balance de dinero
+      type: Number,
+      require: false,
+      default: 0,
     },
-    cenas: {
+    rachaDias: {
+      type: Number,
+      require: false,
+      default: 0,
+    },
+    ultimoAlimento: {
+      type: String, // YYYY-MM-DD
+      require: false,
+      default: 0,
+    },
+    fechaNacimiento: {
+      type: Date,
+      required: true,
+    },
+    altura: {
+      type: Number,
+      require: true,
+    },
+    pesoActual: {
+      type: Number,
+      require: true,
+    },
+    genero: {
       type: String,
-      required: true, // Es obligatorio guardar una hora
-      match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/ // Validación de formato HH:mm AM/PM
-    }
+      enum: ["Masculino", "Femenino", "Otro"],
+      require: true,
+    },
+    puntuacionSalud: {
+      type: Number,
+      require: true,
+    },
+    macronutrientes: {
+      calorias: {
+        type: Number,
+        require: true,
+        default: 0,
+      },
+      proteina: {
+        type: Number,
+        require: true,
+        default: 0,
+      },
+      carbohidratos: {
+        type: Number,
+        require: true,
+        default: 0,
+      },
+      grasas: {
+        type: Number,
+        require: true,
+        default: 0,
+      },
+    },
+    macronutrientesDiario: {
+      calorias: {
+        type: Number,
+        require: true,
+      },
+      proteina: {
+        type: Number,
+        require: true,
+      },
+      carbohidratos: {
+        type: Number,
+        require: true,
+      },
+      grasas: {
+        type: Number,
+        require: true,
+      },
+    },
+    // mas información
+    entrenamientoSemanal: {
+      type: String,
+      enum: ["Minimo", "Moderadamente", "Muy activo"],
+      require: false,
+    },
+    aplicacionSimilar: {
+      type: String,
+      enum: ["No", "Si"],
+      default: "No",
+      require: false,
+    },
+    fechaMeta: {
+      // que día se cumple el objetivp
+      type: Date,
+      required: false,
+      default: null,
+    },
+    objetivo: {
+      type: String,
+      enum: ["Perder", "Mantener", "Aumentar"],
+      require: false,
+    },
+    pesoObjetivo: {
+      // no va ser requerido
+      type: Number,
+      require: false,
+    },
+    notificaciones: {
+      type: String,
+      enum: ["Si", "No"],
+      default: "Si",
+    },
+    notificacionesAlarma: {
+      desayuno: {
+        type: String,
+        required: true, // Es obligatorio guardar una hora
+        match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/, // Validación de formato HH:mm AM/PM
+      },
+      comida: {
+        type: String,
+        required: true, // Es obligatorio guardar una hora
+        match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/, // Validación de formato HH:mm AM/PM
+      },
+      cenas: {
+        type: String,
+        required: true, // Es obligatorio guardar una hora
+        match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/, // Validación de formato HH:mm AM/PM
+      },
+    },
+    dieta: {
+      type: String,
+      enum: ["Clásico", "Pescetariano", "Vegetariano", "Vegano", "Otro"],
+      require: false,
+    },
+    logros: [
+      {
+        // que le gustaría lograr
+        type: String,
+        enum: [
+          "Comer y vivir más sano",
+          "Aumentar mi energía y mi estado de ánimo",
+          "Mantener la motivación y la constancia",
+          "Sentirme mejor con mi cuerpo",
+        ],
+        require: false,
+      },
+    ],
+    metaAlcanzar: {
+      // que tán rápido quiere alcanza tu meta 0.1 -> 1.5
+      type: Number,
+      require: false,
+    },
+    // impideAlcanzar: { // que te impide a alcanzar tu meta
+    //   type: String,
+    //   enum: ['Falta de constancia', 'Hábitos alimenticios poco saludables', 'Falta de apoyo', 'Agenda ocupada', 'Falta de inspiración para la comida'],
+    //   require: false
+    // },
+    googleId: {
+      type: String,
+      required: false,
+    },
+    appleID: {
+      type: String,
+      required: false,
+    },
+    correo: {
+      type: String,
+      required: false,
+    },
+    telefono: {
+      type: String,
+      required: false,
+    },
+    nombre: {
+      type: String,
+      required: false,
+    },
+    estatus: {
+      type: String,
+      enum: ["Activo", "Inactivo"],
+      require: false,
+      default: "Activo",
+    },
   },
-  dieta: {
-    type: String,
-    enum: ['Clásico', 'Pescetariana', 'Vegetariano', 'Vegano', 'Otro'],
-    require: false
-  },
-  logros: [{ // que le gustaría lograr
-    type: String,
-    enum: ['Comer y vivir más sano', 'Aumentar mi energía y mi estado de ánimo', 'Mantener la motivación y la constancia', 'Sentirme mejor con mi cuerpo'],
-    require: false
-  }],
-  metaAlcanzar: { // que tán rápido quiere alcanza tu meta 0.1 -> 1.5
-    type: Number,
-    require: false
-  },
-  // impideAlcanzar: { // que te impide a alcanzar tu meta
-  //   type: String,
-  //   enum: ['Falta de constancia', 'Hábitos alimenticios poco saludables', 'Falta de apoyo', 'Agenda ocupada', 'Falta de inspiración para la comida'],
-  //   require: false
-  // },
-  googleId: {
-    type: String,
-    required: false
-  },
-  appleID: {
-    type: String,
-    required: false
-  },
-  correo: {
-    type: String,
-    required: false
-  },
-  telefono: {
-    type: String,
-    required: false
-  },
-  nombre: {
-    type: String,
-    required: false
-  },
-  estatus: {
-    type: String,
-    enum: ['Activo', 'Inactivo'],
-    require: false,
-    default: 'Activo'
-  }
-
-}, { versionKey: false }
+  { versionKey: false }
 );
 
 // Pre-save hook para formatear la fecha antes de guardar
@@ -200,7 +214,7 @@ const generarClave = () => {
 };
 
 // Pre-save hook to generate distributor key
-UsuariosSchema.pre('save', async function (next) {
+UsuariosSchema.pre("save", async function (next) {
   if (!this.codigo) {
     try {
       let claveGenerada;
@@ -209,7 +223,9 @@ UsuariosSchema.pre('save', async function (next) {
       while (!esUnica) {
         claveGenerada = generarClave();
 
-        const busca = await usuarioModel.countDocuments({ codigo: claveGenerada });
+        const busca = await usuarioModel.countDocuments({
+          codigo: claveGenerada,
+        });
 
         if (busca === 0) {
           esUnica = true;
@@ -231,22 +247,27 @@ UsuariosSchema.methods.toJSON = function () {
   // Formatear fechaVencimiento
   obj.vencido = false;
   if (obj.fechaVencimiento) {
-    obj.fechaVencimientoFormato = moment(obj.fechaVencimiento).format('DD/MM/YYYY');
-    obj.diasAVencer = moment(obj.fechaVencimiento).diff(moment(), 'days');
+    obj.fechaVencimientoFormato = moment(obj.fechaVencimiento).format(
+      "DD/MM/YYYY"
+    );
+    obj.diasAVencer = moment(obj.fechaVencimiento).diff(moment(), "days");
     // Bandera para saber si la mensualidad ya venció
     obj.vencido = moment(obj.fechaVencimiento).isBefore(moment()) || true; // Si la fecha de vencimiento es antes de la fecha actual, venció
   }
 
   // Formatear fechaNacimiento
   if (obj.fechaNacimiento) {
-    obj.fechaNacimientoFormato = moment(obj.fechaNacimiento).format('DD/MM/YYYY');
-    obj.edad = moment().diff(obj.fechaNacimiento, 'years');
+    obj.fechaNacimientoFormato = moment(obj.fechaNacimiento).format(
+      "DD/MM/YYYY"
+    );
+    obj.edad = moment().diff(obj.fechaNacimiento, "years");
   }
 
   // Formatear fechaMeta
   if (obj.fechaMeta) {
-    moment.locale('es'); // Establece el idioma a español
-    obj.fechaMetaObjetivo = moment(obj.fechaMeta)?.format('D [de] MMMM [del] YYYY') || '';
+    moment.locale("es"); // Establece el idioma a español
+    obj.fechaMetaObjetivo =
+      moment(obj.fechaMeta)?.format("D [de] MMMM [del] YYYY") || "";
   }
 
   return obj;
@@ -254,6 +275,6 @@ UsuariosSchema.methods.toJSON = function () {
 
 UsuariosSchema.plugin(mongoosePaginate);
 
-const usuarioModel = model('usuarios', UsuariosSchema);
+const usuarioModel = model("usuarios", UsuariosSchema);
 
 module.exports = usuarioModel;

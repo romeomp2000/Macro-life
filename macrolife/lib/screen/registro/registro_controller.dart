@@ -10,7 +10,7 @@ class RegistroController extends GetxController {
   final List<Map<String, String>> pages = [
     {
       'image': 'assets/images/imagen_foto_platillo_escaner_1125x1125_.jpg',
-      'title': 'El seguimiento de calorías',
+      'title': 'Simplifica tus calorías',
       'subtitle': 'Solo toma una foto rápida de tu comida',
     },
     {
