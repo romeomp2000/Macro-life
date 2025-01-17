@@ -9,14 +9,14 @@ Widget paso_7_3(RegistroPasosController controller) {
   return SizedBox(
     child: Obx(() {
       GifController controllerGif = GifController();
-      controller.controllerVideo = VideoPlayerController.asset(
-        'assets/videos/animacion_barras_test_1125x1214_cols.mp4',
-      )
-        ..initialize().then((_) {
-          controller.controllerVideo.setPlaybackSpeed(0.0000000000001);
-        })
-        ..setLooping(false)
-        ..play();
+      // controller.controllerVideo = VideoPlayerController.asset(
+      //   'assets/videos/animacion_barras_test_1125x1214_cols.mp4',
+      // )
+      //   ..initialize().then((_) {
+      //     controller.controllerVideo.setPlaybackSpeed(0.0000000000001);
+      //   })
+      //   ..setLooping(false)
+      //   ..play();
       return Steep(
         enableScroll: true,
         enablePadding: true,
@@ -31,7 +31,7 @@ Widget paso_7_3(RegistroPasosController controller) {
               width: Get.width - 80,
               loop: false,
               filterQuality: FilterQuality.high,
-              frameRate: 25,
+              frameRate: 18,
               imageRepeat: ImageRepeat.noRepeat,
               fadeDuration: Duration(seconds: 0),
               controller: controllerGif,
