@@ -519,7 +519,7 @@ class Steep extends StatelessWidget {
   // Método que construye todo el contenido
   Widget _buildContent() {
     return Container(
-      // decoration: decoration,
+      decoration: decoration,
       alignment: Alignment.center,
       margin: EdgeInsets.only(
           left: isBascula! ? 0 : 10, right: isBascula! ? 0 : 10),
@@ -561,56 +561,55 @@ class Steep extends StatelessWidget {
               ],
             ),
           ),
-          // if (body != null)
-          //   Container(
-          //     padding: EdgeInsets.symmetric(
-          //       horizontal: enablePadding == true ? 12.0 : 0.0,
-          //       vertical: enablePadding == true ? 10 : 0.0,
-          //     ),
-          //     child: Column(
-          //       crossAxisAlignment: CrossAxisAlignment.start,
-          //       children: [
-          //         body != null ? body! : Container(),
-          //       ],
-          //     ),
-          //   ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(
-          //     horizontal: 12.0,
-          //     vertical: 10,
-          //   ),
-          //   child: Column(
-          //     spacing: 15,
-          //     children: [
-          //       ...options.map(
-          //         (option) => Column(
-          //           children: [
-          //             Container(
-          //               margin: const EdgeInsets.only(bottom: 20),
-          //               child: CustomElevatedSelected(
-          //                 check: option.check,
-          //                 message: option.title ?? '',
-          //                 icon: option.icon,
-          //                 widget: option.leading,
-          //                 subtitle: option.subtitle,
-          //                 trailing: option.trailing,
-          //                 function: () {
-          //                   if (onOptionSelected != null) {
-          //                     onOptionSelected!(option.title ?? '');
-          //                   }
-          //                 },
-          //                 activo: selectedOption == option.title ||
-          //                     (selectedOptions?.contains(option.title) ??
-          //                         false),
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //       if (options.length > 2) const SizedBox(height: 10)
-          //     ],
-          //   ),
-          // ),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: enablePadding == true ? 12.0 : 0.0,
+              vertical: enablePadding == true ? 10 : 0.0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                body != null ? body! : Container(),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 10,
+            ),
+            child: Column(
+              spacing: 15,
+              children: [
+                ...options.map(
+                  (option) => Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        child: CustomElevatedSelected(
+                          check: option.check,
+                          message: option.title ?? '',
+                          icon: option.icon,
+                          widget: option.leading,
+                          subtitle: option.subtitle,
+                          trailing: option.trailing,
+                          function: () {
+                            if (onOptionSelected != null) {
+                              onOptionSelected!(option.title ?? '');
+                            }
+                          },
+                          activo: selectedOption == option.title ||
+                              (selectedOptions?.contains(option.title) ??
+                                  false),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (options.length > 2) const SizedBox(height: 10)
+              ],
+            ),
+          ),
         ],
       ),
     );

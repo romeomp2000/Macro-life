@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/screen/home/controller.dart';
@@ -97,11 +98,11 @@ class ObjetivosScreen extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 8),
+                        horizontal: 12.0, vertical: 5),
                     child: const Text(
                       'Macronutrientes',
                       style:
-                          TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
+                          TextStyle(fontSize: 33, fontWeight: FontWeight.w700),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -120,13 +121,13 @@ class ObjetivosScreen extends StatelessWidget {
                               PieChartSectionData(
                                 value: controller.pro.value,
                                 showTitle: false,
-                                color: Colors.red,
+                                color: redTheme_,
                                 radius: 10,
                                 badgeWidget: Container(
                                   padding: const EdgeInsets.only(
                                       left: 10, right: 10, bottom: 3, top: 3),
                                   decoration: BoxDecoration(
-                                    color: Colors.red,
+                                    color: redTheme_,
                                     border: Border.all(color: Colors.white),
                                     borderRadius: BorderRadius.circular(50),
                                   ),
@@ -139,14 +140,14 @@ class ObjetivosScreen extends StatelessWidget {
                               ),
                               PieChartSectionData(
                                 value: controller.car.value,
-                                color: Colors.amber,
+                                color: yellowTheme_,
                                 radius: 10,
                                 showTitle: false,
                                 badgeWidget: Container(
                                   padding: const EdgeInsets.only(
                                       left: 10, right: 10, bottom: 3, top: 3),
                                   decoration: BoxDecoration(
-                                    color: Colors.amber,
+                                    color: yellowTheme_,
                                     border: Border.all(color: Colors.white),
                                     borderRadius: BorderRadius.circular(50),
                                   ),
@@ -161,13 +162,13 @@ class ObjetivosScreen extends StatelessWidget {
                               PieChartSectionData(
                                 value: controller.gra.value,
                                 showTitle: false,
-                                color: Colors.blue,
+                                color: blueTheme_,
                                 radius: 10,
                                 badgeWidget: Container(
                                   padding: const EdgeInsets.only(
                                       left: 10, right: 10, bottom: 3, top: 3),
                                   decoration: BoxDecoration(
-                                    color: Colors.blue,
+                                    color: blueTheme_,
                                     border: Border.all(color: Colors.white),
                                     borderRadius: BorderRadius.circular(50),
                                   ),
@@ -195,8 +196,9 @@ class ObjetivosScreen extends StatelessWidget {
                       lineWidth: 6.0,
                       percent: 0.50,
                       center: Image.asset(
-                          'assets/icons/icono_calorias_negro_99x117_nuevo.png',
-                          width: 15),
+                        'assets/icons/icono_flama_chica_negra_48x48_original.png',
+                        width: 15,
+                      ),
                       progressColor: Colors.black, // Color del progreso
                       backgroundColor:
                           Colors.black12, // Color del fondo del círculo
@@ -217,8 +219,7 @@ class ObjetivosScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         suffixIcon: Icon(Icons.edit),
                         focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(), // Borde cuando está enfocado
+                          borderSide: const BorderSide(),
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
@@ -235,7 +236,7 @@ class ObjetivosScreen extends StatelessWidget {
                       center: Image.asset(
                           'assets/icons/icono_filetecarne_90x69_nuevo.png',
                           width: 15),
-                      progressColor: Colors.red, // Color del progreso
+                      progressColor: redTheme_, // Color del progreso
                       backgroundColor:
                           Colors.black12, // Color del fondo del círculo
                     ),
@@ -277,7 +278,7 @@ class ObjetivosScreen extends StatelessWidget {
                       center: Image.asset(
                           'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
                           width: 15),
-                      progressColor: Colors.amber,
+                      progressColor: yellowTheme_,
                       backgroundColor: Colors.black12,
                     ),
                     title: const Text(
@@ -318,7 +319,7 @@ class ObjetivosScreen extends StatelessWidget {
                       center: Image.asset(
                           'assets/icons/icono_almedraazul_74x70_nuevo.png',
                           width: 15),
-                      progressColor: Colors.blue,
+                      progressColor: blueTheme_,
                       backgroundColor: Colors.black12,
                     ),
                     title: const Text(

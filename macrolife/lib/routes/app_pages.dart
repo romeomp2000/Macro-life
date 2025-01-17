@@ -27,8 +27,6 @@ import 'package:macrolife/widgets/layout.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/screen/principal/principal_binding.dart';
 import 'package:macrolife/screen/principal/principal_screen.dart';
-import 'package:macrolife/screen/recover_password/recovery_password_binding.dart';
-import 'package:macrolife/screen/recover_password/recovery_password_screen.dart';
 part './app_routes.dart';
 
 abstract class AppPages {
@@ -90,11 +88,6 @@ abstract class AppPages {
       name: Routes.layout,
       page: () => LayoutScreen(),
       binding: LayoutBinding(),
-    ),
-    GetPage(
-      name: Routes.recovery_password,
-      page: () => const RecoveryPasswordScreen(),
-      binding: RecoveryPasswordBinding(),
     ),
     GetPage(
       name: Routes.registro,

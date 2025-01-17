@@ -3,9 +3,6 @@ import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/screen/analitica/controller.dart';
-import 'package:macrolife/screen/peso/screen.dart';
-import 'package:macrolife/screen/peso_objetivo/screen.dart';
-import 'package:macrolife/screen/analitica/info.dart';
 import 'package:macrolife/widgets/AppleHealth.dart';
 import 'package:macrolife/widgets/appBarML2.dart';
 
@@ -474,23 +471,6 @@ class AnaliticaScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-
-                      // SfCartesianChart(
-                      //   primaryYAxis: NumericAxis(),
-                      //   // borderColor: Colors.black,
-                      //   plotAreaBackgroundColor: controller.color.value,
-                      //   primaryXAxis: CategoryAxis(),
-                      //   series: <CartesianSeries>[
-                      //     // Inicializa la serie de columnas (barras)
-                      //     ColumnSeries<ChartData, String>(
-                      //       dataSource: controller.charSorce,
-                      //       width: 0.3,
-                      //       color: Colors.black,
-                      //       xValueMapper: (ChartData data, _) => data.label,
-                      //       yValueMapper: (ChartData data, _) => data.value,
-                      //     )
-                      //   ],
-                      // ),
                     ),
                   ),
                 ],

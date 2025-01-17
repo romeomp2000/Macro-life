@@ -21,7 +21,7 @@ const obtenerHistorialUsuario = async (req, res) => {
     // Crear el filtro de consulta para el historial del usuario
     const query = {
       usuario: new Types.ObjectId(idUsuario),
-      createdAt: {
+      fecha: {
         $gte: moment(todayStart),
         $lte: moment(todayEnd)
       }
@@ -29,7 +29,7 @@ const obtenerHistorialUsuario = async (req, res) => {
 
     // Realizar la búsqueda en la base de datos
     const [alimentos, macronutrientes] = await Promise.all([
-      AlimentoModel.find(query).populate('ingredientes').lean().sort({ createdAt: -1 }),
+      AlimentoModel.find(query).populate('ingredientes').lean().sort({ fecha: -1 }),
       getNutrientesPorUsuario(idUsuario, todayStart, todayEnd)
     ]);
 

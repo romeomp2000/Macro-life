@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:macrolife/config/api_service.dart';
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/models/alimento.model.dart';
 import 'package:macrolife/screen/IngredientesEditar/screen.dart';
 import 'package:macrolife/screen/IngredientesEditarNombre/screen.dart';
@@ -28,12 +29,17 @@ class NutricionScreen extends StatelessWidget {
       body: Stack(
         children: [
           if (controller.alimento.value.imageUrl != null)
-            CachedNetworkImage(
-              imageUrl: controller.alimento.value.imageUrl ?? '',
-              fit: BoxFit.cover,
-              alignment: Alignment.bottomCenter,
-              width: Get.width,
-              height: 550,
+            InteractiveViewer(
+              boundaryMargin: EdgeInsets.all(0),
+              minScale: 0.1,
+              maxScale: 2,  
+              child: CachedNetworkImage(
+                imageUrl: controller.alimento.value.imageUrl ?? '',
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
+                width: Get.width,
+                height: 550,
+              ),
             ),
           if (controller.alimento.value.imageUrl != null)
             DraggableScrollableSheet(
@@ -285,14 +291,36 @@ class NutricionScreen extends StatelessWidget {
                       }
                     },
                     child: Obx(
-                      () => Text(
-                        '${controller.alimento.value.name}${controller.alimento.value.porcion != 1 ? ' x${controller.alimento.value.porcion}' : ''}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        overflow: TextOverflow.clip,
-                        softWrap: true,
+                      () => Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        spacing: 8,
+                        children: [
+                          SizedBox(
+                            width: Get.width * 0.5,
+                            child: Text(
+                              '${controller.alimento.value.name}',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              overflow: TextOverflow.clip,
+                              softWrap: true,
+                              // maxLines: 2,
+                            ),
+                          ),
+                          Text(
+                            controller.alimento.value.porcion != 1
+                                ? ' x${controller.alimento.value.porcion}'
+                                : '',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            // overflow: TextOverflow.clip,
+                            // softWrap: true,
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -527,7 +555,7 @@ class NutricionScreen extends StatelessWidget {
                                 0) as num)
                             .toDouble() *
                         0.1,
-                    color: Colors.yellow,
+                    color: yellowTheme_,
                   ),
                   trailing: Text(
                     '${controller.alimento.value.puntuacionSalud?.score}/10',
