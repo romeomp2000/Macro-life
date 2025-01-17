@@ -10,7 +10,11 @@ class PagoVista extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(PagoController());
     return Scaffold(
-      // appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 252, 252, 252),
+        // elevation: 0,
+      ),
+      extendBody: true,
       backgroundColor: const Color.fromARGB(255, 252, 252, 252),
       body: Container(
         margin: const EdgeInsets.only(
@@ -18,32 +22,61 @@ class PagoVista extends StatelessWidget {
           right: 20,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              width: 100,
-              height: 100,
-              color: Colors.red,
-            ),
-            Text(
-              'Queremos que pruebes Macro Life gratis',
-              style: TextStyle(fontSize: 20),
-            ),
-          ],
-        ),
-      ),
-      extendBody: false,
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-        child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            buttonTest(
-              'Prueba por \$0.0',
-              () {
-                Get.offAllNamed('/layout');
-              },
-              true,
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Prueba  Macro Life gratis',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: Icon(Icons.done),
+                        ),
+                        Text(
+                          'No hay pagos pendientes',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17),
+                        ),
+                      ],
+                    ),
+                  ),
+                  buttonTest('Prueba gratis', () {
+                    Get.offAllNamed('/layout');
+                  }, true),
+                  Container(
+                    margin: EdgeInsets.only(top: 10, bottom: 2),
+                    child: Text(
+                      'Solo \$${controller.anualPrice} por año (\$${(controller.anualPrice) / 12}/mes)',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 180, 180, 180),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
