@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:health/health.dart';
@@ -147,6 +148,8 @@ class WeeklyCalendarController extends GetxController {
   final UsuarioController controllerUsuario = Get.find();
 
   final RxBool loader = false.obs;
+  final Rx<XFile?> imagenLoader = Rx<XFile?>(null);
+
   final widgetController = Get.put(WidgetController());
   // final liveWidgetController = Get.put(LiveDynamicController());
 

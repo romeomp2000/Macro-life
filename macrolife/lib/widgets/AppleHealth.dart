@@ -1,6 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/screen/home/controller.dart';
 
@@ -12,7 +14,8 @@ class HealthDataChart extends StatelessWidget {
     final controller = Get.put(WeeklyCalendarController());
     final controllerUsuario = Get.put(UsuarioController());
     return Column(
-      spacing: 20,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      spacing: 10,
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,16 +25,16 @@ class HealthDataChart extends StatelessWidget {
               alignment: Alignment.center,
               width: Get.width * 0.48,
               margin:
-                  const EdgeInsets.only(top: 5, left: 2, right: 2, bottom: 0),
-              height: 230,
+                  const EdgeInsets.only(top: 0, left: 2, right: 2, bottom: 0),
+              height: 225,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: const [
+                boxShadow: [
                   BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 2,
-                    spreadRadius: 0.1,
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 4.0,
+                    offset: Offset(0, 4),
                   ),
                 ],
               ),
@@ -62,7 +65,7 @@ class HealthDataChart extends StatelessWidget {
                             ),
                             Obx(
                               () => Text(
-                                'Pasos de ${controller.daysOfWeek[controller.today.value.weekday - 1]}',
+                                'Pasos del día ${controller.daysOfWeek[controller.today.value.weekday - 1]}',
                                 textAlign: TextAlign.start,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w300,
@@ -76,172 +79,92 @@ class HealthDataChart extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    height: 150,
-                    child: Obx(() => controller.isLoading.value
-                            ? Center(
-                                child:
-                                    CircularProgressIndicator(), // Muestra un indicador de carga
-                              )
-                            : BarChart(
-                                BarChartData(
-                                  //   barGroups: controller.charSorce
-                                  //       .asMap()
-                                  //       .entries
-                                  //       .map(
-                                  //         (entry) => BarChartGroupData(
-                                  //           x: entry.key,
-                                  //           barRods: [
-                                  //             BarChartRodData(
-                                  //               toY: entry.value.value,
-                                  // borderRadius: BorderRadius.only(
-                                  //   topLeft: Radius.circular(5),
-                                  //   topRight: Radius.circular(5),
-                                  // ),
-                                  //               width: 17,
-                                  //               backDrawRodData:
-                                  //                   BackgroundBarChartRodData(
-                                  //                 fromY: 0,
-                                  //                 toY: 100,
-                                  //                 color: Colors.red,
-                                  //                 show: true,
-                                  //               ),
-                                  //               color: Colors.black,
-                                  //             ),
-                                  //           ],
-                                  //         ),
-                                  //       )
-                                  //       .toList(),
-                                  // barGroups: controller.charSorce
-                                  //     .asMap()
-                                  //     .entries
-                                  //     .map(
-                                  //       (entry) => BarChartGroupData(
-                                  //         x: entry.key,
-                                  //         barRods: [
-                                  //           BarChartRodData(
-                                  //             toY: entry.value.value,
-                                  //             borderRadius: BorderRadius.only(
-                                  //               topLeft: Radius.circular(5),
-                                  //               topRight: Radius.circular(5),
-                                  //             ),
-                                  //             width: 17,
-                                  //             color: Colors.transparent,
-                                  //             rodStackItems: [
-                                  //               BarChartRodStackItem(
-                                  //                 0,
-                                  //                 entry.value.value + 200.0,
-                                  //                 Colors.black12,
-                                  //               ),
-                                  //               BarChartRodStackItem(
-                                  //                 0,
-                                  //                 entry.value.value * 0.3,
-                                  //                 Colors.black,
-                                  //               ),
-                                  //             ],
-                                  //           ),
-                                  //         ],
-                                  //       ),
-                                  //     )
-                                  //     .toList(),
-                                  barGroups: controller.charSorce
-                                      .asMap()
-                                      .entries
-                                      .map(
-                                        (entry) => BarChartGroupData(
-                                            x: entry.key,
-                                            barRods: [
-                                              BarChartRodData(
-                                                toY: entry.value.value,
-                                                color: Colors.black,
-                                                width: 10,
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(2),
-                                                  topRight: Radius.circular(2),
-                                                ),
-                                                backDrawRodData:
-                                                    BackgroundBarChartRodData(
-                                                  show: true,
-                                                  toY: 15000,
-                                                  color: Colors.grey.shade300,
-                                                ),
-                                              )
-                                            ]),
-                                      )
-                                      .toList(),
-                                  titlesData: FlTitlesData(
-                                    show: true,
-                                    // leftTitles: AxisTitles(
-                                    //   drawBelowEverything: false,
-                                    // ),
-                                    topTitles:
-                                        AxisTitles(drawBelowEverything: false),
-                                    rightTitles:
-                                        AxisTitles(drawBelowEverything: true),
-                                    bottomTitles: AxisTitles(
-                                      drawBelowEverything: true,
-                                      axisNameSize: 10,
-                                      sideTitles: SideTitles(
-                                        showTitles: true,
-                                        getTitlesWidget: (value, meta) =>
-                                            controller.getTitles(value, meta),
-                                      ),
+                    margin: const EdgeInsets.only(top: 10, left: 4, right: 4),
+                    height: 140,
+                    child: Obx(
+                      () => controller.isLoading.value
+                          ? Center(
+                              child:
+                                  CircularProgressIndicator(), // Muestra un indicador de carga
+                            )
+                          : BarChart(
+                              BarChartData(
+                                barGroups: controller.charSorce
+                                    .asMap()
+                                    .entries
+                                    .map(
+                                      (entry) => BarChartGroupData(
+                                          x: entry.key,
+                                          barRods: [
+                                            BarChartRodData(
+                                              toY: entry.value.value,
+                                              color: Colors.black,
+                                              width: 8,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(3),
+                                                topRight: Radius.circular(3),
+                                              ),
+                                              backDrawRodData:
+                                                  BackgroundBarChartRodData(
+                                                show: true,
+                                                toY: 15000,
+                                                color: Colors.grey.shade300,
+                                              ),
+                                            )
+                                          ]),
+                                    )
+                                    .toList(),
+                                titlesData: FlTitlesData(
+                                  leftTitles: AxisTitles(
+                                    sideTitles: SideTitles(
+                                        reservedSize: 40, showTitles: false),
+                                  ),
+                                  show: true,
+                                  topTitles: AxisTitles(
+                                      drawBelowEverything: false,
+                                      axisNameSize: 10),
+                                  rightTitles:
+                                      AxisTitles(drawBelowEverything: true),
+                                  bottomTitles: AxisTitles(
+                                    drawBelowEverything: true,
+                                    axisNameSize: 12,
+                                    sideTitles: SideTitles(
+                                      showTitles: true,
+                                      getTitlesWidget: (value, meta) =>
+                                          controller.getTitles(value, meta),
                                     ),
                                   ),
-                                  gridData: FlGridData(
-                                    show: false,
-                                  ),
-                                  borderData: FlBorderData(
-                                    show: false,
-                                  ),
-                                  barTouchData: BarTouchData(
-                                    enabled: false,
-                                  ),
                                 ),
-                              )
-                        // SfCartesianChart(
-                        //     primaryYAxis: NumericAxis(
-                        //       isVisible: false,
-                        //     ),
-                        //     // borderColor: Colors.black,
-                        //     plotAreaBackgroundColor: Colors.transparent,
-                        //     primaryXAxis: CategoryAxis(
-                        //         // borderWidth: 0,
-                        //         // maximumLabelWidth: 22,
-
-                        //         ),
-                        //     series: <CartesianSeries>[
-                        //       // Inicializa la serie de columnas (barras)
-                        //       ColumnSeries<ChartData, String>(
-                        //         dataSource: controller.charSorce,
-                        //         width: 0.3,
-                        //         color: Colors.black,
-                        //         xValueMapper: (ChartData data, _) =>
-                        //             data.label,
-                        //         yValueMapper: (ChartData data, _) =>
-                        //             data.value,
-                        //       )
-                        //     ],
-                        //   ),
-                        ),
+                                gridData: FlGridData(
+                                  show: false,
+                                ),
+                                borderData: FlBorderData(
+                                  show: false,
+                                ),
+                                barTouchData: BarTouchData(
+                                  enabled: false,
+                                ),
+                              ),
+                            ),
+                    ),
                   ),
                 ],
               ),
             ),
             Container(
-              padding: const EdgeInsets.only(left: 15, top: 10),
+              padding: const EdgeInsets.only(left: 15, top: 15),
               margin:
-                  const EdgeInsets.only(top: 5, left: 2, right: 2, bottom: 0),
-              width: Get.width * 0.40,
-              height: 230,
+                  const EdgeInsets.only(top: 0, left: 2, right: 0, bottom: 0),
+              width: Get.width * 0.42,
+              height: 225,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: const [
+                boxShadow: [
                   BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 2,
-                    spreadRadius: 0.1,
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 4.0,
+                    offset: Offset(0, 4),
                   ),
                 ],
               ),
@@ -412,32 +335,17 @@ class HealthDataChart extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              Row(
-                children: [
-                  Image.asset(
-                    'assets/icons/icono_corazonrosa_50x50_nuevo.png',
-                    width: 20,
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(width: 8),
-                      const Text('Puntuación de salud'),
-                      const SizedBox(height: 8),
-                      SizedBox(
-                        width: Get.width - 110,
-                        child: LinearProgressIndicator(
-                          value:
-                              controllerUsuario.usuario.value.puntuacionSalud! /
-                                  10,
-                          color: Colors.amber,
-                          backgroundColor: Colors.grey[100],
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+              CupertinoListTile(
+                leading: Image.asset(
+                  'assets/icons/icono_corazonrosa_50x50_nuevo.png',
+                  width: 20,
+                ),
+                title: const Text('Puntuación de salud'),
+                subtitle: LinearProgressIndicator(
+                  value: controllerUsuario.usuario.value.puntuacionSalud! / 10,
+                  color: greenTheme_,
+                  backgroundColor: Colors.grey[100],
+                ),
               ),
               Positioned(
                 top: 0,

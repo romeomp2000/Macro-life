@@ -381,7 +381,7 @@ class SuscripcionScreen extends StatelessWidget {
               Container(
                 width: 2,
                 height: 40,
-                color: greenTheme1_,
+                color: Colors.black,
               ),
             ],
           ),

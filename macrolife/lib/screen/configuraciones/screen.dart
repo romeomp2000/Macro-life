@@ -600,7 +600,7 @@ Widget widgetMenu() {
                       color:
                           (Theme.of(Get.context!).brightness == Brightness.dark
                                   ? whiteTheme_
-                                  : blackTheme_)
+                                  : Colors.black)
                               .withOpacity(
                                   controller.currentPageIndex.value == entry.key
                                       ? 0.9

@@ -587,6 +587,7 @@ class Steep extends StatelessWidget {
               ],
             ),
           ),
+
           // if (options.isNotEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -621,7 +622,8 @@ class Steep extends StatelessWidget {
                     ],
                   ),
                 ),
-                // if (options.length > 2) const SizedBox(height: 10)
+                if (options.length > 2) const SizedBox(height: 10)
+
               ],
             ),
           ),

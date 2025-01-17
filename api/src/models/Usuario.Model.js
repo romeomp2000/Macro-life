@@ -1,176 +1,176 @@
-const { Schema, model } = require("mongoose");
-const mongoosePaginate = require("mongoose-paginate-v2");
-const moment = require("moment"); // Asegúrate de instalar moment.js
+const { Schema, model } = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
+const moment = require('moment'); // Asegúrate de instalar moment.js
 
 const UsuariosSchema = new Schema(
   {
     referenciaUsuario: {
       type: Schema.Types.ObjectId,
-      ref: "usuarios",
+      ref: 'usuarios',
       required: false,
-      default: null,
+      default: null
     },
     fechaVencimiento: {
       // suscripción
       type: Date,
       required: false,
-      default: null,
+      default: null
     },
     codigo: {
       // de invitado
       type: String,
       required: false,
-      unique: true,
+      unique: true
     },
     balance: {
       // balance de dinero
       type: Number,
       require: false,
-      default: 0,
+      default: 0
     },
     rachaDias: {
       type: Number,
       require: false,
-      default: 0,
+      default: 0
     },
     ultimoAlimento: {
       type: String, // YYYY-MM-DD
       require: false,
-      default: 0,
+      default: 0
     },
     fechaNacimiento: {
       type: Date,
-      required: true,
+      required: true
     },
     altura: {
       type: Number,
-      require: true,
+      require: true
     },
     pesoActual: {
       type: Number,
-      require: true,
+      require: true
     },
     genero: {
       type: String,
-      enum: ["Masculino", "Femenino", "Otro"],
-      require: true,
+      enum: ['Masculino', 'Femenino', 'Otro'],
+      require: true
     },
     puntuacionSalud: {
       type: Number,
-      require: true,
+      require: true
     },
     macronutrientes: {
       calorias: {
         type: Number,
         require: true,
-        default: 0,
+        default: 0
       },
       proteina: {
         type: Number,
         require: true,
-        default: 0,
+        default: 0
       },
       carbohidratos: {
         type: Number,
         require: true,
-        default: 0,
+        default: 0
       },
       grasas: {
         type: Number,
         require: true,
-        default: 0,
-      },
+        default: 0
+      }
     },
     macronutrientesDiario: {
       calorias: {
         type: Number,
-        require: true,
+        require: true
       },
       proteina: {
         type: Number,
-        require: true,
+        require: true
       },
       carbohidratos: {
         type: Number,
-        require: true,
+        require: true
       },
       grasas: {
         type: Number,
-        require: true,
-      },
+        require: true
+      }
     },
     // mas información
     entrenamientoSemanal: {
       type: String,
-      enum: ["Mínimo", "Moderadamente", "Muy activo"],
-      require: false,
+      enum: ['Mínimo', 'Moderadamente', 'Muy activo'],
+      require: false
     },
     aplicacionSimilar: {
       type: String,
-      enum: ["No", "Si"],
-      default: "No",
-      require: false,
+      enum: ['No', 'Si'],
+      default: 'No',
+      require: false
     },
     fechaMeta: {
       // que día se cumple el objetivp
       type: Date,
       required: false,
-      default: null,
+      default: null
     },
     objetivo: {
       type: String,
-      enum: ["Perder", "Mantener", "Aumentar"],
-      require: false,
+      enum: ['Perder', 'Mantener', 'Aumentar'],
+      require: false
     },
     pesoObjetivo: {
       // no va ser requerido
       type: Number,
-      require: false,
+      require: false
     },
     notificaciones: {
       type: String,
-      enum: ["Si", "No"],
-      default: "Si",
+      enum: ['Si', 'No'],
+      default: 'Si'
     },
     notificacionesAlarma: {
       desayuno: {
         type: String,
         required: true, // Es obligatorio guardar una hora
-        match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/, // Validación de formato HH:mm AM/PM
+        match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/ // Validación de formato HH:mm AM/PM
       },
       comida: {
         type: String,
         required: true, // Es obligatorio guardar una hora
-        match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/, // Validación de formato HH:mm AM/PM
+        match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/ // Validación de formato HH:mm AM/PM
       },
       cenas: {
         type: String,
         required: true, // Es obligatorio guardar una hora
-        match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/, // Validación de formato HH:mm AM/PM
-      },
+        match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/ // Validación de formato HH:mm AM/PM
+      }
     },
     dieta: {
       type: String,
-      enum: ["Clásico", "Pescetariano", "Vegetariano", "Vegano", "Otro"],
-      require: false,
+      enum: ['Clásico', 'Pescetariano', 'Vegetariano', 'Vegano', 'Otro'],
+      require: false
     },
     logros: [
       {
         // que le gustaría lograr
         type: String,
         enum: [
-          "Comer y vivir más sano",
-          "Aumentar mi energía y mi estado de ánimo",
-          "Mantener la motivación y la constancia",
-          "Sentirme mejor con mi cuerpo",
+          'Comer y vivir más sano',
+          'Aumentar mi energía y mi estado de ánimo',
+          'Mantener la motivación y la constancia',
+          'Sentirme mejor con mi cuerpo'
         ],
-        require: false,
-      },
+        require: false
+      }
     ],
     metaAlcanzar: {
       // que tán rápido quiere alcanza tu meta 0.1 -> 1.5
       type: Number,
-      require: false,
+      require: false
     },
     // impideAlcanzar: { // que te impide a alcanzar tu meta
     //   type: String,
@@ -179,30 +179,30 @@ const UsuariosSchema = new Schema(
     // },
     googleId: {
       type: String,
-      required: false,
+      required: false
     },
     appleID: {
       type: String,
-      required: false,
+      required: false
     },
     correo: {
       type: String,
-      required: false,
+      required: false
     },
     telefono: {
       type: String,
-      required: false,
+      required: false
     },
     nombre: {
       type: String,
-      required: false,
+      required: false
     },
     estatus: {
       type: String,
-      enum: ["Activo", "Inactivo"],
+      enum: ['Activo', 'Inactivo'],
       require: false,
-      default: "Activo",
-    },
+      default: 'Activo'
+    }
   },
   { versionKey: false }
 );
@@ -214,7 +214,7 @@ const generarClave = () => {
 };
 
 // Pre-save hook to generate distributor key
-UsuariosSchema.pre("save", async function (next) {
+UsuariosSchema.pre('save', async function (next) {
   if (!this.codigo) {
     try {
       let claveGenerada;
@@ -224,7 +224,7 @@ UsuariosSchema.pre("save", async function (next) {
         claveGenerada = generarClave();
 
         const busca = await usuarioModel.countDocuments({
-          codigo: claveGenerada,
+          codigo: claveGenerada
         });
 
         if (busca === 0) {
@@ -248,9 +248,9 @@ UsuariosSchema.methods.toJSON = function () {
   obj.vencido = false;
   if (obj.fechaVencimiento) {
     obj.fechaVencimientoFormato = moment(obj.fechaVencimiento).format(
-      "DD/MM/YYYY"
+      'DD/MM/YYYY'
     );
-    obj.diasAVencer = moment(obj.fechaVencimiento).diff(moment(), "days");
+    obj.diasAVencer = moment(obj.fechaVencimiento).diff(moment(), 'days');
     // Bandera para saber si la mensualidad ya venció
     obj.vencido = moment(obj.fechaVencimiento).isBefore(moment()) || true; // Si la fecha de vencimiento es antes de la fecha actual, venció
   }
@@ -258,16 +258,16 @@ UsuariosSchema.methods.toJSON = function () {
   // Formatear fechaNacimiento
   if (obj.fechaNacimiento) {
     obj.fechaNacimientoFormato = moment(obj.fechaNacimiento).format(
-      "DD/MM/YYYY"
+      'DD/MM/YYYY'
     );
-    obj.edad = moment().diff(obj.fechaNacimiento, "years");
+    obj.edad = moment().diff(obj.fechaNacimiento, 'years');
   }
 
   // Formatear fechaMeta
   if (obj.fechaMeta) {
-    moment.locale("es"); // Establece el idioma a español
+    moment.locale('es'); // Establece el idioma a español
     obj.fechaMetaObjetivo =
-      moment(obj.fechaMeta)?.format("D [de] MMMM [del] YYYY") || "";
+      moment(obj.fechaMeta)?.format('D [de] MMMM [del] YYYY') || '';
   }
 
   return obj;
@@ -275,6 +275,6 @@ UsuariosSchema.methods.toJSON = function () {
 
 UsuariosSchema.plugin(mongoosePaginate);
 
-const usuarioModel = model("usuarios", UsuariosSchema);
+const usuarioModel = model('usuarios', UsuariosSchema);
 
 module.exports = usuarioModel;

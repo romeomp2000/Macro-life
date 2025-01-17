@@ -14,20 +14,61 @@ class BorderCamera extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Fondo oscuro con agujero transparente
-        // CustomPaint(
-        //   size: MediaQuery.of(context).size,
-        //   painter: TransparentHolePainter(
-        //     holeWidth: width,
-        //     holeHeight: height,
-        //   ),
-        // ),
+        // Parte superior con fondo gris y opacidad
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: (MediaQuery.of(context).size.height - height) /
+                2, // Espacio de la parte superior
+            color: Colors.black.withOpacity(0.4), // Gris con opacidad
+          ),
+        ),
 
-        // Esquinas del recuadro
+        // Parte inferior con fondo gris y opacidad
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: (MediaQuery.of(context).size.height - height) /
+                2, // Espacio de la parte inferior
+            color: Colors.black.withOpacity(0.4), // Gris con opacidad
+          ),
+        ),
+
+        // Parte izquierda con fondo gris y opacidad
+        Positioned(
+          top: (MediaQuery.of(context).size.height - height) / 2,
+          left: 0,
+          child: Container(
+            width: (MediaQuery.of(context).size.width - width) /
+                2, // Espacio de la parte izquierda
+            height: height, // Mantener la altura del centro
+            color: Colors.black.withOpacity(0.4), // Gris con opacidad
+          ),
+        ),
+
+        // Parte derecha con fondo gris y opacidad
+        Positioned(
+          top: (MediaQuery.of(context).size.height - height) / 2,
+          right: 0,
+          child: Container(
+            width: (MediaQuery.of(context).size.width - width) /
+                2, // Espacio de la parte derecha
+            height: height, // Mantener la altura del centro
+            color: Colors.black.withOpacity(0.4), // Gris con opacidad
+          ),
+        ),
+
+        // Área central sin color gris
         Center(
-          child: SizedBox(
+          child: Container(
             width: width,
             height: height,
+            color: Colors
+                .transparent, // Área central transparente (sin color gris)
             child: Stack(
               children: [
                 // Esquinas superiores
@@ -36,7 +77,7 @@ class BorderCamera extends StatelessWidget {
                   left: 0,
                   child: Container(
                     width: 30,
-                    height: 4,
+                    height: 5,
                     color: Colors.white,
                   ),
                 ),
@@ -44,7 +85,7 @@ class BorderCamera extends StatelessWidget {
                   top: 0,
                   left: 0,
                   child: Container(
-                    width: 4,
+                    width: 5,
                     height: 30,
                     color: Colors.white,
                   ),
@@ -54,7 +95,7 @@ class BorderCamera extends StatelessWidget {
                   right: 0,
                   child: Container(
                     width: 30,
-                    height: 4,
+                    height: 5,
                     color: Colors.white,
                   ),
                 ),
@@ -62,7 +103,7 @@ class BorderCamera extends StatelessWidget {
                   top: 0,
                   right: 0,
                   child: Container(
-                    width: 4,
+                    width: 5,
                     height: 30,
                     color: Colors.white,
                   ),
@@ -74,7 +115,7 @@ class BorderCamera extends StatelessWidget {
                   left: 0,
                   child: Container(
                     width: 30,
-                    height: 4,
+                    height: 5,
                     color: Colors.white,
                   ),
                 ),
@@ -82,7 +123,7 @@ class BorderCamera extends StatelessWidget {
                   bottom: 0,
                   left: 0,
                   child: Container(
-                    width: 4,
+                    width: 5,
                     height: 30,
                     color: Colors.white,
                   ),
@@ -92,7 +133,7 @@ class BorderCamera extends StatelessWidget {
                   right: 0,
                   child: Container(
                     width: 30,
-                    height: 4,
+                    height: 5,
                     color: Colors.white,
                   ),
                 ),
@@ -100,7 +141,7 @@ class BorderCamera extends StatelessWidget {
                   bottom: 0,
                   right: 0,
                   child: Container(
-                    width: 4,
+                    width: 5,
                     height: 30,
                     color: Colors.white,
                   ),
@@ -112,39 +153,4 @@ class BorderCamera extends StatelessWidget {
       ],
     );
   }
-}
-
-class TransparentHolePainter extends CustomPainter {
-  final double holeWidth;
-  final double holeHeight;
-
-  TransparentHolePainter({
-    required this.holeWidth,
-    required this.holeHeight,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    // Fondo oscuro
-    final paint = Paint()
-      ..color = Colors.black.withOpacity(0.5)
-      ..style = PaintingStyle.fill;
-
-    // Dibuja el fondo oscuro
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint);
-
-    // // Crear agujero transparente
-    final transparentPaint = Paint()..color = Colors.transparent;
-
-    final holeX = (size.width - holeWidth) / 2;
-    final holeY = (size.height - holeHeight) / 2;
-
-    canvas.drawRect(
-      Rect.fromLTWH(holeX, holeY, holeWidth, holeHeight),
-      transparentPaint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

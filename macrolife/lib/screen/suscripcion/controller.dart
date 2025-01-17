@@ -23,32 +23,34 @@ class SuscripcionController extends GetxController {
       Get.put(EscanearAlimentosController());
   final RxDouble totalAPagar = 0.0.obs;
 
-  RxList<String> images = <String>[].obs;
+  RxList<String> images = <String>[
+    'assets/images/foto_carrusel_2160x2200_nuevo_.jpg',
+    'assets/images/foto_carrusel_2160x2200_nuevo_2.jpg',
+    'assets/images/foto_carrusel_2160x2200_nuevo_3.jpg',
+    'assets/images/foto_carrusel_2160x2200_nuevo_4.jpg',
+    'assets/images/foto_carrusel_2160x2200_nuevo_5.jpg'
+  ].obs;
 
   RxString imagenUrl =
       'assets/images/pantalla_escaneo_alimentos_1125x2436_6 (1).jpg'.obs;
 
   @override
   void onInit() {
-    GetStorage box = GetStorage();
-    bool? isPromoActive = box.read('promo');
-
-    double anualPrice =
-        configuraiones.configuraciones.value.suscripcion?.anual ?? 0.0;
-
-    if (isPromoActive != null && isPromoActive) {
-      totalAPagar.value = anualPrice * 0.5;
-    } else {
-      totalAPagar.value = anualPrice;
-    }
-
-    images.add('assets/images/foto_carrusel_2160x2200_nuevo_.jpg');
-    images.add('assets/images/foto_carrusel_2160x2200_nuevo_2.jpg');
-    images.add('assets/images/foto_carrusel_2160x2200_nuevo_3.jpg');
-    images.add('assets/images/foto_carrusel_2160x2200_nuevo_4.jpg');
-    images.add('assets/images/foto_carrusel_2160x2200_nuevo_5.jpg');
-
     super.onInit();
+
+    Future.delayed(Duration.zero, () {
+      GetStorage box = GetStorage();
+      bool? isPromoActive = box.read('promo');
+
+      double anualPrice =
+          configuraiones.configuraciones.value.suscripcion?.anual ?? 0.0;
+
+      if (isPromoActive != null && isPromoActive) {
+        totalAPagar.value = anualPrice * 0.5;
+      } else {
+        totalAPagar.value = anualPrice;
+      }
+    });
   }
 
   void suscribirseUsuario({
@@ -74,7 +76,7 @@ class SuscripcionController extends GetxController {
       Get.back();
       Get.back();
       // escanearAlimentoController.
-      
+
       escanearAlimentoController.ayudaEscanear();
       usuarioController.usuario.value.vencidoSup = true;
       usuarioController.usuario.refresh();

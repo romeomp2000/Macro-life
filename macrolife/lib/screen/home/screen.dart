@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter_slidable_plus_plus/flutter_slidable_plus_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/Entrenamiento.dart';
@@ -15,6 +15,7 @@ import 'package:macrolife/screen/nutricion/controller.dart';
 import 'package:macrolife/screen/nutricion/screen.dart';
 import 'package:macrolife/screen/pesas/controller.dart';
 import 'package:macrolife/screen/pesas/screen.dart';
+import 'package:macrolife/widgets/AnimatedFood.dart';
 import 'package:macrolife/widgets/AppleHealth.dart';
 import 'package:macrolife/widgets/NutrientIndicator.dart';
 import 'package:flutter/material.dart';
@@ -94,17 +95,22 @@ class HomeScreen extends StatelessWidget {
                       ),
                       SizedBox(
                         width: 100,
-                        child: Obx(() => CircularPercentIndicator(
-                              radius: 55.0,
-                              lineWidth: 8.0,
-                              percent: (controllerUsuario
-                                  .macronutrientes.value.caloriasPorcentaje!
-                                  .toDouble()),
-                              center: const Icon(Icons.local_fire_department),
-                              progressColor: Colors.black, // Color del progreso
-                              backgroundColor:
-                                  Colors.black12, // Color del fondo del círculo
-                            )),
+                        child: Obx(
+                          () => CircularPercentIndicator(
+                            radius: 55.0,
+                            lineWidth: 8.0,
+                            percent: ((controllerUsuario.macronutrientes.value
+                                        .caloriasPorcentaje ??
+                                    0)
+                                .toDouble()),
+                            center: Image.asset(
+                              'assets/icons/icono_flama_chica_negra_48x48_original.png',
+                              width: 25,
+                            ),
+                            progressColor: Colors.black,
+                            backgroundColor: Colors.black12,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -169,7 +175,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 5, left: 2, right: 2),
+          margin: const EdgeInsets.only(top: 8, left: 2, right: 2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -186,8 +192,8 @@ class HomeScreen extends StatelessWidget {
                             .macronutrientes.value.proteinaPorcentaje
                             ?.toDouble() ??
                         0.0,
-                    color: Colors.red,
-                    icon: 'assets/icons/icono_filetecarne_90x69_nuevo.png',
+                    color: redTheme_,
+                    icon: 'assets/icons/icono_filetecarne_90x69_nuevo_1.png',
                   ),
                 ),
               ),
@@ -204,9 +210,9 @@ class HomeScreen extends StatelessWidget {
                             .macronutrientes.value.carbohidratosPorcentaje
                             ?.toDouble() ??
                         0.0,
-                    color: Colors.orange,
+                    color: yellowTheme_,
                     icon:
-                        'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
+                        'assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png',
                   ),
                 ),
               ),
@@ -223,8 +229,8 @@ class HomeScreen extends StatelessWidget {
                             .macronutrientes.value.grasasPorcentaje
                             ?.toDouble() ??
                         0.0,
-                    color: Colors.blue,
-                    icon: 'assets/icons/icono_almedraazul_74x70_nuevo.png',
+                    color: blueTheme_,
+                    icon: 'assets/icons/icono_almedraazul_74x70_nuevo_1.png',
                   ),
                 ),
               ),
@@ -298,7 +304,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                calendario(controller),
+                calendario(),
                 SizedBox(
                   height: 318,
                   child: PageView(
@@ -350,7 +356,8 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Obx(
                   () => controller.alimentosList.isEmpty &&
-                          controller.entrenamientosList.isEmpty
+                          controller.entrenamientosList.isEmpty &&
+                          controller.imagenLoader.value == null
                       ? Stack(
                           clipBehavior: Clip.none,
                           children: [
@@ -404,11 +411,15 @@ class HomeScreen extends StatelessWidget {
                 ),
 
                 Obx(() {
-                  return controller.loader.value
-                      ? const LinearProgressIndicator()
+                  return controller.loader.value &&
+                          controller.imagenLoader.value != null
+                      ? AnimatedFood(
+                          imagen: controller.imagenLoader.value!,
+                        )
                       : const SizedBox
                           .shrink(); // O cualquier widget vacío que desees
                 }),
+
                 Obx(() {
                   return SingleChildScrollView(
                     // scrollDirection: Axis.horizontal,
@@ -524,7 +535,9 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Container calendario(WeeklyCalendarController controller) {
+  Container calendario() {
+    final WeeklyCalendarController controller = Get.find();
+
     return Container(
       margin: EdgeInsets.only(top: 10),
       height: 80,
@@ -537,7 +550,7 @@ class HomeScreen extends StatelessWidget {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(7, (dayIndex) {
-              DateTime day = weekStart.add(Duration(days: dayIndex));
+              DateTime day = weekStart.add(Duration(days: dayIndex)).toLocal();
               DateTime dayActual = DateTime.now();
               return GestureDetector(
                 onTap: () {
@@ -625,6 +638,7 @@ class NutritionWidget extends StatelessWidget {
       child: Slidable(
         key: const ValueKey(0),
         endActionPane: ActionPane(
+          extentRatio: 0.26,
           motion: ScrollMotion(),
           children: [
             SlidableAction(
@@ -653,6 +667,13 @@ class NutritionWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.grey[200],
             borderRadius: BorderRadius.circular(16.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 4.0,
+                offset: Offset(0, 4),
+              ),
+            ],
           ),
           child: Stack(
             children: [
@@ -670,10 +691,33 @@ class NutritionWidget extends StatelessWidget {
                       child: CachedNetworkImage(
                         imageUrl: '${nutritionInfo.imageUrl}',
                         width: 120,
-                        fit: BoxFit.cover,
+                        height: 120,
+                        fit: BoxFit
+                            .fitWidth, // Ajusta la imagen al ancho sin distorsionar
                         alignment: Alignment.center,
                         progressIndicatorBuilder: (context, url, progress) =>
                             CircularProgressIndicator.adaptive(),
+                        errorWidget: (context, url, error) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            spacing: 5,
+                            children: [
+                              Icon(
+                                Icons.error,
+                                color: Colors.red,
+                              ),
+                              Text(
+                                'Error al cargar la imagen',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ), // Widget de error
                       ),
                     ),
                   SizedBox(
@@ -686,7 +730,7 @@ class NutritionWidget extends StatelessWidget {
                         children: [
                           const SizedBox.shrink(),
                           SizedBox(
-                            width: Get.width - 225,
+                            width: Get.width - 233,
                             child: Text(
                               FuncionesGlobales.capitalize(
                                   nutritionInfo.name ?? ''),
@@ -950,6 +994,7 @@ class EjercicioWidget extends StatelessWidget {
       child: Slidable(
         key: const ValueKey(0),
         endActionPane: ActionPane(
+          extentRatio: 0.26,
           motion: ScrollMotion(),
           children: [
             SlidableAction(

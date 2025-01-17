@@ -38,9 +38,7 @@ class ObjetivosController extends GetxController {
   var calorieFocusNode = FocusNode().obs;
   var proteinFocusNode = FocusNode().obs;
 
-  void back() {
-    Get.back();
-  }
+  // void ba
 }
 
 class ChartData {
