@@ -147,11 +147,11 @@ class RegistroPasosScreen extends StatelessWidget {
             //Dieta
             paso_10(controller),
 
-            //Notificaciones
-            paso_11(controller),
-
             //Opiniones
             paso_12(controller),
+
+            //Notificaciones
+            paso_11(controller),
 
             //Hora de notificaciones
             paso_13(controller),
@@ -258,7 +258,7 @@ class GeneroSelect extends StatelessWidget {
             decoration: BoxDecoration(
                 color: selected == true ? Colors.white : Colors.white,
                 border: Border.all(
-                  width: selected == true ? 2 : 1,
+                  width: selected == true ? 2.5 : 1.5,
                   color: selected == true
                       ? Colors.black
                       : Color.fromARGB(255, 237, 237, 237),
@@ -397,6 +397,7 @@ class Steep extends StatelessWidget {
   final bool? enablePadding;
   final bool? isBascula;
   final bool? isRuler;
+  final bool? isDiet;
   final bool? enabledButtonSaltar;
   final RxBool isActivo;
   const Steep({
@@ -417,6 +418,7 @@ class Steep extends StatelessWidget {
     this.enabledButtonSaltar = false,
     required this.isActivo,
     this.isRuler = false,
+    this.isDiet = false,
   });
 
   // @override
@@ -472,8 +474,11 @@ class Steep extends StatelessWidget {
         children: [
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: _buildContent(),
+              child: enableScroll!
+                  ? SingleChildScrollView(
+                      child: _buildContent(),
+                    )
+                  : _buildContent(),
             ),
           ),
           Container(
@@ -502,10 +507,12 @@ class Steep extends StatelessWidget {
                     ),
                   ),
                 Expanded(
-                  child: buttonTest(
-                    textBTN ?? 'Siguiente',
-                    onNext,
-                    isActivo.value,
+                  child: Obx(
+                    () => buttonTest(
+                      textBTN ?? 'Siguiente',
+                      onNext,
+                      isActivo.value,
+                    ),
                   ),
                 ),
               ],
@@ -519,20 +526,27 @@ class Steep extends StatelessWidget {
   // Método que construye todo el contenido
   Widget _buildContent() {
     return Container(
-      // decoration: decoration,
+      decoration: decoration,
       alignment: Alignment.center,
       margin: EdgeInsets.only(
           left: isBascula! ? 0 : 10, right: isBascula! ? 0 : 10),
       child: Column(
         spacing: isBascula! || isRuler! ? 0 : 15,
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment:
-            isBascula! ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: isBascula! || isRuler!
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            padding: const EdgeInsets.only(
-              top: 10,
-            ),
+            padding: EdgeInsets.only(
+                top: 10,
+                bottom: isRuler!
+                    ? isDiet!
+                        ? 10
+                        : 3
+                    : Get.height * 0.03,
+                left: 5,
+                right: 5),
             child: Column(
               children: [
                 if (title.isNotEmpty)
@@ -561,56 +575,56 @@ class Steep extends StatelessWidget {
               ],
             ),
           ),
-          // if (body != null)
-          //   Container(
-          //     padding: EdgeInsets.symmetric(
-          //       horizontal: enablePadding == true ? 12.0 : 0.0,
-          //       vertical: enablePadding == true ? 10 : 0.0,
-          //     ),
-          //     child: Column(
-          //       crossAxisAlignment: CrossAxisAlignment.start,
-          //       children: [
-          //         body != null ? body! : Container(),
-          //       ],
-          //     ),
-          //   ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(
-          //     horizontal: 12.0,
-          //     vertical: 10,
-          //   ),
-          //   child: Column(
-          //     spacing: 15,
-          //     children: [
-          //       ...options.map(
-          //         (option) => Column(
-          //           children: [
-          //             Container(
-          //               margin: const EdgeInsets.only(bottom: 20),
-          //               child: CustomElevatedSelected(
-          //                 check: option.check,
-          //                 message: option.title ?? '',
-          //                 icon: option.icon,
-          //                 widget: option.leading,
-          //                 subtitle: option.subtitle,
-          //                 trailing: option.trailing,
-          //                 function: () {
-          //                   if (onOptionSelected != null) {
-          //                     onOptionSelected!(option.title ?? '');
-          //                   }
-          //                 },
-          //                 activo: selectedOption == option.title ||
-          //                     (selectedOptions?.contains(option.title) ??
-          //                         false),
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //       if (options.length > 2) const SizedBox(height: 10)
-          //     ],
-          //   ),
-          // ),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: enablePadding == true ? 12.0 : 0.0,
+              vertical: enablePadding == true ? 10 : 0.0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                body != null ? body! : Container(),
+              ],
+            ),
+          ),
+          // if (options.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 10,
+            ),
+            child: Column(
+              spacing: 15,
+              children: [
+                ...options.map(
+                  (option) => Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        child: CustomElevatedSelected(
+                          check: option.check,
+                          message: option.title ?? '',
+                          icon: option.icon,
+                          widget: option.leading,
+                          subtitle: option.subtitle,
+                          trailing: option.trailing,
+                          function: () {
+                            if (onOptionSelected != null) {
+                              onOptionSelected!(option.title ?? '');
+                            }
+                          },
+                          activo: selectedOption == option.title ||
+                              (selectedOptions?.contains(option.title) ??
+                                  false),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // if (options.length > 2) const SizedBox(height: 10)
+              ],
+            ),
+          ),
         ],
       ),
     );

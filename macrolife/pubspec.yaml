@@ -62,7 +62,6 @@ dependencies:
     flutter_local_notifications: ^18.0.1
     pull_down_button: ^0.10.2
 
-
 dev_dependencies:
     flutter_test:
         sdk: flutter

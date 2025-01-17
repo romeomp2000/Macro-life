@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:macrolife/config/api_service.dart';
+import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/screen/registro_pasos/controller.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class LoaderController extends GetxController {
   final argumentos = Get.arguments;
   List<String> frases = [
     'Preparando recomendaciones exclusivas para ti...',
-    'Analizando tus preferencias para ofrecer lo mejor...',
+    'Analizando tus preferencias para ofrecerte lo mejor...',
     'Cuidando cada detalle de tu bienestar...',
     'Ajustando las opciones para que se adapten a ti...',
     'Creando una experiencia única para tu salud...',
@@ -24,23 +25,32 @@ class LoaderController extends GetxController {
 
   final texto = 'Personalizando tu plan de salud ideal...'.obs;
   final box = GetStorage();
-  late Timer _timer; // Timer para actualizar las frases
+  late Timer _timer;
   int _fraseIndex = 0;
+  int _frasesMostradas = 0; // Nuevo contador
 
   @override
   void onInit() async {
     super.onInit();
 
-    // Inicia el Timer para cambiar las frases
-    _timer = Timer.periodic(const Duration(milliseconds: 1500), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 2000), (timer) {
+      FuncionesGlobales.vibratePress();
       texto.value = frases[_fraseIndex];
-      _fraseIndex = (_fraseIndex + 1) % frases.length; // Cicla las frases
-    });
+      _fraseIndex = (_fraseIndex + 1) % frases.length;
+      _frasesMostradas++;
 
+      // Cuando se hayan mostrado todas las frases, se puede proceder con la siguiente pantalla
+      if (_frasesMostradas >= frases.length) {
+        _timer.cancel(); // Cancela el temporizador
+        _proseguirConRegistro(); // Llama a la función que hace la petición y navega
+      }
+    });
+  }
+
+  Future<void> _proseguirConRegistro() async {
     try {
       var args = Get.arguments;
 
-      // Puedes acceder a los valores de esta manera:
       var genero = args["genero"];
       var entrenamiento = args["entrenamiento"];
       var aplicacionSimilar = args["aplicacionSimilar"];
@@ -52,7 +62,6 @@ class LoaderController extends GetxController {
       var dieta = args["dieta"];
       var lograr = args["lograr"];
       var metaVelocidad = args["metaVelocidad"];
-      // var metaImpedimento = args["metaImpedimento"];
       var codigo = args["codigo"];
       var appleID = args["appleID"];
       var googleId = args["googleId"];
@@ -100,16 +109,10 @@ class LoaderController extends GetxController {
       RegistroPasosController registroPasosController = Get.find();
       loading.value = false;
 
-      // Detén el Timer cuando termine la cargas
-      _timer.cancel();
-
       registroPasosController.nextStep();
       registroPasosController.currentStep++;
       Get.back();
     } catch (e) {
-      // Manejo de errores
-      // _timer.cancel(); // Asegúrate de detener el Timer si ocurre un error
-
       Get.snackbar(
         'Registro',
         e.toString(),
@@ -122,7 +125,6 @@ class LoaderController extends GetxController {
 
   @override
   void onClose() {
-    // Detén el Timer cuando se destruya el controlador
     if (_timer.isActive) {
       _timer.cancel();
     }

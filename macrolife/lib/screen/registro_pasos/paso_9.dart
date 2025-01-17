@@ -23,10 +23,10 @@ Widget paso_9(RegistroPasosController controller) {
             ),
           ),
           ListTileModel(
-            title: 'Aumentar mi energía y mi estado de ánimo',
+            title: 'Aumentar mi energía y mi ánimo',
             check: false,
             leading: Image.asset(
-              'assets/icons/icono_logros_alimenticios_outline_63x63_6.png',
+              'assets/icons/icono_brazo_outline_100x100_activo.png',
               height: 25,
             ),
           ),
@@ -34,7 +34,7 @@ Widget paso_9(RegistroPasosController controller) {
             check: false,
             title: 'Mantener la motivación y la constancia',
             leading: Image.asset(
-              'assets/icons/icono_logros_alimenticios_outline_63x63_7.png',
+              'assets/icons/icono_logros_alimenticios_outline_63x63_6.png',
               height: 25,
             ),
           ),
@@ -42,7 +42,7 @@ Widget paso_9(RegistroPasosController controller) {
             check: false,
             title: 'Sentirme mejor con mi cuerpo',
             leading: Image.asset(
-              'assets/icons/icono_brazo_outline_100x100_activo.png',
+              'assets/icons/icono_logros_alimenticios_outline_63x63_7.png',
               height: 25,
             ),
           ),

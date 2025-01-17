@@ -2,12 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// A widget that displays a ruler-like picker for selecting numeric values.
 class SimpleRulerPicker extends StatefulWidget {
   final int minValue;
   final int maxValue;
   final int initialValue;
-  final int? currentWeight; // Nueva propiedad para el peso actual
+  final int? currentWeight;
   final double scaleLabelSize;
   final double scaleLabelWidth;
   final double scaleBottomPadding;
@@ -22,6 +21,8 @@ class SimpleRulerPicker extends StatefulWidget {
   final double height;
   final Axis axis;
   final String unitString;
+  final bool mostrar;
+  final bool isLeft;
 
   const SimpleRulerPicker({
     super.key,
@@ -42,6 +43,8 @@ class SimpleRulerPicker extends StatefulWidget {
     this.lineStroke = 2,
     this.height = 100,
     this.axis = Axis.horizontal,
+    this.mostrar = false,
+    this.isLeft = true,
     required this.unitString,
   }) : assert(
           minValue <= initialValue &&
@@ -160,6 +163,7 @@ class _SimpleRulerPickerState extends State<SimpleRulerPicker> {
                       child: CustomPaint(
                         painter: _RulerPainter(
                           value: value,
+                          isLeft: widget.isLeft,
                           selectedValue: _selectedValue,
                           currentWeight: widget.currentWeight,
                           scaleLabelSize: widget.scaleLabelSize,
@@ -182,12 +186,15 @@ class _SimpleRulerPickerState extends State<SimpleRulerPicker> {
           ),
           _isHorizontalAxis
               ? _VerticalPointer(
+                  mostrar: widget.mostrar,
+                  isLeft: widget.isLeft,
                   selectedValue: _selectedValue,
                   selectedColor: widget.selectedColor,
                   longLineHeight: widget.longLineHeight,
                   scaleLabelSize: widget.scaleLabelSize,
                   scaleBottomPadding: widget.scaleBottomPadding,
                   unitString: widget.unitString,
+                  // alignLeft: true,
                 )
               : _HorizontalPointer(
                   selectedValue: _selectedValue,
@@ -196,6 +203,8 @@ class _SimpleRulerPickerState extends State<SimpleRulerPicker> {
                   scaleLabelWidth: widget.scaleLabelWidth,
                   scaleBottomPadding: widget.scaleBottomPadding,
                   unitString: widget.unitString,
+                  isLeft: widget.isLeft,
+                  // alignLeft: true,
                 ),
         ],
       ),
@@ -219,6 +228,7 @@ class _RulerPainter extends CustomPainter {
   final double lineStroke;
   final Axis axis;
   final double maxScaleLabelWidth;
+  final bool isLeft;
 
   _RulerPainter({
     required this.value,
@@ -233,6 +243,7 @@ class _RulerPainter extends CustomPainter {
     required this.labelColor,
     required this.lineStroke,
     required this.axis,
+    required this.isLeft,
     required this.maxScaleLabelWidth,
   });
 
@@ -254,17 +265,23 @@ class _RulerPainter extends CustomPainter {
       ..color = Colors.grey.withOpacity(0.2) // Sombra gris
       ..style = PaintingStyle.fill;
 
-    final double position =
-        _isHorizontalAxis ? size.width / 2 : size.height / 2;
+    final double position = _isHorizontalAxis
+        ? size.width / 10
+        : isLeft
+            ? (size.height / 2)
+            : ((size.height / 2));
 
     // Dibujar las líneas principales y secundarias
     if (value % 10 == 0) {
       // Línea larga con etiqueta
-      final Offset start =
-          _isHorizontalAxis ? Offset(position, 0) : Offset(0, position);
+      final Offset start = _isHorizontalAxis
+          ? Offset(position, 0)
+          : Offset(isLeft ? 0 : (500), position);
+      // : Offset(0, position);
       final Offset end = _isHorizontalAxis
           ? Offset(position, longLineHeight)
-          : Offset(longLineHeight, position);
+          // : Offset(longLineHeight, position);
+          : Offset(isLeft ? longLineHeight : (longLineHeight + 325), position);
       canvas.drawLine(start, end, linePaint);
 
       // Dibujar la etiqueta de la escala
@@ -286,17 +303,24 @@ class _RulerPainter extends CustomPainter {
       final Offset textOffset = _isHorizontalAxis
           ? Offset(position - (textPainter.width / 2),
               longLineHeight + scaleBottomPadding)
-          : Offset(longLineHeight + scaleBottomPadding,
+          : Offset(
+              isLeft
+                  ? longLineHeight
+                  : (longLineHeight + 280) + scaleBottomPadding,
               position - (textPainter.height / 2));
 
+// if(!_isHorizontalAxis)
       textPainter.paint(canvas, textOffset);
     } else {
       // Línea corta sin etiqueta
-      final Offset start =
-          _isHorizontalAxis ? Offset(position, 0) : Offset(0, position);
+      final Offset start = _isHorizontalAxis
+          ? Offset(position, longLineHeight)
+          : Offset(isLeft ? 0 : (500), position);
+
       final Offset end = _isHorizontalAxis
-          ? Offset(position, shortLineHeight)
-          : Offset(shortLineHeight, position);
+          ? Offset(position, longLineHeight - (shortLineHeight + 8))
+          : Offset(
+              isLeft ? shortLineHeight : (shortLineHeight + 370), position);
       canvas.drawLine(start, end, linePaint);
     }
 
@@ -309,21 +333,11 @@ class _RulerPainter extends CustomPainter {
           (currentWeight! - value).toDouble() * size.width;
 
       final Rect shadowRect = _isHorizontalAxis
-          ? Rect.fromLTRB(selectedPos, 0, currentPos, size.height - 120)
+          ? Rect.fromLTRB(selectedPos, 0, currentPos, size.height - 130)
           : Rect.fromLTRB(0, selectedPos, size.width, currentPos);
 
       canvas.drawRect(shadowRect, shadowPaint);
     }
-
-    // // Dibujar la línea del indicador seleccionado
-    // if (value == selectedValue) {
-    //   final Offset selectedStart =
-    //       _isHorizontalAxis ? Offset(position, 0) : Offset(0, position);
-    //   final Offset selectedEnd = _isHorizontalAxis
-    //       ? Offset(position, longLineHeight * 1.5)
-    //       : Offset(longLineHeight * 1.5, position);
-    //   canvas.drawLine(selectedStart, selectedEnd, selectedPaint);
-    // }
 
     // Dibujar la línea del indicador del peso actual
     if (value == currentWeight) {
@@ -354,6 +368,7 @@ class _HorizontalPointer extends StatelessWidget {
     required this.scaleLabelWidth,
     required this.scaleBottomPadding,
     required this.unitString,
+    required this.isLeft,
   });
 
   final int selectedValue;
@@ -362,11 +377,12 @@ class _HorizontalPointer extends StatelessWidget {
   final double scaleLabelWidth;
   final double scaleBottomPadding;
   final String unitString;
+  final bool isLeft;
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: 100,
+      left: isLeft ? 150 : 80,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -400,6 +416,8 @@ class _VerticalPointer extends StatelessWidget {
     required this.scaleLabelSize,
     required this.scaleBottomPadding,
     required this.unitString,
+    this.mostrar = false,
+    required this.isLeft,
   });
 
   final int selectedValue;
@@ -408,14 +426,15 @@ class _VerticalPointer extends StatelessWidget {
   final double scaleLabelSize;
   final double scaleBottomPadding;
   final String unitString;
+  final bool mostrar;
+  final bool isLeft;
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
       top: 0,
-      right: 0,
+      right: 9,
       left: 0,
-      // alignment: Alignment.topCenter,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -435,27 +454,28 @@ class _VerticalPointer extends StatelessWidget {
           SizedBox(
             height: scaleLabelSize,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                selectedValue.toString(),
-                style: TextStyle(
-                  fontSize: 55,
-                  letterSpacing: 3.5,
-                  color: selectedColor,
+          if (!mostrar)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  selectedValue.toString(),
+                  style: TextStyle(
+                    fontSize: 55,
+                    letterSpacing: 3.5,
+                    color: selectedColor,
+                  ),
                 ),
-              ),
-              Text(
-                ' $unitString',
-                style: TextStyle(
-                  fontSize: 35,
-                  letterSpacing: 3.5,
-                  color: selectedColor,
+                Text(
+                  ' $unitString',
+                  style: TextStyle(
+                    fontSize: 35,
+                    letterSpacing: 3.5,
+                    color: selectedColor,
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
         ],
       ),
     );

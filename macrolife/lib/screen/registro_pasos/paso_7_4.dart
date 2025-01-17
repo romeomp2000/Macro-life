@@ -2,63 +2,81 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/screen/registro_pasos/controller.dart';
 import 'package:macrolife/screen/registro_pasos/screen.dart';
+import 'package:macrolife/widgets/custom_elevated_button.dart';
 
 Widget paso_7_4(RegistroPasosController controller) {
   return SizedBox(
     child: Obx(
-      () => Steep(
-        enableScroll: false,
-        enablePadding: true,
-        isActivo: true.obs,
-        body: Center(
-          child: SizedBox(
-            // height: Get.height - 230,
+      () => Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              spacing: 30,
               children: [
                 Text(
-                  controller.objetivo.value == 'Aumentar'
-                      ? 'Ganando'
-                      : 'Perdiendo',
+                  controller.objetivo.value == 'Aumentar' ? 'Ganar' : 'Perder',
                   style: const TextStyle(
-                    fontSize: 27,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 35,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                Text(
-                  controller.pesoDeseadoValue.value,
-                  style: const TextStyle(
-                    fontSize: 60,
-                  ),
-                ),
-                Text(
-                  'Es un objetivo realista.\nNo es nada difícil.',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                // const SizedBox(height: 30),
-                // e
-                // Spacer(),
-                Text(
-                  'El 90% de los usuarios informan de resultados notables después de usar Macro Life, con un progreso sostenido que es difícil de revertir.',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      // fontSize: 20,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      controller.pesoDeseadoValue.value,
+                      style: const TextStyle(
+                        fontSize: 95,
                       ),
-                )
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Text(
+                        ' kg',
+                        style: const TextStyle(
+                          fontSize: 35,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(top: 10),
+                  width: Get.width * 0.45,
+                  child: Text(
+                    'Es un objetivo realista. No es nada difícil.',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-        ),
-        title: '',
-        options: [],
-        onOptionSelected: (probado) => controller.probado.value = probado,
-        selectedOption: controller.probado.value,
-        onNext: controller.nextStep,
+          Container(
+            margin: const EdgeInsets.only(bottom: 30, left: 20, right: 20),
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  margin: EdgeInsets.only(bottom: 30),
+                  width: Get.width * 0.65,
+                  child: Text(
+                    'El 90% de los usuarios informan de resultados notables después de usar Macro Life, con un progreso sostenido que es difícil de revertir.',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+                buttonTest('Siguiente', controller.nextStep, true)
+              ],
+            ),
+          )
+        ],
       ),
     ),
   );

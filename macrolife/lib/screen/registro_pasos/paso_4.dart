@@ -5,33 +5,41 @@ import 'package:macrolife/screen/registro_pasos/controller.dart';
 import 'package:macrolife/screen/registro_pasos/screen.dart';
 
 Widget paso_4(RegistroPasosController controller) {
+  GifController gifController = GifController();
   return SizedBox(
     child: Obx(
       () => Steep(
         enablePadding: true,
         enableScroll: true,
-        isActivo: true.obs,
+        isActivo: controller.isGrafica1,
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 10,
           children: [
             Image.asset(
               'assets/icons/icono_circulo_estrella_217x217_activo.png',
               width: 80,
             ),
             GifView.asset(
-              'assets/gifs/grafica_inicial_902x474.gif',
+              'assets/gifs/animacion_grafica_01_test_902x474.gif',
               width: Get.width - 50,
               loop: false,
               filterQuality: FilterQuality.high,
               frameRate: 30,
+              controller: gifController,
               fadeDuration: Duration(seconds: 1),
+              onFrame: (frame) {
+                if (frame == 60) {
+                  gifController.pause();
+                  controller.isGrafica1.value = true;
+                }
+                return;
+                // print(frame);
+              },
             ),
             Container(
               margin: const EdgeInsets.only(
-                top: 70,
-                left: 30,
-                right: 30,
-              ),
+                  top: 100, left: 30, right: 30, bottom: 10),
               child: Text(
                 'Según los datos de Macro Life, la pérdida de peso es un proceso integral basado en dieta, ejercicio y hábitos saludables.',
                 maxLines: 2,
