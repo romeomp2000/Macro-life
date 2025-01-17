@@ -7,6 +7,7 @@ class SimpleRulerPicker extends StatefulWidget {
   final int maxValue;
   final int initialValue;
   final int? currentWeight;
+  final double? widthScreen;
   final double scaleLabelSize;
   final double scaleLabelWidth;
   final double scaleBottomPadding;
@@ -28,6 +29,7 @@ class SimpleRulerPicker extends StatefulWidget {
     super.key,
     this.minValue = 0,
     this.maxValue = 200,
+    this.widthScreen = 200,
     this.initialValue = 100,
     this.currentWeight, // Default: peso actual
     this.onValueChanged,
@@ -163,6 +165,7 @@ class _SimpleRulerPickerState extends State<SimpleRulerPicker> {
                       child: CustomPaint(
                         painter: _RulerPainter(
                           value: value,
+                          widthScreen: widget.widthScreen!,
                           isLeft: widget.isLeft,
                           selectedValue: _selectedValue,
                           currentWeight: widget.currentWeight,
@@ -217,11 +220,12 @@ class _SimpleRulerPickerState extends State<SimpleRulerPicker> {
 class _RulerPainter extends CustomPainter {
   final int value;
   final int selectedValue;
-  final int? currentWeight; // Nueva propiedad
+  final int? currentWeight;
   final double scaleLabelSize;
   final double scaleBottomPadding;
   final double longLineHeight;
   final double shortLineHeight;
+  final double widthScreen;
   final Color lineColor;
   final Color selectedColor;
   final Color labelColor;
@@ -233,6 +237,7 @@ class _RulerPainter extends CustomPainter {
   _RulerPainter({
     required this.value,
     required this.selectedValue,
+    required this.widthScreen,
     this.currentWeight,
     required this.scaleLabelSize,
     required this.scaleBottomPadding,
@@ -276,12 +281,14 @@ class _RulerPainter extends CustomPainter {
       // Línea larga con etiqueta
       final Offset start = _isHorizontalAxis
           ? Offset(position, 0)
-          : Offset(isLeft ? 0 : (500), position);
+          : Offset(isLeft ? 0 : (widthScreen * 3), position);
       // : Offset(0, position);
       final Offset end = _isHorizontalAxis
           ? Offset(position, longLineHeight)
           // : Offset(longLineHeight, position);
-          : Offset(isLeft ? longLineHeight : (longLineHeight + 325), position);
+          : Offset(
+              isLeft ? longLineHeight : ((widthScreen * 1.6) + longLineHeight),
+              position);
       canvas.drawLine(start, end, linePaint);
 
       // Dibujar la etiqueta de la escala
@@ -306,7 +313,7 @@ class _RulerPainter extends CustomPainter {
           : Offset(
               isLeft
                   ? longLineHeight
-                  : (longLineHeight + 280) + scaleBottomPadding,
+                  : ((widthScreen) + (longLineHeight * 3)) + scaleBottomPadding,
               position - (textPainter.height / 2));
 
 // if(!_isHorizontalAxis)
@@ -315,12 +322,15 @@ class _RulerPainter extends CustomPainter {
       // Línea corta sin etiqueta
       final Offset start = _isHorizontalAxis
           ? Offset(position, longLineHeight)
-          : Offset(isLeft ? 0 : (500), position);
+          : Offset(isLeft ? 0 : ((widthScreen * 3)), position);
 
       final Offset end = _isHorizontalAxis
           ? Offset(position, longLineHeight - (shortLineHeight + 8))
           : Offset(
-              isLeft ? shortLineHeight : (shortLineHeight + 370), position);
+              isLeft
+                  ? shortLineHeight
+                  : ((widthScreen) + (shortLineHeight * 13)),
+              position);
       canvas.drawLine(start, end, linePaint);
     }
 
@@ -333,7 +343,7 @@ class _RulerPainter extends CustomPainter {
           (currentWeight! - value).toDouble() * size.width;
 
       final Rect shadowRect = _isHorizontalAxis
-          ? Rect.fromLTRB(selectedPos, 0, currentPos, size.height - 130)
+          ? Rect.fromLTRB(selectedPos, 0, currentPos, size.height - 140)
           : Rect.fromLTRB(0, selectedPos, size.width, currentPos);
 
       canvas.drawRect(shadowRect, shadowPaint);
@@ -344,7 +354,7 @@ class _RulerPainter extends CustomPainter {
       final Offset currentStart =
           _isHorizontalAxis ? Offset(position, 0) : Offset(0, position);
       final Offset currentEnd = _isHorizontalAxis
-          ? Offset(position, longLineHeight * 1.5)
+          ? Offset(position, longLineHeight * 1.2)
           : Offset(longLineHeight * 1.5, position);
       final Paint currentPaint = Paint()
         ..color = Colors.black // Línea azul para el peso actual

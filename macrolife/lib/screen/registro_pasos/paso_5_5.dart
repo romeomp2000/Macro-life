@@ -81,6 +81,7 @@ Widget paso_5_5(RegistroPasosController controller) {
                 unitString: 'cm',
                 axis: Axis.vertical,
                 minValue: 50,
+                widthScreen: Get.width,
                 maxValue: 250,
                 initialValue: controller.altura.value,
                 onValueChanged: (value) {
