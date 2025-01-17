@@ -102,7 +102,7 @@ const UsuariosSchema = new Schema(
     // mas información
     entrenamientoSemanal: {
       type: String,
-      enum: ["Minimo", "Moderadamente", "Muy activo"],
+      enum: ["Mínimo", "Moderadamente", "Muy activo"],
       require: false,
     },
     aplicacionSimilar: {

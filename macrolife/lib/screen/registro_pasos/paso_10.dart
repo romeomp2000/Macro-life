@@ -10,8 +10,10 @@ Widget paso_10(RegistroPasosController controller) {
     child: Obx(
       () => Steep(
         enableScroll: true,
+        isRuler: true,
+        isDiet: true,
         isActivo: controller.isDieta,
-        title: '¿Sigue una dieta específica?',
+        title: '¿Sigues una dieta específica?',
         options: [
           ListTileModel(
             check: false,
@@ -23,9 +25,9 @@ Widget paso_10(RegistroPasosController controller) {
           ),
           ListTileModel(
             check: false,
-            title: 'Pescetariana',
+            title: 'Pescetariano',
             leading: Image.asset(
-              'assets/icons/icono_dietas_alimenticias_outline_60x60_pescetaria.png',
+              'assets/icons/icono_dietas_alimenticias_outline_60x60_pescetario.png',
               height: 25,
             ),
           ),
@@ -52,6 +54,7 @@ Widget paso_10(RegistroPasosController controller) {
           ),
         ],
         body: null,
+        description: null,
         onOptionSelected: (dieta) {
           controller.isDieta.value = true;
           controller.dieta.value = dieta;

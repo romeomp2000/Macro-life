@@ -5,12 +5,13 @@ import 'package:macrolife/screen/registro_pasos/controller.dart';
 import 'package:macrolife/screen/registro_pasos/screen.dart';
 
 Widget paso_8(RegistroPasosController controller) {
+  GifController controllerGif = GifController();
   return SizedBox(
     child: Obx(
       () => Steep(
         enablePadding: false,
         enableScroll: true,
-        isActivo: true.obs,
+        isActivo: controller.isGrafica3,
         body: Column(
           spacing: 20,
           children: [
@@ -29,12 +30,21 @@ Widget paso_8(RegistroPasosController controller) {
               ),
             ),
             GifView.asset(
-              'assets/gifs/grafica_dieta_mes_952x780.gif',
+              'assets/gifs/animacion_grafica_02_test_952x780.gif',
               width: Get.width - 50,
               loop: false,
               filterQuality: FilterQuality.high,
               frameRate: 30,
+              controller: controllerGif,
               fadeDuration: Duration(seconds: 1),
+              onFrame: (frame) {
+                // print(frame);
+                if (frame == 59) {
+                  controllerGif.pause();
+                  controller.isGrafica3.value = true;
+                }
+                return;
+              },
             ),
           ],
         ),

@@ -4,24 +4,6 @@ import 'package:get/get.dart';
 import 'package:macrolife/screen/registro_pasos/controller.dart';
 
 Widget paso_16(RegistroPasosController controller) {
-  // return SizedBox(
-  //   child: Steep(
-  //     isActivo: true.obs,
-  //     body: Center(
-  //       child: Padding(
-  //         padding: EdgeInsets.all(8.0),
-  //         child:
-
-  //       ),
-  //     ),
-  //     title: 'Crear una cuenta',
-  //     options: const [],
-  //     onOptionSelected: (nombre) {},
-  //     selectedOption: controller.correoController.value.text,
-  //     onNext: null,
-  //   ),
-  // );
-
   return Container(
     margin: EdgeInsets.only(left: 20, right: 20),
     child: Column(
@@ -30,7 +12,7 @@ Widget paso_16(RegistroPasosController controller) {
           'Crear una cuenta',
           textAlign: TextAlign.center,
           style: const TextStyle(
-            fontSize: 25,
+            fontSize: 35,
             fontWeight: FontWeight.bold,
           ),
         ),

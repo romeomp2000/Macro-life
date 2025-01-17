@@ -26,7 +26,7 @@ Widget paso_7_2(RegistroPasosController controller) {
             ),
             const SizedBox(height: 10),
             Text(
-              '${((controller.rapidoMeta * 10).truncateToDouble()) / 10} Kg',
+              '${((controller.rapidoMeta * 10).truncateToDouble()) / 10} kg',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 24,
@@ -39,19 +39,35 @@ Widget paso_7_2(RegistroPasosController controller) {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset(
-                  'assets/icons/icono_tortuga_outline_200x98_activo.png',
-                  color: Colors.black,
-                  height: 25,
+                  'assets/icons/icono_velocidad_perdida_peso_146x146_tortuga_activo.png',
+                  color: controller.rapidoMeta == 0.1 ||
+                          controller.rapidoMeta > 0.1 &&
+                              controller.rapidoMeta < 0.3
+                      ? Colors.black
+                      : Color.fromARGB(255, 193, 193, 193),
+                  height: controller.rapidoMeta == 0.1 ||
+                          controller.rapidoMeta > 0.1 &&
+                              controller.rapidoMeta < 0.3
+                      ? 50
+                      : 45,
                 ),
                 Image.asset(
-                  'assets/icons/icono_ardilla_outline_144x137_activo.png',
-                  color: Colors.black,
-                  height: 25,
+                  'assets/icons/icono_velocidad_perdida_peso_146x146_ardilla_activo.png',
+                  color:
+                      controller.rapidoMeta > 0.3 && controller.rapidoMeta < 1.3
+                          ? Colors.black
+                          : Color.fromARGB(255, 193, 193, 193),
+                  height:
+                      controller.rapidoMeta > 0.3 && controller.rapidoMeta < 1.3
+                          ? 50
+                          : 45,
                 ),
                 Image.asset(
-                  'assets/icons/icono_gacela_outline_200x137_activo.png',
-                  color: Colors.black,
-                  height: 25,
+                  'assets/icons/icono_velocidad_perdida_peso_146x146_gacela_activo.png',
+                  color: controller.rapidoMeta > 1.3
+                      ? Colors.black
+                      : Color.fromARGB(255, 193, 193, 193),
+                  height: controller.rapidoMeta > 1.3 ? 50 : 45,
                 ),
               ],
             ),
@@ -61,12 +77,18 @@ Widget paso_7_2(RegistroPasosController controller) {
               child: CupertinoSlider(
                 min: 0.1,
                 max: 1.5,
-                thumbColor: Colors.black, // Color del círculo
-
+                thumbColor: Colors.black,
                 value: controller.rapidoMeta.value,
                 onChanged: (meta) {
                   controller.rapidoMeta.value = meta;
-                  FuncionesGlobales.vibratePress();
+                  double valor =
+                      ((controller.rapidoMeta.value * 10).truncateToDouble()) /
+                          10;
+
+                  if (valor != controller.LastValorrapidoMeta.value) {
+                    FuncionesGlobales.vibratePressLow();
+                    controller.LastValorrapidoMeta.value = valor;
+                  }
                 },
               ),
             ),
@@ -75,14 +97,20 @@ Widget paso_7_2(RegistroPasosController controller) {
               width: Get.width,
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(
+                  color: Color.fromARGB(255, 248, 248, 248),
+                  width: 2.5,
+                ),
               ),
               child: Text(
                 // ignore: unrelated_type_equality_checks
-                controller.rapidoMeta == 0.1
+                (controller.rapidoMeta == 0.1 ||
+                        controller.rapidoMeta > 0.1 &&
+                            controller.rapidoMeta < 0.3)
                     ? 'Lento y constante'
-                    : controller.rapidoMeta > 0.1 && controller.rapidoMeta < 1.5
+                    : controller.rapidoMeta > 0.3 && controller.rapidoMeta < 1.3
                         ? 'Recomendado'
                         : 'Puede sentirse muy cansado',
                 textAlign: TextAlign.center,

@@ -105,6 +105,12 @@ class FuncionesGlobales {
     }
   }
 
+  static void vibratePressLow() {
+    if (Platform.isIOS) {
+      HapticFeedback.lightImpact();
+    }
+  }
+
   static Future<String> getDeviceToken() async {
     try {
       // Request user permission for push notifications (iOS)

@@ -12,7 +12,7 @@ Widget paso_13(RegistroPasosController controller) {
       enablePadding: true,
       isActivo: true.obs,
       enableScroll: true,
-      title: '¿Qué hora te viene bien?',
+      title: '¿Qué horario te conviene?',
       options: [
         ListTileModel(
           check: false,

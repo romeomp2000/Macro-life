@@ -35,7 +35,7 @@ class CustomElevatedSelected extends StatelessWidget {
           BoxShadow(
             color: Colors.black12,
             offset: Offset(0.01, -0.01),
-            blurRadius: 0.01,
+            blurRadius: 1.5,
           ),
         ],
         color: Colors.white,
@@ -46,7 +46,7 @@ class CustomElevatedSelected extends StatelessWidget {
           side: WidgetStatePropertyAll(
             BorderSide(
               color: activo! ? Colors.black : Colors.white,
-              width: activo! ? 2 : 1,
+              width: activo! ? 2 : 1.5,
             ),
           ),
           shape: WidgetStatePropertyAll(
