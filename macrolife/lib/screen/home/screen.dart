@@ -638,7 +638,7 @@ class NutritionWidget extends StatelessWidget {
       child: Slidable(
         key: const ValueKey(0),
         endActionPane: ActionPane(
-          extentRatio: 0.26,
+          extentRatio: 0.29,
           motion: ScrollMotion(),
           children: [
             SlidableAction(
@@ -747,7 +747,7 @@ class NutritionWidget extends StatelessWidget {
                             spacing: 8,
                             children: [
                               Image.asset(
-                                'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                                'assets/icons/icono_flama_chica_negra_48x48_original.png',
                                 width: 15,
                                 height: 15,
                               ),
@@ -764,15 +764,15 @@ class NutritionWidget extends StatelessWidget {
                             spacing: 12,
                             children: [
                               _buildNutritionItem(
-                                'assets/icons/icono_filetecarne_90x69_nuevo.png',
+                                'assets/icons/icono_filetecarne_90x69_nuevo_1.png',
                                 '${nutritionInfo.protein}g', // Usamos el parámetro de proteínas
                               ),
                               _buildNutritionItem(
-                                'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
+                                'assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png',
                                 '${nutritionInfo.carbs}g', // Usamos el parámetro de carbohidratos
                               ),
                               _buildNutritionItem(
-                                'assets/icons/icono_almedraazul_74x70_nuevo.png',
+                                'assets/icons/icono_almedraazul_74x70_nuevo_1.png',
                                 '${nutritionInfo.fats}g', // Usamos el parámetro de grasas
                               ),
                             ],
@@ -994,7 +994,7 @@ class EjercicioWidget extends StatelessWidget {
       child: Slidable(
         key: const ValueKey(0),
         endActionPane: ActionPane(
-          extentRatio: 0.26,
+          extentRatio: 0.29,
           motion: ScrollMotion(),
           children: [
             SlidableAction(

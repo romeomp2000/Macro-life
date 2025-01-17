@@ -32,7 +32,7 @@ class NutricionScreen extends StatelessWidget {
             InteractiveViewer(
               boundaryMargin: EdgeInsets.all(0),
               minScale: 0.1,
-              maxScale: 2,  
+              maxScale: 2,
               child: CachedNetworkImage(
                 imageUrl: controller.alimento.value.imageUrl ?? '',
                 fit: BoxFit.cover,
@@ -62,7 +62,9 @@ class NutricionScreen extends StatelessWidget {
               controllerCalendario: controllerCalendario,
             ),
           Positioned(
-            top: Get.height - 94,
+            top: Get.height - 65,
+            right: 0,
+            left: 0,
             child: Container(
               decoration: const BoxDecoration(
                 border:
@@ -70,7 +72,7 @@ class NutricionScreen extends StatelessWidget {
                 color: Colors.white,
               ),
               child: Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.only(top: 0, left: 10.0, right: 10.0),
                 child: SizedBox(
                   width: Get.width - 30,
                   child: Row(
@@ -291,36 +293,26 @@ class NutricionScreen extends StatelessWidget {
                       }
                     },
                     child: Obx(
-                      () => Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        spacing: 8,
-                        children: [
-                          SizedBox(
-                            width: Get.width * 0.5,
-                            child: Text(
-                              '${controller.alimento.value.name}',
-                              style: const TextStyle(
-                                fontSize: 20,
+                      () => RichText(
+                        text: TextSpan(
+                          text: '${controller.alimento.value.name}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: controller.alimento.value.porcion != 1
+                                  ? ' x${controller.alimento.value.porcion}'
+                                  : '',
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
+                                fontSize: 12,
                               ),
-                              overflow: TextOverflow.clip,
-                              softWrap: true,
-                              // maxLines: 2,
                             ),
-                          ),
-                          Text(
-                            controller.alimento.value.porcion != 1
-                                ? ' x${controller.alimento.value.porcion}'
-                                : '',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            // overflow: TextOverflow.clip,
-                            // softWrap: true,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -491,7 +483,7 @@ class NutricionScreen extends StatelessWidget {
                 ),
                 leadingSize: 25,
                 leading: Image.asset(
-                  'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                  'assets/icons/icono_flama_chica_negra_48x48_original.png',
                   width: Get.width,
                 ),
               ),
@@ -502,7 +494,7 @@ class NutricionScreen extends StatelessWidget {
                 Obx(
                   () => NutritionalInfoRow(
                     icon: Image.asset(
-                      'assets/icons/icono_filetecarne_90x69_nuevo.png',
+                      'assets/icons/icono_filetecarne_90x69_nuevo_1.png',
                       width: 13,
                     ),
                     label: 'Proteína',
@@ -512,7 +504,7 @@ class NutricionScreen extends StatelessWidget {
                 Obx(
                   () => NutritionalInfoRow(
                     icon: Image.asset(
-                      'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
+                      'assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png',
                       width: 13,
                     ),
                     label: 'Carbohidratos',
@@ -522,7 +514,7 @@ class NutricionScreen extends StatelessWidget {
                 Obx(
                   () => NutritionalInfoRow(
                     icon: Image.asset(
-                      'assets/icons/icono_almedraazul_74x70_nuevo.png',
+                      'assets/icons/icono_almedraazul_74x70_nuevo_1.png',
                       width: 13,
                     ),
                     label: 'Grasas',
@@ -555,7 +547,7 @@ class NutricionScreen extends StatelessWidget {
                                 0) as num)
                             .toDouble() *
                         0.1,
-                    color: yellowTheme_,
+                    color: Colors.yellow,
                   ),
                   trailing: Text(
                     '${controller.alimento.value.puntuacionSalud?.score}/10',
@@ -581,8 +573,8 @@ class NutricionScreen extends StatelessWidget {
               ),
             Obx(
               () => Wrap(
-                spacing: 8,
-                runSpacing: 8,
+                spacing: 6,
+                runSpacing: 6,
                 children: [
                   if (controller.alimento.value.ingredientes != null)
                     for (var ingrediente
@@ -755,7 +747,7 @@ class NutritionalInfoRow extends StatelessWidget {
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,
-                  maxLines: 2,
+                  maxLines: 1,
                 ),
                 Text(
                   value,
@@ -797,7 +789,7 @@ class NutritionalInfoRow extends StatelessWidget {
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
-                        maxLines: 2,
+                        maxLines: 1,
                       ),
                     )
                   ],

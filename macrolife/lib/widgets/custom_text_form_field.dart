@@ -104,8 +104,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         ),
         contentPadding: const EdgeInsets.all(18),
         border: OutlineInputBorder(
-          borderSide: const BorderSide(
-              color: Color.fromARGB(255, 246, 246, 246), width: 1),
+          borderSide: const BorderSide(color: Colors.black26, width: 1),
           borderRadius: BorderRadius.circular(12),
         ),
         errorBorder: OutlineInputBorder(
@@ -117,13 +116,11 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           borderRadius: BorderRadius.circular(12),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-              color: Color.fromARGB(255, 246, 246, 246), width: 1),
+          borderSide: const BorderSide(color: Colors.black26, width: 1),
           borderRadius: BorderRadius.circular(12),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-              color: Color.fromARGB(255, 246, 246, 246), width: 1),
+          borderSide: const BorderSide(color: Colors.black26, width: 1),
           borderRadius: BorderRadius.circular(12),
         ),
         hintText: widget.hinttext ?? '',

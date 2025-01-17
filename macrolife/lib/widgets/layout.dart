@@ -677,10 +677,10 @@ class EscanearAlimentosController extends GetxController {
                         : Icon(Icons.flash_off),
                     onPressed: () {
                       if (linterna.value == true) {
-                        cameraController?.setFlashMode(FlashMode.always);
+                        cameraController?.setFlashMode(FlashMode.off);
                         linterna.value = false;
                       } else {
-                        cameraController?.setFlashMode(FlashMode.off);
+                        cameraController?.setFlashMode(FlashMode.torch);
                         linterna.value = true;
                       }
                     },

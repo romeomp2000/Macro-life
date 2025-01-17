@@ -102,7 +102,7 @@ class PuntuacionSaludScreen extends StatelessWidget {
                     ),
                     minLeadingWidth: 20,
                     leading: Image.asset(
-                      'assets/icons/icono_estrella_61x61_negro.png',
+                      'assets/icons/icono_macrolife_outline_500x500_negro.png',
                       width: 20,
                     ),
                   )

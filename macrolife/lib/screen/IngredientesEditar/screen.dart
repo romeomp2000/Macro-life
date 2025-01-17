@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/models/ingrediente.model.dart';
 import 'package:macrolife/screen/IngredientesEditar/controller.dart';
 import 'package:macrolife/screen/objetivos/controller.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 
 class IngredienteEditarScreen extends StatelessWidget {
@@ -93,58 +95,16 @@ class IngredienteEditarScreen extends StatelessWidget {
             CupertinoListTile(
               leadingSize: 70,
               padding: EdgeInsets.zero,
-              leading: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                    height: 100,
-                    width: 40,
-                    child: BarChart(
-                      BarChartData(
-                        barGroups: [
-                          BarChartGroupData(
-                            x: 1,
-                            barRods: [
-                              BarChartRodData(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(3)),
-                                toY: 50,
-                                fromY: 0,
-                                color: Colors.black,
-                                width: 20,
-                                backDrawRodData: BackgroundBarChartRodData(
-                                  show: true,
-                                  toY: 100,
-                                  color: Colors.grey.shade200,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                        titlesData: FlTitlesData(
-                          show: false,
-                          leftTitles: AxisTitles(),
-                          bottomTitles: AxisTitles(drawBelowEverything: false),
-                          topTitles: AxisTitles(drawBelowEverything: false),
-                        ),
-                        gridData: FlGridData(
-                          show: false,
-                        ),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        barTouchData: BarTouchData(
-                          enabled: false,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Image.asset(
-                    'assets/icons/icono_calorias_outline_120x120_activo.png',
-                    width: 30,
-                    height: 30,
-                  ),
-                ],
+              leading: CircularPercentIndicator(
+                radius: 30.0,
+                lineWidth: 6.0,
+                percent: 0.50,
+                center: Image.asset(
+                  'assets/icons/icono_flama_chica_negra_48x48_original.png',
+                  width: 15,
+                ),
+                progressColor: Colors.black, // Color del progreso
+                backgroundColor: Colors.black12, // Color del fondo del círculo
               ),
               title: const Text(
                 'Calorías',
@@ -179,61 +139,19 @@ class IngredienteEditarScreen extends StatelessWidget {
               leadingSize: 70,
               padding: EdgeInsets.zero,
               trailing: Icon(Icons.edit, color: Colors.black87),
-              leading: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                    height: 100,
-                    width: 40,
-                    child: BarChart(
-                      BarChartData(
-                        barGroups: [
-                          BarChartGroupData(
-                            x: 1,
-                            barRods: [
-                              BarChartRodData(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(3)),
-                                toY: 50,
-                                fromY: 0,
-                                color: Colors.black,
-                                width: 20,
-                                backDrawRodData: BackgroundBarChartRodData(
-                                  show: true,
-                                  toY: 100,
-                                  color: Colors.grey.shade200,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                        titlesData: FlTitlesData(
-                          show: false,
-                          leftTitles: AxisTitles(),
-                          bottomTitles: AxisTitles(drawBelowEverything: false),
-                          topTitles: AxisTitles(drawBelowEverything: false),
-                        ),
-                        gridData: FlGridData(
-                          show: false,
-                        ),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        barTouchData: BarTouchData(
-                          enabled: false,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Image.asset(
-                    'assets/icons/icono_filetecarne_outline_93x93_activo.png',
-                    width: 30,
-                    height: 30,
-                  ),
-                ],
+              leading: CircularPercentIndicator(
+                radius: 30.0,
+                lineWidth: 6.0,
+                percent: 0.50,
+                center: Image.asset(
+                  'assets/icons/icono_filetecarne_90x69_nuevo_1.png',
+                  width: 15,
+                ),
+                progressColor: redTheme_, // Color del progreso
+                backgroundColor: Colors.black12, // Color del fondo del círculo
               ),
               title: const Text(
-                'Objetivo de proteína',
+                'Proteína',
                 style: TextStyle(
                   // fontWeight: FontWeight.w500,
                   fontSize: 15,
@@ -260,61 +178,19 @@ class IngredienteEditarScreen extends StatelessWidget {
               leadingSize: 70,
               trailing: Icon(Icons.edit, color: Colors.black87),
               padding: EdgeInsets.zero,
-              leading: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                    height: 100,
-                    width: 40,
-                    child: BarChart(
-                      BarChartData(
-                        barGroups: [
-                          BarChartGroupData(
-                            x: 1,
-                            barRods: [
-                              BarChartRodData(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(3)),
-                                toY: 50,
-                                fromY: 0,
-                                color: Colors.black,
-                                width: 20,
-                                backDrawRodData: BackgroundBarChartRodData(
-                                  show: true,
-                                  toY: 100,
-                                  color: Colors.grey.shade200,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                        titlesData: FlTitlesData(
-                          show: false,
-                          leftTitles: AxisTitles(),
-                          bottomTitles: AxisTitles(drawBelowEverything: false),
-                          topTitles: AxisTitles(drawBelowEverything: false),
-                        ),
-                        gridData: FlGridData(
-                          show: false,
-                        ),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        barTouchData: BarTouchData(
-                          enabled: false,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Image.asset(
-                    'assets/icons/icono_panintegral_outline_79x79_activo.png',
-                    width: 30,
-                    height: 30,
-                  ),
-                ],
+              leading: CircularPercentIndicator(
+                radius: 30.0,
+                lineWidth: 6.0,
+                percent: 0.50,
+                center: Image.asset(
+                  'assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png',
+                  width: 15,
+                ),
+                progressColor: yellowTheme_, // Color del progreso
+                backgroundColor: Colors.black12, // Color del fondo del círculo
               ),
               title: const Text(
-                'Meta de carbohidratos',
+                'Carbohidratos',
                 style: TextStyle(
                   // fontWeight: FontWeight.w500,
                   fontSize: 15,
@@ -341,58 +217,16 @@ class IngredienteEditarScreen extends StatelessWidget {
               leadingSize: 70,
               padding: EdgeInsets.zero,
               trailing: Icon(Icons.edit, color: Colors.black87),
-              leading: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                    height: 100,
-                    width: 40,
-                    child: BarChart(
-                      BarChartData(
-                        barGroups: [
-                          BarChartGroupData(
-                            x: 1,
-                            barRods: [
-                              BarChartRodData(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(3)),
-                                toY: 50,
-                                fromY: 0,
-                                color: Colors.black,
-                                width: 20,
-                                backDrawRodData: BackgroundBarChartRodData(
-                                  show: true,
-                                  toY: 100,
-                                  color: Colors.grey.shade200,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                        titlesData: FlTitlesData(
-                          show: false,
-                          leftTitles: AxisTitles(),
-                          bottomTitles: AxisTitles(drawBelowEverything: false),
-                          topTitles: AxisTitles(drawBelowEverything: false),
-                        ),
-                        gridData: FlGridData(
-                          show: false,
-                        ),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        barTouchData: BarTouchData(
-                          enabled: false,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Image.asset(
-                    'assets/icons/icono_almendra_outline_78x78_activo.png',
-                    width: 30,
-                    height: 30,
-                  ),
-                ],
+              leading: CircularPercentIndicator(
+                radius: 30.0,
+                lineWidth: 6.0,
+                percent: 0.50,
+                center: Image.asset(
+                  'assets/icons/icono_almedraazul_74x70_nuevo_1.png',
+                  width: 15,
+                ),
+                progressColor: blueTheme_, // Color del progreso
+                backgroundColor: Colors.black12, // Color del fondo del círculo
               ),
               title: const Text(
                 'Objetivo de grasas',
