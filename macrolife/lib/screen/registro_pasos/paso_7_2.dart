@@ -92,7 +92,7 @@ Widget paso_7_2(RegistroPasosController controller) {
                 },
               ),
             ),
-            const SizedBox(height: 20),
+            // const SizedBox(height: 20),
             Container(
               width: Get.width,
               padding: const EdgeInsets.all(20.0),

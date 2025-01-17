@@ -96,7 +96,7 @@ Widget paso_5_5(RegistroPasosController controller) {
                 selectedColor: Colors.black,
                 labelColor: Colors.black,
                 lineStroke: 1,
-                height: Get.height * 0.65,
+                height: (Get.height * 0.65) - 20,
               ),
             ),
           ],

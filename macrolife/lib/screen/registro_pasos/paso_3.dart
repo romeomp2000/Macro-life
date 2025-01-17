@@ -11,7 +11,7 @@ Widget paso_3(RegistroPasosController controller) {
         title: '¿Has probado otras apps de seguimiento de calorías?',
         options: [],
         isActivo: controller.isOtraApp,
-        enableScroll: false,
+        enableScroll: true,
         body: Column(
           spacing: 30,
           mainAxisAlignment: MainAxisAlignment.center,

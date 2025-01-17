@@ -331,9 +331,9 @@ class Recomendaciones extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
+      // onTap: onPressed,
       child: Container(
-        width: Get.width * 0.4,
+        width: Get.width * 0.42,
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -623,7 +623,6 @@ class Steep extends StatelessWidget {
                   ),
                 ),
                 if (options.length > 2) const SizedBox(height: 10)
-
               ],
             ),
           ),

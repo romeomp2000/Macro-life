@@ -15,7 +15,9 @@ Widget paso_7_4(RegistroPasosController controller) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  controller.objetivo.value == 'Aumentar' ? 'Ganar' : 'Perder',
+                  controller.pesoDeseadoLabel.value == 'Subir de peso'
+                      ? 'Ganar'
+                      : 'Perder',
                   style: const TextStyle(
                     fontSize: 35,
                     fontWeight: FontWeight.w600,
