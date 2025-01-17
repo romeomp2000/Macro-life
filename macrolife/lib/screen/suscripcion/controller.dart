@@ -77,9 +77,10 @@ class SuscripcionController extends GetxController {
       Get.back();
       // escanearAlimentoController.
 
-      escanearAlimentoController.ayudaEscanear();
+      // escanearAlimentoController.ayudaEscanear();
       usuarioController.usuario.value.vencidoSup = true;
       usuarioController.usuario.refresh();
+      Get.offNamed('/layout');
     } catch (e) {
       print(e);
     }

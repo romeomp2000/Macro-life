@@ -195,6 +195,8 @@ class PagoController extends GetxController {
         },
       );
 
+      // print('object');
+      Get.offNamed('/layout');
       Get.back();
       Get.back();
       // // escanearAlimentoController.
@@ -202,7 +204,6 @@ class PagoController extends GetxController {
       // escanearAlimentoController.ayudaEscanear();
       usuarioController.usuario.value.vencidoSup = true;
       usuarioController.usuario.refresh();
-      Get.offAllNamed('/layout');
     } catch (e) {
       if (kDebugMode) {
         print(e);

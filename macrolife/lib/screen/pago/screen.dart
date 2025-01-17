@@ -41,57 +41,67 @@ class PagoVista extends StatelessWidget {
           children: [
             Expanded(
               child: Obx(
-                () => Column(
-                  mainAxisAlignment: controller.paso.value == 2
-                      ? MainAxisAlignment.center
-                      : controller.paso.value == 3
-                          ? MainAxisAlignment.start
-                          : MainAxisAlignment.start,
-                  children: [
-                    Obx(
-                      () => Container(
-                        margin: EdgeInsets.only(
-                            bottom: controller.paso.value == 2 ||
-                                    controller.paso.value == 3
-                                ? 35
-                                : 0),
-                        child: Text(
-                          controller.paso.value == 1
-                              ? 'Prueba  Macro Life gratis'
-                              : controller.paso.value == 2
-                                  ? 'Nosotros te recordaremos antes de que tu prueba finalice'
-                                  : controller.sucripcion.value == 'Anual'
-                                      ? 'Comienza tus 3 días de prueba gratis'
-                                      : 'Utiliza Macro Life para alcanzar tus metas',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold,
+                () => SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: controller.paso.value == 2
+                        ? MainAxisAlignment.center
+                        : controller.paso.value == 3
+                            ? MainAxisAlignment.start
+                            : MainAxisAlignment.start,
+                    children: [
+                      Obx(
+                        () => Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(
+                              bottom: controller.paso.value == 2 ||
+                                      controller.paso.value == 3
+                                  ? 35
+                                  : 0),
+                          child: Text(
+                            controller.paso.value == 1
+                                ? 'Prueba  Macro Life gratis'
+                                : controller.paso.value == 2
+                                    ? 'Nosotros te recordaremos antes de que tu prueba finalice'
+                                    : controller.sucripcion.value == 'Anual'
+                                        ? 'Comienza tus 3 días de prueba gratis'
+                                        : 'Utiliza Macro Life para alcanzar tus metas',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Obx(
-                      () {
-                        if (controller.paso.value == 1) {
-                          return Expanded(child: paso1(controller));
+                      Obx(
+                        () {
+                          if (controller.paso.value == 1) {
+                            return SizedBox(
+                              height: 520,
+                              // height: Get.height,
+                              child: VideoPlayer(controller.controllerVideo),
+                            );
+                          }
+                          return SizedBox();
+                        },
+                      ),
+                      Obx(() {
+                        if (controller.paso.value == 2) {
+                          return Container(
+                              margin: EdgeInsets.only(top: Get.width * 0.3),
+                              child: paso2(controller));
                         }
                         return SizedBox();
-                      },
-                    ),
-                    Obx(() {
-                      if (controller.paso.value == 2) {
-                        return Center(child: paso2(controller));
-                      }
-                      return SizedBox();
-                    }),
-                    Obx(() {
-                      if (controller.paso.value == 3) {
-                        return Center(child: paso3(controller));
-                      }
-                      return SizedBox();
-                    })
-                  ],
+                      }),
+                      Obx(() {
+                        if (controller.paso.value == 3) {
+                          return Center(child: paso3(controller));
+                        }
+                        return SizedBox();
+                      })
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -224,42 +234,41 @@ class PagoVista extends StatelessWidget {
       children: [
         Obx(
           () => controller.sucripcion.value == 'Anual'
-              ? SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: Get.width,
-                        child: buildTimelineItem(
-                            icon: Icons.punch_clock,
-                            iconColor: Colors.orange,
-                            title: 'Hoy',
-                            description:
-                                'Desbloquea todos los beneficios de la aplicación como escanear comida y más'),
-                      ),
-                      SizedBox(
-                        width: Get.width,
-                        child: buildTimelineItem(
-                            icon: Icons.notifications,
-                            iconColor: Colors.orange,
-                            title: 'En 2 días te recordaremos',
-                            description:
-                                'Te enviaremos una notificación para recordarte que tu prueba esta proxima a finalizar'),
-                      ),
-                      Container(
-                        width: Get.width,
-                        margin: const EdgeInsets.only(bottom: 30),
-                        child: buildTimelineItem(
-                            icon: Icons.check,
-                            iconColor: Colors.black,
-                            title: 'En 3 días comienzas a pagar',
-                            description:
-                                'En 3 días tu comenzaras a pagar para usar la aplicación puedes cancelar en cualquier momento'),
-                      ),
-                    ],
-                  ),
+              ? Column(
+                  children: [
+                    SizedBox(
+                      width: Get.width,
+                      child: buildTimelineItem(
+                          icon: Icons.punch_clock,
+                          iconColor: Colors.orange,
+                          title: 'Hoy',
+                          description:
+                              'Desbloquea todos los beneficios de la aplicación como escanear comida y más'),
+                    ),
+                    SizedBox(
+                      width: Get.width,
+                      child: buildTimelineItem(
+                          icon: Icons.notifications,
+                          iconColor: Colors.orange,
+                          title: 'En 2 días te recordaremos',
+                          description:
+                              'Te enviaremos una notificación para recordarte que tu prueba esta proxima a finalizar'),
+                    ),
+                    Container(
+                      width: Get.width,
+                      margin: const EdgeInsets.only(bottom: 30),
+                      child: buildTimelineItem(
+                          icon: Icons.check,
+                          iconColor: Colors.black,
+                          title: 'En 3 días comienzas a pagar',
+                          description:
+                              'En 3 días tu comenzaras a pagar para usar la aplicación puedes cancelar en cualquier momento'),
+                    ),
+                  ],
                 )
               : SizedBox(
                   child: Column(
+                    spacing: 10,
                     children: [
                       Row(
                         spacing: 20,
@@ -279,7 +288,7 @@ class PagoVista extends StatelessWidget {
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                    fontSize: 18,
                                   ),
                                 ),
                                 Text(
@@ -287,7 +296,7 @@ class PagoVista extends StatelessWidget {
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 17,
+                                    fontSize: 15,
                                   ),
                                 ),
                               ],
@@ -313,7 +322,7 @@ class PagoVista extends StatelessWidget {
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                    fontSize: 18,
                                   ),
                                 ),
                                 Text(
@@ -321,7 +330,7 @@ class PagoVista extends StatelessWidget {
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 17,
+                                    fontSize: 15,
                                   ),
                                 ),
                               ],
@@ -347,7 +356,7 @@ class PagoVista extends StatelessWidget {
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                    fontSize: 18,
                                   ),
                                 ),
                                 Text(
@@ -355,7 +364,7 @@ class PagoVista extends StatelessWidget {
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 17,
+                                    fontSize: 15,
                                   ),
                                 ),
                               ],
@@ -413,14 +422,14 @@ class PagoVista extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   description,
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  style: const TextStyle(fontSize: 13, color: Colors.grey),
                 ),
               ],
             ),
