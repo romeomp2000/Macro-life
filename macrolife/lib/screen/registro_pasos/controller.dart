@@ -23,6 +23,13 @@ class RegistroPasosController extends GetxController {
   RxBool isConseguir = false.obs;
   RxBool isDieta = false.obs;
 
+  //Btn degradado
+  RxBool isGrafica1 = false.obs;
+  RxBool isGrafica2 = false.obs;
+  RxBool isGrafica3 = false.obs;
+
+  RxDouble widthShadow = 2.5.obs;
+
   void signWithApple() async {
     try {
       FuncionesGlobales.vibratePress();
@@ -159,6 +166,7 @@ class RegistroPasosController extends GetxController {
   var objetivo = ''.obs;
 
   var rapidoMeta = 0.1.obs;
+  var LastValorrapidoMeta = 0.1.obs;
 
   var dieta = ''.obs;
 
@@ -237,7 +245,7 @@ class RegistroPasosController extends GetxController {
   void ajustarLabelPeso() {
     if (peso.value < pesoDeseado.value) {
       pesoDeseadoLabel.value = 'Subir de peso';
-      pesoDeseadoValue.value = '${pesoDeseado.value - peso.value} kg';
+      pesoDeseadoValue.value = '${pesoDeseado.value - peso.value}';
       labelGraficaDoble.value = 'Gana el doble de peso con Macro Life';
 
       mostrarGrafica.value = true;
@@ -252,9 +260,8 @@ class RegistroPasosController extends GetxController {
 
     if (peso.value > pesoDeseado.value) {
       pesoDeseadoLabel.value = 'Bajar de peso';
-      pesoDeseadoValue.value = '${peso.value - pesoDeseado.value} kg';
+      pesoDeseadoValue.value = '${peso.value - pesoDeseado.value}';
       labelGraficaDoble.value = 'Baja el doble de peso con Macro Life';
-
       mostrarGrafica.value = true;
     }
   }
@@ -358,6 +365,16 @@ class RegistroPasosController extends GetxController {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
+
+      if (isGrafica1.value == true) {
+        isGrafica1.value = false;
+      }
+      if (isGrafica2.value == true) {
+        isGrafica2.value = false;
+      }
+      if (isGrafica3.value == true) {
+        isGrafica3.value = false;
+      }
     } else {
       // Get.back(); // Vuelve a la pantalla anterior si está en el primer paso
       Get.offAndToNamed('/registro'); // Realizar la acción

@@ -416,34 +416,6 @@ class BorderPainter extends CustomPainter {
   }
 }
 
-// class ClipPathCustom extends CustomPainter {
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     Path path_0 = Path();
-//     path_0.moveTo(size.width * 0.0021000, size.height * 0.4089000);
-//     path_0.lineTo(size.width * -0.0035000, size.height * 1);
-//     path_0.quadraticBezierTo(size.width * 0.5, size.height * 0.3548000,
-//         size.width * 1, size.height * 0.9870000);
-//     path_0.cubicTo(size.width * 1, size.height * 0.7378750, size.width * 1,
-//         size.height * 0.5748000, size.width * 1, size.height * 0.4374000);
-//     path_0.quadraticBezierTo(size.width * 0.5, size.height * -0.0580000,
-//         size.width * 0.0021000, size.height * 0.4089000);
-//     path_0.close();
-
-//     Paint paint = Paint()
-//       ..style = PaintingStyle.stroke
-//       ..strokeWidth = 10.0
-//       ..color = Colors.black;
-
-//     canvas.drawPath(path_0, paint);
-//   }
-
-//   @override
-//   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-//     return true;
-//   }
-// }
-
 class ClipPathCustom2 extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -465,28 +437,3 @@ class ClipPathCustom2 extends CustomClipper<Path> {
     return false;
   }
 }
-
-
-
-
-// if (widget.showSelectedValue)
-        //   Column(
-        //     mainAxisSize: MainAxisSize.min,
-        //     children: [
-        //       Text(
-        //         _valueList[_selectedIndex].value,
-        //         style: widget.selectedValueStyle ??
-        //             TextStyle(
-        //               fontWeight: FontWeight.w700,
-        //               fontSize: 30,
-        //               height: 1,
-        //               color: widget.selectedValueColor,
-        //             ),
-        //       ),
-        //       if (widget.showSuffix && widget.suffix == null)
-        //         Text(widget.suffixText,
-        //             style: TextStyle(color: widget.suffixTextColor))
-        //       else if (widget.showSuffix && widget.suffix != null)
-        //         widget.suffix!
-        //     ],
-        //   ),

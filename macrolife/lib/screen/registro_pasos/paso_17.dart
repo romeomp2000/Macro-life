@@ -8,34 +8,39 @@ Widget paso_17(RegistroPasosController controller) {
     child: Obx(
       () => Steep(
         isActivo: true.obs,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-              'assets/icons/confetti3.gif',
-            ),
-          ),
-        ),
+        decoration: null,
         body: Column(
-          spacing: 20,
+          // spacing: 20,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
+            Image.asset(
+              'assets/icons/icono_configuracion_lista_146x146_activo.png',
+              width: 60,
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 40),
+              width: Get.width * 0.6,
               child: Text(
-                'Gracias por confiar en nosotros',
+                'Gracias por tu confianza',
+                // 'Thank you for trusting us',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 28,
+                  fontSize: 30,
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
+            Container(
+              // padding: EdgeInsets.symmetric(horizontal: 30),
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 10),
+              width: Get.width * 0.5,
               child: Text(
-                'Prometemos mantener siempre su información personal privada y segura.',
+                'Prometemos mantener siempre tu información personal privada y segura.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             )

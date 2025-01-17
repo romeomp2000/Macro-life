@@ -11,12 +11,13 @@ Widget paso_3(RegistroPasosController controller) {
         title: '¿Has probado otras apps de seguimiento de calorías?',
         options: [],
         isActivo: controller.isOtraApp,
-        enableScroll: true,
+        enableScroll: false,
         body: Column(
-          spacing: 20,
+          spacing: 30,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              margin: const EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(bottom: 30),
               child: GeneroSelect(
                 selected: controller.probado.value == 'Si',
                 onTap: () {
