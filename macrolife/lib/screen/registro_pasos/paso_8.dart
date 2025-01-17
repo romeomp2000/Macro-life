@@ -36,7 +36,7 @@ Widget paso_8(RegistroPasosController controller) {
               filterQuality: FilterQuality.high,
               frameRate: 30,
               controller: controllerGif,
-              fadeDuration: Duration(seconds: 1),
+              fadeDuration: Duration(seconds: 0),
               onFrame: (frame) {
                 // print(frame);
                 if (frame == 59) {

@@ -33,7 +33,7 @@ class LoaderController extends GetxController {
   void onInit() async {
     super.onInit();
 
-    _timer = Timer.periodic(const Duration(milliseconds: 2000), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 1500), (timer) {
       FuncionesGlobales.vibratePress();
       texto.value = frases[_fraseIndex];
       _fraseIndex = (_fraseIndex + 1) % frases.length;

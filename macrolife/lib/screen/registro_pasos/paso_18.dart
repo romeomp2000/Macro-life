@@ -22,7 +22,7 @@ Widget paso_18(RegistroPasosController controller) {
               children: [
                 ClipOval(
                   child: Image.asset(
-                    'assets/icons/icono_check_genero_115x115_2025_negro (1).png',
+                    'assets/icons/icono_configuracion_lista_146x146_activo.png',
                     width: 40,
                     height: 40,
                   ),

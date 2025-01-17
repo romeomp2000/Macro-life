@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/screen/registro_pasos/controller.dart';
-import 'package:macrolife/screen/registro_pasos/screen.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
 
 Widget paso_7_4(RegistroPasosController controller) {

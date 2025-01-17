@@ -20,7 +20,11 @@ class PrincipalController extends GetxController {
         Get.offNamed('/registro');
       } else {
         await Future.delayed(const Duration(milliseconds: 100));
-        Get.offNamed('/layout');
+        if (usuarioController.usuario.value.fechaVencimiento == null) {
+          Get.offNamed('/pago');
+        } else {
+          Get.offNamed('/layout');
+        }
       }
     } catch (e) {
       Get.offNamed('/registro');

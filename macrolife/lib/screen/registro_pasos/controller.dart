@@ -365,16 +365,9 @@ class RegistroPasosController extends GetxController {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
-
-      if (isGrafica1.value == true) {
-        isGrafica1.value = false;
-      }
-      if (isGrafica2.value == true) {
-        isGrafica2.value = false;
-      }
-      if (isGrafica3.value == true) {
-        isGrafica3.value = false;
-      }
+      isGrafica1.value = false;
+      isGrafica2.value = false;
+      isGrafica3.value = false;
     } else {
       // Get.back(); // Vuelve a la pantalla anterior si está en el primer paso
       Get.offAndToNamed('/registro'); // Realizar la acción
