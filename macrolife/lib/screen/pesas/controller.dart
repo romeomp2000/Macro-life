@@ -79,14 +79,14 @@ class PesasController extends GetxController {
     }
   }
 
-  void eliminarEjercicio() async {
+  void eliminarEjercicio(String id) async {
     try {
       Get.back();
 
       final apiService = ApiService();
 
       final response = await apiService.fetchData(
-        'ejercicio/${id.value}',
+        'ejercicio/$id',
         method: Method.DELETE,
         body: {},
       );

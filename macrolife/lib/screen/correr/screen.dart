@@ -56,32 +56,33 @@ class CorrerScreen extends StatelessWidget {
         ),
         centerTitle: true,
         actions: [
-          PullDownButton(
-            routeTheme: PullDownMenuRouteTheme(
-              borderRadius: BorderRadius.circular(10),
-              width: 200,
-            ),
-            itemBuilder: (context) => [
-              PullDownMenuItem(
-                onTap: () {
-                  controller.eliminarEjercicio();
-                },
-                title: 'Eliminar ejercicio',
-                isDestructive: true,
-                // icon: Icons.delete_outline_outlined,
+          if (id != null)
+            PullDownButton(
+              routeTheme: PullDownMenuRouteTheme(
+                borderRadius: BorderRadius.circular(10),
+                width: 200,
               ),
-            ],
-            buttonBuilder: (context, showMenu) => CupertinoButton(
-              onPressed: showMenu,
-              color: Colors.grey[400],
-              borderRadius: BorderRadius.all(Radius.circular(30)),
-              padding: EdgeInsets.all(15),
-              child: const Icon(
-                Icons.more_horiz_outlined,
-                color: Colors.white,
+              itemBuilder: (context) => [
+                PullDownMenuItem(
+                  onTap: () {
+                    controller.eliminarEjercicio(id!);
+                  },
+                  title: 'Eliminar ejercicio',
+                  isDestructive: true,
+                  // icon: Icons.delete_outline_outlined,
+                ),
+              ],
+              buttonBuilder: (context, showMenu) => CupertinoButton(
+                onPressed: showMenu,
+                color: Colors.grey[400],
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                padding: EdgeInsets.all(15),
+                child: const Icon(
+                  Icons.more_horiz_outlined,
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
         ],
       ),
       body: Stack(

@@ -121,7 +121,7 @@ const getNutrientesPorUsuario = async (usuarioId, todayStart, todayEnd) => {
       {
         $match: {
           usuario: new mongoose.Types.ObjectId(usuarioId), // Corregido: usa 'new'
-          createdAt: { $gte: todayStart, $lte: todayEnd } // Filtra por rango de fechas en UTC ajustado
+          fecha: { $gte: todayStart, $lte: todayEnd } // Filtra por rango de fechas en UTC ajustado
         }
       },
       {
@@ -158,9 +158,12 @@ const getNutrientesPorUsuario = async (usuarioId, todayStart, todayEnd) => {
       }
     ]);
 
+    // console.log(ejercicios);
+
     const caloriasQuemadas = ejercicios.length
       ? Math.floor(ejercicios[0].totalCaloriasQuemadas)
       : 0;
+    console.log(caloriasQuemadas);
 
     // console.log(Math.floor(resultados[0].totalCalorias), 'calorias totales');
     // console.log(caloriasQuemadas, 'calorias quemada');
@@ -179,7 +182,7 @@ const getNutrientesPorUsuario = async (usuarioId, todayStart, todayEnd) => {
     } else {
       return {
         _id: null,
-        caloriasQuemadas: 0,
+        caloriasQuemadas,
         totalCalorias: 0,
         totalProteina: 0,
         totalCarbohidratos: 0,

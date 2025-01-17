@@ -538,21 +538,15 @@ class WeeklyCalendarController extends GetxController {
         controllerUsuario.usuario.value.macronutrientesDiario?.value.proteina ??
             0;
 
-    double porcentajeDiferenciaproteina = proteinaDiaria == 0
-        ? 0.0
-        : proteinaActual == 0
-            ? 0.0
-            : ((proteinaDiaria - proteinaActual) / proteinaDiaria * 100);
+    double porcentajeDiferenciaproteina = proteinaActual / proteinaDiaria;
 
-    if (proteinaDiaria == proteinaActual) {
-      porcentajeDiferenciaproteina = 100.0;
+    // Si el porcentaje supera el 100%, debe ser 1.0
+    if (porcentajeDiferenciaproteina > 1.0) {
+      porcentajeDiferenciaproteina = 1.0;
     }
 
-    if (porcentajeDiferenciaproteina.isNegative) {
-      porcentajeDiferenciaproteina = 100;
-    } else {
-      porcentajeDiferenciaproteina =
-          porcentajeDiferenciaproteina.clamp(0.0, 100.0);
+    if (porcentajeDiferenciaproteina < 0.0) {
+      porcentajeDiferenciaproteina = 0.0;
     }
 
     final carbohidratosActual =
@@ -561,40 +555,28 @@ class WeeklyCalendarController extends GetxController {
             .usuario.value.macronutrientesDiario?.value.carbohidratos ??
         0;
 
-    double porcentajeDiferenciacarbohidratos = carbohidratosDiarios == 0
-        ? 0.0
-        : carbohidratosActual == 0
-            ? 0.0
-            : ((carbohidratosDiarios - carbohidratosActual) /
-                carbohidratosDiarios *
-                100);
+    double porcentajeDiferenciacarbohidratos =
+        carbohidratosActual / carbohidratosDiarios;
 
-    if (carbohidratosDiarios == carbohidratosActual) {
-      porcentajeDiferenciacarbohidratos = 100.0;
+    // Si el porcentaje supera el 100%, debe ser 1.0
+    if (porcentajeDiferenciacarbohidratos > 1.0) {
+      porcentajeDiferenciacarbohidratos = 1.0;
     }
 
-    if (porcentajeDiferenciacarbohidratos.isNegative) {
-      porcentajeDiferenciacarbohidratos = 100.0;
-    } else {
-      porcentajeDiferenciacarbohidratos =
-          porcentajeDiferenciacarbohidratos.clamp(0.0, 100.0);
+    if (porcentajeDiferenciacarbohidratos < 0.0) {
+      porcentajeDiferenciacarbohidratos = 0.0;
     }
 
-    double porcentajeDiferenciaCalorias = caloriasDiarias == 0
-        ? 0.0
-        : caloriasActual == 0
-            ? 0.0
-            : ((caloriasDiarias - caloriasActual) / caloriasDiarias) * 100;
+    // Cálculo del porcentaje
+    double porcentajeDiferenciaCalorias = caloriasActual / caloriasDiarias;
 
-    if (caloriasDiarias == caloriasActual) {
-      porcentajeDiferenciaCalorias = 100.0;
+    // Si el porcentaje supera el 100%, debe ser 1.0
+    if (porcentajeDiferenciaCalorias > 1.0) {
+      porcentajeDiferenciaCalorias = 1.0;
     }
 
-    if (porcentajeDiferenciaCalorias.isNegative) {
-      porcentajeDiferenciaCalorias = 100.0;
-    } else {
-      porcentajeDiferenciaCalorias =
-          porcentajeDiferenciaCalorias.clamp(0.0, 100.0);
+    if (porcentajeDiferenciaCalorias < 0.0) {
+      porcentajeDiferenciaCalorias = 0.0;
     }
 
     final grasasActual = controllerUsuario.macronutrientes.value.grasas ?? 0;
@@ -602,20 +584,15 @@ class WeeklyCalendarController extends GetxController {
         controllerUsuario.usuario.value.macronutrientesDiario?.value.grasas ??
             0;
 
-    double porcentajeDiferenciagrasas = grasasDiarias == 0
-        ? 0.0
-        : grasasActual == 0
-            ? 0.0
-            : ((grasasDiarias - grasasActual) / grasasDiarias) * 100;
+    double porcentajeDiferenciagrasas = grasasActual / grasasDiarias;
 
-    if (grasasDiarias == grasasActual) {
-      porcentajeDiferenciagrasas = 100.0;
+    // Si el porcentaje supera el 100%, debe ser 1.0
+    if (porcentajeDiferenciagrasas > 1.0) {
+      porcentajeDiferenciagrasas = 1.0;
     }
 
-    if (porcentajeDiferenciagrasas.isNegative) {
-      porcentajeDiferenciagrasas = 100.0;
-    } else {
-      porcentajeDiferenciagrasas = porcentajeDiferenciagrasas.clamp(0.0, 100);
+    if (porcentajeDiferenciagrasas < 0.0) {
+      porcentajeDiferenciagrasas = 0.0;
     }
     //CALORÍAS
 
@@ -663,8 +640,8 @@ class WeeklyCalendarController extends GetxController {
       int limiteFats = controllerUsuario.macronutrientes.value.grasas!;
       GetStorage box = GetStorage();
 
-      // widgetController.updateHomeWidget(calorias.toString(), limiteCal,
-      //     carbohidratos.toString(), grasas.toString(), protein.toString());
+      widgetController.updateHomeWidget(calorias.toString(), limiteCal,
+          carbohidratos.toString(), grasas.toString(), protein.toString());
 
       bool? estado = box.read('liveActivitiesEnable');
       if (estado != null && estado == true) {
@@ -680,8 +657,8 @@ class WeeklyCalendarController extends GetxController {
               limiteFats);
         }
 
-        // liveActivitiesController.actualizar(calorias, carbohidratos, grasas,
-        //     protein, limiteProtein, limiteCal, limiteCarbs, limiteFats);
+        liveActivitiesController.actualizar(calorias, carbohidratos, grasas,
+            protein, limiteProtein, limiteCal, limiteCarbs, limiteFats);
       }
     }
   }

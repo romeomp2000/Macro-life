@@ -21,7 +21,7 @@ class FoodDatabaseScreen extends StatelessWidget {
         ),
         title: const Text(
           'Describe tu comida',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
         centerTitle: true,
       ),

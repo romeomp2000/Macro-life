@@ -5,6 +5,7 @@ import 'package:macrolife/screen/home/controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'controller.dart';
 
 class ObjetivosScreen extends StatelessWidget {
@@ -84,565 +85,301 @@ class ObjetivosScreen extends StatelessWidget {
           ),
           onPressed: () => Get.back(),
         ),
-        title: const Text('Ajustar objetivos'),
+        title: const Text('Ajustar objetivos',
+            style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
       ),
       body: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 8),
+                    child: const Text(
                       'Macronutrientes',
                       style:
-                          TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
                     ),
-                    const SizedBox(height: 20),
+                  ),
+                  const SizedBox(height: 20),
 
-                    Center(
-                      child: SizedBox(
-                        height: 150,
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: Obx(
-                            () => PieChart(
-                              duration: const Duration(seconds: 2),
-                              curve: Curves.easeInBack,
-                              PieChartData(
-                                sectionsSpace: 0,
-                                centerSpaceRadius: 60,
-                                sections: [
-                                  PieChartSectionData(
-                                    value: controller.pro.value,
-                                    showTitle: false,
-                                    color: Colors.black38,
-                                    radius: 15,
-                                    badgeWidget: Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                          bottom: 3,
-                                          top: 3),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        border: Border.all(color: Colors.white),
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      child: Text(
-                                        '${controller.pro.toInt()}g',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                    badgePositionPercentageOffset: .98,
+                  Center(
+                    child: SizedBox(
+                      height: 100,
+                      child: Obx(
+                        () => PieChart(
+                          duration: const Duration(seconds: 2),
+                          curve: Curves.easeInBack,
+                          PieChartData(
+                            sectionsSpace: 0,
+                            centerSpaceRadius: 40,
+                            sections: [
+                              PieChartSectionData(
+                                value: controller.pro.value,
+                                showTitle: false,
+                                color: Colors.red,
+                                radius: 10,
+                                badgeWidget: Container(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, bottom: 3, top: 3),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    border: Border.all(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(50),
                                   ),
-                                  PieChartSectionData(
-                                    value: controller.car.value,
-                                    color: Colors.black54,
-                                    radius: 15,
-                                    showTitle: false,
-                                    badgeWidget: Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                          bottom: 3,
-                                          top: 3),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        border: Border.all(color: Colors.white),
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      child: Text(
-                                        '${controller.car.toInt()}g',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 15),
-                                      ),
-                                    ),
-                                    badgePositionPercentageOffset: .98,
+                                  child: Text(
+                                    '${controller.pro.toInt()}g',
+                                    style: TextStyle(color: Colors.white),
                                   ),
-                                  PieChartSectionData(
-                                    value: controller.gra.value,
-                                    showTitle: false,
-                                    color: Colors.black87,
-                                    radius: 15,
-                                    badgeWidget: Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                          bottom: 3,
-                                          top: 3),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black87,
-                                        border: Border.all(color: Colors.white),
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      child: Text(
-                                        '${controller.gra.toInt()}g',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 15),
-                                      ),
-                                    ),
-                                    badgePositionPercentageOffset: .98,
-                                  ),
-                                ],
+                                ),
+                                badgePositionPercentageOffset: .98,
                               ),
-                            ),
+                              PieChartSectionData(
+                                value: controller.car.value,
+                                color: Colors.amber,
+                                radius: 10,
+                                showTitle: false,
+                                badgeWidget: Container(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, bottom: 3, top: 3),
+                                  decoration: BoxDecoration(
+                                    color: Colors.amber,
+                                    border: Border.all(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: Text(
+                                    '${controller.car.toInt()}g',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                ),
+                                badgePositionPercentageOffset: .98,
+                              ),
+                              PieChartSectionData(
+                                value: controller.gra.value,
+                                showTitle: false,
+                                color: Colors.blue,
+                                radius: 10,
+                                badgeWidget: Container(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, bottom: 3, top: 3),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    border: Border.all(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: Text(
+                                    '${controller.gra.toInt()}g',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                ),
+                                badgePositionPercentageOffset: .98,
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
+                  ),
 
-                    const SizedBox(height: 20),
-                    // Center(
-                    //   child: SizedBox(
-                    //     height: 150,
-                    //     // width: 300,
-                    //     child: SfCartesianChart(
-                    //       primaryYAxis: NumericAxis(
-                    //         minimum: 0,
-                    //         maximum: 100,
-                    //         interval: 50,
-                    //         opposedPosition: true,
-                    //         borderColor: Colors.black12,
-                    //       ),
-                    //       plotAreaBackgroundColor: Colors.transparent,
-                    //       primaryXAxis: CategoryAxis(),
-                    //       enableSideBySideSeriesPlacement: false,
-                    //       series: <CartesianSeries>[
-                    //         // Inicializa la serie de columnas (barras)
-                    //         ColumnSeries<ChartData, String>(
-                    //           dataSource: [
-                    //             ChartData('Calorías', 100, Colors.white)
-                    //           ],
-                    //           width: 0.25,
-                    //           color: Colors.black,
-                    //           xValueMapper: (ChartData data, _) => data.label,
-                    //           yValueMapper: (ChartData data, _) => data.value,
-                    //         ),
-                    //         ColumnSeries<ChartData, String>(
-                    //           dataSource: [
-                    //             ChartData('Proteína', 70, Colors.white)
-                    //           ],
-                    //           width: 0.25,
-                    //           color: Colors.red,
-                    //           xValueMapper: (ChartData data, _) => data.label,
-                    //           yValueMapper: (ChartData data, _) => data.value,
-                    //         ),
-                    //         ColumnSeries<ChartData, String>(
-                    //           dataSource: [
-                    //             ChartData('Carbohidratos', 50, Colors.white)
-                    //           ],
-                    //           width: 0.25,
-                    //           color: Colors.orange,
-                    //           xValueMapper: (ChartData data, _) => data.label,
-                    //           yValueMapper: (ChartData data, _) => data.value,
-                    //         ),
-                    //         ColumnSeries<ChartData, String>(
-                    //           dataSource: [
-                    //             ChartData('Grasas', 25, Colors.white)
-                    //           ],
-                    //           width: 0.25,
-                    //           color: Colors.blue,
-                    //           xValueMapper: (ChartData data, _) => data.label,
-                    //           yValueMapper: (ChartData data, _) => data.value,
-                    //         )
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-
-                    const SizedBox(height: 20),
-                    CupertinoListTile(
-                      leadingSize: 80,
-                      padding: EdgeInsets.zero,
-                      leading: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            height: 100,
-                            width: 40,
-                            child: PieChart(
-                              duration: const Duration(seconds: 2),
-                              curve: Curves.easeInBack,
-                              PieChartData(
-                                  sectionsSpace: 0,
-                                  centerSpaceRadius: 15,
-                                  startDegreeOffset: -90,
-                                  sections: [
-                                    PieChartSectionData(
-                                      value: 50,
-                                      showTitle: false,
-                                      color: Colors.black,
-                                      radius: 5,
-                                    ),
-                                    PieChartSectionData(
-                                      value: 50,
-                                      showTitle: false,
-                                      color: Colors.grey.shade300,
-                                      radius: 5,
-                                    )
-                                  ]),
-                            ),
-                            // SfCartesianChart(
-                            //   primaryYAxis: NumericAxis(
-                            //     minimum: 0,
-                            //     maximum: 100,
-                            //     interval: 50,
-                            //     opposedPosition: true,
-                            //     borderColor: Colors.black12,
-                            //     isVisible: false,
-                            //   ),
-                            //   plotAreaBackgroundColor: Colors.black12,
-                            //   primaryXAxis: CategoryAxis(
-                            //     isVisible: false,
-                            //   ),
-                            //   enableSideBySideSeriesPlacement: false,
-                            //   series: <CartesianSeries>[
-                            //     // Inicializa la serie de columnas (barras)
-                            //     ColumnSeries<ChartData, String>(
-                            //       dataSource: [
-                            //         // Fuente de datos
-                            //         ChartData('', 50, Colors.white),
-                            //       ],
-                            //       width: 1,
-                            //       color: Colors.black,
-                            //       xValueMapper: (ChartData data, _) =>
-                            //           data.label,
-                            //       yValueMapper: (ChartData data, _) =>
-                            //           data.value,
-                            //     )
-                            //   ],
-                            // ),
-                          ),
-                          Image.asset(
-                            'assets/icons/icono_calorias_outline_120x120_activo.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                        ],
+                  const SizedBox(height: 50),
+                  CupertinoListTile(
+                    // minLeadingWidth: 80,
+                    leadingSize: 64,
+                    leading: CircularPercentIndicator(
+                      radius: 30.0,
+                      lineWidth: 6.0,
+                      percent: 0.50,
+                      center: Image.asset(
+                          'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                          width: 15),
+                      progressColor: Colors.black, // Color del progreso
+                      backgroundColor:
+                          Colors.black12, // Color del fondo del círculo
+                    ),
+                    title: const Text(
+                      'Meta calorías',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black38,
                       ),
-                      title: const Text(
-                        'Meta calorías',
-                        style: TextStyle(
-                          // fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                          color: Colors.black38,
-                        ),
-                      ),
-                      subtitle: TextField(
-                        keyboardType: TextInputType.number,
-                        controller: controller.calorias,
-                        onTap: () => controller.toggleKeyboardActions(true),
-                        onEditingComplete: () =>
-                            controller.toggleKeyboardActions(false),
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.edit),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(), // Borde cuando está enfocado
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
+                    ),
+                    subtitle: TextField(
+                      keyboardType: TextInputType.number,
+                      controller: controller.calorias,
+                      onTap: () => controller.toggleKeyboardActions(true),
+                      onEditingComplete: () =>
+                          controller.toggleKeyboardActions(false),
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.edit),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(), // Borde cuando está enfocado
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 25),
-                    CupertinoListTile(
-                      leadingSize: 80,
-                      padding: EdgeInsets.zero,
-                      leading: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            height: 100,
-                            // margin: const EdgeInsets.only(right: 2),
-                            width: 40,
-                            child: PieChart(
-                              duration: const Duration(seconds: 2),
-                              curve: Curves.easeInBack,
-                              PieChartData(
-                                  sectionsSpace: 0,
-                                  centerSpaceRadius: 15,
-                                  startDegreeOffset: -90,
-                                  sections: [
-                                    PieChartSectionData(
-                                      value: 50,
-                                      showTitle: false,
-                                      color: Colors.black38,
-                                      radius: 5,
-                                    ),
-                                    PieChartSectionData(
-                                      value: 50,
-                                      showTitle: false,
-                                      color: Colors.grey.shade300,
-                                      radius: 5,
-                                    )
-                                  ]),
-                            ),
-                            // SfCartesianChart(
-                            //   primaryYAxis: NumericAxis(
-                            //     minimum: 0,
-                            //     maximum: 100,
-                            //     interval: 50,
-                            //     opposedPosition: true,
-                            //     borderColor: Colors.black12,
-                            //     isVisible: false,
-                            //   ),
-                            //   plotAreaBackgroundColor: Colors.black12,
-                            //   primaryXAxis: CategoryAxis(
-                            //     isVisible: false,
-                            //   ),
-                            //   enableSideBySideSeriesPlacement: false,
-                            //   series: <CartesianSeries>[
-                            //     // Inicializa la serie de columnas (barras)
-                            //     ColumnSeries<ChartData, String>(
-                            //       dataSource: [
-                            //         // Fuente de datos
-                            //         ChartData('', 50, Colors.white),
-                            //       ],
-                            //       width: 1,
-                            //       color: Colors.red,
-                            //       xValueMapper: (ChartData data, _) =>
-                            //           data.label,
-                            //       yValueMapper: (ChartData data, _) =>
-                            //           data.value,
-                            //     )
-                            //   ],
-                            // ),
-                          ),
-                          Image.asset(
-                            'assets/icons/icono_filetecarne_outline_93x93_activo.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                        ],
+                  ),
+                  const SizedBox(height: 20),
+                  CupertinoListTile(
+                    // minLeadingWidth: 80,
+                    leadingSize: 64,
+                    leading: CircularPercentIndicator(
+                      radius: 30.0,
+                      lineWidth: 6.0,
+                      percent: 0.50,
+                      center: Image.asset(
+                          'assets/icons/icono_filetecarne_90x69_nuevo.png',
+                          width: 15),
+                      progressColor: Colors.red, // Color del progreso
+                      backgroundColor:
+                          Colors.black12, // Color del fondo del círculo
+                    ),
+                    title: const Text(
+                      'Objetivo de proteína',
+                      style: TextStyle(
+                        // fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                        color: Colors.black38,
                       ),
-                      title: const Text(
-                        'Objetivo de proteína',
-                        style: TextStyle(
-                          // fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                          color: Colors.black38,
-                        ),
-                      ),
-                      subtitle: TextField(
-                        keyboardType: TextInputType.number,
-                        onChanged: (value) {
-                          controller.pro.value = double.parse(value);
-                        },
-                        controller: controller.protinae,
-                        onTap: () => controller.toggleKeyboardActions(true),
-                        onEditingComplete: () =>
-                            controller.toggleKeyboardActions(false),
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.edit),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(), // Borde cuando está enfocado
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
+                    ),
+                    subtitle: TextField(
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) {
+                        controller.pro.value = double.parse(value);
+                      },
+                      controller: controller.protinae,
+                      onTap: () => controller.toggleKeyboardActions(true),
+                      onEditingComplete: () =>
+                          controller.toggleKeyboardActions(false),
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.edit),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(), // Borde cuando está enfocado
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 25),
-                    CupertinoListTile(
-                      leadingSize: 80,
-                      padding: EdgeInsets.zero,
-                      leading: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            height: 100,
-                            width: 40,
-                            child: PieChart(
-                              duration: const Duration(seconds: 2),
-                              curve: Curves.easeInBack,
-                              PieChartData(
-                                  sectionsSpace: 0,
-                                  centerSpaceRadius: 15,
-                                  startDegreeOffset: -90,
-                                  sections: [
-                                    PieChartSectionData(
-                                      value: 50,
-                                      showTitle: false,
-                                      color: Colors.black54,
-                                      radius: 5,
-                                    ),
-                                    PieChartSectionData(
-                                      value: 50,
-                                      showTitle: false,
-                                      color: Colors.grey.shade300,
-                                      radius: 5,
-                                    )
-                                  ]),
-                            ),
-                            // SfCartesianChart(
-                            //   primaryYAxis: NumericAxis(
-                            //     minimum: 0,
-                            //     maximum: 100,
-                            //     interval: 50,
-                            //     opposedPosition: true,
-                            //     borderColor: Colors.black12,
-                            //     isVisible: false,
-                            //   ),
-                            //   plotAreaBackgroundColor: Colors.black12,
-                            //   primaryXAxis: CategoryAxis(
-                            //     isVisible: false,
-                            //   ),
-                            //   enableSideBySideSeriesPlacement: false,
-                            //   series: <CartesianSeries>[
-                            //     // Inicializa la serie de columnas (barras)
-                            //     ColumnSeries<ChartData, String>(
-                            //       dataSource: [
-                            //         // Fuente de datos
-                            //         ChartData('', 50, Colors.white),
-                            //       ],
-                            //       width: 1,
-                            //       color: Colors.orange,
-                            //       xValueMapper: (ChartData data, _) =>
-                            //           data.label,
-                            //       yValueMapper: (ChartData data, _) =>
-                            //           data.value,
-                            //     )
-                            //   ],
-                            // ),
-                          ),
-                          Image.asset(
-                            'assets/icons/icono_panintegral_outline_79x79_activo.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                        ],
+                  ),
+                  const SizedBox(height: 25),
+                  CupertinoListTile(
+                    // minLeadingWidth: 80,
+                    leadingSize: 64,
+                    leading: CircularPercentIndicator(
+                      radius: 30.0,
+                      lineWidth: 6.0,
+                      percent: 0.50,
+                      center: Image.asset(
+                          'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
+                          width: 15),
+                      progressColor: Colors.amber,
+                      backgroundColor: Colors.black12,
+                    ),
+                    title: const Text(
+                      'Meta de carbohidratos',
+                      style: TextStyle(
+                        // fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                        color: Colors.black38,
                       ),
-                      title: const Text(
-                        'Meta de carbohidratos',
-                        style: TextStyle(
-                          // fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                          color: Colors.black38,
-                        ),
-                      ),
-                      subtitle: TextField(
-                        keyboardType: TextInputType.number,
-                        controller: controller.carbohidratos,
-                        onChanged: (value) {
-                          controller.car.value = double.parse(value);
-                        },
-                        onTap: () => controller.toggleKeyboardActions(true),
-                        onEditingComplete: () =>
-                            controller.toggleKeyboardActions(false),
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.edit),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(), // Borde cuando está enfocado
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
+                    ),
+                    subtitle: TextField(
+                      keyboardType: TextInputType.number,
+                      controller: controller.carbohidratos,
+                      onChanged: (value) {
+                        controller.car.value = double.parse(value);
+                      },
+                      onTap: () => controller.toggleKeyboardActions(true),
+                      onEditingComplete: () =>
+                          controller.toggleKeyboardActions(false),
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.edit),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(), // Borde cuando está enfocado
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 25),
-                    CupertinoListTile(
-                      leadingSize: 80,
-                      padding: EdgeInsets.zero,
-                      leading: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            height: 100,
-                            width: 40,
-                            child: PieChart(
-                              duration: const Duration(seconds: 2),
-                              curve: Curves.easeInBack,
-                              PieChartData(
-                                  sectionsSpace: 0,
-                                  centerSpaceRadius: 15,
-                                  startDegreeOffset: -90,
-                                  sections: [
-                                    PieChartSectionData(
-                                      value: 50,
-                                      showTitle: false,
-                                      color: Colors.black87,
-                                      radius: 5,
-                                    ),
-                                    PieChartSectionData(
-                                      value: 50,
-                                      showTitle: false,
-                                      color: Colors.grey.shade300,
-                                      radius: 5,
-                                    )
-                                  ]),
-                            ),
-                          ),
-                          Image.asset(
-                            'assets/icons/icono_almendra_outline_78x78_activo.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                        ],
+                  ),
+                  const SizedBox(height: 25),
+                  CupertinoListTile(
+                    // minLeadingWidth: 80,
+                    leadingSize: 64,
+                    leading: CircularPercentIndicator(
+                      radius: 30.0,
+                      lineWidth: 6.0,
+                      percent: 0.50,
+                      center: Image.asset(
+                          'assets/icons/icono_almedraazul_74x70_nuevo.png',
+                          width: 15),
+                      progressColor: Colors.blue,
+                      backgroundColor: Colors.black12,
+                    ),
+                    title: const Text(
+                      'Objetivo de grasas',
+                      style: TextStyle(
+                        // fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                        color: Colors.black38,
                       ),
-                      title: const Text(
-                        'Objetivo de grasas',
-                        style: TextStyle(
-                          // fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                          color: Colors.black38,
-                        ),
-                      ),
-                      subtitle: TextField(
-                        keyboardType: TextInputType.number,
-                        controller: controller.grasas,
-                        onChanged: (value) {
-                          controller.gra.value = double.parse(value);
-                        },
-                        onTap: () => controller.toggleKeyboardActions(true),
-                        onEditingComplete: () =>
-                            controller.toggleKeyboardActions(false),
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.edit),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(), // Borde cuando está enfocado
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
+                    ),
+                    subtitle: TextField(
+                      keyboardType: TextInputType.number,
+                      controller: controller.grasas,
+                      onChanged: (value) {
+                        controller.gra.value = double.parse(value);
+                      },
+                      onTap: () => controller.toggleKeyboardActions(true),
+                      onEditingComplete: () =>
+                          controller.toggleKeyboardActions(false),
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.edit),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(), // Borde cuando está enfocado
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    // Container(
-                    //   margin: const EdgeInsets.all(10),
-                    //   width: double.infinity,
-                    //   child: ElevatedButton(
-                    //     onPressed: () {},
-                    //     style: ElevatedButton.styleFrom(
-                    //       backgroundColor:
-                    //           Colors.white, // Color de fondo blanco
-                    //       foregroundColor:
-                    //           Colors.black, // Color del texto negro
-                    //       side: const BorderSide(
-                    //           color: Colors.black, width: 1.5), // Borde negro
-                    //       shape: RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.circular(
-                    //             30.0), // Bordes redondeados
-                    //       ),
-                    //       padding: const EdgeInsets.symmetric(
-                    //         vertical: 12.0,
-                    //         horizontal: 24.0,
-                    //       ), // Espaciado interno
-                    //     ),
-                    //     child: const Text(
-                    //       "Generar objetivos automáticamente",
-                    //       style: TextStyle(
-                    //         fontSize: 16.0,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Container(
+                  //   margin: const EdgeInsets.all(10),
+                  //   width: double.infinity,
+                  //   child: ElevatedButton(
+                  //     onPressed: () {},
+                  //     style: ElevatedButton.styleFrom(
+                  //       backgroundColor:
+                  //           Colors.white, // Color de fondo blanco
+                  //       foregroundColor:
+                  //           Colors.black, // Color del texto negro
+                  //       side: const BorderSide(
+                  //           color: Colors.black, width: 1.5), // Borde negro
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(
+                  //             30.0), // Bordes redondeados
+                  //       ),
+                  //       padding: const EdgeInsets.symmetric(
+                  //         vertical: 12.0,
+                  //         horizontal: 24.0,
+                  //       ), // Espaciado interno
+                  //     ),
+                  //     child: const Text(
+                  //       "Generar objetivos automáticamente",
+                  //       style: TextStyle(
+                  //         fontSize: 16.0,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
               ),
             ),
           ),
