@@ -152,4 +152,27 @@ class UsuarioController extends GetxController {
       print(e);
     }
   }
+
+  Future buscarUsuarioEntrada() async {
+    try {
+      if (usuario.value.sId != null && usuario.value.sId != '') {
+        final apiService = ApiService();
+
+        final response = await apiService.fetchData(
+          'usuario/buscar/${usuario.value.sId}',
+          method: Method.GET,
+          body: {},
+        );
+
+        saveUsuarioFromJson(response['usuario']);
+        // if (response['usuario']['estatus'] == 'Activo') {
+        //   Get.offAndToNamed('/registro_pasos');
+        // }
+
+        print(response);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }

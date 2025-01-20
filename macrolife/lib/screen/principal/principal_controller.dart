@@ -19,6 +19,7 @@ class PrincipalController extends GetxController {
         await Future.delayed(const Duration(milliseconds: 100));
         Get.offNamed('/registro');
       } else {
+        await usuarioController.buscarUsuarioEntrada();
         await Future.delayed(const Duration(milliseconds: 100));
         if (usuarioController.usuario.value.fechaVencimiento == null) {
           Get.offNamed('/pago');

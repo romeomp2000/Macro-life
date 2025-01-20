@@ -281,7 +281,7 @@ class _RulerPainter extends CustomPainter {
       // Línea larga con etiqueta
       final Offset start = _isHorizontalAxis
           ? Offset(position, 0)
-          : Offset(isLeft ? 0 : (widthScreen * 3), position);
+          : Offset(isLeft ? 0 : (widthScreen * 2 + 5), position);
       // : Offset(0, position);
       final Offset end = _isHorizontalAxis
           ? Offset(position, longLineHeight)
@@ -322,15 +322,11 @@ class _RulerPainter extends CustomPainter {
       // Línea corta sin etiqueta
       final Offset start = _isHorizontalAxis
           ? Offset(position, longLineHeight)
-          : Offset(isLeft ? 0 : ((widthScreen * 3)), position);
+          : Offset(isLeft ? 0 : ((widthScreen * 2 + 5)), position);
 
       final Offset end = _isHorizontalAxis
           ? Offset(position, longLineHeight - (shortLineHeight + 8))
-          : Offset(
-              isLeft
-                  ? shortLineHeight
-                  : ((widthScreen) + (shortLineHeight * 13)),
-              position);
+          : Offset(isLeft ? shortLineHeight : (widthScreen * 1.9), position);
       canvas.drawLine(start, end, linePaint);
     }
 
