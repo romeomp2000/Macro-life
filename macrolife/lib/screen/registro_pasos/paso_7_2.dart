@@ -16,12 +16,16 @@ Widget paso_7_2(RegistroPasosController controller) {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'Velocidad de pérdida de peso por semana',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black,
+            Obx(
+              () => Text(
+                controller.objetivo.value == 'Perder'
+                    ? 'Velocidad de pérdida de peso por semana'
+                    : 'Velocidad para ganar peso por semana',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
               ),
             ),
             const SizedBox(height: 10),
