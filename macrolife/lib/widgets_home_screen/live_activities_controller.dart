@@ -84,7 +84,7 @@ class LiveActivitiesController extends GetxController {
   }
 
   void eliminar() {
-    // print('eliminar');
+    print('eliminar');
     liveActivitiesPlugin.endAllActivities();
     liveActivitiesPlugin.dispose(force: true);
     latestActivityId = null;
