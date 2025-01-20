@@ -99,9 +99,7 @@ flutter:
 
     assets:
         - assets/icons/
-        - assets/icons_2/
         - assets/images/
-        - assets/avatars/
         - assets/videos/
         - assets/gifs/
 

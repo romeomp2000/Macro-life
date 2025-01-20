@@ -276,6 +276,7 @@ class EscanearAlimentosController extends GetxController {
       XFile image = await cameraController!.takePicture();
 
       cargaMacro.imagenLoader.value = image;
+      cargaMacro.imagenLoader.refresh();
 
       // final WeeklyCalendarController cargaMacro = Get.find();
       cargaMacro.loader.value = true;
@@ -345,6 +346,7 @@ class EscanearAlimentosController extends GetxController {
     } finally {
       cameraController?.dispose();
       cargaMacro.imagenLoader.value = null;
+      cargaMacro.refresh();
     }
   }
 

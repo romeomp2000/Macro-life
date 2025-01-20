@@ -323,27 +323,25 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                Platform.isIOS
+                    ? Obx(
+                        () => Row(
+                          spacing: 5,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (controller.verAppleHealth.value == false)
+                              Icon(Icons.circle, size: 10)
+                            else
+                              Icon(Icons.circle_outlined, size: 10),
+                            if (controller.verAppleHealth.value == true)
+                              Icon(Icons.circle, size: 10)
+                            else
+                              Icon(Icons.circle_outlined, size: 10),
+                          ],
+                        ),
+                      )
+                    : SizedBox.shrink(),
 
-                Obx(() {
-                  if (Platform.isIOS) {
-                    return Row(
-                      spacing: 5,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (controller.verAppleHealth.value == false)
-                          Icon(Icons.circle, size: 10)
-                        else
-                          Icon(Icons.circle_outlined, size: 10),
-                        if (controller.verAppleHealth.value == true)
-                          Icon(Icons.circle, size: 10)
-                        else
-                          Icon(Icons.circle_outlined, size: 10),
-                      ],
-                    );
-                  } else {
-                    return SizedBox.shrink();
-                  }
-                }),
                 SizedBox(
                   height: 18,
                 ),
@@ -411,13 +409,11 @@ class HomeScreen extends StatelessWidget {
                 ),
 
                 Obx(() {
-                  return controller.loader.value &&
-                          controller.imagenLoader.value != null
+                  return controller.imagenLoader.value != null
                       ? AnimatedFood(
                           imagen: controller.imagenLoader.value!,
                         )
-                      : const SizedBox
-                          .shrink(); // O cualquier widget vacío que desees
+                      : const SizedBox.shrink();
                 }),
 
                 Obx(() {
@@ -433,6 +429,8 @@ class HomeScreen extends StatelessWidget {
                     ),
                   );
                 }),
+                const SizedBox(height: 10),
+
                 Obx(() {
                   return SingleChildScrollView(
                     child: Column(

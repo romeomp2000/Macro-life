@@ -45,7 +45,7 @@ class WidgetController extends GetxController {
     double progress = calculateProgress(int.parse(cal ?? '0'), limit);
 
     if (int.parse(cal!) < 0) {
-      content.value = 'calorías más';
+      content.value = 'calorías más'; 
       title.value = int.parse(cal).abs().toString();
     }
 
