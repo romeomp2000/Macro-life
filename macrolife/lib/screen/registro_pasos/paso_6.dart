@@ -34,6 +34,7 @@ Widget paso_6(RegistroPasosController controller) {
                     child: SimpleRulerPicker(
                       unitString: 'kg',
                       axis: Axis.vertical,
+                      widthScreen: Get.width,
                       isLeft: false,
                       minValue: 1,
                       maxValue: 300,

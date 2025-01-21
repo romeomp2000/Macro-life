@@ -15,8 +15,7 @@ class PagoVista extends StatelessWidget {
     final controller = Get.put(PagoController());
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 252, 252, 252),
-        // elevation: 0,
+        toolbarHeight: 30,
         leading: Obx(
           () => controller.paso.value > 1
               ? Container(
@@ -31,189 +30,198 @@ class PagoVista extends StatelessWidget {
       ),
       extendBody: true,
       backgroundColor: const Color.fromARGB(255, 252, 252, 252),
-      body: Container(
-        margin: const EdgeInsets.only(
-          left: 20,
-          right: 20,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Obx(
-                () => SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: controller.paso.value == 2
-                        ? MainAxisAlignment.center
-                        : controller.paso.value == 3
-                            ? MainAxisAlignment.start
-                            : MainAxisAlignment.start,
-                    children: [
-                      Obx(
-                        () => Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(
-                              bottom: controller.paso.value == 2 ||
-                                      controller.paso.value == 3
-                                  ? 35
-                                  : 0),
-                          child: Text(
-                            controller.paso.value == 1
-                                ? 'Prueba  Macro Life gratis'
-                                : controller.paso.value == 2
-                                    ? 'Nosotros te recordaremos antes de que tu prueba finalice'
-                                    : controller.sucripcion.value == 'Anual'
-                                        ? 'Comienza tus 3 días de prueba gratis'
-                                        : 'Utiliza Macro Life para alcanzar tus metas',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
+      body: Stack(
+        children: [
+          Container(
+            height: Get.height,
+            margin: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: Obx(
+                    () => SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: controller.paso.value == 2
+                            ? MainAxisAlignment.center
+                            : controller.paso.value == 3
+                                ? MainAxisAlignment.start
+                                : MainAxisAlignment.start,
+                        children: [
+                          Obx(
+                            () => Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(
+                                  bottom: controller.paso.value == 2 ||
+                                          controller.paso.value == 3
+                                      ? 35
+                                      : 0),
+                              child: Text(
+                                controller.paso.value == 1
+                                    ? 'Prueba  Macro Life gratis'
+                                    : controller.paso.value == 2
+                                        ? 'Nosotros te recordaremos antes de que tu prueba finalice'
+                                        : controller.sucripcion.value == 'Anual'
+                                            ? 'Comienza tus 3 días de prueba gratis'
+                                            : 'Utiliza Macro Life para alcanzar tus metas',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
+                          Obx(
+                            () {
+                              if (controller.paso.value == 1) {
+                                return SizedBox(
+                                  height: 520,
+                                  // height: Get.height,
+                                  child:
+                                      VideoPlayer(controller.controllerVideo),
+                                );
+                              }
+                              return SizedBox();
+                            },
+                          ),
+                          Obx(() {
+                            if (controller.paso.value == 2) {
+                              return Container(
+                                  margin: EdgeInsets.only(top: Get.width * 0.3),
+                                  child: paso2(controller));
+                            }
+                            return SizedBox();
+                          }),
+                          Obx(() {
+                            if (controller.paso.value == 3) {
+                              return Center(child: paso3(controller));
+                            }
+                            return SizedBox();
+                          })
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 30, top: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Obx(() => controller.paso.value == 3
+                          ? Container(
+                              margin: const EdgeInsets.only(bottom: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                spacing: 10,
+                                children: [
+                                  Obx(
+                                    () => GestureDetector(
+                                      onTap: () {
+                                        controller.sucripcion.value = 'Mensual';
+                                        controller.totalAPagar.value =
+                                            controller
+                                                    .configuraciones
+                                                    .configuraciones
+                                                    .value
+                                                    .suscripcion
+                                                    ?.mensual ??
+                                                0.0;
+                                      },
+                                      child: tipoPago(
+                                        precio:
+                                            '\$${(controller.configuraciones.configuraciones.value.suscripcion?.mensual ?? 0).toDouble().toStringAsFixed(2)} /mes',
+                                        tipo: 'Mensual',
+                                        valor: controller.sucripcion.value,
+                                      ),
+                                    ),
+                                  ),
+                                  Obx(
+                                    () => GestureDetector(
+                                      onTap: () {
+                                        controller.sucripcion.value = 'Anual';
+                                        // GetStorage box = GetStorage();
+                                        // bool? isPromoActive = box.read('promo');
+
+                                        double anualPrice = controller
+                                                .configuraciones
+                                                .configuraciones
+                                                .value
+                                                .suscripcion
+                                                ?.anual ??
+                                            0.0;
+
+                                        // if (isPromoActive != null && isPromoActive) {
+                                        //   controller.totalAPagar.value = anualPrice * 0.5;
+                                        // } else {
+                                        controller.totalAPagar.value =
+                                            anualPrice;
+                                        // }
+                                      },
+                                      child: tipoPago(
+                                          precio:
+                                              '\$${NumberFormat.decimalPattern().format((controller.configuraciones.configuraciones.value.suscripcion?.anual ?? 0 * (controller.configuraciones.configuraciones.value.suscripcion?.descuentoAnual ?? 0)).toDouble())} /año',
+                                          tipo: 'Anual',
+                                          valor: controller.sucripcion.value,
+                                          descuento:
+                                              '${controller.configuraciones.configuraciones.value.suscripcion?.descuentoAnual?.toStringAsFixed(0)}'),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          : SizedBox()),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: Icon(Icons.done),
+                            ),
+                            Text(
+                              'No hay pagos pendientes',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17),
+                            ),
+                          ],
                         ),
                       ),
                       Obx(
-                        () {
-                          if (controller.paso.value == 1) {
-                            return SizedBox(
-                              height: 520,
-                              // height: Get.height,
-                              child: VideoPlayer(controller.controllerVideo),
-                            );
-                          }
-                          return SizedBox();
-                        },
+                        () => buttonTest(
+                            controller.paso.value != 3
+                                ? 'Prueba gratis'
+                                : 'Suscribirse', () {
+                          controller.paso.value != 3
+                              ? controller.incrementar()
+                              : controller.pagar();
+                        }, true),
                       ),
-                      Obx(() {
-                        if (controller.paso.value == 2) {
-                          return Container(
-                              margin: EdgeInsets.only(top: Get.width * 0.3),
-                              child: paso2(controller));
-                        }
-                        return SizedBox();
-                      }),
-                      Obx(() {
-                        if (controller.paso.value == 3) {
-                          return Center(child: paso3(controller));
-                        }
-                        return SizedBox();
-                      })
+                      Container(
+                        margin: EdgeInsets.only(top: 10, bottom: 2),
+                        child: Text(
+                          'Solo \$${controller.anualPrice.toStringAsFixed(2)} por año (\$${((controller.anualPrice) / 12).toStringAsFixed(2)}/mes)',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 180, 180, 180),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ),
+              ],
             ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Obx(() => controller.paso.value == 3
-                      ? Container(
-                          margin: const EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            spacing: 10,
-                            children: [
-                              Obx(
-                                () => GestureDetector(
-                                  onTap: () {
-                                    controller.sucripcion.value = 'Mensual';
-                                    controller.totalAPagar.value = controller
-                                            .configuraciones
-                                            .configuraciones
-                                            .value
-                                            .suscripcion
-                                            ?.mensual ??
-                                        0.0;
-                                  },
-                                  child: tipoPago(
-                                    precio:
-                                        '\$${(controller.configuraciones.configuraciones.value.suscripcion?.mensual ?? 0).toDouble().toStringAsFixed(2)} /mes',
-                                    tipo: 'Mensual',
-                                    valor: controller.sucripcion.value,
-                                  ),
-                                ),
-                              ),
-                              Obx(
-                                () => GestureDetector(
-                                  onTap: () {
-                                    controller.sucripcion.value = 'Anual';
-                                    // GetStorage box = GetStorage();
-                                    // bool? isPromoActive = box.read('promo');
-
-                                    double anualPrice = controller
-                                            .configuraciones
-                                            .configuraciones
-                                            .value
-                                            .suscripcion
-                                            ?.anual ??
-                                        0.0;
-
-                                    // if (isPromoActive != null && isPromoActive) {
-                                    //   controller.totalAPagar.value = anualPrice * 0.5;
-                                    // } else {
-                                    controller.totalAPagar.value = anualPrice;
-                                    // }
-                                  },
-                                  child: tipoPago(
-                                      precio:
-                                          '\$${NumberFormat.decimalPattern().format((controller.configuraciones.configuraciones.value.suscripcion?.anual ?? 0 * (controller.configuraciones.configuraciones.value.suscripcion?.descuentoAnual ?? 0)).toDouble())} /año',
-                                      tipo: 'Anual',
-                                      valor: controller.sucripcion.value,
-                                      descuento:
-                                          '${controller.configuraciones.configuraciones.value.suscripcion?.descuentoAnual?.toStringAsFixed(0)}'),
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      : SizedBox()),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: Icon(Icons.done),
-                        ),
-                        Text(
-                          'No hay pagos pendientes',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Obx(
-                    () => buttonTest(
-                        controller.paso.value != 3
-                            ? 'Prueba gratis'
-                            : 'Suscribirse', () {
-                      controller.paso.value != 3
-                          ? controller.incrementar()
-                          : controller.pagar();
-                    }, true),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 2),
-                    child: Text(
-                      'Solo \$${controller.anualPrice.toStringAsFixed(2)} por año (\$${((controller.anualPrice) / 12).toStringAsFixed(2)}/mes)',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 180, 180, 180),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
