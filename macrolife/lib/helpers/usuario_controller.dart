@@ -93,7 +93,7 @@ class UsuarioController extends GetxController {
     // Guardar el JSON directamente en el almacenamiento
     try {
       final WeeklyCalendarController controllerCalendario =
-          Get.put(WeeklyCalendarController());
+          Get.put(WeeklyCalendarController(), permanent: true);
       int rachaAnterior = usuario.value.rachaDias ?? 0;
 
       box.write('usuario', json);

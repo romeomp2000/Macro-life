@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:macrolife/widgets/SinpleRulerPicker.dart';
+import 'package:macrolife/widgets/custom_elevated_button.dart';
 import 'controller.dart';
 
 class PesoActualizarScreen extends StatelessWidget {
@@ -33,82 +35,95 @@ class PesoActualizarScreen extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Obx(
-                    () => Text(
-                      '${controller.peso.toInt()} kg',
-                      style: const TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Obx(
+                //   () => Text(
+                //     '${controller.peso.toInt()} kg',
+                //     style: const TextStyle(
+                //       fontSize: 40,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                // ),
+                Container(
+                  width: Get.width,
+                  margin: EdgeInsets.only(top: 10, bottom: 20),
+                  child: SimpleRulerPicker(
+                    unitString: 'kg',
+                    axis: Axis.vertical,
+                    isLeft: false,
+                    minValue: 1,
+                    maxValue: 300,
+                    initialValue: controller.peso.value,
+                    onValueChanged: (value) {
+                      controller.peso.value = value;
+                    },
+                    widthScreen: Get.width,
+                    scaleLabelSize: 16,
+                    scaleBottomPadding: 10,
+                    scaleItemWidth: 12,
+                    longLineHeight: 35,
+                    shortLineHeight: 14,
+                    lineColor: Colors.grey,
+                    selectedColor: Colors.black,
+                    labelColor: Colors.black,
+                    lineStroke: 1,
+                    height: (Get.height * 0.65) - 30,
                   ),
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Text(
-                                      'Peso',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ), // Texto en negritas
-                                    ),
-                                    SizedBox(
-                                      height: 180,
-                                      child: CupertinoPicker(
-                                        itemExtent: 32.0,
-                                        scrollController: scrollController,
-                                        onSelectedItemChanged: (int index) {
-                                          controller.peso.value = pesos[index];
-                                        },
-                                        children: pesos.map((peso) {
-                                          return Center(
-                                              child: Text('$peso kg'));
-                                        }).toList(),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: Center(
+                //     child: Column(
+                //       children: [
+                //         Row(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           children: [
+                //             Expanded(
+                //               child: Column(
+                //                 mainAxisSize: MainAxisSize.min,
+                //                 children: [
+                //                   const Text(
+                //                     'Peso',
+                //                     style: TextStyle(
+                //                       fontSize: 20,
+                //                       fontWeight: FontWeight.bold,
+                //                     ), // Texto en negritas
+                //                   ),
+                //                   SizedBox(
+                //                     height: 180,
+                //                     child: CupertinoPicker(
+                //                       itemExtent: 32.0,
+                //                       scrollController: scrollController,
+                //                       onSelectedItemChanged: (int index) {
+                //                         controller.peso.value = pesos[index];
+                //                       },
+                //                       children: pesos.map((peso) {
+                //                         return Center(
+                //                             child: Text('$peso kg'));
+                //                       }).toList(),
+                //                     ),
+                //                   ),
+                //                 ],
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+              ],
             ),
           ),
           Container(
             width: Get.width - 20,
-            margin: EdgeInsets.only(bottom: GetPlatform.isIOS ? 30 : 0),
-            child: ElevatedButton(
-              onPressed: () => {controller.guardaPeso()},
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.all(10),
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              child: const Text('Hecho'),
+            margin: EdgeInsets.only(bottom: GetPlatform.isIOS ? 20 : 0),
+            child: CustomElevatedButton(
+              function: () => {controller.guardaPeso()},
+              message: 'Hecho',
             ),
           ),
         ],

@@ -7,115 +7,104 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 
 class AnimatedFood extends StatelessWidget {
-  final XFile imagen;
-
   // Constructor con un solo parámetro
-  const AnimatedFood({super.key, required this.imagen});
+  const AnimatedFood({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AnimatedFoodController controller = Get.put(AnimatedFoodController());
-    // Llamar al inicio del proceso
-    controller.startProgress();
+    final AnimatedFoodController controller =
+        Get.put(AnimatedFoodController(), permanent: true);
 
-    return Container(
-      height: 120,
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Obx(
-            () => imagenLoader(
-              controller: controller,
-              imagen: imagen,
-              progress: controller.progress.value,
-            ),
+    return Obx(() {
+      if (controller.loading.value == false) {
+        return const SizedBox
+            .shrink(); // Retorna un widget vacío si no hay imagen
+      } else {
+        return Container(
+          height: 120,
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(16.0),
           ),
-          SizedBox(
-            height: 200,
-            child: Padding(
-              padding: const EdgeInsets.all(11.0),
-              child: Column(
-                spacing: 10,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox.shrink(),
-                  SizedBox(
-                    width: Get.width - 175,
-                    child: Obx(
-                      () => Text(
-                        controller.texto.value,
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w700,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Obx(
+                () => imagenLoader(
+                  controller: controller,
+                  imagen: controller.imagen.value,
+                  progress: controller.progress.value,
+                ),
+              ),
+              SizedBox(
+                height: 200,
+                child: Padding(
+                  padding: const EdgeInsets.all(11.0),
+                  child: Column(
+                    spacing: 10,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox.shrink(),
+                      SizedBox(
+                        width: Get.width - 175,
+                        child: Obx(
+                          () => Text(
+                            controller.texto.value,
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            overflow: TextOverflow
+                                .ellipsis, // Muestra tres puntos cuando el texto no cabe
+                            maxLines: 1, // Limita a una línea
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: Get.width / 3.5, child: loaderBard()),
+                      SizedBox(
+                        width: Get.width - 172,
+                        child: Row(
+                          spacing: 7,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(width: Get.width / 6, child: loaderBard()),
+                            SizedBox(width: Get.width / 6, child: loaderBard()),
+                            SizedBox(width: Get.width / 6, child: loaderBard()),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        'Te notificamoss cuado esté listo',
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w300,
                         ),
                         overflow: TextOverflow
                             .ellipsis, // Muestra tres puntos cuando el texto no cabe
                         maxLines: 1, // Limita a una línea
                       ),
-                    ),
+                    ],
                   ),
-                  SizedBox(width: Get.width / 3.5, child: loaderBard()),
-
-                  SizedBox(
-                    width: Get.width - 172,
-                    child: Row(
-                      spacing: 7,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(width: Get.width / 6, child: loaderBard()),
-                        SizedBox(width: Get.width / 6, child: loaderBard()),
-                        SizedBox(width: Get.width / 6, child: loaderBard()),
-                      ],
-                    ),
-                  ),
-
-                  Text(
-                    'Te notificamoss cuado esté listo',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w300,
-                    ),
-                    overflow: TextOverflow
-                        .ellipsis, // Muestra tres puntos cuando el texto no cabe
-                    maxLines: 1, // Limita a una línea
-                  ),
-                  // Row(
-                  //   spacing: 12,
-                  //   children: [
-                  //     _buildNutritionItem(
-                  //       'assets/icons/icono_filetecarne_90x69_nuevo.png',
-                  //       '${nutritionInfo.protein}g', // Usamos el parámetro de proteínas
-                  //     ),
-                  //     _buildNutritionItem(
-                  //       'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
-                  //       '${nutritionInfo.carbs}g', // Usamos el parámetro de carbohidratos
-                  //     ),
-                  //     _buildNutritionItem(
-                  //       'assets/icons/icono_almedraazul_74x70_nuevo.png',
-                  //       '${nutritionInfo.fats}g', // Usamos el parámetro de grasas
-                  //     ),
-                  //   ],
-                  // ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        );
+      }
+    });
   }
 }
 
 // Widget para mostrar la imagen
 Widget imagenLoader({
   required AnimatedFoodController controller,
-  required XFile imagen,
+  required XFile? imagen,
   required double progress,
 }) {
+  if (imagen == null) {
+    return const SizedBox.shrink(); // Retorna un widget vacío si no hay imagen
+  }
+
   return Stack(
     alignment: Alignment.center,
     children: [
@@ -185,8 +174,10 @@ Widget loaderBard() {
 }
 
 class AnimatedFoodController extends GetxController {
+  Rx<XFile?> imagen = Rx<XFile?>(null);
   RxString texto = ''.obs;
   RxDouble progress = 0.0.obs;
+  RxBool loading = false.obs;
 
   List<String> mensajes = [
     "Separando ingredientes...",
@@ -200,6 +191,21 @@ class AnimatedFoodController extends GetxController {
 
   int _index = 0; // Índice para controlar los mensajes
   Timer? _timer; // Timer para cambiar el texto
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    // Ejecutar startProgress cuando loading cambie de false a true
+    ever(loading, (bool isLoading) {
+      if (isLoading) {
+        startProgress();
+      } else {
+        // poner 100% al progress
+        progress.value = 1.0;
+      }
+    });
+  }
 
   void startProgress() {
     // Reiniciar variables
@@ -222,8 +228,7 @@ class AnimatedFoodController extends GetxController {
   void _incrementProgress() {
     if (progress.value < 0.99) {
       progress.value += 0.01;
-      Future.delayed(const Duration(milliseconds: 80),
-          _incrementProgress); // Reducimos el retraso a 70 ms
+      Future.delayed(const Duration(milliseconds: 80), _incrementProgress);
     } else {
       progress.value = 0.99; // Detener en 99%
     }
