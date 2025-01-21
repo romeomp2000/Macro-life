@@ -7,11 +7,13 @@ import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/alimento.psd.dart';
 import 'package:macrolife/screen/home/controller.dart';
+import 'package:macrolife/widgets/AnimatedFood.dart';
 
 class FoodDatabaseController extends GetxController {
   final describirController = TextEditingController();
   final UsuarioController usuarioController = Get.put(UsuarioController());
   final WeeklyCalendarController controllerCalendario = Get.find();
+  final AnimatedFoodController controllerAnimatedFood = Get.put(AnimatedFoodController(), permanent: true);
 
   List<String> comidas = [
     "Acabo de comer 150g de pechuga de pollo con 100g de ensalada.",
@@ -70,18 +72,18 @@ class FoodDatabaseController extends GetxController {
     try {
       Get.back();
       Get.back();
-      controllerCalendario.loader.value = true;
+      // controllerCalendario.loader.value = true;
 
       final apiService = ApiService();
-
+      String fecha = controllerCalendario.today.value.toIso8601String();
+      controllerAnimatedFood.loading.value = true;
       final response = await apiService.fetchData(
         'analizar-comida/describir',
         method: Method.POST,
         body: {
           "usuario": usuarioController.usuario.value.sId,
           'comida': describirController.text,
-          'fecha':
-              DateFormat('yyyy-MM-dd').format(controllerCalendario.today.value),
+          'fecha': fecha
         },
       );
 
@@ -90,6 +92,8 @@ class FoodDatabaseController extends GetxController {
       print(response);
     } catch (e) {
       print(e);
+    } finally {
+      controllerAnimatedFood.loading.value = false;
     }
   }
 }

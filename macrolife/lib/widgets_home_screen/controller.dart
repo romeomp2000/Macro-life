@@ -40,41 +40,41 @@ class WidgetController extends GetxController {
 
   void updateHomeWidget(String? cal, int limit, String? carbs, String? fats,
       String? protein) async {
-    content.value = 'Calorías restantes';
-    title.value = cal ?? '0';
-    double progress = calculateProgress(int.parse(cal ?? '0'), limit);
+    // content.value = 'Calorías restantes';
+    // title.value = cal ?? '0';
+    // double progress = calculateProgress(int.parse(cal ?? '0'), limit);
 
-    if (int.parse(cal!) < 0) {
-      content.value = 'calorías más'; 
-      title.value = int.parse(cal).abs().toString();
-    }
+    // if (int.parse(cal!) < 0) {
+    //   content.value = 'calorías más';
+    //   title.value = int.parse(cal).abs().toString();
+    // }
 
-    await HomeWidget.saveWidgetData<String>('title', title.value);
-    await HomeWidget.saveWidgetData<String>('content', content.value);
-    await HomeWidget.saveWidgetData<double>('progress', progress);
+    // await HomeWidget.saveWidgetData<String>('title', title.value);
+    // await HomeWidget.saveWidgetData<String>('content', content.value);
+    // await HomeWidget.saveWidgetData<double>('progress', progress);
 
-    await HomeWidget.saveWidgetData<String>('protein', protein ?? '0');
-    await HomeWidget.saveWidgetData<String>('carbs', carbs ?? '0');
-    await HomeWidget.saveWidgetData<String>('fats', fats ?? '0');
+    // await HomeWidget.saveWidgetData<String>('protein', protein ?? '0');
+    // await HomeWidget.saveWidgetData<String>('carbs', carbs ?? '0');
+    // await HomeWidget.saveWidgetData<String>('fats', fats ?? '0');
 
-    await HomeWidget.renderFlutterWidget(
-      image('assets/icons/icono_filetecarne_outline_93x93_activo.png'),
-      key: 'proLogo',
-      logicalSize: const Size(100, 100),
-    );
-    await HomeWidget.renderFlutterWidget(
-      image('assets/icons/icono_panintegral_outline_79x79_activo.png'),
-      key: 'carLogo',
-      logicalSize: const Size(100, 100),
-    );
-    await HomeWidget.renderFlutterWidget(
-      image('assets/icons/icono_almendra_outline_78x78_activo.png'),
-      key: 'fatLogo',
-      logicalSize: const Size(100, 100),
-    );
+    // await HomeWidget.renderFlutterWidget(
+    //   image('assets/icons/icono_filetecarne_outline_93x93_activo.png'),
+    //   key: 'proLogo',
+    //   logicalSize: const Size(100, 100),
+    // );
+    // await HomeWidget.renderFlutterWidget(
+    //   image('assets/icons/icono_panintegral_outline_79x79_activo.png'),
+    //   key: 'carLogo',
+    //   logicalSize: const Size(100, 100),
+    // );
+    // await HomeWidget.renderFlutterWidget(
+    //   image('assets/icons/icono_almendra_outline_78x78_activo.png'),
+    //   key: 'fatLogo',
+    //   logicalSize: const Size(100, 100),
+    // );
 
-    await HomeWidget.updateWidget(
-        name: 'HomeWidgetProvider', iOSName: 'HomeWidget');
+    // await HomeWidget.updateWidget(
+    //     name: 'HomeWidgetProvider', iOSName: 'HomeWidget');
   }
 
   double calculateProgress(int caloriasRestantes, int caloriasLimite) {

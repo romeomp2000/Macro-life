@@ -41,6 +41,7 @@ Widget paso_6(RegistroPasosController controller) {
                       onValueChanged: (value) {
                         controller.peso.value = value;
                       },
+                      widthScreen: Get.width,
                       scaleLabelSize: 16,
                       scaleBottomPadding: 10,
                       scaleItemWidth: 12,

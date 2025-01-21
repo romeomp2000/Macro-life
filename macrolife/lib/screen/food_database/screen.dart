@@ -104,7 +104,7 @@ class FoodDatabaseScreen extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'Añadir ejercicio',
+                  'Registrar comida',
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,

@@ -7,6 +7,7 @@ import 'package:macrolife/screen/analitica/screen.dart';
 import 'package:macrolife/screen/configuraciones/screen.dart';
 import 'package:macrolife/screen/home/controller.dart';
 import 'package:macrolife/screen/home/screen.dart';
+import 'package:macrolife/widgets/AnimatedFood.dart';
 import 'package:macrolife/widgets/BoderCamera.dart';
 import 'package:macrolife/widgets/CustomFloatingActionButtonLocation.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
@@ -234,10 +235,15 @@ class EscanearAlimentosController extends GetxController {
   RxBool isCameraInitialized = false.obs;
   RxList<ImageLabel> labels = <ImageLabel>[].obs;
   final UsuarioController usuarioController = Get.put(UsuarioController());
+  final AnimatedFoodController controllerAnimatedFood =
+      Get.put(AnimatedFoodController(), permanent: true);
+
   final WeeklyCalendarController cargaMacro =
-      Get.put(WeeklyCalendarController());
+      Get.put(WeeklyCalendarController(), permanent: true);
   RxDouble widthCamera = 300.0.obs;
   RxDouble heightCamera = 300.0.obs;
+  RxBool oscureCamera = false.obs;
+
   RxInt isSeleccionado = 1.obs;
 
   // Asegurarse de que la cámara se inicialice correctamente
@@ -273,13 +279,9 @@ class EscanearAlimentosController extends GetxController {
   Future<void> captureAndProcessImage() async {
     try {
       Get.back();
+      controllerAnimatedFood.loading.value = true;
       XFile image = await cameraController!.takePicture();
-
-      cargaMacro.imagenLoader.value = image;
-      cargaMacro.imagenLoader.refresh();
-
-      // final WeeklyCalendarController cargaMacro = Get.find();
-      cargaMacro.loader.value = true;
+      controllerAnimatedFood.imagen.value = image;
       String? barocde;
 
       // Captura la imagen
@@ -308,8 +310,6 @@ class EscanearAlimentosController extends GetxController {
       // // Realiza las operaciones habituales con la imagen
       // cameraController!.stopImageStream();
 
-      DateTime today = DateTime.now();
-
       final images = [
         ImageData(
           fileKey: 'comida',
@@ -337,7 +337,7 @@ class EscanearAlimentosController extends GetxController {
       usuarioController.usuario.value.macronutrientesDiario?.refresh();
 
       cargaMacro.refresh();
-      cargaMacro.loader.refresh();
+      // cargaMacro.loader.refresh();
 
       cargaMacro.cargaAlimentos();
     } catch (e) {
@@ -345,8 +345,9 @@ class EscanearAlimentosController extends GetxController {
       // cameraController?.dispose();
     } finally {
       cameraController?.dispose();
-      cargaMacro.imagenLoader.value = null;
       cargaMacro.refresh();
+      controllerAnimatedFood.loading.value = false;
+      controllerAnimatedFood.imagen.value = null;
     }
   }
 
@@ -501,7 +502,7 @@ class EscanearAlimentosController extends GetxController {
 
       String? barocde;
 
-      cargaMacro.loader.value = true;
+      // cargaMacro.loader.value = true;
       // final ImagePicker picker = ImagePicker();
 
       final XFile? imagen = await ImagePicker().pickImage(
@@ -511,7 +512,8 @@ class EscanearAlimentosController extends GetxController {
         // maxHeight: 800,
       );
 
-      cargaMacro.imagenLoader.value = imagen;
+      controllerAnimatedFood.loading.value = true;
+      controllerAnimatedFood.imagen.value = imagen;
 
       if (imagen == null) {
         return;
@@ -568,15 +570,16 @@ class EscanearAlimentosController extends GetxController {
       usuarioController.usuario.value.macronutrientesDiario?.refresh();
 
       cargaMacro.refresh();
-      cargaMacro.loader.refresh();
+      // cargaMacro.loader.refresh();
 
       cargaMacro.cargaAlimentos();
     } catch (e) {
       print("Error al capturar o procesar imagen: $e");
       // mostrarDialogoParaPermiso();
     } finally {
-      cargaMacro.loader.value = false;
-      cargaMacro.imagenLoader.value = null;
+      // cargaMacro.loader.value = false;
+      controllerAnimatedFood.loading.value = false;
+      controllerAnimatedFood.imagen.value = null;
     }
   }
 
@@ -611,6 +614,7 @@ class EscanearAlimentosController extends GetxController {
                 () => BorderCamera(
                   width: widthCamera.value,
                   height: heightCamera.value,
+                  isOscure: oscureCamera.value,
                 ),
               ),
 
@@ -702,6 +706,7 @@ class EscanearAlimentosController extends GetxController {
                         isSeleccionado.value = 1;
                         widthCamera.value = 300;
                         heightCamera.value = 300;
+                        oscureCamera.value = false;
                       },
                       child: ClipRRect(
                         borderRadius:
@@ -739,6 +744,7 @@ class EscanearAlimentosController extends GetxController {
                         isSeleccionado.value = 2;
                         widthCamera.value = Get.width * 0.8;
                         heightCamera.value = 150;
+                        oscureCamera.value = true;
                       },
                       child: ClipRRect(
                         borderRadius:
@@ -776,6 +782,7 @@ class EscanearAlimentosController extends GetxController {
                         isSeleccionado.value = 3;
                         widthCamera.value = Get.width * 0.65;
                         heightCamera.value = Get.height * 0.55;
+                        oscureCamera.value = true;
                       },
                       child: ClipRRect(
                         borderRadius:

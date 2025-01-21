@@ -13,6 +13,7 @@ import 'package:macrolife/models/racha_dias.model.dart';
 import 'package:macrolife/widgets_home_screen/controller.dart';
 import 'package:macrolife/screen/objetivos/controller.dart';
 import 'package:macrolife/widgets_home_screen/live_activities_controller.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 // import 'package:macrolife/widgets_home_screen/live_activities_controller.dart';
 
 extension DateTimeComparison on DateTime {
@@ -147,8 +148,9 @@ class WeeklyCalendarController extends GetxController {
   // final HealthController healthController = Get.put(HealthController());
   final UsuarioController controllerUsuario = Get.find();
 
-  final RxBool loader = false.obs;
-  final Rx<XFile?> imagenLoader = Rx<XFile?>(null);
+  // final RxBool loader = false.obs;
+  // final Rx<XFile?> imagenLoader = Rx<XFile?>(null);
+  // final RxBool loaderAnimated = false.obs;
 
   final widgetController = Get.put(WidgetController());
   // final liveWidgetController = Get.put(LiveDynamicController());
@@ -247,16 +249,64 @@ class WeeklyCalendarController extends GetxController {
                   const SizedBox(height: 20),
                   // Ícono de fuego grande
                   Stack(
-                    alignment: Alignment.center,
+                    alignment: Alignment.bottomCenter,
                     clipBehavior: Clip.none,
                     children: [
                       Image.asset(
-                        'assets/images/imagen_racha_600x600_sn.png',
-                        width: 220,
-                        height: 220,
+                        'assets/images/imagen_fondo_racha_690x690_1.png',
+                        width: 240,
+                      ),
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: SizedBox(
+                          height: 200,
+                          width: 200,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SfRadialGauge(
+                                axes: <RadialAxis>[
+                                  RadialAxis(
+                                    axisLineStyle: const AxisLineStyle(
+                                      thickness: 0.2,
+                                      thicknessUnit: GaugeSizeUnit.factor,
+                                      color: Colors.black12,
+                                    ),
+                                    showTicks: false,
+                                    showLabels: false,
+                                    showLastLabel: false,
+                                    pointers: <GaugePointer>[
+                                      RangePointer(
+                                        value: (controllerUsuario
+                                                    .usuario.value.rachaDias
+                                                    ?.toDouble() ??
+                                                0) *
+                                            5,
+                                        color: Colors.black,
+                                        cornerStyle: CornerStyle.bothCurve,
+                                        enableDragging: true,
+                                        width: 0.2,
+                                        sizeUnit: GaugeSizeUnit.factor,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                width:
+                                    120, // Ajusta el tamaño del círculo según tus necesidades
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       Positioned(
-                        top: 85,
+                        top: 100,
                         child: Obx(
                           () => NumberWithBorder(
                               number:
@@ -467,7 +517,7 @@ class WeeklyCalendarController extends GetxController {
       // caloriasQuemadas, levantamientoPesass, pasos, otro
       entrenamientosList.value = entrenamientos;
 
-      loader.value = false;
+      // loader.value = false;
     } catch (e) {
       Get.snackbar(
         'Entrenamiento',
@@ -515,7 +565,7 @@ class WeeklyCalendarController extends GetxController {
 
       refreshCantadorMacronutrientes(controllerUsuario);
 
-      loader.value = false;
+      // loader.value = false;
     } catch (e) {
       Get.snackbar(
         'Macronutrientes',
@@ -697,7 +747,7 @@ class NumberWithBorder extends StatelessWidget {
           number,
           style: const TextStyle(
             fontSize: 60,
-            letterSpacing: 5,
+            letterSpacing: 4,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),

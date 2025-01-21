@@ -244,9 +244,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UsuarioController controllerUsuario = Get.find();
+    final AnimatedFoodController controllerAnimatedFood =
+        Get.put(AnimatedFoodController(),permanent: true);
 
     final WeeklyCalendarController controller =
-        Get.put(WeeklyCalendarController());
+        Get.put(WeeklyCalendarController(), permanent: true);
 
     return Container(
       decoration: BoxDecoration(
@@ -355,7 +357,7 @@ class HomeScreen extends StatelessWidget {
                 Obx(
                   () => controller.alimentosList.isEmpty &&
                           controller.entrenamientosList.isEmpty &&
-                          controller.imagenLoader.value == null
+                          controllerAnimatedFood.loading.value == false
                       ? Stack(
                           clipBehavior: Clip.none,
                           children: [
@@ -407,14 +409,17 @@ class HomeScreen extends StatelessWidget {
                         )
                       : SizedBox.shrink(),
                 ),
-
-                Obx(() {
-                  return controller.imagenLoader.value != null
-                      ? AnimatedFood(
-                          imagen: controller.imagenLoader.value!,
-                        )
-                      : const SizedBox.shrink();
-                }),
+                AnimatedFood(),
+                // Obx(() {
+                //   if (controller.loaderAnimated.value == true) {
+                //     return AnimatedFood(
+                //       imagen: controller.imagenLoader.value,
+                //     );
+                //   }
+                //   return SizedBox(
+                //     height: controller.loaderAnimated.value == true ? 1 : 2,
+                //   );
+                // }),
 
                 Obx(() {
                   return SingleChildScrollView(
