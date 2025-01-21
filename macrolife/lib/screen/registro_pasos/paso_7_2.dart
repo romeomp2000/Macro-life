@@ -18,7 +18,7 @@ Widget paso_7_2(RegistroPasosController controller) {
           children: [
             Obx(
               () => Text(
-                controller.objetivo.value == 'Perder'
+                controller.pesoDeseadoLabel.value != 'Subir de peso'
                     ? 'Velocidad de pérdida de peso por semana'
                     : 'Velocidad para ganar peso por semana',
                 textAlign: TextAlign.center,

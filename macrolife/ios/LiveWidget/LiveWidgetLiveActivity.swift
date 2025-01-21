@@ -105,7 +105,7 @@ struct LiveWidgetLiveActivity: Widget {
                                         .stroke(Color.gray.opacity(0.3), lineWidth: 3)
                                     Circle()
                                         .trim(from: 0.0, to: CGFloat(progressProtein))
-                                        .stroke(Color.white, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                                        .stroke(Color.init(red: 215/255, green: 105/255, blue: 119/255), style: StrokeStyle(lineWidth: 3, lineCap: .round))
                                         .rotationEffect(.degrees(-90))
                                         .animation(.easeInOut, value: 0)
                                     
@@ -147,7 +147,7 @@ struct LiveWidgetLiveActivity: Widget {
                                         .stroke(Color.gray.opacity(0.3), lineWidth: 3)
                                     Circle()
                                         .trim(from: 0.0, to: CGFloat((progressCarbs)))
-                                        .stroke(Color.white, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                                        .stroke(Color.init(red: 224/255, green: 160/255, blue: 121/255), style: StrokeStyle(lineWidth: 3, lineCap: .round))
                                         .rotationEffect(.degrees(-90))
                                         .animation(.easeInOut, value: 0)
                                     
@@ -187,7 +187,7 @@ struct LiveWidgetLiveActivity: Widget {
                                         .stroke(Color.gray.opacity(0.3), lineWidth: 3)
                                     Circle()
                                         .trim(from: 0.0, to: CGFloat(progressFats))
-                                        .stroke(Color.white, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                                        .stroke(Color.init(red: 124/255, green: 165/255, blue: 225/255), style: StrokeStyle(lineWidth: 3, lineCap: .round))
                                         .rotationEffect(.degrees(-90))
                                         .animation(.easeInOut, value: 0)
                                     
@@ -317,7 +317,7 @@ struct LiveWidgetLiveActivity: Widget {
                                         .stroke(Color.gray.opacity(0.3), lineWidth: 3)
                                     Circle()
                                         .trim(from: 0.0, to: CGFloat(progressProtein))
-                                        .stroke(Color.white, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                                        .stroke(Color.init(red: 215/255, green: 105/255, blue: 119/255), style: StrokeStyle(lineWidth: 3, lineCap: .round))
                                         .rotationEffect(.degrees(-90))
                                         .animation(.easeInOut, value: 0)
                                     
@@ -357,7 +357,7 @@ struct LiveWidgetLiveActivity: Widget {
                                         .stroke(Color.gray.opacity(0.3), lineWidth: 3)
                                     Circle()
                                         .trim(from: 0.0, to: CGFloat((progressCarbs)))
-                                        .stroke(Color.white, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                                        .stroke(Color.init(red: 224/255, green: 160/255, blue: 121/255), style: StrokeStyle(lineWidth: 3, lineCap: .round))
                                         .rotationEffect(.degrees(-90))
                                         .animation(.easeInOut, value: 0)
                                     
@@ -398,7 +398,7 @@ struct LiveWidgetLiveActivity: Widget {
                                         .stroke(Color.gray.opacity(0.3), lineWidth: 3)
                                     Circle()
                                         .trim(from: 0.0, to: CGFloat(progressFats))
-                                        .stroke(Color.white, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                                        .stroke(Color.init(red: 124/255, green: 165/255, blue: 225/255), style: StrokeStyle(lineWidth: 3, lineCap: .round))
                                         .rotationEffect(.degrees(-90))
                                         .animation(.easeInOut, value: 0)
                                     

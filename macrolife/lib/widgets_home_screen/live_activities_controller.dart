@@ -13,7 +13,11 @@ class LiveActivitiesController extends GetxController {
   LiveDynamicModel? liveDynamicData;
 
   @override
-  void onInit() {
+  void onInit() async {
+    bool test = await liveActivitiesPlugin.areActivitiesEnabled();
+    if (!test) {
+      return;
+    }
     liveActivitiesPlugin.activityUpdateStream.listen((event) {
       // print('Activity update: $event');
     });
@@ -36,15 +40,18 @@ class LiveActivitiesController extends GetxController {
       int limiteCarbs,
       int limiteFats) async {
     try {
+      bool test = await liveActivitiesPlugin.areActivitiesEnabled();
+      if (!test) {
+        return;
+      }
+
+      var lista = await liveActivitiesPlugin.getAllActivitiesIds();
+      if (lista.isNotEmpty) {
+        return;
+      }
+
       liveActivitiesPlugin.init(
           appGroupId: 'group.mx.posibilidades.macrolife', urlScheme: '');
-
-      if (latestActivityId != null) {
-        if (kDebugMode) {
-          print('Ya hay una actividad');
-          return;
-        }
-      }
 
       double progressCal = calculateProgress(calorias, limiteCal);
       double progressCarbs = calculateProgress(carbohidratos, limiteCarbs);
@@ -63,19 +70,19 @@ class LiveActivitiesController extends GetxController {
         logo: LiveActivityFileFromAsset.image(
             'assets/icons/icono_macrolife_99x117_blanco.png'),
         logoProt: LiveActivityFileFromAsset.image(
-            'assets/icons/icono_filetecarne_outline_93x93_activo.png'),
+            'assets/icons/icono_filetecarne_90x69_nuevo_1.png'),
         logoCal: LiveActivityFileFromAsset.image(
-            'assets/icons/icono_calorias_outline_120x120_activo.png'),
+            'assets/icons/icono_flama_chica_negra_48x48_original.png'),
         logoCar: LiveActivityFileFromAsset.image(
-            'assets/icons/icono_panintegral_outline_79x79_activo.png'),
+            'assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png'),
         logoGrasa: LiveActivityFileFromAsset.image(
-            'assets/icons/icono_almendra_outline_78x78_activo.png'),
+            'assets/icons/icono_almedraazul_74x70_nuevo_1.png'),
       );
 
-      // final resp =
-      //     await liveActivitiesPlugin.createActivity(liveDynamicData!.toMap());
+      final resp =
+          await liveActivitiesPlugin.createActivity(liveDynamicData!.toMap());
 
-      // latestActivityId = resp;
+      latestActivityId = resp;
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -92,10 +99,15 @@ class LiveActivitiesController extends GetxController {
 
   Future actualizar(int calorias, int carbohidratos, int grasas, int protein,
       int limiteProtein, int limiteCal, int limiteCarbs, int limiteFats) async {
+    bool test = await liveActivitiesPlugin.areActivitiesEnabled();
+    if (!test) {
+      return;
+    }
     if (liveDynamicData == null) {
       return;
     }
-    return;
+    // return;
+    // print('Hola');
 
     double progressCal = calculateProgress(calorias, limiteCal);
     double progressCarbs = calculateProgress(carbohidratos, limiteCarbs);

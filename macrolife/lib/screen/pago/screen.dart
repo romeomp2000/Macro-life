@@ -16,12 +16,10 @@ class PagoVista extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 30,
-        backgroundColor: const Color.fromARGB(255, 252, 252, 252),
-        // elevation: 0,
         leading: Obx(
           () => controller.paso.value > 1
               ? Container(
-                  margin: EdgeInsets.only(left: 10),
+                  margin: EdgeInsets.only(top: 1, bottom: 1, left: 10),
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.black),
                     onPressed: () => {controller.disminuir()},
