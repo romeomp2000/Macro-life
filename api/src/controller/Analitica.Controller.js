@@ -153,8 +153,8 @@ const obtenerPeso = async (req, res) => {
     return res.json({
       data: chartData,
       ejeY: {
-        maximo: ejeYMaximo,
-        minimo: ejeYMinimo
+        maximo: ejeYMaximo || 100,
+        minimo: ejeYMinimo || 0
       }
     });
   } catch (error) {
