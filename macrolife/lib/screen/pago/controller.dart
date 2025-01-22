@@ -21,7 +21,7 @@ class PagoController extends GetxController {
   final RxDouble totalAPagar = 0.0.obs;
 
   VideoPlayerController controllerVideo = VideoPlayerController.asset(
-      'assets/videos/back_animacion_pantalla_03_compra_1125x1660.mp4')
+      'assets/videos/ScreenRecording_01-21-2025 15-27-40_1.mp4')
     ..initialize().then((_) {
       // controllerVideo.
     })
