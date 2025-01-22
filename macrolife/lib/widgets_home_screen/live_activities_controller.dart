@@ -72,7 +72,7 @@ class LiveActivitiesController extends GetxController {
         logoProt: LiveActivityFileFromAsset.image(
             'assets/icons/icono_filetecarne_90x69_nuevo_1.png'),
         logoCal: LiveActivityFileFromAsset.image(
-            'assets/icons/icono_flama_chica_negra_48x48_original.png'),
+            'assets/icons/icono_flama_original_54x54_activo.png'),
         logoCar: LiveActivityFileFromAsset.image(
             'assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png'),
         logoGrasa: LiveActivityFileFromAsset.image(

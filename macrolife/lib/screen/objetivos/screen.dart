@@ -196,7 +196,7 @@ class ObjetivosScreen extends StatelessWidget {
                       lineWidth: 6.0,
                       percent: 0.50,
                       center: Image.asset(
-                        'assets/icons/icono_flama_chica_negra_48x48_original.png',
+                        'assets/icons/icono_flama_original_54x54_activo.png',
                         width: 15,
                       ),
                       progressColor: Colors.black, // Color del progreso
@@ -234,7 +234,7 @@ class ObjetivosScreen extends StatelessWidget {
                       lineWidth: 6.0,
                       percent: 0.50,
                       center: Image.asset(
-                          'assets/icons/icono_filetecarne_90x69_nuevo.png',
+                          'assets/icons/icono_filetecarne_90x69_nuevo_1.png',
                           width: 15),
                       progressColor: redTheme_, // Color del progreso
                       backgroundColor:
@@ -276,7 +276,7 @@ class ObjetivosScreen extends StatelessWidget {
                       lineWidth: 6.0,
                       percent: 0.50,
                       center: Image.asset(
-                          'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
+                          'assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png',
                           width: 15),
                       progressColor: yellowTheme_,
                       backgroundColor: Colors.black12,
@@ -317,7 +317,7 @@ class ObjetivosScreen extends StatelessWidget {
                       lineWidth: 6.0,
                       percent: 0.50,
                       center: Image.asset(
-                          'assets/icons/icono_almedraazul_74x70_nuevo.png',
+                          'assets/icons/icono_almedraazul_74x70_nuevo_1.png',
                           width: 15),
                       progressColor: blueTheme_,
                       backgroundColor: Colors.black12,

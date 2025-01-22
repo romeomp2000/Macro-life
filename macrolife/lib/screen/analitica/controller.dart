@@ -10,6 +10,8 @@ class AnaliticaController extends GetxController {
   final RxList<ChartData> charSorce = <ChartData>[].obs;
   final Rx<AnaliticaNutricionModel> analiticaNutricion =
       AnaliticaNutricionModel().obs;
+  final apiService = ApiService();
+  UsuarioController usuarioController = Get.find();
 
   final List<String> listaNutricion = [
     'Esta semana',
@@ -18,34 +20,64 @@ class AnaliticaController extends GetxController {
     'Hace 3 semanas'
   ];
 
-  final tipoBusqueda = 'Esta semana'.obs;
+  final tipoBusquedaNutricion = 'Esta semana'.obs;
+  final List<String> listaProgreso = [
+    '90 Días',
+    '6 Meses',
+    '1 Año',
+    'Todo el tiempo'
+  ];
+
+  final tipoBusquedaProgreso = '90 Días'.obs;
 
   final color = Colors.transparent.obs;
   final isLoading = false.obs;
 
-  @override
-  void onInit() {
-    fetch();
-    // TODO: implement onInit
+  var chartData = <ChartDataP>[].obs;
+  var chartAxis = ChartAxis(minimo: 0, maximo: 100).obs;
 
-    super.onInit();
+  Future<void> fetchPesoHistorial() async {
+    isLoading.value = true;
+    try {
+      final response = await apiService.fetchData(
+        'analitica/peso',
+        method: Method.POST,
+        body: {
+          'idUsuario': usuarioController.usuario.value.sId,
+          'tipoBusqueda': tipoBusquedaProgreso.value,
+        },
+      );
+
+      // Mapear los datos de la respuesta
+      final List<ChartDataP> fetchedData = (response['data'] as List)
+          .map((item) => ChartDataP.fromJson(item))
+          .toList();
+
+      final ChartAxis fetchedAxis = ChartAxis.fromJson(response['ejeY']);
+
+      // Actualizar los observables
+      chartData.value = fetchedData;
+      chartAxis.value = fetchedAxis;
+    } catch (e) {
+      Get.snackbar('Error', 'No se pudo obtener el historial de peso');
+      print(e);
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  Future<void> fetch() async {
+  Future<void> fetchNutricion() async {
     try {
-      UsuarioController usuarioController = Get.find();
-
       isLoading(true);
 
       charSorce.clear(); // Limpiar datos anteriores
 
-      final apiService = ApiService();
       final response = await apiService.fetchData(
         'analitica/nutricion',
         method: Method.POST,
         body: {
           'idUsuario': usuarioController.usuario.value.sId,
-          'tipoBusqueda': tipoBusqueda.value,
+          'tipoBusqueda': tipoBusquedaNutricion.value,
         },
       );
 
@@ -82,5 +114,42 @@ class AnaliticaController extends GetxController {
     Widget text;
     text = Text(valor, style: style);
     return text;
+  }
+}
+
+class ChartDataP {
+  final DateTime x;
+  final double y; // Peso registrado
+  final DateTime fecha; // Fecha del registro
+
+  ChartDataP({
+    required this.x,
+    required this.y,
+    required this.fecha,
+  });
+
+  factory ChartDataP.fromJson(Map<String, dynamic> json) {
+    return ChartDataP(
+      x: DateTime.parse(json['fecha']),
+      y: (json['y'] as num).toDouble(),
+      fecha: DateTime.parse(json['fecha']),
+    );
+  }
+}
+
+class ChartAxis {
+  final double minimo;
+  final double maximo;
+
+  ChartAxis({
+    required this.minimo,
+    required this.maximo,
+  });
+
+  factory ChartAxis.fromJson(Map<String, dynamic> json) {
+    return ChartAxis(
+      minimo: (json['minimo'] as num).toDouble(),
+      maximo: (json['maximo'] as num).toDouble(),
+    );
   }
 }

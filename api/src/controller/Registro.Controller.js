@@ -3,6 +3,7 @@ const { OPENAI_API_KEY } = require('../config/index');
 const OpenAI = require('openai');
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 const moment = require('moment-timezone');
+const PesoHistorialModel = require('../models/PesoHistorial.Model');
 
 const registroController = async (req, res) => {
   const {
@@ -175,6 +176,16 @@ const registroController = async (req, res) => {
     const newUsuario = await UsuarioModel.create(objUsuario);
 
     const findUsuario = await UsuarioModel.findById(newUsuario._id);
+
+    const fecha = moment().tz('America/Mexico_City');
+    // Guardar el peso actual en el historial
+    const nuevoPesoHistorial = new PesoHistorialModel({
+      usuario: newUsuario._id,
+      peso,
+      fecha
+    });
+
+    nuevoPesoHistorial.save();
 
     return res.status(200).json({ usuario: findUsuario, message: 'Se ha creado el usuario correctamente.' });
   } catch (error) {

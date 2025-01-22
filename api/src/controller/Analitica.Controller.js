@@ -1,4 +1,5 @@
 const AlimentoModel = require('../models/Alimentos.Model');
+const PesoHistorial = require('../models/PesoHistorial.Model');
 const moment = require('moment-timezone');
 
 const obtenerNutricion = async (req, res) => {
@@ -89,4 +90,84 @@ const obtenerNutricion = async (req, res) => {
   }
 };
 
-module.exports = { obtenerNutricion };
+const obtenerPeso = async (req, res) => {
+  try {
+    const { idUsuario, tipoBusqueda } = req.body;
+    let fechaInicio;
+
+    // Determinar el rango de fechas según el tipo de búsqueda
+    switch (tipoBusqueda) {
+      case '90 Días':
+        fechaInicio = moment().subtract(90, 'days').toDate(); // 90 días atrás
+        break;
+      case '6 Meses':
+        fechaInicio = moment().subtract(6, 'months').toDate(); // 6 meses atrás
+        break;
+      case '1 Año':
+        fechaInicio = moment().subtract(1, 'year').toDate(); // 1 año atrás
+        break;
+      case 'Todo el tiempo':
+        fechaInicio = null; // Sin filtro de fecha
+        break;
+      default:
+        return res.status(400).json({ message: 'Tipo de búsqueda no válido.' });
+    }
+
+    // Buscar el historial de peso del usuario
+    let historial;
+    if (fechaInicio) {
+      // Filtrar por fecha de inicio si existe
+      historial = await PesoHistorial.find({
+        usuario: idUsuario,
+        fecha: { $gte: fechaInicio }
+      }).sort({ fecha: 1 });
+    } else {
+      // Buscar todo el historial si no hay filtro de fecha
+      historial = await PesoHistorial.find({ usuario: idUsuario }).sort({ fecha: 1 });
+    }
+
+    if (!historial.length) {
+      return res.status(404).json({ message: 'No se encontró historial de peso para este usuario.' });
+    }
+
+    // Calcular peso máximo y mínimo
+    const pesos = historial.map(h => h.peso);
+    let maxPeso = Math.max(...pesos);
+    let minPeso = Math.min(...pesos);
+
+    // Ajustar el máximo y mínimo a múltiplos de 10
+    if (maxPeso >= 10) {
+      maxPeso = Math.floor(maxPeso / 10) * 10; // Redondear hacia abajo al múltiplo más cercano de 10
+    }
+    if (minPeso >= 10) {
+      minPeso = Math.floor(minPeso / 10) * 10; // Redondear hacia abajo al múltiplo más cercano de 10
+    }
+
+    // Ajustar límites del eje Y
+    const ejeYMaximo = maxPeso + 10;
+    const ejeYMinimo = Math.max(minPeso - 10, 0); // Asegurarse de que el mínimo no sea menor que 0
+
+    // Formatear los datos para el gráfico
+    const chartData = historial.map((registro, index) => ({
+      x: moment(registro.fecha).format('YYYY-MM-DD'),
+      y: registro.peso,
+      fecha: registro.fecha
+    })).sort((a, b) => a.fecha - b.fecha);
+
+    return res.json({
+      data: chartData,
+      ejeY: {
+        maximo: ejeYMaximo,
+        minimo: ejeYMinimo
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error });
+  }
+};
+
+module.exports = {
+  obtenerNutricion,
+  obtenerPeso
+};

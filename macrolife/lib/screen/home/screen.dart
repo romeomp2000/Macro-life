@@ -104,7 +104,7 @@ class HomeScreen extends StatelessWidget {
                                     0)
                                 .toDouble()),
                             center: Image.asset(
-                              'assets/icons/icono_flama_chica_negra_48x48_original.png',
+                              'assets/icons/icono_flama_original_54x54_activo.png',
                               width: 25,
                             ),
                             progressColor: Colors.black,
@@ -245,7 +245,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final UsuarioController controllerUsuario = Get.find();
     final AnimatedFoodController controllerAnimatedFood =
-        Get.put(AnimatedFoodController(),permanent: true);
+        Get.put(AnimatedFoodController(), permanent: true);
 
     final WeeklyCalendarController controller =
         Get.put(WeeklyCalendarController(), permanent: true);
@@ -257,7 +257,6 @@ class HomeScreen extends StatelessWidget {
               'assets/images/background_1125x2436_uno.jpg'), // Ruta de la imagen
           fit: BoxFit.cover, // Ajusta cómo se muestra la imagen
         ),
-        borderRadius: BorderRadius.circular(10), // Esquinas redondeadas
       ),
       child: SingleChildScrollView(
         child: SafeArea(
@@ -750,7 +749,7 @@ class NutritionWidget extends StatelessWidget {
                             spacing: 8,
                             children: [
                               Image.asset(
-                                'assets/icons/icono_flama_chica_negra_48x48_original.png',
+                                'assets/icons/icono_flama_original_54x54_activo.png',
                                 width: 15,
                                 height: 15,
                               ),
@@ -904,17 +903,17 @@ class AjercicioWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 15),
                       _buildNutritionItem(
-                        'assets/icons/icono_filetecarne_90x69_nuevo.png', // Ícono de proteínas
+                        'assets/icons/icono_filetecarne_90x69_nuevo_1.png', // Ícono de proteínas
                         '${nutritionInfo.protein}gr.', // Usamos el parámetro de proteínas
                       ),
                       const SizedBox(height: 10),
                       _buildNutritionItem(
-                        'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png', // Ícono de carbohidratos
+                        'assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png', // Ícono de carbohidratos
                         '${nutritionInfo.carbs}gr', // Usamos el parámetro de carbohidratos
                       ),
                       const SizedBox(height: 10),
                       _buildNutritionItem(
-                        'assets/icons/icono_almedraazul_74x70_nuevo.png', // Ícono de grasas
+                        'assets/icons/icono_almedraazul_74x70_nuevo_1.png', // Ícono de grasas
                         '${nutritionInfo.fats}gr.', // Usamos el parámetro de grasas
                       ),
                       const SizedBox(height: 10),

@@ -100,7 +100,7 @@ class IngredienteEditarScreen extends StatelessWidget {
                 lineWidth: 6.0,
                 percent: 0.50,
                 center: Image.asset(
-                  'assets/icons/icono_flama_chica_negra_48x48_original.png',
+                  'assets/icons/icono_flama_original_54x54_activo.png',
                   width: 15,
                 ),
                 progressColor: Colors.black, // Color del progreso

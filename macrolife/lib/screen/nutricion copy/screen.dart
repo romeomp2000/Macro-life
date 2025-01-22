@@ -219,7 +219,7 @@ class NutricionScreen extends StatelessWidget {
                         children: [
                           NutritionalInfoRow(
                             icon: Image.asset(
-                              'assets/icons/icono_filetecarne_90x69_nuevo.png',
+                              'assets/icons/icono_filetecarne_90x69_nuevo_1.png',
                               width: 13,
                             ),
                             label: 'Proteína',
@@ -227,7 +227,7 @@ class NutricionScreen extends StatelessWidget {
                           ),
                           NutritionalInfoRow(
                             icon: Image.asset(
-                              'assets/icons/icono_panintegral_amarillo_76x70_nuevo.png',
+                              'assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png',
                               width: 13,
                             ),
                             label: 'Carbohidratos',
@@ -235,7 +235,7 @@ class NutricionScreen extends StatelessWidget {
                           ),
                           NutritionalInfoRow(
                             icon: Image.asset(
-                              'assets/icons/icono_almedraazul_74x70_nuevo.png',
+                              'assets/icons/icono_almedraazul_74x70_nuevo_1.png',
                               width: 13,
                             ),
                             label: 'Grasas',

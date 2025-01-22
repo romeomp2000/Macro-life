@@ -483,7 +483,7 @@ class NutricionScreen extends StatelessWidget {
                 ),
                 leadingSize: 25,
                 leading: Image.asset(
-                  'assets/icons/icono_flama_chica_negra_48x48_original.png',
+                  'assets/icons/icono_flama_original_54x54_activo.png',
                   width: Get.width,
                 ),
               ),
