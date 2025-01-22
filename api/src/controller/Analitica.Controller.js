@@ -114,6 +114,8 @@ const obtenerPeso = async (req, res) => {
         return res.status(400).json({ message: 'Tipo de búsqueda no válido.' });
     }
 
+    const usuarioPesoActual = await usuarioModel.findById(idUsuario).select('pesoActual').lean().then((usuario) => usuario?.pesoActual || 0);
+
     // Buscar el historial de peso del usuario
     let historial;
     if (fechaInicio) {
@@ -126,8 +128,6 @@ const obtenerPeso = async (req, res) => {
       // Buscar todo el historial si no hay filtro de fecha
       historial = await PesoHistorial.find({ usuario: idUsuario }).sort({ fecha: 1 });
     }
-
-    const usuarioPesoActual = await usuarioModel.findById(idUsuario).select('pesoActual').lean().then((usuario) => usuario?.pesoActual || 0);
 
     // Calcular peso máximo y mínimo
     const pesos = historial.map(h => h.peso);
@@ -157,6 +157,14 @@ const obtenerPeso = async (req, res) => {
       y: registro.peso,
       fecha: registro.fecha
     })).sort((a, b) => a.fecha - b.fecha);
+
+    if (chartData.length === 0) {
+      chartData.push({
+        x: moment().format('YYYY-MM-DD'),
+        y: usuarioPesoActual,
+        fecha: new Date()
+      });
+    }
 
     return res.json({
       data: chartData,

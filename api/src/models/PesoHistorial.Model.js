@@ -21,6 +21,5 @@ const PesoHistorialSschema = new Schema({
   timestamps: true
 });
 
-
 PesoHistorialSschema.plugin(mongoosePaginate);
 module.exports = model('pesoHistorial', PesoHistorialSschema);
