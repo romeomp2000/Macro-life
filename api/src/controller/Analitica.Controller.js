@@ -126,10 +126,6 @@ const obtenerPeso = async (req, res) => {
       historial = await PesoHistorial.find({ usuario: idUsuario }).sort({ fecha: 1 });
     }
 
-    if (!historial.length) {
-      return res.status(404).json({ message: 'No se encontró historial de peso para este usuario.' });
-    }
-
     // Calcular peso máximo y mínimo
     const pesos = historial.map(h => h.peso);
     let maxPeso = Math.max(...pesos);
