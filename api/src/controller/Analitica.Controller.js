@@ -1,5 +1,6 @@
 const AlimentoModel = require('../models/Alimentos.Model');
 const PesoHistorial = require('../models/PesoHistorial.Model');
+const usuarioModel = require('../models/Usuario.Model');
 const moment = require('moment-timezone');
 
 const obtenerNutricion = async (req, res) => {
@@ -126,8 +127,15 @@ const obtenerPeso = async (req, res) => {
       historial = await PesoHistorial.find({ usuario: idUsuario }).sort({ fecha: 1 });
     }
 
+    const usuarioPesoActual = await usuarioModel.findById(idUsuario).select('pesoActual').lean().then((usuario) => usuario?.pesoActual || 0);
+
     // Calcular peso máximo y mínimo
     const pesos = historial.map(h => h.peso);
+
+    if (usuarioPesoActual) {
+      pesos.push(usuarioPesoActual);
+    }
+
     let maxPeso = Math.max(...pesos);
     let minPeso = Math.min(...pesos);
 
