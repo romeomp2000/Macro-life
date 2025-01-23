@@ -24,7 +24,11 @@ class PrincipalController extends GetxController {
         if (usuarioController.usuario.value.fechaVencimiento == null) {
           Get.offNamed('/pago');
         } else {
-          Get.offNamed('/layout');
+          if (usuarioController.usuario.value.vencidoSup! == false) {
+            Get.offNamed('/layout');
+          } else {
+            Get.offNamed('/pago');
+          }
         }
       }
     } catch (e) {

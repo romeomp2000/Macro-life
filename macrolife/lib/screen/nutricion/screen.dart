@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:macrolife/config/api_service.dart';
-import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/models/alimento.model.dart';
 import 'package:macrolife/screen/IngredientesEditar/screen.dart';
 import 'package:macrolife/screen/IngredientesEditarNombre/screen.dart';
@@ -91,6 +90,7 @@ class NutricionScreen extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image.asset(
                                   'assets/icons/icono_inteligencia_artificial_120x120_negro.png',
@@ -100,7 +100,7 @@ class NutricionScreen extends StatelessWidget {
                                 const SizedBox(width: 8),
                                 // Usar Wrap para manejar el texto largo
                                 const Text(
-                                  'Corregir\n resultados',
+                                  'Ajustar',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontSize: 15),
                                   softWrap:

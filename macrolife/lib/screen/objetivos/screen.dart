@@ -6,6 +6,7 @@ import 'package:macrolife/screen/home/controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:macrolife/screen/objetivos/objetivosAuto/screen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'controller.dart';
 
@@ -106,7 +107,6 @@ class ObjetivosScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-
                   Center(
                     child: SizedBox(
                       height: 100,
@@ -186,7 +186,6 @@ class ObjetivosScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 50),
                   CupertinoListTile(
                     // minLeadingWidth: 80,
@@ -350,36 +349,34 @@ class ObjetivosScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // Container(
-                  //   margin: const EdgeInsets.all(10),
-                  //   width: double.infinity,
-                  //   child: ElevatedButton(
-                  //     onPressed: () {},
-                  //     style: ElevatedButton.styleFrom(
-                  //       backgroundColor:
-                  //           Colors.white, // Color de fondo blanco
-                  //       foregroundColor:
-                  //           Colors.black, // Color del texto negro
-                  //       side: const BorderSide(
-                  //           color: Colors.black, width: 1.5), // Borde negro
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(
-                  //             30.0), // Bordes redondeados
-                  //       ),
-                  //       padding: const EdgeInsets.symmetric(
-                  //         vertical: 12.0,
-                  //         horizontal: 24.0,
-                  //       ), // Espaciado interno
-                  //     ),
-                  //     child: const Text(
-                  //       "Generar objetivos automáticamente",
-                  //       style: TextStyle(
-                  //         fontSize: 16.0,
-                  //         fontWeight: FontWeight.bold,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.to(() => ObjetivosAutoScreen());
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        side: const BorderSide(color: Colors.black, width: 1.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12.0,
+                          horizontal: 24.0,
+                        ),
+                      ),
+                      child: const Text(
+                        "Generar objetivos automáticamente",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
