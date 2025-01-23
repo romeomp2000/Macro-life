@@ -7,48 +7,22 @@ import 'package:macrolife/helpers/AplePay.dart';
 import 'package:macrolife/helpers/StripePaymentHandle.dart';
 import 'package:macrolife/helpers/configuraciones.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
-import 'package:macrolife/widgets/button_paypal.dart';
-import 'package:macrolife/widgets/layout.dart';
 import 'package:pay/pay.dart';
-import 'package:video_player/video_player.dart';
 
-class PagoController extends GetxController {
+class PagoVencidoController extends GetxController {
+  RxString sucripcion = 'Anual'.obs;
+  RxDouble anualPrice = 0.0.obs;
   final ConfiguracionesController configuraciones =
       Get.put(ConfiguracionesController());
 
   RxInt paso = 1.obs;
-  final sucripcion = 'Anual'.obs;
   final RxDouble totalAPagar = 0.0.obs;
-
-  VideoPlayerController controllerVideo = VideoPlayerController.asset(
-      'assets/videos/back_animacion_pantalla_03_compra_1125x1660_21012025_grabacion.mp4')
-    ..initialize().then((_) {
-      // controllerVideo.
-    })
-    ..setLooping(true)
-    ..play();
-
-  RxDouble anualPrice = 0.0.obs;
   @override
   void onInit() {
     anualPrice.value =
         configuraciones.configuraciones.value.suscripcion?.anual ?? 0.0;
     totalAPagar.value = anualPrice.value;
     super.onInit();
-  }
-
-  void disminuir() {
-    if (paso.value == 1) {
-      return;
-    }
-    paso.value--;
-  }
-
-  void incrementar() {
-    if (paso.value == 3) {
-      return;
-    }
-    paso.value++;
   }
 
   void pagar() async {

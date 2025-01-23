@@ -64,6 +64,8 @@ abstract class Routes {
 
   static const pago = '/pago';
 
+  static const pagoVencido = '/pago-vencido';
+
   static const objetivosAuto = '/objetivos-auto';
 
   // static const productos_editar = '/productos/editar';

@@ -1,110 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/config/theme.dart';
-// import 'package:get_storage/get_storage.dart';
-import 'package:macrolife/screen/pago/controller.dart';
+import 'package:macrolife/screen/pago_vencido/controller.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
-import 'package:video_player/video_player.dart';
 import 'package:intl/intl.dart';
 
-class PagoVista extends StatelessWidget {
-  const PagoVista({super.key});
+class PagoVencido extends StatelessWidget {
+  const PagoVencido({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(PagoController());
+    final controller = Get.put(PagoVencidoController());
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 30,
-        backgroundColor: const Color.fromARGB(255, 252, 252, 252),
-        leading: Obx(
-          () => controller.paso.value > 1
-              ? Container(
-                  margin: EdgeInsets.only(top: 1, bottom: 1, left: 10),
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.black),
-                    onPressed: () => {controller.disminuir()},
-                  ),
-                )
-              : SizedBox(),
-        ),
       ),
-      extendBody: true,
-      backgroundColor: const Color.fromARGB(255, 252, 252, 252),
       body: Container(
-        height: Get.height,
-        margin: const EdgeInsets.only(
-          left: 20,
-          right: 20,
-        ),
+        margin: const EdgeInsets.only(left: 20, right: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Expanded(
-              child: Obx(
-                () => SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: controller.paso.value == 2
-                        ? MainAxisAlignment.center
-                        : controller.paso.value == 3
-                            ? MainAxisAlignment.start
-                            : MainAxisAlignment.start,
-                    children: [
-                      Obx(
-                        () => Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(
-                              bottom: controller.paso.value == 2 ||
-                                      controller.paso.value == 3
-                                  ? 35
-                                  : 0),
-                          child: Text(
-                            controller.paso.value == 1
-                                ? 'Prueba  Macro Life gratis'
-                                : controller.paso.value == 2
-                                    ? 'Nosotros te recordaremos antes de que tu prueba finalice'
-                                    : controller.sucripcion.value == 'Anual'
-                                        ? 'Comienza tus 3 días de prueba gratis'
-                                        : 'Utiliza Macro Life para alcanzar tus metas',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Obx(
-                        () {
-                          if (controller.paso.value == 1) {
-                            return Container(
-                              color: Colors.white,
-                              height: 520,
-                              // height: Get.height,
-                              child: VideoPlayer(controller.controllerVideo),
-                            );
-                          }
-                          return SizedBox();
-                        },
-                      ),
-                      Obx(() {
-                        if (controller.paso.value == 2) {
-                          return Container(
-                              margin: EdgeInsets.only(top: Get.width * 0.3),
-                              child: paso2(controller));
-                        }
-                        return SizedBox();
-                      }),
-                      Obx(() {
-                        if (controller.paso.value == 3) {
-                          return Center(child: paso3(controller));
-                        }
-                        return SizedBox();
-                      })
-                    ],
+            Obx(
+              () => Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(bottom: 20),
+                child: Text(
+                  controller.sucripcion.value == 'Anual'
+                      ? 'Vuelve a pagar el plan anual para usar Macro Life'
+                      : 'Utiliza Macro Life para alcanzar tus metas',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: paso3(controller),
               ),
             ),
             Container(
@@ -112,96 +46,62 @@ class PagoVista extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Obx(() => controller.paso.value == 3
-                      ? Container(
-                          margin: const EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            spacing: 10,
-                            children: [
-                              Obx(
-                                () => GestureDetector(
-                                  onTap: () {
-                                    controller.sucripcion.value = 'Mensual';
-                                    controller.totalAPagar.value = controller
-                                            .configuraciones
-                                            .configuraciones
-                                            .value
-                                            .suscripcion
-                                            ?.mensual ??
-                                        0.0;
-                                  },
-                                  child: tipoPago(
-                                    precio:
-                                        '\$${(controller.configuraciones.configuraciones.value.suscripcion?.mensual ?? 0).toDouble().toStringAsFixed(2)} /mes',
-                                    tipo: 'Mensual',
-                                    valor: controller.sucripcion.value,
-                                  ),
-                                ),
-                              ),
-                              Obx(
-                                () => GestureDetector(
-                                  onTap: () {
-                                    controller.sucripcion.value = 'Anual';
-                                    // GetStorage box = GetStorage();
-                                    // bool? isPromoActive = box.read('promo');
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      spacing: 10,
+                      children: [
+                        Obx(
+                          () => GestureDetector(
+                            onTap: () {
+                              controller.sucripcion.value = 'Mensual';
+                              controller.totalAPagar.value = controller
+                                      .configuraciones
+                                      .configuraciones
+                                      .value
+                                      .suscripcion
+                                      ?.mensual ??
+                                  0.0;
+                            },
+                            child: tipoPago(
+                              precio:
+                                  '\$${(controller.configuraciones.configuraciones.value.suscripcion?.mensual ?? 0).toDouble().toStringAsFixed(2)} /mes',
+                              tipo: 'Mensual',
+                              valor: controller.sucripcion.value,
+                            ),
+                          ),
+                        ),
+                        Obx(
+                          () => GestureDetector(
+                            onTap: () {
+                              controller.sucripcion.value = 'Anual';
 
-                                    double anualPrice = controller
-                                            .configuraciones
-                                            .configuraciones
-                                            .value
-                                            .suscripcion
-                                            ?.anual ??
-                                        0.0;
+                              double anualPrice = controller
+                                      .configuraciones
+                                      .configuraciones
+                                      .value
+                                      .suscripcion
+                                      ?.anual ??
+                                  0.0;
 
-                                    // if (isPromoActive != null && isPromoActive) {
-                                    //   controller.totalAPagar.value = anualPrice * 0.5;
-                                    // } else {
-                                    controller.totalAPagar.value = anualPrice;
-                                    // }
-                                  },
-                                  child: tipoPago(
-                                      precio:
-                                          '\$${NumberFormat.decimalPattern().format((controller.configuraciones.configuraciones.value.suscripcion?.anual ?? 0 * (controller.configuraciones.configuraciones.value.suscripcion?.descuentoAnual ?? 0)).toDouble())} /año',
-                                      tipo: 'Anual',
-                                      valor: controller.sucripcion.value,
-                                      descuento:
-                                          '${controller.configuraciones.configuraciones.value.suscripcion?.descuentoAnual?.toStringAsFixed(0)}'),
-                                ),
-                              )
-                            ],
+                              controller.totalAPagar.value = anualPrice;
+                            },
+                            child: tipoPago(
+                                precio:
+                                    '\$${NumberFormat.decimalPattern().format((controller.configuraciones.configuraciones.value.suscripcion?.anual ?? 0 * (controller.configuraciones.configuraciones.value.suscripcion?.descuentoAnual ?? 0)).toDouble())} /año',
+                                tipo: 'Anual',
+                                valor: controller.sucripcion.value,
+                                descuento:
+                                    '${controller.configuraciones.configuraciones.value.suscripcion?.descuentoAnual?.toStringAsFixed(0)}'),
                           ),
                         )
-                      : SizedBox()),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: Icon(Icons.done),
-                        ),
-                        Text(
-                          'No hay pagos pendientes',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17),
-                        ),
                       ],
                     ),
                   ),
-                  Obx(
-                    () => buttonTest(
-                        controller.paso.value != 3
-                            ? 'Prueba gratis'
-                            : 'Suscribirse', () {
-                      controller.paso.value != 3
-                          ? controller.incrementar()
-                          : controller.pagar();
-                    }, true),
-                  ),
+                  buttonTest('Suscribirse', () {
+                    controller.pagar();
+                  }, true),
                   Container(
                     margin: EdgeInsets.only(top: 10, bottom: 2),
                     child: Text(
@@ -220,18 +120,7 @@ class PagoVista extends StatelessWidget {
     );
   }
 
-  Widget paso1(PagoController controller) {
-    return VideoPlayer(controller.controllerVideo);
-  }
-
-  Widget paso2(PagoController controller) {
-    return Image.asset(
-      'assets/icons/imagen_campana_380x422_original.png',
-      width: 150,
-    );
-  }
-
-  Widget paso3(PagoController controller) {
+  Widget paso3(PagoVencidoController controller) {
     return Column(
       children: [
         Obx(
@@ -252,9 +141,9 @@ class PagoVista extends StatelessWidget {
                       child: buildTimelineItem(
                           icon: Icons.notifications,
                           iconColor: Colors.orange,
-                          title: 'En 2 días te recordaremos',
+                          title: 'Beneficios por otro año',
                           description:
-                              'Te enviaremos una notificación para recordarte que tu prueba esta proxima a finalizar'),
+                              'Gozaras de todos los beneficios de Macro Life por otro año más.'),
                     ),
                     Container(
                       width: Get.width,
@@ -262,9 +151,9 @@ class PagoVista extends StatelessWidget {
                       child: buildTimelineItem(
                           icon: Icons.check,
                           iconColor: Colors.black,
-                          title: 'En 3 días comienzas a pagar',
+                          title: 'Tu progreso se mantendrá',
                           description:
-                              'En 3 días tu comenzaras a pagar para usar la aplicación puedes cancelar en cualquier momento'),
+                              'Todos tus datos, progresos y más, estarán seguro en nuestros servidores'),
                     ),
                   ],
                 )
