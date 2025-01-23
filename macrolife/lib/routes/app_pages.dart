@@ -12,6 +12,7 @@ import 'package:macrolife/screen/food_database/screen.dart';
 import 'package:macrolife/screen/loader/binding.dart';
 import 'package:macrolife/screen/loader/screen.dart';
 import 'package:macrolife/screen/objetivos/binding.dart';
+import 'package:macrolife/screen/objetivos/objetivosAuto/screen.dart';
 import 'package:macrolife/screen/objetivos/screen.dart';
 import 'package:macrolife/screen/pago/screen.dart';
 import 'package:macrolife/screen/pesas/binding.dart';
@@ -115,6 +116,11 @@ abstract class AppPages {
     GetPage(
       name: Routes.pago,
       page: () => const PagoVista(),
+    ),
+
+    GetPage(
+      name: Routes.objetivosAuto,
+      page: () => const ObjetivosAutoScreen(),
     ),
   ];
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:get/get.dart';
@@ -64,70 +65,74 @@ class WidgetController extends GetxController {
       double? progressFats,
       double? progressPro,
       double? progressCarbs) async {
-    // print('Hola');
-    content.value = 'Calorías\nrestantes';
-    title.value = cal ?? '0';
-    // double progress = calculateProgress(int.parse(cal ?? '0'), limit);
+    try {
+      content.value = 'Calorías\nrestantes';
+      title.value = cal ?? '0';
 
-    String proteinData = protein ?? '0';
-    String fatsData = fats ?? '0';
-    String carbsData = carbs ?? '0';
+      String proteinData = protein ?? '0';
+      String fatsData = fats ?? '0';
+      String carbsData = carbs ?? '0';
 
-    if (int.parse(cal!) < 0) {
-      content.value = 'calorías más';
-      title.value = int.parse(cal).abs().toString();
+      if (int.parse(cal!) < 0) {
+        content.value = 'calorías más';
+        title.value = int.parse(cal).abs().toString();
+      }
+
+      if (int.parse(protein!) < 0) {
+        proteinData = '${int.parse(protein).abs().toString()}g más ';
+      } else {
+        proteinData = '${protein}g';
+      }
+
+      if (int.parse(carbs!) < 0) {
+        carbsData = '${int.parse(carbs).abs().toString()}g más ';
+      } else {
+        carbsData = '${carbs}g';
+      }
+
+      if (int.parse(fats!) < 0) {
+        fatsData = '${int.parse(fats).abs().toString()}g más ';
+      } else {
+        fatsData = '${fats}g';
+      }
+
+      await HomeWidget.saveWidgetData<String>('title', title.value);
+      await HomeWidget.saveWidgetData<String>('content', content.value);
+      await HomeWidget.saveWidgetData<double>('progress', progress);
+
+      await HomeWidget.saveWidgetData<double>('progressCarbs', progressCarbs);
+      await HomeWidget.saveWidgetData<double>('progressProt', progressPro);
+      await HomeWidget.saveWidgetData<double>('progressFats', progressFats);
+
+      await HomeWidget.saveWidgetData<String>('protein', proteinData);
+      await HomeWidget.saveWidgetData<String>('carbs', carbsData);
+      await HomeWidget.saveWidgetData<String>('fats', fatsData);
+
+      await HomeWidget.renderFlutterWidget(
+        image('assets/icons/icono_filetecarne_90x69_nuevo_1.png'),
+        key: 'proLogo',
+        logicalSize: const Size(70, 70),
+      );
+
+      await HomeWidget.renderFlutterWidget(
+        image('assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png'),
+        key: 'carLogo',
+        logicalSize: const Size(70, 70),
+      );
+
+      await HomeWidget.renderFlutterWidget(
+        image('assets/icons/icono_almedraazul_74x70_nuevo_1.png'),
+        key: 'fatLogo',
+        logicalSize: const Size(70, 70),
+      );
+
+      await HomeWidget.updateWidget(
+          name: 'HomeWidgetProvider', iOSName: 'HomeWidget');
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
-
-    if (int.parse(protein!) < 0) {
-      proteinData = '${int.parse(protein).abs().toString()}g más ';
-    } else {
-      proteinData = '${protein}g';
-    }
-
-    if (int.parse(carbs!) < 0) {
-      carbsData = '${int.parse(carbs).abs().toString()}g más ';
-    } else {
-      carbsData = '${carbs}g';
-    }
-
-    if (int.parse(fats!) < 0) {
-      fatsData = '${int.parse(fats).abs().toString()}g más ';
-    } else {
-      fatsData = '${fats}g';
-    }
-
-    await HomeWidget.saveWidgetData<String>('title', title.value);
-    await HomeWidget.saveWidgetData<String>('content', content.value);
-    await HomeWidget.saveWidgetData<double>('progress', progress);
-
-    await HomeWidget.saveWidgetData<double>('progressCarbs', progressCarbs);
-    await HomeWidget.saveWidgetData<double>('progressProt', progressPro);
-    await HomeWidget.saveWidgetData<double>('progressFats', progressFats);
-
-    await HomeWidget.saveWidgetData<String>('protein', proteinData);
-    await HomeWidget.saveWidgetData<String>('carbs', carbsData);
-    await HomeWidget.saveWidgetData<String>('fats', fatsData);
-
-    await HomeWidget.renderFlutterWidget(
-      image('assets/icons/icono_filetecarne_90x69_nuevo_1.png'),
-      key: 'proLogo',
-      logicalSize: const Size(100, 100),
-    );
-
-    await HomeWidget.renderFlutterWidget(
-      image('assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png'),
-      key: 'carLogo',
-      logicalSize: const Size(100, 100),
-    );
-
-    await HomeWidget.renderFlutterWidget(
-      image('assets/icons/icono_almedraazul_74x70_nuevo_1.png'),
-      key: 'fatLogo',
-      logicalSize: const Size(100, 100),
-    );
-
-    await HomeWidget.updateWidget(
-        name: 'HomeWidgetProvider', iOSName: 'HomeWidget');
   }
 
   // double calculateProgress(int caloriasRestantes, int caloriasLimite) {

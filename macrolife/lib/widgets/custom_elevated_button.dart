@@ -71,7 +71,12 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
 }
 
 Widget buttonTest(
-    String message, FutureOr<void> Function()? function, bool isActivo) {
+  String message,
+  FutureOr<void> Function()? function,
+  bool isActivo,
+) {
+  final loadingController = Get.put(LoadingController());
+
   return Container(
     width: Get.width,
     padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -94,26 +99,25 @@ Widget buttonTest(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            message,
-            style: TextStyle(
-              color: isActivo
-                  ? Colors.white
-                  : const Color.fromARGB(255, 193, 193, 193),
-              letterSpacing: 1.0,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
+          Obx(
+            () => loadingController.isLoading.value
+                ? const CircularProgressIndicator.adaptive(
+                    backgroundColor: Colors.white,
+                  )
+                : Text(
+                    message,
+                    style: TextStyle(
+                      color: isActivo
+                          ? Colors.white
+                          : const Color.fromARGB(255, 193, 193, 193),
+                      letterSpacing: 1.0,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10),
-            // child: Image.asset(
-            //   'assets/icons_2/down-arrow.png',
-            //   width: Get.width * 0.1,
-            //   color: isActivo
-            //       ? Colors.white
-            //       : const Color.fromARGB(255, 193, 193, 193),
-            // )
             child: Image.asset(
               'assets/icons/right-arrow.png',
               width: 26,
@@ -121,16 +125,23 @@ Widget buttonTest(
                   ? Colors.white
                   : const Color.fromARGB(255, 193, 193, 193),
             ),
-            // Icon(
-            //   FontAwesomeIcons.arrowRightLong,
-            //   size: 20,
-            //   color: isActivo
-            //       ? Colors.white
-            //       : const Color.fromARGB(255, 193, 193, 193),
-            // ),
           )
         ],
       ),
     ),
   );
+}
+
+class LoadingController extends GetxController {
+  // Inicializa isLoading con false por defecto
+  RxBool isLoading = false.obs;
+
+  // Puedes agregar métodos para cambiar el estado de isLoading si es necesario
+  void startLoading() {
+    isLoading.value = true;
+  }
+
+  void stopLoading() {
+    isLoading.value = false;
+  }
 }

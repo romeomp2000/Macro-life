@@ -5,56 +5,6 @@ import 'package:macrolife/widgets/SinpleRulerPicker.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
 
 Widget paso_5_5(RegistroPasosController controller) {
-  // return SizedBox(
-  //   child: Obx(
-  //     () =>
-  //     Steep(
-  //       enableScroll: true,
-  //       isRuler: true,
-  //       isActivo: true.obs,
-  //       title: '¿Cuál es tu altura?',
-  //       description: null,
-  //       options: [],
-  //       body: Column(
-  //         children: [
-  //           Container(
-  //             width: Get.width,
-  //             margin: EdgeInsets.only(
-  //               top: 10,
-  //             ),
-  //             child: SimpleRulerPicker(
-  //               unitString: 'cm',
-  //               axis: Axis.vertical,
-  //               minValue: 1,
-  //               maxValue: 300,
-  //               initialValue: controller.altura.value,
-  //               onValueChanged: (value) {
-  //                 controller.altura.value = value;
-  //               },
-  //               scaleLabelSize: 16,
-  //               scaleBottomPadding: 10,
-  //               scaleItemWidth: 12,
-  //               longLineHeight: 35,
-  //               shortLineHeight: 14,
-  //               lineColor: Colors.grey,
-  //               selectedColor: Colors.black,
-  //               labelColor: Colors.black,
-  //               lineStroke: 1,
-  //               height: Get.height - 240,
-  //             ),
-  //           ),
-  //           SizedBox(
-  //             height: 200,
-  //           )
-  //         ],
-  //       ),
-  //       onOptionSelected: (gender) {},
-  //       onNext: controller.nextStep,
-  //     ),
-
-  //   ),
-  // );
-
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [

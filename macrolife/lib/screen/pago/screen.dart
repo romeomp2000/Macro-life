@@ -16,6 +16,7 @@ class PagoVista extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 30,
+        backgroundColor: const Color.fromARGB(255, 252, 252, 252),
         leading: Obx(
           () => controller.paso.value > 1
               ? Container(
@@ -79,7 +80,8 @@ class PagoVista extends StatelessWidget {
                           Obx(
                             () {
                               if (controller.paso.value == 1) {
-                                return SizedBox(
+                                return Container(
+                                  color: Colors.amber,
                                   height: 520,
                                   // height: Get.height,
                                   child:

@@ -864,169 +864,169 @@ class EscanearAlimentosController extends GetxController {
   }
 
   void onPressPlus() {
-    if (usuarioController.usuario.value.vencidoSup == false) {
-      Get.toNamed('/suscripcion');
-    } else {
-      Get.dialog(
-        Dialog(
-          elevation: 0,
-          alignment: Alignment.bottomCenter,
-          backgroundColor: Colors.transparent,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                    width: (Get.width / 2) - 50,
-                    height: 140,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        // cols: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(20), // Radio del borde
-                        ),
-                      ),
-                      onPressed: () {
-                        Get.back();
-                        Get.toNamed('/ejercicio');
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Image.asset(
-                            'assets/icons/icono_menu_secundario_90x90_nuevo_registrar_ejercicio.png',
-                            width: 35,
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Registrar ejercicio',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
-                          ),
-                        ],
+    // if (usuarioController.usuario.value.vencidoSup == true) {
+    //   Get.toNamed('/suscripcion');
+    // } else {
+    Get.dialog(
+      Dialog(
+        elevation: 0,
+        alignment: Alignment.bottomCenter,
+        backgroundColor: Colors.transparent,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  width: (Get.width / 2) - 50,
+                  height: 140,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      // cols: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(20), // Radio del borde
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: (Get.width / 2) - 50,
-                    height: 140,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        // cols: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(20), // Radio del borde
+                    onPressed: () {
+                      Get.back();
+                      Get.toNamed('/ejercicio');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Image.asset(
+                          'assets/icons/icono_menu_secundario_90x90_nuevo_registrar_ejercicio.png',
+                          width: 35,
                         ),
-                      ),
-                      onPressed: () => {Get.back(), Get.toNamed('favoritos')},
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Image.asset(
-                            'assets/icons/icono_menu_secundario_90x90_nuevo_alimentos_guardados.png',
-                            width: 35,
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Alimentos guardados',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Registrar ejercicio',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                    width: (Get.width / 2) - 50,
-                    height: 140,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        // cols: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(20), // Radio del borde
-                        ),
-                      ),
-                      onPressed: () {
-                        Get.back();
-                        Get.toNamed('/food_database');
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Image.asset(
-                            'assets/icons/icono_inteligencia_artificial_120x120_negro.png',
-                            width: 35,
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Describe tu comida',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                        ],
+                ),
+                SizedBox(
+                  width: (Get.width / 2) - 50,
+                  height: 140,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      // cols: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(20), // Radio del borde
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: (Get.width / 2) - 50,
-                    height: 140,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                    onPressed: () => {Get.back(), Get.toNamed('favoritos')},
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Image.asset(
+                          'assets/icons/icono_menu_secundario_90x90_nuevo_alimentos_guardados.png',
+                          width: 35,
                         ),
-                      ),
-                      onPressed: () {
-                        escanearAlimentos();
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Image.asset(
-                            'assets/icons/icono_menu_secundario_90x90_nuevo_escanear_alimento.png',
-                            width: 35,
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Escanear alimentos',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Alimentos guardados',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 50)
-            ],
-          ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  width: (Get.width / 2) - 50,
+                  height: 140,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      // cols: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(20), // Radio del borde
+                      ),
+                    ),
+                    onPressed: () {
+                      Get.back();
+                      Get.toNamed('/food_database');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Image.asset(
+                          'assets/icons/icono_inteligencia_artificial_120x120_negro.png',
+                          width: 35,
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Describe tu comida',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: (Get.width / 2) - 50,
+                  height: 140,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    onPressed: () {
+                      escanearAlimentos();
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Image.asset(
+                          'assets/icons/icono_menu_secundario_90x90_nuevo_escanear_alimento.png',
+                          width: 35,
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Escanear alimentos',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 50)
+          ],
         ),
-      );
-    }
+      ),
+    );
+    // }
   }
 }
 
