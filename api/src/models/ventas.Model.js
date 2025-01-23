@@ -21,7 +21,7 @@ const VentasSchema = new Schema({
   },
   metodoPago: { // como fue el pago
     type: String,
-    enum: ['PayPal', 'Stripe', 'Apple Pay', 'Google Play'],
+    enum: ['PayPal', 'Stripe', 'Apple Pay', 'Google Pay', 'Tarjeta de crédito', 'Tarjeta de débito'],
     required: true
   },
   fecha: {

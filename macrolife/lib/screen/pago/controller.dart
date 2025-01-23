@@ -8,7 +8,6 @@ import 'package:macrolife/helpers/StripePaymentHandle.dart';
 import 'package:macrolife/helpers/configuraciones.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/widgets/button_paypal.dart';
-import 'package:macrolife/widgets/layout.dart';
 import 'package:pay/pay.dart';
 import 'package:video_player/video_player.dart';
 
@@ -20,13 +19,13 @@ class PagoController extends GetxController {
   final sucripcion = 'Anual'.obs;
   final RxDouble totalAPagar = 0.0.obs;
 
-  VideoPlayerController controllerVideo = VideoPlayerController.asset(
-      'assets/videos/ScreenRecording_01-21-2025 15-27-40_1.mp4')
-    ..initialize().then((_) {
-      // controllerVideo.
-    })
-    ..setLooping(true)
-    ..play();
+  VideoPlayerController controllerVideo =
+      VideoPlayerController.asset('assets/videos/ScreenRecording.mp4')
+        ..initialize().then((_) {
+          // controllerVideo.
+        })
+        ..setLooping(true)
+        ..play();
 
   RxDouble anualPrice = 0.0.obs;
   @override
@@ -125,42 +124,39 @@ class PagoController extends GetxController {
                           EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                       elevation: 5,
                     ),
-                    onPressed: () async {
-                      final pay = Pay({
-                        PayProvider.apple_pay:
-                            PaymentConfiguration.fromJsonString(defaultApplePay)
-                      });
-
-                      // show it to the user, and get the payload
-                      final payload =
-                          await pay.showPaymentSelector(PayProvider.apple_pay, [
-                        PaymentItem(
-                          type: PaymentItemType.total,
-                          status: PaymentItemStatus.final_price,
-                          amount: totalAPagar.value.toString(),
-                          label: 'MACRO LIFE',
-                        )
-                      ]);
-
-                      // use the payload to get the stripe token
-                      final stripeToken =
-                          await Stripe.instance.createApplePayToken(payload);
-
-                      // send the stripe token id to the server side
-                      final tokenId = stripeToken.id;
-
-                      suscribirseUsuario(
-                        total: totalAPagar.value,
-                        producto: sucripcion.value,
-                        identificador: tokenId,
-                        metodoPago: 'Apple Pay',
-                      );
-                    },
+                    onPressed: applePayment,
                     child: Image.asset(
                       'assets/icons/logo_apple_pay_800x135_original.png',
                       height: 20,
                       width: Get.width,
                     ),
+                  )
+                else
+                  GooglePayButton(
+                    theme: GooglePayButtonTheme.dark,
+                    loadingIndicator: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    width: Get.width,
+                    paymentConfiguration:
+                        PaymentConfiguration.fromJsonString(defaultGooglePay),
+                    paymentItems: [
+                      PaymentItem(
+                        label: 'MACRO LIFE',
+                        amount: totalAPagar.value.toString(),
+                        status: PaymentItemStatus.final_price,
+                      ),
+                    ],
+                    type: GooglePayButtonType.pay,
+                    margin: const EdgeInsets.only(top: 0),
+                    onPaymentResult: (data) {
+                      suscribirseUsuario(
+                        total: totalAPagar.value,
+                        producto: sucripcion.value,
+                        identificador: 'google_pay',
+                        metodoPago: 'Google Pay',
+                      );
+                    },
                   ),
                 const SizedBox(height: 10),
               ],
@@ -169,6 +165,40 @@ class PagoController extends GetxController {
         ],
       ),
     );
+  }
+
+  void applePayment() async {
+    try {
+      final pay = Pay({
+        PayProvider.apple_pay:
+            PaymentConfiguration.fromJsonString(defaultApplePay)
+      });
+
+      // show it to the user, and get the payload
+      final payload = await pay.showPaymentSelector(PayProvider.apple_pay, [
+        PaymentItem(
+          type: PaymentItemType.total,
+          status: PaymentItemStatus.final_price,
+          amount: totalAPagar.value.toString(),
+          label: 'MACRO LIFE',
+        )
+      ]);
+
+      // use the payload to get the stripe token
+      final stripeToken = await Stripe.instance.createApplePayToken(payload);
+
+      // send the stripe token id to the server side
+      final tokenId = stripeToken.id;
+
+      suscribirseUsuario(
+        total: totalAPagar.value,
+        producto: sucripcion.value,
+        identificador: tokenId,
+        metodoPago: 'Apple Pay',
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 
   final UsuarioController usuarioController = Get.find();

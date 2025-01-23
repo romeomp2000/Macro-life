@@ -79,9 +79,9 @@ class PagoVista extends StatelessWidget {
                           Obx(
                             () {
                               if (controller.paso.value == 1) {
-                                return SizedBox(
-                                  height: 520,
-                                  // height: Get.height,
+                                return AspectRatio(
+                                  aspectRatio: controller
+                                      .controllerVideo.value.aspectRatio,
                                   child:
                                       VideoPlayer(controller.controllerVideo),
                                 );
@@ -226,9 +226,9 @@ class PagoVista extends StatelessWidget {
     );
   }
 
-  Widget paso1(PagoController controller) {
-    return VideoPlayer(controller.controllerVideo);
-  }
+  // Widget paso1(PagoController controller) {
+  //   return VideoPlayer(controller.controllerVideo);
+  // }
 
   Widget paso2(PagoController controller) {
     return Image.asset(

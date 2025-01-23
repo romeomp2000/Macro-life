@@ -42,7 +42,7 @@ class ButtonPayPal extends StatelessWidget {
             "item_list": {
               "items": [
                 {
-                  "name": "$producto",
+                  "name": producto,
                   "quantity": 1,
                   "price": precio.toStringAsFixed(2),
                   "currency": "MXN"
@@ -56,7 +56,9 @@ class ButtonPayPal extends StatelessWidget {
         onSuccess: (Map result) {
           onSuccess(result);
         },
-        onError: (dynamic error) {},
+        onError: (dynamic error) {
+          print('Error: $error');
+        },
         onCancel: () {},
       ),
     );

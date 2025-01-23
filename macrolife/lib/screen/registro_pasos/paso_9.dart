@@ -32,7 +32,7 @@ Widget paso_9(RegistroPasosController controller) {
           ),
           ListTileModel(
             check: false,
-            title: 'Mantener la motivación y la constancia',
+            title: '7',
             leading: Image.asset(
               'assets/icons/icono_logros_alimenticios_outline_63x63_6.png',
               height: 25,
