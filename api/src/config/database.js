@@ -6,8 +6,8 @@ mongoose.set('strictQuery', true);
 const connectToMongoDB = async () => {
   try {
     await mongoose.connect('mongodb+srv://psdmacro:yUOOvk835LopGxRc@cluster0.b3xjs.mongodb.net/macrolife_db?retryWrites=true&w=majority&appName=Cluster0', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
       enableUtf8Validation: false

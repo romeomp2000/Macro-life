@@ -8,7 +8,7 @@ const IngredienteModel = require('../models/Ingredientes.Model');
 const EjercicioModel = require('../models/Ejercicio.Model');
 
 const obtenerHistorialUsuario = async (req, res) => {
-  const { idUsuario, fecha } = req.body;
+  const { idUsuario, fecha, isCaloriasQuemadas = true } = req.body;
 
   try {
     // Convertir la fecha a la zona horaria de 'America/Mexico_City'
@@ -30,7 +30,7 @@ const obtenerHistorialUsuario = async (req, res) => {
     // Realizar la búsqueda en la base de datos
     const [alimentos, macronutrientes] = await Promise.all([
       AlimentoModel.find(query).populate('ingredientes').lean().sort({ fecha: -1 }),
-      getNutrientesPorUsuario(idUsuario, todayStart, todayEnd)
+      getNutrientesPorUsuario(idUsuario, todayStart, todayEnd, isCaloriasQuemadas)
     ]);
 
     // Construir los datos para la respuesta con los campos especificados
@@ -114,7 +114,7 @@ const editarPorcionComida = async (req, res) => {
   }
 };
 
-const getNutrientesPorUsuario = async (usuarioId, todayStart, todayEnd) => {
+const getNutrientesPorUsuario = async (usuarioId, todayStart, todayEnd, isCaloriasQuemadas) => {
   try {
     // Obtenemos los resultados de la consulta agregada de los alimentos consumidos
     const resultados = await AlimentoModel.aggregate([
@@ -163,27 +163,38 @@ const getNutrientesPorUsuario = async (usuarioId, todayStart, todayEnd) => {
     const caloriasQuemadas = ejercicios.length
       ? Math.floor(ejercicios[0].totalCaloriasQuemadas)
       : 0;
-    console.log(caloriasQuemadas);
 
     // console.log(Math.floor(resultados[0].totalCalorias), 'calorias totales');
     // console.log(caloriasQuemadas, 'calorias quemada');
     // console.log(((Math.floor(resultados[0].totalCalorias)) - (caloriasQuemadas)), 'resta');
 
     // Verificamos si existen los resultados
+
     if (resultados.length) {
-      // Redondeamos los valores a enteros
+      let totalCalorias = Math.floor(resultados[0].totalCalorias);
+      if (isCaloriasQuemadas === false) {
+        // totalCalorias = totalCalorias;
+      } else {
+        totalCalorias = totalCalorias - caloriasQuemadas;
+      }
       return {
-        totalCalorias: ((Math.floor(resultados[0].totalCalorias)) - (caloriasQuemadas)), // Redondeamos hacia abajo
+        totalCalorias,
         totalProteina: Math.floor(resultados[0].totalProteina),
         totalCarbohidratos: Math.floor(resultados[0].totalCarbohidratos),
         totalGrasas: Math.floor(resultados[0].totalGrasas),
         caloriasQuemadas
       };
     } else {
+      let totalCalorias = 0;
+      if (isCaloriasQuemadas === false) {
+        totalCalorias = 0;
+      } else {
+        totalCalorias = totalCalorias - caloriasQuemadas;
+      }
       return {
         _id: null,
         caloriasQuemadas,
-        totalCalorias: 0,
+        totalCalorias,
         totalProteina: 0,
         totalCarbohidratos: 0,
         totalGrasas: 0
@@ -369,7 +380,6 @@ const reportarComida = async (req, res) => {
       usuario: idUsuario,
       reporte,
       alimento: id
-
     };
 
     const reporteCreado = await ReporteComidaModel.create(reporteNew);

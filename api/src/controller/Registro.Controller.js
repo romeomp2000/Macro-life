@@ -5,6 +5,39 @@ const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 const moment = require('moment-timezone');
 const PesoHistorialModel = require('../models/PesoHistorial.Model');
 
+const prompt = ({ genero, entrenamiento, altura, peso, fechaNacimiento, objetivo, pesoDeseado, dieta, lograr, metaVelocidad }) => {
+  console.log(lograr);
+
+  return `
+      Actúa como un experto en nutrición y entrenamiento físico. Basándote en la siguiente información, calcula los macronutrientes necesarios (calorías, proteínas, carbohidratos, grasas) y otorga una puntuación de salud (del 0 al 10). Considera las metas del usuario, la dieta y el estilo de vida.
+      Teniendo en cuenta que estamos a ${moment()}
+      Quiero que seas muy especifico con el tiempo entre la velocidad del objetivo dependiendo del día actual dependiendo del peos deeado que quiere llegar
+      Información del usuario:
+      - Género: ${genero}
+      - Días de entrenamiento por semana: ${entrenamiento}
+      - Altura: ${altura} cm
+      - Peso actual: ${peso} kg
+      - Fecha de nacimiento: ${fechaNacimiento.toISOString()}
+      - Objetivo: ${objetivo}
+      - Peso deseado: ${pesoDeseado || 'Mantener'} kg tenerlo muy en cuenta
+      - Dieta específica: ${dieta || 'Ninguna'}
+      - Qué le gustaría lograr: ${lograr?.split(',') || ''}
+      - Velocidad para alcanzar la meta: ${metaVelocidad || ''} el min es 0.1 y el max 1.5 si no hay es que quiere manter el peso
+
+      Solo devuelve un objeto JSON con la siguiente estructura, no devuelvas otra cosa:
+      {
+        "macronutrientes": {
+          "calorias": <valor en kcal>,
+          "proteina": <valor en gramos>,
+          "carbohidratos": <valor en gramos>,
+          "grasas": <valor en gramos>
+        },
+        "puntuacionSalud": <valor del 0 al 10>,
+        "fechaMeta": "fecha de posible objetivo completar"
+      }
+    `;
+};
+
 const registroController = async (req, res) => {
   const {
     genero,
@@ -77,44 +110,13 @@ const registroController = async (req, res) => {
 
     const findReferidoPadre = referidoCodigo ? await UsuarioModel.findOne({ codigo: referidoCodigo }) || null : null;
 
-    const prompt = `
-      Actúa como un experto en nutrición y entrenamiento físico. Basándote en la siguiente información, calcula los macronutrientes necesarios (calorías, proteínas, carbohidratos, grasas) y otorga una puntuación de salud (del 0 al 10). Considera las metas del usuario, la dieta y el estilo de vida.
-      Teniendo en cuenta que estamos a ${moment()}
-      Quiero que seas muy especifico con el tiempo entre la velocidad del objetivo dependiendo del día actual dependiendo del peos deeado que quiere llegar
-      Información del usuario:
-      - Género: ${genero}
-      - Días de entrenamiento por semana: ${entrenamiento}
-      - Altura: ${altura} cm
-      - Peso actual: ${peso} kg
-      - Fecha de nacimiento: ${fechaUTC.toString()}
-      - Objetivo: ${objetivo}
-      - Peso deseado: ${pesoDeseado} kg tenerlo muy en cuenta
-      - Dieta específica: ${dieta || 'Ninguna'}
-      - Qué le gustaría lograr: ${lograr?.split(',') || ''}
-      - Velocidad para alcanzar la meta: ${metaVelocidad} el min es 0.1 y el max 1.5 si no hay es que quiere manter el peso
-
-      Solo devuelve un objeto JSON con la siguiente estructura, no devuelvas otra cosa:
-      {
-        "macronutrientes": {
-          "calorias": <valor en kcal>,
-          "proteina": <valor en gramos>,
-          "carbohidratos": <valor en gramos>,
-          "grasas": <valor en gramos>
-        },
-        "puntuacionSalud": <valor del 0 al 10>,
-        "fechaMeta": "fecha de posible objetivo completar"
-      }
-    `;
-
-    console.log(prompt);
-
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
         {
           role: 'user',
           content: [
-            { type: 'text', text: prompt }
+            { type: 'text', text: prompt({ genero, entrenamiento, altura, peso, fechaNacimiento: fechaUTC, objetivo, pesoDeseado, dieta, lograr, metaVelocidad }) }
           ]
         }
       ]
@@ -156,7 +158,7 @@ const registroController = async (req, res) => {
       objetivo,
       pesoObjetivo: pesoDeseado,
       dieta,
-      lograr: lograr?.split(','),
+      logros: lograr?.split(','),
       metaAlcanzar: metaVelocidad,
       // impideAlcanzar: metaImpedimento,
       fechaMeta: jsonResponse?.fechaMeta || null,
@@ -194,6 +196,107 @@ const registroController = async (req, res) => {
   }
 };
 
+const actualizarObejtivos = async (req, res) => {
+  const { idUsuario, entrenamiento, altura, objetivo, peso, pesoDeseado, rapidoMeta } = req.body;
+  try {
+    const usuario = await UsuarioModel.findById(idUsuario);
+
+    console.log(usuario);
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: prompt(
+                {
+                  genero: usuario.genero,
+                  entrenamiento,
+                  altura,
+                  peso,
+                  fechaNacimiento: usuario.fechaNacimiento,
+                  objetivo,
+                  pesoDeseado,
+                  dieta: usuario.dieta,
+                  lograr: usuario?.logros?.join(','),
+                  metaVelocidad: rapidoMeta
+                }
+              )
+
+            }
+          ]
+        }
+      ]
+    });
+
+    // Obtenemos el contenido generado por el modelo
+    const rawResponse = response.choices[0].message.content;
+
+    // Extraemos la parte que corresponde al JSON
+    const jsonStartIndex = rawResponse.indexOf('{');
+    const jsonEndIndex = rawResponse.lastIndexOf('}');
+
+    if (jsonStartIndex === -1 || jsonEndIndex === -1) {
+      return res.status(500).send('No se pudo procesar la imagen correctamente.');
+    }
+
+    const jsonString = rawResponse.slice(jsonStartIndex, jsonEndIndex + 1);
+
+    // Parseamos el JSON
+    const jsonResponse = JSON.parse(jsonString);
+
+    const macronutrientesDiario = {
+      calorias: jsonResponse?.macronutrientes?.calorias || 0,
+      proteina: jsonResponse?.macronutrientes?.proteina || 0,
+      carbohidratos: jsonResponse?.macronutrientes?.carbohidratos || 0,
+      grasas: jsonResponse?.macronutrientes?.grasas || 0
+    };
+
+    const objUsuario = {
+      macronutrientesDiario,
+      puntuacionSalud: jsonResponse?.puntuacionSalud || 0,
+      fechaMeta: jsonResponse?.fechaMeta || null,
+      objetivo,
+      entrenamientoSemanal: entrenamiento,
+      pesoObjetivo: pesoDeseado,
+      metaAlcanzar: rapidoMeta,
+      altura,
+      pesoActual: peso
+    };
+
+    const usuarioActualizado = await UsuarioModel.findByIdAndUpdate(
+      idUsuario,
+      {
+        $set: objUsuario
+      },
+      { new: true }
+    );
+
+    const fecha = moment().tz('America/Mexico_City');
+    // Guardar el peso actual en el historial
+    const nuevoPesoHistorial = new PesoHistorialModel({
+      usuario: usuario._id,
+      peso,
+      fecha
+    });
+
+    nuevoPesoHistorial.save();
+
+    if (!usuarioActualizado) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    return res.status(200).json({ message: 'Objetivos actualizados', usuario: usuarioActualizado });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Ocurrió un error, inténtelo más tarde', error });
+  }
+};
+
 module.exports = {
-  registroController
+  registroController,
+  actualizarObejtivos
 };

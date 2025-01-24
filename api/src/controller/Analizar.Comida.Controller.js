@@ -20,6 +20,7 @@ const prompt = `
     No pongas comentarios ya que se va JSON.parse lo que respondas. DEBE ER UN JSON VALIDO.
     En español siempre responde.
     Debe ser el mimo calorís, proteínas, grasas totales por los ingredientes y porciones.
+    En algunas imagenes aparecen los macronutrientes escritos, si es el caso, por favor inclúyelos en el análisis.
     {
       "nombre": "Nombre del plato global",
       "calorias": Calorías totales,
@@ -51,6 +52,7 @@ const promptMacronutrientes = `
     No pongas comentarios ya que se va JSON.parse lo que respondas.
     En español siempre responde.
     Debe ser el mimo calorís, proteínas, grasas totales por los ingredientes y porciones.
+    En algunas imagenes aparecen los macronutrientes escritos, si es el caso, por favor inclúyelos en el análisis.
     {
       "nombre": "Nombre del plato global",
       "calorias": Calorías totales,
@@ -84,7 +86,7 @@ const promptTexto = (comida) => `
     En español siempre responde.
     Debe ser el mimo calorís, proteínas, grasas totales por los ingredientes y porciones.
     {
-      "nombre": "Nombre del plato global no le pongas el mismo nombre del usuario coloco, mejora la redacción",
+      "nombre": "Nombre del plato global (e.g., hamburguesa, papas)",
       "calorias": Calorías totales,
       "proteina": Proteína total (g),
       "porciones": Debes analizar el alimento y ver cuanta porsión es, ejemeplo 0.5, 1, 3, si vemos 3 huevos, o 3 llemas o 3 galleta
@@ -260,7 +262,7 @@ const rachaPuntosContador = async (idUsuario) => {
 };
 
 const analizarComidaTexto = async (req, res) => {
-  const { usuario, comida, fecha } = req.body;
+  const { usuario, comida, fecha, id } = req.body;
   try {
     rachaPuntosContador(usuario);
 
@@ -307,7 +309,6 @@ const analizarComidaTexto = async (req, res) => {
     const alimento = {
       usuario,
       nombre: jsonResponse?.nombre || '',
-      foto: null,
       porciones: jsonResponse.porciones || 0,
       calorias: jsonResponse.calorias || 0,
       proteina: jsonResponse?.proteina || 0,
@@ -318,7 +319,11 @@ const analizarComidaTexto = async (req, res) => {
       fecha
     };
 
-    await AlimentoModel.create(alimento);
+    if (id) {
+      await AlimentoModel.findByIdAndUpdate(id, alimento);
+    } else {
+      await AlimentoModel.create(alimento);
+    }
 
     // const findUsuario = await UsuarioModel.findById(usuario);
 
