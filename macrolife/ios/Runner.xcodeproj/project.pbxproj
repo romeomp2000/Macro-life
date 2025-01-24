@@ -11,6 +11,7 @@
 		2D3B07252D23339D00A4DB69 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF095AE2D23163600BCBB41 /* WidgetKit.framework */; };
 		2D3B07262D23339D00A4DB69 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF095B02D23163600BCBB41 /* SwiftUI.framework */; };
 		2D3B07352D23339F00A4DB69 /* HomeWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2D3B07242D23339D00A4DB69 /* HomeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2DEE95512D441BD1008EAB4A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DEE95502D441BD1008EAB4A /* StoreKit.framework */; };
 		2DEE9EEA2D2D8C620084D266 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF095AE2D23163600BCBB41 /* WidgetKit.framework */; };
 		2DEE9EEB2D2D8C620084D266 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF095B02D23163600BCBB41 /* SwiftUI.framework */; };
 		2DEE9EFA2D2D8C650084D266 /* LiveWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2DEE9EE92D2D8C610084D266 /* LiveWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -51,6 +52,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		2D9F76DC2D42E3EE00BB355D /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2DF095C32D23163800BCBB41 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -84,6 +95,7 @@
 		1553167A7859808AC6FA41E8 /* Pods-RunnerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.release.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.release.xcconfig"; sourceTree = "<group>"; };
 		2D3B07242D23339D00A4DB69 /* HomeWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HomeWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D3B073B2D23344500A4DB69 /* HomeWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HomeWidgetExtension.entitlements; sourceTree = "<group>"; };
+		2DEE95502D441BD1008EAB4A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		2DEE9EE92D2D8C610084D266 /* LiveWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LiveWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DEE9F002D2D8D690084D266 /* LiveWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LiveWidgetExtension.entitlements; sourceTree = "<group>"; };
 		2DF095AE2D23163600BCBB41 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -183,6 +195,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49B5744A453E248AB7F13FCE /* Pods_Runner.framework in Frameworks */,
+				2DEE95512D441BD1008EAB4A /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +299,7 @@
 		A4FA53F81A14060236BA7261 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2DEE95502D441BD1008EAB4A /* StoreKit.framework */,
 				8D6181B8886FB4FA626D18F8 /* Pods_Runner.framework */,
 				C01DB3A7A25BD27AC5934FAA /* Pods_RunnerTests.framework */,
 				2DF095AE2D23163600BCBB41 /* WidgetKit.framework */,
@@ -376,6 +390,7 @@
 				2DF095C32D23163800BCBB41 /* Embed Foundation Extensions */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				A5367067A04B3B28DD09DAE7 /* [CP] Copy Pods Resources */,
+				2D9F76DC2D42E3EE00BB355D /* Embed Watch Content */,
 			);
 			buildRules = (
 			);

@@ -2,13 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/AplePay.dart';
 import 'package:macrolife/helpers/StripePaymentHandle.dart';
 import 'package:macrolife/helpers/configuraciones.dart';
+import 'package:macrolife/helpers/productos_apple.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
-import 'package:macrolife/widgets/button_paypal.dart';
-import 'package:macrolife/widgets/layout.dart';
+import 'package:macrolife/widgets/custom_elevated_button.dart';
+// import 'package:macrolife/widgets/button_paypal.dart';
+// import 'package:macrolife/widgets/layout.dart';
 import 'package:pay/pay.dart';
 import 'package:video_player/video_player.dart';
 
@@ -21,7 +24,7 @@ class PagoController extends GetxController {
   final RxDouble totalAPagar = 0.0.obs;
 
   VideoPlayerController controllerVideo = VideoPlayerController.asset(
-      'assets/videos/back_animacion_pantalla_03_compra_1125x1660_21012025_grabacion.mp4')
+      'assets/videos/Video_Final_MACROLIFE_24012025_pantalla_entera.mp4')
     ..initialize().then((_) {
       // controllerVideo.
     })
@@ -51,7 +54,39 @@ class PagoController extends GetxController {
     paso.value++;
   }
 
+  Future pruebaGratis() async {
+    try {
+      final controllerButton = Get.put(LoadingController());
+      controllerButton.startLoading();
+      Map<String, dynamic> body = {
+        "idUsuario": usuarioController.usuario.value.sId,
+        "producto": "Anual",
+        "total": 0.0
+      };
+
+      final ApiService apiService = ApiService();
+      await apiService.fetchData(
+        'suscripcion/prueba-gratis',
+        method: Method.POST,
+        body: body,
+      );
+      controllerButton.stopLoading();
+      Get.offNamed('/pago-exitoso');
+
+      usuarioController.usuario.value.vencidoSup = true;
+      usuarioController.usuario.refresh();
+    } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+    }
+  }
+
   void pagar() async {
+    if (sucripcion.value == 'Anual') {
+      await pruebaGratis();
+      return;
+    }
     Get.bottomSheet(
       isDismissible: true, // Permite cerrar al presionar fuera
       enableDrag: true, // Permite deslizar para cerrar
@@ -168,6 +203,12 @@ class PagoController extends GetxController {
                         identificador: tokenId,
                         metodoPago: 'Apple Pay',
                       );
+                      // print('object');
+                      // final bool available =
+                      //     await InAppPurchase.instance.isAvailable();
+                      // if (available) {
+                      //   await getProducts();
+                      // }
                     },
                     child: Image.asset(
                       'assets/icons/logo_apple_pay_800x135_original.png',
@@ -182,6 +223,28 @@ class PagoController extends GetxController {
         ],
       ),
     );
+  }
+
+  Future<void> getProducts() async {
+    try {
+      List<String> idS = ['MLPA2025'];
+
+      final ProductDetailsResponse response =
+          await InAppPurchase.instance.queryProductDetails(idS.toSet());
+
+      if (response.notFoundIDs.isNotEmpty) {
+        print("No se encontró");
+      } else {
+        List<ProductDetails> products = response.productDetails;
+        print(products);
+      }
+      // final InAppPurchaseUtils inAppPurchaseUtils = InAppPurchaseUtils.instance;
+      // Get.put<InAppPurchaseUtils>(inAppPurchaseUtils);
+    } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+    }
   }
 
   final UsuarioController usuarioController = Get.find();
