@@ -232,6 +232,9 @@ PODS:
     - Flutter
   - image_picker_ios (0.0.1):
     - Flutter
+  - in_app_purchase_storekit (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - in_app_review (2.0.0):
     - Flutter
   - live_activities (0.0.1):
@@ -438,6 +441,7 @@ DEPENDENCIES:
   - health (from `.symlinks/plugins/health/ios`)
   - home_widget (from `.symlinks/plugins/home_widget/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - in_app_purchase_storekit (from `.symlinks/plugins/in_app_purchase_storekit/darwin`)
   - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
   - live_activities (from `.symlinks/plugins/live_activities/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -570,6 +574,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/home_widget/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  in_app_purchase_storekit:
+    :path: ".symlinks/plugins/in_app_purchase_storekit/darwin"
   in_app_review:
     :path: ".symlinks/plugins/in_app_review/ios"
   live_activities:
@@ -647,6 +653,7 @@ SPEC CHECKSUMS:
   health: a38a2b7480871e575ef403a8746cb2c08d20f1a4
   home_widget: f169fc41fd807b4d46ab6615dc44d62adbf9f64f
   image_picker_ios: 7fe1ff8e34c1790d6fff70a32484959f563a928a
+  in_app_purchase_storekit: e126ef1b89e4a9fdf07e28f005f82632b4609437
   in_app_review: 5596fe56fab799e8edb3561c03d053363ab13457
   live_activities: f2e133059358f99655c8d181d65ff54f024a6e93
   MLImage: 0ad1c5f50edd027672d8b26b0fee78a8b4a0fc56
@@ -702,6 +709,6 @@ SPEC CHECKSUMS:
   video_player_avfoundation: 2cef49524dd1f16c5300b9cd6efd9611ce03639b
   webview_flutter_wkwebview: 44d4dee7d7056d5ad185d25b38404436d56c547c
 
-PODFILE CHECKSUM: d295a88961101e76aea3d2e3fd77192e2c78ce41
+PODFILE CHECKSUM: f6a3fbdeab2ccda4c0682e7ba22c0a73be403715
 
 COCOAPODS: 1.16.2

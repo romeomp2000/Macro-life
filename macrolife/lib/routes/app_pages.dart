@@ -14,7 +14,9 @@ import 'package:macrolife/screen/loader/screen.dart';
 import 'package:macrolife/screen/objetivos/binding.dart';
 import 'package:macrolife/screen/objetivos/objetivosAuto/screen.dart';
 import 'package:macrolife/screen/objetivos/screen.dart';
+import 'package:macrolife/screen/pago/prueba/screen.dart';
 import 'package:macrolife/screen/pago/screen.dart';
+import 'package:macrolife/screen/pago_vencido/screen.dart';
 import 'package:macrolife/screen/pesas/binding.dart';
 import 'package:macrolife/screen/pesas/screen.dart';
 import 'package:macrolife/screen/registro/registro_binding.dart';
@@ -117,10 +119,18 @@ abstract class AppPages {
       name: Routes.pago,
       page: () => const PagoVista(),
     ),
+    GetPage(
+      name: Routes.pagoVencido,
+      page: () => const PagoVencido(),
+    ),
 
     GetPage(
       name: Routes.objetivosAuto,
       page: () => const ObjetivosAutoScreen(),
+    ),
+    GetPage(
+      name: Routes.pagoExitoso,
+      page: () => const PantallaExito(),
     ),
   ];
 }

@@ -43,15 +43,21 @@ class WidgetController extends GetxController {
             usuarioController.macronutrientes.value.proteinaPorcentaje!;
       }
     }
-    updateHomeWidget(
-        title.value,
-        carbs.value,
-        fats.value,
-        protein.value,
-        caloriasLimite.value,
-        carbsPercent.value,
-        proPercent.value,
-        fatsPercent.value);
+    try {
+      updateHomeWidget(
+          title.value,
+          carbs.value,
+          fats.value,
+          protein.value,
+          caloriasLimite.value,
+          carbsPercent.value,
+          proPercent.value,
+          fatsPercent.value);
+    } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+    }
 
     super.onInit();
   }
@@ -111,19 +117,19 @@ class WidgetController extends GetxController {
       await HomeWidget.renderFlutterWidget(
         image('assets/icons/icono_filetecarne_90x69_nuevo_1.png'),
         key: 'proLogo',
-        logicalSize: const Size(70, 70),
+        logicalSize: const Size(90, 69),
       );
 
       await HomeWidget.renderFlutterWidget(
         image('assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png'),
         key: 'carLogo',
-        logicalSize: const Size(70, 70),
+        logicalSize: const Size(76, 70),
       );
 
       await HomeWidget.renderFlutterWidget(
         image('assets/icons/icono_almedraazul_74x70_nuevo_1.png'),
         key: 'fatLogo',
-        logicalSize: const Size(70, 70),
+        logicalSize: const Size(74, 70),
       );
 
       await HomeWidget.updateWidget(
