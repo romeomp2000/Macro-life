@@ -23,8 +23,8 @@ class BorderCamera extends StatelessWidget {
             left: 0,
             right: 0,
             child: Container(
-              height: (MediaQuery.of(context).size.height - height) /
-                  2, // Espacio de la parte superior
+              height: (MediaQuery.of(context).size.height - height) / 2 -
+                  50, // Espacio de la parte superior
               color: Colors.black.withOpacity(0.4), // Gris con opacidad
             ),
           ),
@@ -36,8 +36,8 @@ class BorderCamera extends StatelessWidget {
             left: 0,
             right: 0,
             child: Container(
-              height: (MediaQuery.of(context).size.height - height) /
-                  2, // Espacio de la parte inferior
+              height: (MediaQuery.of(context).size.height - height) / 2 -
+                  50, // Espacio de la parte inferior
               color: Colors.black.withOpacity(0.4), // Gris con opacidad
             ),
           ),
@@ -45,12 +45,12 @@ class BorderCamera extends StatelessWidget {
         // Parte izquierda con fondo gris y opacidad
         if (isOscure)
           Positioned(
-            top: (MediaQuery.of(context).size.height - height) / 2,
+            top: (MediaQuery.of(context).size.height - height) / 2 - 50,
             left: 0,
             child: Container(
               width: (MediaQuery.of(context).size.width - width) /
                   2, // Espacio de la parte izquierda
-              height: height, // Mantener la altura del centro
+              height: height + 1, // Mantener la altura del centro
               color: Colors.black.withOpacity(0.4), // Gris con opacidad
             ),
           ),
@@ -58,12 +58,12 @@ class BorderCamera extends StatelessWidget {
         // Parte derecha con fondo gris y opacidad
         if (isOscure)
           Positioned(
-            top: (MediaQuery.of(context).size.height - height) / 2,
+            top: (MediaQuery.of(context).size.height - height) / 2 - 50,
             right: 0,
             child: Container(
               width: (MediaQuery.of(context).size.width - width) /
                   2, // Espacio de la parte derecha
-              height: height, // Mantener la altura del centro
+              height: height + 1, // Mantener la altura del centro
               color: Colors.black.withOpacity(0.4), // Gris con opacidad
             ),
           ),
