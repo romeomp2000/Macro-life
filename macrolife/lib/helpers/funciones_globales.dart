@@ -140,12 +140,12 @@ class FuncionesGlobales {
 
     if (image != null) {
       // Redimensiona la imagen si es necesario (opcional)
-      image = img.copyResize(image,
-          width: 800); // Ajusta el ancho y el alto automáticamente
+      image =
+          img.copyResize(image, width: 800); // Ajusta el ancho automáticamente
 
       // Comprime la imagen en formato JPEG y ajusta la calidad
       final compressedBytes =
-          img.encodeJpg(image, quality: 75); // Ajusta la calidad entre 0 y 100
+          img.encodeJpg(image, quality: 85); // Ajusta la calidad a 85
 
       // Crea un archivo temporal con la imagen comprimida
       final compressedImageFile = File('${imageFile.path}_compressed.jpg');

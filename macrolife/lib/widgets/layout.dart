@@ -278,6 +278,7 @@ class EscanearAlimentosController extends GetxController {
 
   Future<void> captureAndProcessImage() async {
     try {
+      final barcodeScanner = BarcodeScanner();
       Get.back();
       controllerAnimatedFood.loading.value = true;
       XFile image = await cameraController!.takePicture();
@@ -289,7 +290,6 @@ class EscanearAlimentosController extends GetxController {
 
       // Procesa la imagen para detectar códigos de barras
       final inputImage = InputImage.fromFilePath(imagenCompress.path);
-      final barcodeScanner = BarcodeScanner();
 
       // Detectar códigos de barras en la imagen
       final List<Barcode> barcodes =

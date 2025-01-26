@@ -4,11 +4,22 @@ import 'package:macrolife/screen/food_database/controller.dart';
 import 'package:macrolife/widgets/custom_text_form_field.dart';
 
 class FoodDatabaseScreen extends StatelessWidget {
-  const FoodDatabaseScreen({super.key});
+  final String? id;
+  final String? image;
+
+  const FoodDatabaseScreen({super.key, this.id, this.image});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(FoodDatabaseController());
+
+    if (id != null) {
+      controller.id.value = id!;
+    }
+
+    if (id != null) {
+      controller.image.value = image!;
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

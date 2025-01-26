@@ -25,6 +25,8 @@ extension DateTimeComparison on DateTime {
 }
 
 class WeeklyCalendarController extends GetxController {
+  final box = GetStorage();
+
   final verAppleHealth = false.obs;
   //? controller helth
   var healthData = <HealthDataPoint>[].obs; // Observar los datos de salud
@@ -33,6 +35,7 @@ class WeeklyCalendarController extends GetxController {
   final widht = 1.0.obs;
   final health = HealthFactory();
   final pasosHoy = 0.0.obs;
+  final RxBool isCaloriasQuemadas = false.obs;
 
   RxInt caloriasQuemadas = 0.obs;
   RxInt levantamientoPesass = 0.obs;
@@ -48,6 +51,14 @@ class WeeklyCalendarController extends GetxController {
     'sábado',
     'domingo'
   ];
+
+  void actualizarCaloriasQuemadas(value) {
+    isCaloriasQuemadas.value = value;
+    box.write('caloriasQuemadasEnable', isCaloriasQuemadas.value);
+    isCaloriasQuemadas.refresh();
+
+    cargaAlimentos();
+  }
 
   Future<void> fetchHealthData() async {
     if (GetPlatform.isAndroid) {
@@ -447,6 +458,13 @@ class WeeklyCalendarController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    bool? caloriasQuemadas = box.read('caloriasQuemadasEnable');
+    if (caloriasQuemadas != null) {
+      isCaloriasQuemadas.value = caloriasQuemadas;
+    } else {
+      isCaloriasQuemadas.value = false;
+      box.write('caloriasQuemadasEnable', isCaloriasQuemadas.value);
+    }
     today.value = DateTime.now();
     cargaAlimentos();
     fetchHealthData();
@@ -544,7 +562,8 @@ class WeeklyCalendarController extends GetxController {
         method: Method.POST,
         body: {
           "fecha": DateFormat('yyyy-MM-dd').format(today.value),
-          "idUsuario": controllerUsuario.usuario.value.sId
+          "idUsuario": controllerUsuario.usuario.value.sId,
+          'isCaloriasQuemadas': isCaloriasQuemadas.value,
         },
       );
 

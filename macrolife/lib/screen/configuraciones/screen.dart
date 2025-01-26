@@ -174,18 +174,24 @@ class ConfiguracionesScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                         const SizedBox(height: 15),
-                        // CupertinoListTile(
-                        //   padding: EdgeInsets.zero,
-                        //   title: const Text('Calorías quemadas'),
-                        //   subtitle:
-                        //       const Text('Agregar calorías quemadas a la meta diario'),
-                        //   trailing: CupertinoSwitch(
-                        //     value: true,
-                        //     activeTrackColor: Colors.black,
-                        //     onChanged: (e) => {},
-                        //   ),
-                        // ),
-                        // const SizedBox(height: 20),
+                        CupertinoListTile(
+                          padding: EdgeInsets.zero,
+                          title: const Text('Calorías quemadas'),
+                          subtitle: const Text(
+                              'Agregar calorías quemadas a la meta diario'),
+                          trailing: Obx(
+                            () => CupertinoSwitch(
+                              value: controller
+                                  .calendarController.isCaloriasQuemadas.value,
+                              activeTrackColor: Colors.black,
+                              onChanged: (e) {
+                                controller.calendarController
+                                    .actualizarCaloriasQuemadas(e);
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
                         CupertinoListTile(
                           padding: EdgeInsets.zero,
                           title: const Text('Actividad en vivo'),
@@ -210,7 +216,6 @@ class ConfiguracionesScreen extends StatelessWidget {
                           color: Colors.grey,
                         ),
                         const SizedBox(height: 20),
-
                         GestureDetector(
                           onTap: () {
                             Get.bottomSheet(widgetMenu(),

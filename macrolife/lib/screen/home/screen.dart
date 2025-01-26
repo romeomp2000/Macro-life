@@ -26,7 +26,8 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  Widget puntuaciones(UsuarioController controllerUsuario) {
+  Widget puntuaciones(UsuarioController controllerUsuario,
+      WeeklyCalendarController controllerCalendario) {
     return Column(
       children: [
         GestureDetector(
@@ -129,7 +130,9 @@ class HomeScreen extends StatelessWidget {
                                   null &&
                               controllerUsuario
                                       .macronutrientes.value.caloriasQuemadas !=
-                                  0)
+                                  0 &&
+                              controllerCalendario.isCaloriasQuemadas.value ==
+                                  true)
                             Container(
                               padding: EdgeInsets.symmetric(
                                   vertical: 3, horizontal: 6),
@@ -319,7 +322,7 @@ class HomeScreen extends StatelessWidget {
                     },
                     controller: PageController(),
                     children: [
-                      puntuaciones(controllerUsuario),
+                      puntuaciones(controllerUsuario, controller),
                       if (GetPlatform.isIOS) HealthDataChart()
                     ],
                   ),

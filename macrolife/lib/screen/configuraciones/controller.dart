@@ -5,13 +5,14 @@ import 'package:get_storage/get_storage.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
+import 'package:macrolife/screen/home/controller.dart';
 import 'package:macrolife/widgets_home_screen/live_activities_controller.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class ConfiguracionesScreController extends GetxController {
   // Variables reactivas
   var appVersion = ''.obs;
-
+  final WeeklyCalendarController calendarController = Get.find();
   TextEditingController nombre = TextEditingController();
   TextEditingController correo = TextEditingController();
   TextEditingController descripcion = TextEditingController();

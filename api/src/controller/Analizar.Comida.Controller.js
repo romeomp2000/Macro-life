@@ -166,7 +166,7 @@ const analizarComida = async (req, res) => {
                 type: 'image_url',
                 image_url: {
                   url: comidaS3.fileUrl,
-                  detail: 'low'
+                  detail: 'high'
                 }
               }
             ]

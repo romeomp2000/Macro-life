@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'dart:math';
+import 'package:camera/camera.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +10,18 @@ import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/alimento.psd.dart';
 import 'package:macrolife/screen/home/controller.dart';
 import 'package:macrolife/widgets/AnimatedFood.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class FoodDatabaseController extends GetxController {
   final describirController = TextEditingController();
   final UsuarioController usuarioController = Get.put(UsuarioController());
   final WeeklyCalendarController controllerCalendario = Get.find();
-  final AnimatedFoodController controllerAnimatedFood = Get.put(AnimatedFoodController(), permanent: true);
+  final AnimatedFoodController controllerAnimatedFood =
+      Get.put(AnimatedFoodController(), permanent: true);
+
+  final RxString id = ''.obs;
+  final RxString image = ''.obs;
 
   List<String> comidas = [
     "Acabo de comer 150g de pechuga de pollo con 100g de ensalada.",
@@ -77,13 +85,16 @@ class FoodDatabaseController extends GetxController {
       final apiService = ApiService();
       String fecha = controllerCalendario.today.value.toIso8601String();
       controllerAnimatedFood.loading.value = true;
+      controllerAnimatedFood.imagen.value = await urlToXFile(image.value);
+
       final response = await apiService.fetchData(
         'analizar-comida/describir',
         method: Method.POST,
         body: {
           "usuario": usuarioController.usuario.value.sId,
           'comida': describirController.text,
-          'fecha': fecha
+          'fecha': fecha,
+          'id': id.value
         },
       );
 
@@ -94,6 +105,33 @@ class FoodDatabaseController extends GetxController {
       print(e);
     } finally {
       controllerAnimatedFood.loading.value = false;
+    }
+  }
+
+  Future<XFile?> urlToXFile(String imageUrl) async {
+    try {
+      // Descargar la imagen desde la URL
+      final response = await http.get(Uri.parse(imageUrl));
+
+      if (response.statusCode == 200) {
+        // Obtener un directorio temporal para almacenar la imagen
+        final tempDir = await getTemporaryDirectory();
+        final filePath = '${tempDir.path}/temp_image.jpg';
+
+        // Guardar la imagen descargada en el sistema de archivos
+        final file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+
+        // Crear un XFile a partir de la imagen guardada
+        return XFile(filePath);
+      } else {
+        print(
+            "Error: No se pudo descargar la imagen. Código ${response.statusCode}");
+        return null;
+      }
+    } catch (e) {
+      print("Error: $e");
+      return null;
     }
   }
 }

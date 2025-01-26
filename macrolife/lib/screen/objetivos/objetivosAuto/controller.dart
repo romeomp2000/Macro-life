@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
+import 'package:macrolife/screen/home/controller.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
 
 class ObjetivosAutoController extends GetxController {
@@ -99,26 +101,42 @@ class ObjetivosAutoController extends GetxController {
   }
 
   Future actualizarDatos() async {
+    final loadingController = Get.put(LoadingController());
+
     try {
-      final loadingController = Get.put(LoadingController());
       Map<String, dynamic> body = {
         "entrenamiento": entrenamiento.value,
         "objetivo": objetivo.value,
-        "pesoDeseadoValue": pesoDeseadoValue.value,
         "pesoDeseado": pesoDeseado.value,
         "rapidoMeta": rapidoMeta.value,
         "altura": altura.value,
         "peso": peso.value,
+        "idUsuario": usuarioController.usuario.value.sId,
       };
+
       loadingController.startLoading();
-      Timer(Duration(seconds: 3), () async {
-        loadingController.stopLoading();
-        Get.back();
-      });
+      final apiService = ApiService();
+
+      final response = await apiService.fetchData(
+        'registro/objetivos',
+        method: Method.POST,
+        body: body,
+      );
+
+      usuarioController.saveUsuarioFromJson(response['usuario']);
+      usuarioController.refresh();
+
+      Get.back();
+      Get.back();
+      final WeeklyCalendarController controllerCalendar = Get.find();
+
+      controllerCalendar.cargaAlimentos();
     } catch (error) {
       if (kDebugMode) {
         print(error);
       }
+    } finally {
+      loadingController.stopLoading();
     }
   }
 }

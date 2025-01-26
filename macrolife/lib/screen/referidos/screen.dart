@@ -78,7 +78,7 @@ class ReferidosScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   Share.share(
-                      '¡Únete a Macro Life! Mi código de referencia es: ${controllerUsuario.usuario.value.codigo} \n https://macrolife.app/app');
+                      '¡Únete a Macro Life! Mi código de referencia es: ${controllerUsuario.usuario.value.codigo} \n https://macrolife.app');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
@@ -120,12 +120,7 @@ class ReferidosScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 5),
                     Text(
-                      "Gana un 5% mensual cada vez que tu amigo adquiera una membresía mensual usando tu código.",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      "Gana un 10% anual si tu amigo adquiere una membresía anual usando tu código.",
+                      "Gana un 5% cada vez que tu amigo adquiera una membresía usando tu código.",
                       style: TextStyle(fontSize: 14),
                     ),
                   ],

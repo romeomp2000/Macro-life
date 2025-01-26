@@ -3,6 +3,7 @@ import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/models/alimento.model.dart';
 import 'package:macrolife/screen/IngredientesEditar/screen.dart';
 import 'package:macrolife/screen/IngredientesEditarNombre/screen.dart';
+import 'package:macrolife/screen/food_database/screen.dart';
 import 'package:macrolife/screen/home/controller.dart';
 import 'package:macrolife/screen/nutricion/controller.dart';
 import 'package:macrolife/widgets/custom_text_form_field.dart';
@@ -78,7 +79,14 @@ class NutricionScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () => Get.back(),
+                          onPressed: () {
+                            Get.to(
+                              () => FoodDatabaseScreen(
+                                id: alimento.id,
+                                image: alimento.imageUrl,
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: Colors.black,
@@ -477,10 +485,10 @@ class NutricionScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                trailing: const Icon(
-                  Icons.edit,
-                  color: Colors.black87,
-                ),
+                // trailing: const Icon(
+                //   Icons.edit,
+                //   color: Colors.black87,
+                // ),
                 leadingSize: 25,
                 leading: Image.asset(
                   'assets/icons/icono_flama_original_54x54_activo.png',
@@ -493,6 +501,7 @@ class NutricionScreen extends StatelessWidget {
               children: [
                 Obx(
                   () => NutritionalInfoRow(
+                    isEditing: false,
                     icon: Image.asset(
                       'assets/icons/icono_filetecarne_90x69_nuevo_1.png',
                       width: 13,
@@ -503,6 +512,7 @@ class NutricionScreen extends StatelessWidget {
                 ),
                 Obx(
                   () => NutritionalInfoRow(
+                    isEditing: false,
                     icon: Image.asset(
                       'assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png',
                       width: 13,
@@ -513,6 +523,7 @@ class NutricionScreen extends StatelessWidget {
                 ),
                 Obx(
                   () => NutritionalInfoRow(
+                    isEditing: false,
                     icon: Image.asset(
                       'assets/icons/icono_almedraazul_74x70_nuevo_1.png',
                       width: 13,
@@ -713,6 +724,7 @@ class NutritionalInfoRow extends StatelessWidget {
   final String value;
   final Widget? icon;
   final bool? eliminado;
+  final bool? isEditing;
 
   const NutritionalInfoRow({
     super.key,
@@ -720,6 +732,7 @@ class NutritionalInfoRow extends StatelessWidget {
     required this.value,
     this.icon,
     this.eliminado,
+    this.isEditing = true,
   });
 
   @override
@@ -796,18 +809,21 @@ class NutritionalInfoRow extends StatelessWidget {
                 ),
                 Row(
                   spacing: 8,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       value,
                       style: const TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.bold),
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    const Icon(
-                      Icons.edit,
-                      size: 12,
-                      color: Colors.black87,
-                    ),
+                    if (isEditing == true)
+                      const Icon(
+                        Icons.edit,
+                        size: 12,
+                        color: Colors.black87,
+                      ),
                   ],
                 ),
               ],
