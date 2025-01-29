@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter_slidable_plus_plus/flutter_slidable_plus_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:macrolife/config/theme.dart';
-import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/Entrenamiento.dart';
 import 'package:macrolife/models/alimento.model.dart';
@@ -11,7 +10,7 @@ import 'package:macrolife/screen/correr/screen.dart';
 import 'package:macrolife/screen/ejercicio_describir/controller.dart';
 import 'package:macrolife/screen/ejercicio_describir/screen.dart';
 import 'package:macrolife/screen/home/controller.dart';
-import 'package:macrolife/screen/nutricion/controller.dart';
+import 'package:macrolife/screen/home/widgetsHome.dart';
 import 'package:macrolife/screen/nutricion/screen.dart';
 import 'package:macrolife/screen/pesas/controller.dart';
 import 'package:macrolife/screen/pesas/screen.dart';
@@ -21,7 +20,6 @@ import 'package:macrolife/widgets/NutrientIndicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -47,133 +45,109 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             width: Get.width,
-            height: 150,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-              child: Stack(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Obx(
-                            () => Text(
-                              controllerUsuario.macronutrientes.value
-                                              .caloriasRestantes !=
-                                          null &&
-                                      controllerUsuario.macronutrientes.value
-                                              .caloriasRestantes! <
-                                          0
-                                  ? '${controllerUsuario.macronutrientes.value.caloriasRestantes!.abs()}'
-                                  : '${controllerUsuario.macronutrientes.value.caloriasRestantes ?? 0}',
-                              style: const TextStyle(
-                                fontSize: 36,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Obx(
-                            () => Text(
-                              controllerUsuario.macronutrientes.value
-                                              .caloriasRestantes !=
-                                          null &&
-                                      controllerUsuario.macronutrientes.value
-                                              .caloriasRestantes! <
-                                          0
-                                  ? 'Calorías más'
-                                  : 'Calorías\nrestantes',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.black,
-                                // fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 100,
-                        child: Obx(
-                          () => CircularPercentIndicator(
-                            radius: 55.0,
-                            lineWidth: 8.0,
-                            percent: ((controllerUsuario.macronutrientes.value
-                                        .caloriasPorcentaje ??
-                                    0)
-                                .toDouble()),
-                            center: Image.asset(
-                              'assets/icons/icono_flama_original_54x54_activo.png',
-                              width: 25,
-                            ),
-                            progressColor: Colors.black,
-                            backgroundColor: Colors.black12,
-                          ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Spacer(),
+                    Obx(
+                      () => Text(
+                        controllerUsuario.macronutrientes.value
+                                        .caloriasRestantes !=
+                                    null &&
+                                controllerUsuario.macronutrientes.value
+                                        .caloriasRestantes! <
+                                    0
+                            ? '${controllerUsuario.macronutrientes.value.caloriasRestantes!.abs()}'
+                            : '${controllerUsuario.macronutrientes.value.caloriasRestantes ?? 0}',
+                        style: const TextStyle(
+                          fontSize: 36,
+                          color: blackTheme_,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ],
-                  ),
-                  Positioned(
-                    left: 0,
-                    right: 50,
-                    bottom: 0,
-                    top: 50,
-                    child: Obx(
-                      () => Column(
-                        spacing: 0,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          if (controllerUsuario
-                                      .macronutrientes.value.caloriasQuemadas !=
-                                  null &&
-                              controllerUsuario
-                                      .macronutrientes.value.caloriasQuemadas !=
-                                  0 &&
-                              controllerCalendario.isCaloriasQuemadas.value ==
-                                  true)
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 3, horizontal: 6),
-                              decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.05),
-                                border: Border.all(
-                                  color: Colors.transparent,
-                                  width: 0.5,
+                    ),
+                    Expanded(
+                      child: Obx(
+                        () => Column(
+                          children: [
+                            if (controllerUsuario.macronutrientes.value
+                                        .caloriasQuemadas !=
+                                    null &&
+                                controllerUsuario.macronutrientes.value
+                                        .caloriasQuemadas !=
+                                    0 &&
+                                controllerCalendario.isCaloriasQuemadas.value ==
+                                    true)
+                              Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 3, horizontal: 6),
+                                decoration: BoxDecoration(
+                                  color: greyTheme_,
+                                  borderRadius: BorderRadius.circular(30),
                                 ),
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              width: (controllerUsuario.macronutrientes.value
-                                              .caloriasQuemadas ??
-                                          0) >
-                                      1000
-                                  ? 76
-                                  : 72,
-                              child: Row(
-                                spacing: 5,
-                                children: [
-                                  Image.asset(
-                                    'assets/icons/icono_cajon_ejercicio_88x88_registrar.png',
-                                    width: 12,
-                                  ),
-                                  Text(
-                                    '+${controllerUsuario.macronutrientes.value.caloriasQuemadas}',
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
+                                width: (controllerUsuario.macronutrientes.value
+                                                .caloriasQuemadas ??
+                                            0) >
+                                        1000
+                                    ? 76
+                                    : 72,
+                                child: Row(
+                                  spacing: 5,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/icons/icono_cajon_ejercicio_88x88_registrar.png',
+                                      width: 12,
+                                      color: blackTheme_,
                                     ),
-                                  ),
-                                ],
+                                    Text(
+                                      '+${controllerUsuario.macronutrientes.value.caloriasQuemadas}',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: blackThemeText,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
+                  ],
+                ),
+                Obx(
+                  () => Text(
+                    controllerUsuario.macronutrientes.value.caloriasRestantes !=
+                                null &&
+                            controllerUsuario
+                                    .macronutrientes.value.caloriasRestantes! <
+                                0
+                        ? 'Calorías más'
+                        : 'Calorías restantes',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: blackThemeText,
+                      // fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: Obx(
+                    () => caloriasHome(
+                      (controllerUsuario
+                                  .macronutrientes.value.caloriasPorcentaje ??
+                              0)
+                          .toDouble(),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -254,20 +228,14 @@ class HomeScreen extends StatelessWidget {
         Get.put(WeeklyCalendarController(), permanent: true);
 
     return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-              'assets/images/background_1125x2436_uno.jpg'), // Ruta de la imagen
-          fit: BoxFit.cover, // Ajusta cómo se muestra la imagen
-        ),
-      ),
+      decoration: BoxDecoration(color: backGround),
       child: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
             child: Column(
-              spacing: 5,
               crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 5,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -310,7 +278,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 calendario(),
                 SizedBox(
-                  height: 318,
+                  height: 372,
                   child: PageView(
                     onPageChanged: (value) {
                       if (value == 0) {
@@ -336,7 +304,8 @@ class HomeScreen extends StatelessWidget {
                             if (controller.verAppleHealth.value == false)
                               Icon(Icons.circle, size: 10)
                             else
-                              Icon(Icons.circle_outlined, size: 10),
+                              Icon(Icons.circle_outlined,
+                                  color: blackTheme_, size: 10),
                             if (controller.verAppleHealth.value == true)
                               Icon(Icons.circle, size: 10)
                             else
@@ -345,15 +314,17 @@ class HomeScreen extends StatelessWidget {
                         ),
                       )
                     : SizedBox.shrink(),
-
-                SizedBox(
-                  height: 18,
-                ),
-                Text(
-                  'Registros recientes',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                Container(
+                  // margin: EdgeInsets.only(top: 10, bottom: 10),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Registros recientes',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 19,
+                      color: blackTheme_,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 Obx(
@@ -365,7 +336,7 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             Center(
                               child: Container(
-                                margin: const EdgeInsets.only(top: 20),
+                                margin: const EdgeInsets.only(top: 5),
                                 width: Get.width,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20.0, vertical: 15.0),
@@ -382,6 +353,7 @@ class HomeScreen extends StatelessWidget {
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16.0,
+                                        color: blackTheme_,
                                       ),
                                     ),
                                     SizedBox(
@@ -391,7 +363,7 @@ class HomeScreen extends StatelessWidget {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontSize: 15.0,
-                                          color: Colors.black87,
+                                          color: blackThemeText,
                                         ),
                                       ),
                                     ),
@@ -400,11 +372,12 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                             Positioned(
-                              right: 70,
-                              bottom: -25,
+                              right: (Get.width / 2) - 20,
+                              bottom: -30,
                               child: Image.asset(
                                 'assets/icons/flecha_comida_113x149_negro.png',
                                 width: 30,
+                                color: blackTheme_,
                               ),
                             ),
                           ],
@@ -412,17 +385,6 @@ class HomeScreen extends StatelessWidget {
                       : SizedBox.shrink(),
                 ),
                 AnimatedFood(),
-                // Obx(() {
-                //   if (controller.loaderAnimated.value == true) {
-                //     return AnimatedFood(
-                //       imagen: controller.imagenLoader.value,
-                //     );
-                //   }
-                //   return SizedBox(
-                //     height: controller.loaderAnimated.value == true ? 1 : 2,
-                //   );
-                // }),
-
                 Obx(() {
                   return SingleChildScrollView(
                     // scrollDirection: Axis.horizontal,
@@ -437,7 +399,6 @@ class HomeScreen extends StatelessWidget {
                   );
                 }),
                 const SizedBox(height: 10),
-
                 Obx(() {
                   return SingleChildScrollView(
                     child: Column(
@@ -450,88 +411,6 @@ class HomeScreen extends StatelessWidget {
                   );
                 }),
                 const SizedBox(height: 50),
-
-                // Container(
-                //   padding: EdgeInsets.symmetric(vertical: 10),
-                //   decoration: BoxDecoration(
-                //       color: Colors.grey[200],
-                //       borderRadius: BorderRadius.circular(10)),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //     children: [
-                //       Image.asset(
-                //         'assets/icons/icono_registrar_ejercicio_solido_180x180_correr.png',
-                //         width: 40,
-                //       ),
-                //       Column(
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: [
-                //           Text('Levantamiento de pesas'),
-                //           const SizedBox(height: 15),
-                //           Row(
-                //             crossAxisAlignment: CrossAxisAlignment.center,
-                //             children: [
-                //               Image.asset(
-                //                 'assets/icons/icono_calorias_negro_99x117_nuevo.png',
-                //                 width: 15,
-                //               ),
-                //               const SizedBox(width: 8),
-                //               Text(
-                //                 '487 Calorías',
-                //                 style: TextStyle(fontWeight: FontWeight.bold),
-                //               ),
-                //             ],
-                //           ),
-                //           const SizedBox(height: 15),
-                //           Row(
-                //             crossAxisAlignment: CrossAxisAlignment.center,
-                //             children: [
-                //               Image.asset(
-                //                 'assets/icons/icono_intensidad_negro_38x24_nuevo.png',
-                //                 width: 15,
-                //               ),
-                //               const SizedBox(width: 8),
-                //               Text('Intensidad: Ligero'),
-                //             ],
-                //           )
-                //         ],
-                //       ),
-                //       Column(
-                //         mainAxisAlignment: MainAxisAlignment.end,
-                //         crossAxisAlignment: CrossAxisAlignment.end,
-                //         children: [
-                //           Container(
-                //             padding: EdgeInsets.all(5),
-                //             decoration: BoxDecoration(
-                //               color: Colors.white,
-                //               borderRadius: BorderRadius.circular(10),
-                //             ),
-                //             child: Text(
-                //               '8:24 a.m.',
-                //               style: TextStyle(fontSize: 10),
-                //             ),
-                //           ),
-                //           const SizedBox(height: 50),
-                //           Container(
-                //             padding: EdgeInsets.all(5),
-                //             child: Row(
-                //               children: [
-                //                 Image.asset(
-                //                     'assets/icons/icono_cronometro_negro_34x38_nuevo.png',
-                //                     width: 15),
-                //                 SizedBox(width: 8),
-                //                 Text(
-                //                   '90 min.',
-                //                   style: TextStyle(fontSize: 10),
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -544,8 +423,8 @@ class HomeScreen extends StatelessWidget {
     final WeeklyCalendarController controller = Get.find();
 
     return Container(
-      margin: EdgeInsets.only(top: 10),
-      height: 80,
+      margin: EdgeInsets.only(top: 7),
+      height: 70,
       child: PageView.builder(
         controller: controller.pageController,
         reverse: true,
@@ -576,10 +455,10 @@ class HomeScreen extends StatelessWidget {
                         Container(
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: isSelected ? Colors.black : Colors.black26,
+                              color: isSelected ? blackTheme_ : blackThemeText,
                             ),
                             borderRadius: BorderRadius.circular(10),
-                            color: isSelected ? Colors.black : Colors.white54,
+                            color: isSelected ? blackTheme_ : whiteTheme_,
                           ),
                           child: Container(
                             width: 35,
@@ -592,7 +471,7 @@ class HomeScreen extends StatelessWidget {
                                   .toUpperCase(),
                               style: TextStyle(
                                 color:
-                                    isSelected ? Colors.white : Colors.black54,
+                                    isSelected ? Colors.white : blackThemeText,
                                 fontWeight: isSelected
                                     ? FontWeight.bold
                                     : FontWeight.normal,
@@ -605,7 +484,7 @@ class HomeScreen extends StatelessWidget {
                         Text(
                           day.day.toString(),
                           style: TextStyle(
-                            color: isSelected ? Colors.black : Colors.black54,
+                            color: isSelected ? blackTheme_ : blackThemeText,
                             fontWeight: isSelected
                                 ? FontWeight.bold
                                 : FontWeight.normal,
@@ -626,204 +505,6 @@ class HomeScreen extends StatelessWidget {
 
 class SalesData {
   SalesData(DateTime dateTime, String s, double d, int i, int j, int k, int l);
-}
-
-class NutritionWidget extends StatelessWidget {
-  final AlimentoModel nutritionInfo;
-
-  // Constructor con un solo parámetro
-  const NutritionWidget({super.key, required this.nutritionInfo});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Get.to(() => NutricionScreen(alimento: nutritionInfo));
-      },
-      child: Slidable(
-        key: const ValueKey(0),
-        endActionPane: ActionPane(
-          extentRatio: 0.29,
-          motion: ScrollMotion(),
-          children: [
-            SlidableAction(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(16),
-                bottomRight: Radius.circular(16),
-              ),
-              onPressed: (context) {
-                final NutricionController controller =
-                    Get.put((NutricionController()));
-                controller.alimento.value = nutritionInfo;
-                controller.deleteAlimento();
-              },
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
-              icon: Icon(
-                Icons.delete,
-                color: Colors.white,
-              ),
-              label: 'Eliminar',
-            ),
-          ],
-        ),
-        child: Container(
-          height: 120,
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(16.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.08),
-                blurRadius: 4.0,
-                offset: Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Stack(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (nutritionInfo.imageUrl != null)
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        bottomRight: Radius.circular(16.0),
-                        topRight: Radius.circular(16.0),
-                        topLeft: Radius.circular(16.0),
-                        bottomLeft: Radius.circular(16.0),
-                      ),
-                      child: CachedNetworkImage(
-                        imageUrl: '${nutritionInfo.imageUrl}',
-                        width: 120,
-                        height: 120,
-                        fit: BoxFit
-                            .fitWidth, // Ajusta la imagen al ancho sin distorsionar
-                        alignment: Alignment.center,
-                        progressIndicatorBuilder: (context, url, progress) =>
-                            CircularProgressIndicator.adaptive(),
-                        errorWidget: (context, url, error) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: 5,
-                            children: [
-                              Icon(
-                                Icons.error,
-                                color: Colors.red,
-                              ),
-                              Text(
-                                'Error al cargar la imagen',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 11.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ), // Widget de error
-                      ),
-                    ),
-                  SizedBox(
-                    height: 200,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        spacing: 10,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox.shrink(),
-                          SizedBox(
-                            width: Get.width - 233,
-                            child: Text(
-                              FuncionesGlobales.capitalize(
-                                  nutritionInfo.name ?? ''),
-                              style: const TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              overflow: TextOverflow
-                                  .ellipsis, // Muestra tres puntos cuando el texto no cabe
-                              maxLines: 1, // Limita a una línea
-                            ),
-                          ),
-                          Row(
-                            spacing: 8,
-                            children: [
-                              Image.asset(
-                                'assets/icons/icono_flama_original_54x54_activo.png',
-                                width: 15,
-                                height: 15,
-                              ),
-                              Text(
-                                '${nutritionInfo.calories} calorías',
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            spacing: 12,
-                            children: [
-                              _buildNutritionItem(
-                                'assets/icons/icono_filetecarne_90x69_nuevo_1.png',
-                                '${nutritionInfo.protein}g', // Usamos el parámetro de proteínas
-                              ),
-                              _buildNutritionItem(
-                                'assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png',
-                                '${nutritionInfo.carbs}g', // Usamos el parámetro de carbohidratos
-                              ),
-                              _buildNutritionItem(
-                                'assets/icons/icono_almedraazul_74x70_nuevo_1.png',
-                                '${nutritionInfo.fats}g', // Usamos el parámetro de grasas
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Positioned(
-                top: 10,
-                right: 0,
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  margin: EdgeInsets.only(top: 10, right: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                  ),
-                  child: Text(
-                    '${nutritionInfo.time}',
-                    style: TextStyle(fontSize: 10),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNutritionItem(String iconUrl, String value) {
-    return Row(
-      spacing: 8,
-      children: [
-        Image.asset(
-          iconUrl,
-          width: 15,
-          height: 15,
-        ),
-        Text(value, style: TextStyle(fontSize: 13)),
-      ],
-    );
-  }
 }
 
 class AjercicioWidget extends StatelessWidget {
@@ -1024,7 +705,7 @@ class EjercicioWidget extends StatelessWidget {
                   return;
                 }
               },
-              backgroundColor: Colors.black,
+              backgroundColor: blackTheme_,
               foregroundColor: Colors.white,
               icon: Icon(
                 Icons.delete,
@@ -1037,9 +718,15 @@ class EjercicioWidget extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(10),
-          ),
+              color: whiteTheme_,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 4.0,
+                  offset: Offset(1, 1),
+                ),
+              ]),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -1054,19 +741,24 @@ class EjercicioWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('${entrenamiento.nombre}'),
+                  Text(
+                    '${entrenamiento.nombre}',
+                    style: TextStyle(color: blackTheme_),
+                  ),
                   const SizedBox(height: 15),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
                         'assets/icons/icono_calorias_negro_99x117_nuevo.png',
+                        color: blackTheme_,
                         width: 15,
                       ),
                       const SizedBox(width: 8),
                       Text(
                         '${entrenamiento.calorias} Calorías',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: blackTheme_),
                       ),
                     ],
                   ),
@@ -1077,9 +769,13 @@ class EjercicioWidget extends StatelessWidget {
                       Image.asset(
                         'assets/icons/icono_intensidad_negro_38x24_nuevo.png',
                         width: 15,
+                        color: blackTheme_,
                       ),
                       const SizedBox(width: 8),
-                      Text('Intensidad: ${entrenamiento.intensidad}'),
+                      Text(
+                        'Intensidad: ${entrenamiento.intensidad}',
+                        style: TextStyle(color: blackTheme_),
+                      ),
                     ],
                   )
                 ],
@@ -1089,14 +785,19 @@ class EjercicioWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
+                    width: 70,
                     padding: EdgeInsets.all(5),
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: greyTheme_,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
                       '${entrenamiento.time}.',
-                      style: TextStyle(fontSize: 10),
+                      style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          color: blackThemeText),
                     ),
                   ),
                   const SizedBox(height: 50),
@@ -1106,11 +807,12 @@ class EjercicioWidget extends StatelessWidget {
                       children: [
                         Image.asset(
                             'assets/icons/icono_cronometro_negro_34x38_nuevo.png',
+                            color: blackTheme_,
                             width: 15),
                         SizedBox(width: 8),
                         Text(
                           '${entrenamiento.tiempo} min.',
-                          style: TextStyle(fontSize: 10),
+                          style: TextStyle(fontSize: 10, color: blackTheme_),
                         ),
                       ],
                     ),

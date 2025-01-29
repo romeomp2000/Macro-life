@@ -20,11 +20,12 @@ class ConfiguracionesScreen extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-              'assets/images/background_1125x2436_uno.jpg'), // Ruta de la imagen
-          fit: BoxFit.cover, // Ajusta cómo se muestra la imagen
-        ),
+        // image: DecorationImage(
+        //   image: AssetImage(
+        //       'assets/images/background_1125x2436_uno.jpg'), // Ruta de la imagen
+        //   fit: BoxFit.cover, // Ajusta cómo se muestra la imagen
+        // ),
+        color: backGround,
       ),
       child: SafeArea(
         child: SingleChildScrollView(
@@ -38,34 +39,53 @@ class ConfiguracionesScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
+                  color: blackTheme_,
                 ),
               ),
               const SizedBox(height: 8),
               CupertinoListTile(
                 padding: EdgeInsets.zero,
-                title: const Text('Edad'),
+                title: const Text(
+                  'Edad',
+                  style: TextStyle(color: blackTheme_),
+                ),
                 trailing: Text(
                   '${controllerUsuario.usuario.value.edad}',
                   style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 15),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: blackTheme_,
+                  ),
                 ),
               ),
               CupertinoListTile(
                 padding: EdgeInsets.zero,
-                title: const Text('Altura'),
+                title: const Text(
+                  'Altura',
+                  style: TextStyle(color: blackTheme_),
+                ),
                 trailing: Text(
                   '${controllerUsuario.usuario.value.altura} cm',
                   style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 15),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: blackTheme_,
+                  ),
                 ),
               ),
               CupertinoListTile(
                 padding: EdgeInsets.zero,
-                title: const Text('Peso actual'),
+                title: const Text(
+                  'Peso actual',
+                  style: TextStyle(color: blackTheme_),
+                ),
                 trailing: Text(
                   '${controllerUsuario.usuario.value.pesoActual} Kg',
                   style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 15),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: blackTheme_,
+                  ),
                 ),
               ),
               const SizedBox(height: 15),
@@ -100,7 +120,7 @@ class ConfiguracionesScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Colors.black87,
+                            color: blackTheme_,
                           ),
                         ),
                       ],
@@ -110,7 +130,7 @@ class ConfiguracionesScreen extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        color: blackTheme_,
                       ),
                     ),
                     CustomElevatedButton(
@@ -130,7 +150,10 @@ class ConfiguracionesScreen extends StatelessWidget {
               const SizedBox(height: 15),
               const Text(
                 'Personalización',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: blackTheme_),
               ),
               const SizedBox(height: 15),
               CupertinoListTile(
@@ -138,7 +161,10 @@ class ConfiguracionesScreen extends StatelessWidget {
                   Get.to(() => DatallesPersonalesScreen());
                 },
                 padding: EdgeInsets.zero,
-                title: Text('Detalles personales'),
+                title: Text(
+                  'Detalles personales',
+                  style: TextStyle(color: blackTheme_),
+                ),
                 trailing: Icon(
                   Icons.arrow_forward_ios_outlined,
                   color: Colors.black26,
@@ -149,9 +175,14 @@ class ConfiguracionesScreen extends StatelessWidget {
               CupertinoListTile(
                 padding: EdgeInsets.zero,
                 onTap: () => Get.toNamed('/objetivos'),
-                title: const Text('Ajustar objetivos'),
-                subtitle:
-                    const Text('Calorías, carbohidratos, grasas y proteínas'),
+                title: const Text(
+                  'Ajustar objetivos',
+                  style: TextStyle(color: blackTheme_),
+                ),
+                subtitle: const Text(
+                  'Calorías, carbohidratos, grasas y proteínas',
+                  style: TextStyle(color: blackThemeText),
+                ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios_outlined,
                   color: Colors.black26,
@@ -171,19 +202,26 @@ class ConfiguracionesScreen extends StatelessWidget {
                         const Text(
                           'Preferencias',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: blackTheme_),
                         ),
                         const SizedBox(height: 15),
                         CupertinoListTile(
                           padding: EdgeInsets.zero,
-                          title: const Text('Calorías quemadas'),
+                          title: const Text(
+                            'Calorías quemadas',
+                            style: TextStyle(color: blackTheme_),
+                          ),
                           subtitle: const Text(
-                              'Agregar calorías quemadas a la meta diario'),
+                            'Agregar calorías quemadas a la meta diario',
+                            style: TextStyle(color: blackThemeText),
+                          ),
                           trailing: Obx(
                             () => CupertinoSwitch(
                               value: controller
                                   .calendarController.isCaloriasQuemadas.value,
-                              activeTrackColor: Colors.black,
+                              activeTrackColor: blackTheme_,
                               onChanged: (e) {
                                 controller.calendarController
                                     .actualizarCaloriasQuemadas(e);
@@ -194,15 +232,19 @@ class ConfiguracionesScreen extends StatelessWidget {
                         const SizedBox(height: 20),
                         CupertinoListTile(
                           padding: EdgeInsets.zero,
-                          title: const Text('Actividad en vivo'),
+                          title: const Text(
+                            'Actividad en vivo',
+                            style: TextStyle(color: blackTheme_),
+                          ),
                           subtitle: const Text(
                             'Te muestra las calorías y macros diarias en la pantalla de bloqueo y en la dinámica.',
+                            style: TextStyle(color: blackThemeText),
                             maxLines: 2,
                           ),
                           trailing: Obx(
                             () => CupertinoSwitch(
                               value: controller.actividadLive.value,
-                              activeTrackColor: Colors.black,
+                              activeTrackColor: blackTheme_,
                               onChanged: (e) => {
                                 controller.actividadLive.toggle(),
                                 controller.crear(e),
@@ -233,11 +275,14 @@ class ConfiguracionesScreen extends StatelessWidget {
                                   Text(
                                     'Widgets',
                                     style: TextStyle(
-                                        color: Colors.black,
+                                        color: blackTheme_,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18),
                                   ),
-                                  Text('¿Cómo agregar?'),
+                                  Text(
+                                    '¿Cómo agregar?',
+                                    style: TextStyle(color: blackTheme_),
+                                  ),
                                 ],
                               ),
                               Container(
@@ -255,7 +300,10 @@ class ConfiguracionesScreen extends StatelessWidget {
 
               const Text(
                 'Legal',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: blackTheme_),
               ),
               const SizedBox(height: 15),
               CupertinoListTile(
@@ -263,7 +311,10 @@ class ConfiguracionesScreen extends StatelessWidget {
                     Uri.parse('https://macrolife.app/terminos-y-condiciones/'),
                     mode: LaunchMode.externalApplication),
                 padding: EdgeInsets.zero,
-                title: const Text('Términos y condiciones'),
+                title: const Text(
+                  'Términos y condiciones',
+                  style: TextStyle(color: blackTheme_),
+                ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios_outlined,
                   color: Colors.black26,
@@ -276,7 +327,10 @@ class ConfiguracionesScreen extends StatelessWidget {
                     Uri.parse('https://macrolife.app/aviso-de-privacidad/'),
                     mode: LaunchMode.externalApplication),
                 padding: EdgeInsets.zero,
-                title: const Text('Aviso de privacidad'),
+                title: const Text(
+                  'Aviso de privacidad',
+                  style: TextStyle(color: blackTheme_),
+                ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios_outlined,
                   color: Colors.black26,
@@ -310,7 +364,10 @@ class ConfiguracionesScreen extends StatelessWidget {
                   ));
                 },
                 padding: EdgeInsets.zero,
-                title: const Text('Correo de soporte'),
+                title: const Text(
+                  'Correo de soporte',
+                  style: TextStyle(color: blackTheme_),
+                ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios_outlined,
                   color: Colors.black26,
@@ -345,7 +402,10 @@ class ConfiguracionesScreen extends StatelessWidget {
                   );
                 },
                 padding: EdgeInsets.zero,
-                title: const Text('Eliminar cuenta'),
+                title: const Text(
+                  'Eliminar cuenta',
+                  style: TextStyle(color: blackTheme_),
+                ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios_outlined,
                   color: Colors.black26,
@@ -412,7 +472,10 @@ class ConfiguracionesScreen extends StatelessWidget {
                 color: Colors.grey,
               ),
               const SizedBox(height: 20),
-              Obx(() => Text('Versión ${controller.appVersion}')),
+              Obx(() => Text(
+                    'Versión ${controller.appVersion}',
+                    style: TextStyle(color: blackTheme_),
+                  )),
             ],
           ),
         ),
@@ -601,7 +664,7 @@ Widget widgetMenu() {
                       color:
                           (Theme.of(Get.context!).brightness == Brightness.dark
                                   ? whiteTheme_
-                                  : Colors.black)
+                                  : blackTheme_)
                               .withOpacity(
                                   controller.currentPageIndex.value == entry.key
                                       ? 0.9
@@ -616,7 +679,7 @@ Widget widgetMenu() {
               'Añadir el widget de descripción general...',
               textAlign: TextAlign.left,
               style: TextStyle(
-                color: Colors.black,
+                color: blackTheme_,
                 fontWeight: FontWeight.bold,
                 fontSize: 23,
               ),
@@ -627,7 +690,7 @@ Widget widgetMenu() {
             child: const Text(
               'Siga los pasos anteriores para agregar el widget de descripción general',
               style: TextStyle(
-                color: Colors.black,
+                color: blackThemeText,
                 fontSize: 18,
               ),
             ),
@@ -639,7 +702,7 @@ Widget widgetMenu() {
             ),
             margin: const EdgeInsets.only(top: 15),
             decoration: BoxDecoration(
-                color: Colors.black, borderRadius: BorderRadius.circular(20)),
+                color: blackTheme_, borderRadius: BorderRadius.circular(20)),
             child: TextButton(
               onPressed: () {
                 Get.back();

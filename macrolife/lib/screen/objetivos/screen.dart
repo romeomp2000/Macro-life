@@ -78,17 +78,22 @@ class ObjetivosScreen extends StatelessWidget {
         0.0;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backGround,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: backGround,
         leading: IconButton(
           icon: Image.asset(
             'assets/icons/iconografia_navegacion_120x120_regresar.png',
           ),
           onPressed: () => Get.back(),
         ),
-        title: const Text('Ajustar objetivos',
-            style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
+        title: const Text(
+          'Ajustar objetivos',
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: blackTheme_,
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -102,8 +107,11 @@ class ObjetivosScreen extends StatelessWidget {
                         horizontal: 12.0, vertical: 5),
                     child: const Text(
                       'Macronutrientes',
-                      style:
-                          TextStyle(fontSize: 33, fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                        fontSize: 33,
+                        fontWeight: FontWeight.w700,
+                        color: blackTheme_,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -128,12 +136,12 @@ class ObjetivosScreen extends StatelessWidget {
                                       left: 10, right: 10, bottom: 3, top: 3),
                                   decoration: BoxDecoration(
                                     color: redTheme_,
-                                    border: Border.all(color: Colors.white),
+                                    border: Border.all(color: whiteTheme_),
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   child: Text(
                                     '${controller.pro.toInt()}g',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: whiteTheme_),
                                   ),
                                 ),
                                 badgePositionPercentageOffset: .98,
@@ -148,13 +156,13 @@ class ObjetivosScreen extends StatelessWidget {
                                       left: 10, right: 10, bottom: 3, top: 3),
                                   decoration: BoxDecoration(
                                     color: yellowTheme_,
-                                    border: Border.all(color: Colors.white),
+                                    border: Border.all(color: whiteTheme_),
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   child: Text(
                                     '${controller.car.toInt()}g',
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 15),
+                                        color: whiteTheme_, fontSize: 15),
                                   ),
                                 ),
                                 badgePositionPercentageOffset: .98,
@@ -169,13 +177,13 @@ class ObjetivosScreen extends StatelessWidget {
                                       left: 10, right: 10, bottom: 3, top: 3),
                                   decoration: BoxDecoration(
                                     color: blueTheme_,
-                                    border: Border.all(color: Colors.white),
+                                    border: Border.all(color: whiteTheme_),
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   child: Text(
                                     '${controller.gra.toInt()}g',
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 15),
+                                        color: whiteTheme_, fontSize: 15),
                                   ),
                                 ),
                                 badgePositionPercentageOffset: .98,
@@ -198,15 +206,15 @@ class ObjetivosScreen extends StatelessWidget {
                         'assets/icons/icono_flama_original_54x54_activo.png',
                         width: 15,
                       ),
-                      progressColor: Colors.black, // Color del progreso
+                      progressColor: blackTheme_, // Color del progreso
                       backgroundColor:
-                          Colors.black12, // Color del fondo del círculo
+                          greyTheme_, // Color del fondo del círculo
                     ),
                     title: const Text(
                       'Meta calorías',
                       style: TextStyle(
                         fontSize: 15,
-                        color: Colors.black38,
+                        color: blackTheme_,
                       ),
                     ),
                     subtitle: TextField(
@@ -216,7 +224,10 @@ class ObjetivosScreen extends StatelessWidget {
                       onEditingComplete: () =>
                           controller.toggleKeyboardActions(false),
                       decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.edit),
+                        suffixIcon: Icon(
+                          Icons.edit,
+                          color: blackTheme_,
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(),
                           borderRadius: BorderRadius.circular(8.0),
@@ -237,14 +248,14 @@ class ObjetivosScreen extends StatelessWidget {
                           width: 15),
                       progressColor: redTheme_, // Color del progreso
                       backgroundColor:
-                          Colors.black12, // Color del fondo del círculo
+                          greyTheme_, // Color del fondo del círculo
                     ),
                     title: const Text(
                       'Objetivo de proteína',
                       style: TextStyle(
                         // fontWeight: FontWeight.w500,
                         fontSize: 15,
-                        color: Colors.black38,
+                        color: blackTheme_,
                       ),
                     ),
                     subtitle: TextField(
@@ -257,7 +268,10 @@ class ObjetivosScreen extends StatelessWidget {
                       onEditingComplete: () =>
                           controller.toggleKeyboardActions(false),
                       decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.edit),
+                        suffixIcon: Icon(
+                          Icons.edit,
+                          color: blackTheme_,
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderSide:
                               const BorderSide(), // Borde cuando está enfocado
@@ -278,14 +292,14 @@ class ObjetivosScreen extends StatelessWidget {
                           'assets/icons/icono_panintegral_amarillo_76x70_nuevo_1.png',
                           width: 15),
                       progressColor: yellowTheme_,
-                      backgroundColor: Colors.black12,
+                      backgroundColor: greyTheme_,
                     ),
                     title: const Text(
                       'Meta de carbohidratos',
                       style: TextStyle(
                         // fontWeight: FontWeight.w500,
                         fontSize: 15,
-                        color: Colors.black38,
+                        color: blackTheme_,
                       ),
                     ),
                     subtitle: TextField(
@@ -298,7 +312,10 @@ class ObjetivosScreen extends StatelessWidget {
                       onEditingComplete: () =>
                           controller.toggleKeyboardActions(false),
                       decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.edit),
+                        suffixIcon: Icon(
+                          Icons.edit,
+                          color: blackTheme_,
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderSide:
                               const BorderSide(), // Borde cuando está enfocado
@@ -319,14 +336,14 @@ class ObjetivosScreen extends StatelessWidget {
                           'assets/icons/icono_almedraazul_74x70_nuevo_1.png',
                           width: 15),
                       progressColor: blueTheme_,
-                      backgroundColor: Colors.black12,
+                      backgroundColor: greyTheme_,
                     ),
                     title: const Text(
                       'Objetivo de grasas',
                       style: TextStyle(
                         // fontWeight: FontWeight.w500,
                         fontSize: 15,
-                        color: Colors.black38,
+                        color: blackTheme_,
                       ),
                     ),
                     subtitle: TextField(
@@ -339,7 +356,10 @@ class ObjetivosScreen extends StatelessWidget {
                       onEditingComplete: () =>
                           controller.toggleKeyboardActions(false),
                       decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.edit),
+                        suffixIcon: Icon(
+                          Icons.edit,
+                          color: blackTheme_,
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderSide:
                               const BorderSide(), // Borde cuando está enfocado
@@ -357,9 +377,9 @@ class ObjetivosScreen extends StatelessWidget {
                         Get.to(() => ObjetivosAutoScreen());
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
-                        side: const BorderSide(color: Colors.black, width: 1.5),
+                        backgroundColor: whiteTheme_,
+                        foregroundColor: blackTheme_,
+                        side: const BorderSide(color: blackTheme_, width: 1.5),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -372,6 +392,7 @@ class ObjetivosScreen extends StatelessWidget {
                         "Generar objetivos automáticamente",
                         style: TextStyle(
                           fontSize: 16.0,
+                          color: blackTheme_,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -393,9 +414,9 @@ class ObjetivosScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () => Get.back(),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          side: const BorderSide(color: Colors.black),
+                          backgroundColor: whiteTheme_,
+                          foregroundColor: blackTheme_,
+                          side: const BorderSide(color: blackTheme_),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -436,8 +457,8 @@ class ObjetivosScreen extends StatelessWidget {
                           controllerUsuario.usuario.refresh(),
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          foregroundColor: Colors.white,
+                          backgroundColor: blackTheme_,
+                          foregroundColor: whiteTheme_,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),

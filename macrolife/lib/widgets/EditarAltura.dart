@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:macrolife/config/theme.dart';
 
 class EditarAlturaScreen extends StatelessWidget {
   final int altura;
@@ -37,7 +38,10 @@ class EditarAlturaScreen extends StatelessWidget {
                 const SizedBox(height: 15),
                 const Text(
                   'Cambiar Altura',
-                  style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                      color: blackTheme_),
                 ),
                 const SizedBox(height: 35),
                 Column(
@@ -47,7 +51,8 @@ class EditarAlturaScreen extends StatelessWidget {
                       "Altura",
                       style: TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.bold), // Texto en negritas
+                          fontWeight: FontWeight.bold,
+                          color: blackTheme_), // Texto en negritas
                     ),
                     SizedBox(
                       height: 300,
@@ -78,9 +83,9 @@ class EditarAlturaScreen extends StatelessWidget {
                   controller.actualizarNombreAlimento();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+                  backgroundColor: blackTheme_,
                   foregroundColor: Colors.white,
-                  side: const BorderSide(color: Colors.black, width: 1.5),
+                  side: const BorderSide(color: blackTheme_, width: 1.5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),

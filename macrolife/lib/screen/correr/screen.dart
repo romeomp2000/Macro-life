@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/models/Ejercicio.dart';
 import 'package:macrolife/models/Entrenamiento.dart';
 import 'package:macrolife/screen/correr/controller.dart';
@@ -100,12 +101,16 @@ class CorrerScreen extends StatelessWidget {
                       Image.asset(
                         'assets/icons/icono_registrar_ejercicio_68x68_intensidad.png',
                         width: 25,
+                        color: blackTheme_,
                       ),
                       const SizedBox(width: 8),
                       Text(
                         'Establecer intensidad',
                         style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: blackTheme_,
+                        ),
                       ),
                     ],
                   ),
@@ -148,13 +153,13 @@ class CorrerScreen extends StatelessWidget {
                                           Text(
                                             '${item['titulo']}',
                                             style: TextStyle(
-                                              fontSize: item['value'] ==
-                                                      controller
-                                                          .intensidad.value
-                                                  ? 18
-                                                  : 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                                fontSize: item['value'] ==
+                                                        controller
+                                                            .intensidad.value
+                                                    ? 18
+                                                    : 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: blackTheme_),
                                           ),
                                           Text(
                                             '${item['descripcion']}',
@@ -167,8 +172,8 @@ class CorrerScreen extends StatelessWidget {
                                               color: item['value'] ==
                                                       controller
                                                           .intensidad.value
-                                                  ? Colors.black
-                                                  : Colors.grey,
+                                                  ? blackTheme_
+                                                  : blackThemeText,
                                               fontWeight: item['value'] ==
                                                       controller
                                                           .intensidad.value
@@ -197,6 +202,8 @@ class CorrerScreen extends StatelessWidget {
                                   min: 0.0,
                                   max: 2.0,
                                   divisions: 2,
+                                  activeColor: blackTheme_,
+                                  inactiveColor: whiteTheme_,
                                   onChanged: (value) {
                                     if (value == 0.0) {
                                       controller.intensidad.value =
@@ -227,12 +234,15 @@ class CorrerScreen extends StatelessWidget {
                     children: [
                       Image.asset(
                           'assets/icons/icono_cronometro_negro_34x38_nuevo.png',
+                          color: blackTheme_,
                           width: 20),
                       const SizedBox(width: 8),
                       Text(
                         'Duración',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: blackTheme_),
                       ),
                     ],
                   ),
@@ -255,15 +265,15 @@ class CorrerScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color:
                                     controller.duracion.value == values[index]
-                                        ? Colors.black
-                                        : Colors.white,
+                                        ? blackTheme_
+                                        : whiteTheme_,
                                 borderRadius: BorderRadius.circular(15.0),
                                 border: Border.all(
                                   width: 1,
                                   color:
                                       controller.duracion.value == values[index]
-                                          ? Colors.white
-                                          : Colors.black,
+                                          ? whiteTheme_
+                                          : blackTheme_,
                                 ),
                               ),
                               child: Text(
@@ -271,8 +281,8 @@ class CorrerScreen extends StatelessWidget {
                                 style: TextStyle(
                                   color:
                                       controller.duracion.value == values[index]
-                                          ? Colors.white
-                                          : Colors.black,
+                                          ? whiteTheme_
+                                          : blackTheme_,
                                 ),
                               ),
                             ),
@@ -300,8 +310,8 @@ class CorrerScreen extends StatelessWidget {
                             controller.registrarEntrenamiento();
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
+                            backgroundColor: blackTheme_,
+                            foregroundColor: whiteTheme_,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),

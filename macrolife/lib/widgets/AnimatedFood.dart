@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:macrolife/config/theme.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 
@@ -23,7 +24,7 @@ class AnimatedFood extends StatelessWidget {
         return Container(
           height: 120,
           decoration: BoxDecoration(
-            color: Colors.grey[200],
+            color: whiteTheme_,
             borderRadius: BorderRadius.circular(16.0),
           ),
           child: Row(
@@ -52,6 +53,7 @@ class AnimatedFood extends StatelessWidget {
                             controller.texto.value,
                             style: const TextStyle(
                               fontSize: 14.0,
+                              color: blackTheme_,
                               fontWeight: FontWeight.w700,
                             ),
                             overflow: TextOverflow
@@ -74,9 +76,10 @@ class AnimatedFood extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Te notificamoss cuado esté listo',
+                        'Te notificaremos cuando esté listo',
                         style: TextStyle(
                           fontSize: 12.0,
+                          color: blackThemeText,
                           fontWeight: FontWeight.w300,
                         ),
                         overflow: TextOverflow

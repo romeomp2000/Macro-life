@@ -752,11 +752,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 1.2.5;
+				CURRENT_PROJECT_VERSION = 1.2.10;
 				DEVELOPMENT_TEAM = K2Q52L9NFL;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.2.5;
-				FLUTTER_BUILD_NUMBER = 1.2.5;
+				FLUTTER_BUILD_NAME = 1.2.10;
+				FLUTTER_BUILD_NUMBER = 1.2.10;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"",
@@ -841,7 +841,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.5;
+				MARKETING_VERSION = 1.2.10;
 				PRODUCT_BUNDLE_IDENTIFIER = mx.posibilidades.macrolife;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1272,13 +1272,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/RunnerDebug.entitlements;
-				CURRENT_PROJECT_VERSION = 1.2.5;
+				CURRENT_PROJECT_VERSION = 1.2.10;
 				DEVELOPMENT_TEAM = K2Q52L9NFL;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphoneos*]" = armv7;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
-				FLUTTER_BUILD_NAME = 1.2.5;
-				FLUTTER_BUILD_NUMBER = 1.2.5;
+				FLUTTER_BUILD_NAME = 1.2.10;
+				FLUTTER_BUILD_NUMBER = 1.2.10;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"",
@@ -1363,7 +1363,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.5;
+				MARKETING_VERSION = 1.2.10;
 				PRODUCT_BUNDLE_IDENTIFIER = mx.posibilidades.macrolife;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1385,11 +1385,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 1.2.5;
+				CURRENT_PROJECT_VERSION = 1.2.10;
 				DEVELOPMENT_TEAM = K2Q52L9NFL;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.2.5;
-				FLUTTER_BUILD_NUMBER = 1.2.5;
+				FLUTTER_BUILD_NAME = 1.2.10;
+				FLUTTER_BUILD_NUMBER = 1.2.10;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"",
@@ -1474,7 +1474,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.5;
+				MARKETING_VERSION = 1.2.10;
 				PRODUCT_BUNDLE_IDENTIFIER = mx.posibilidades.macrolife;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

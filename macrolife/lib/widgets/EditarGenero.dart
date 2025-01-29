@@ -1,3 +1,4 @@
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/models/list_tile_model.dart';
 import 'package:macrolife/widgets/custom_elevated_selected.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,10 @@ class EditarGeneroScreen extends StatelessWidget {
                 const SizedBox(height: 15),
                 const Text(
                   'Cambiar Genero',
-                  style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                      color: blackTheme_),
                 ),
                 const SizedBox(height: 35),
                 Column(
@@ -54,7 +58,7 @@ class EditarGeneroScreen extends StatelessWidget {
                           (option) => Column(
                             children: [
                               Obx(
-                                () => CustomElevatedSelected(
+                                () => CustomElevatedSelected2(
                                   message: option.title ?? '',
                                   icon: option.icon,
                                   widget: option.leading,
@@ -86,9 +90,9 @@ class EditarGeneroScreen extends StatelessWidget {
                   controller.actualizarGeneroAlimento();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+                  backgroundColor: blackTheme_,
                   foregroundColor: Colors.white,
-                  side: const BorderSide(color: Colors.black, width: 1.5),
+                  side: const BorderSide(color: blackTheme_, width: 1.5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),

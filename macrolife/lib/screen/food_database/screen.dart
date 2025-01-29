@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/screen/food_database/controller.dart';
 import 'package:macrolife/widgets/custom_text_form_field.dart';
 
@@ -32,7 +33,7 @@ class FoodDatabaseScreen extends StatelessWidget {
         ),
         title: const Text(
           'Describe tu comida',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: blackTheme_),
         ),
         centerTitle: true,
       ),
@@ -54,7 +55,7 @@ class FoodDatabaseScreen extends StatelessWidget {
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.black),
+                border: Border.all(color: blackTheme_),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -64,7 +65,10 @@ class FoodDatabaseScreen extends StatelessWidget {
                     width: 20,
                   ),
                   const SizedBox(width: 8),
-                  Text('Creado por IA')
+                  Text(
+                    'Creado por IA',
+                    style: TextStyle(color: blackTheme_),
+                  )
                 ],
               ),
             ),
@@ -80,13 +84,15 @@ class FoodDatabaseScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Ejemplo:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: blackTheme_),
                   ),
                   SizedBox(width: 8), // Espacio entre el título y el contenido
                   Flexible(
                     child: Text(
                       controller.obtenerActividadAleatoria(),
                       overflow: TextOverflow.visible,
+                      style: TextStyle(color: blackThemeText),
                     ),
                   ),
                 ],
@@ -103,9 +109,9 @@ class FoodDatabaseScreen extends StatelessWidget {
                   controller.registrarComida();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  side: const BorderSide(color: Colors.black, width: 1.5),
+                  backgroundColor: blackTheme_,
+                  foregroundColor: whiteTheme_,
+                  side: const BorderSide(color: blackTheme_, width: 1.5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/models/Ejercicio.dart';
 import 'package:macrolife/models/Entrenamiento.dart';
 import 'package:macrolife/screen/pesas/controller.dart';
@@ -97,7 +98,11 @@ class PesasScreen extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     'Establecer intensidad',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: blackTheme_,
+                    ),
                   ),
                 ],
               ),
@@ -145,6 +150,7 @@ class PesasScreen extends StatelessWidget {
                                               ? 18
                                               : 14,
                                           fontWeight: FontWeight.bold,
+                                          color: blackTheme_,
                                         ),
                                       ),
                                       Text(
@@ -156,8 +162,8 @@ class PesasScreen extends StatelessWidget {
                                               : 12,
                                           color: item['value'] ==
                                                   controller.intensidad.value
-                                              ? Colors.black
-                                              : Colors.grey,
+                                              ? blackTheme_
+                                              : blackThemeText,
                                           fontWeight: item['value'] ==
                                                   controller.intensidad.value
                                               ? FontWeight.bold
@@ -185,6 +191,7 @@ class PesasScreen extends StatelessWidget {
                               min: 0.0,
                               max: 2.0,
                               divisions: 2,
+                              activeColor: blackTheme_,
                               onChanged: (value) {
                                 if (value == 0.0) {
                                   controller.intensidad.value =
@@ -218,11 +225,15 @@ class PesasScreen extends StatelessWidget {
                 children: [
                   Image.asset(
                       'assets/icons/icono_cronometro_negro_34x38_nuevo.png',
+                      color: blackTheme_,
                       width: 20),
                   const SizedBox(width: 8),
                   Text(
                     'Duración',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: blackTheme_),
                   ),
                 ],
               ),
@@ -244,22 +255,22 @@ class PesasScreen extends StatelessWidget {
                           margin: EdgeInsets.symmetric(horizontal: 5.0),
                           decoration: BoxDecoration(
                             color: controller.duracion.value == values[index]
-                                ? Colors.black
-                                : Colors.white,
+                                ? blackTheme_
+                                : whiteTheme_,
                             borderRadius: BorderRadius.circular(15.0),
                             border: Border.all(
                               width: 1,
                               color: controller.duracion.value == values[index]
-                                  ? Colors.white
-                                  : Colors.black,
+                                  ? whiteTheme_
+                                  : blackTheme_,
                             ),
                           ),
                           child: Text(
                             '${values[index]} min.',
                             style: TextStyle(
                               color: controller.duracion.value == values[index]
-                                  ? Colors.white
-                                  : Colors.black,
+                                  ? whiteTheme_
+                                  : blackTheme_,
                             ),
                           ),
                         ),
@@ -287,8 +298,8 @@ class PesasScreen extends StatelessWidget {
                         controller.registrarEntrenamiento();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        foregroundColor: Colors.white,
+                        backgroundColor: blackTheme_,
+                        foregroundColor: whiteTheme_,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
