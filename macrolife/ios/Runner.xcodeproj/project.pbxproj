@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -755,8 +755,8 @@
 				CURRENT_PROJECT_VERSION = 1.2.10;
 				DEVELOPMENT_TEAM = K2Q52L9NFL;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.2.10;
-				FLUTTER_BUILD_NUMBER = 1.2.10;
+				FLUTTER_BUILD_NAME = 1.2.12;
+				FLUTTER_BUILD_NUMBER = 1.2.12;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"",
@@ -1277,8 +1277,8 @@
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphoneos*]" = armv7;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
-				FLUTTER_BUILD_NAME = 1.2.10;
-				FLUTTER_BUILD_NUMBER = 1.2.10;
+				FLUTTER_BUILD_NAME = 1.2.12;
+				FLUTTER_BUILD_NUMBER = 1.2.12;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"",
@@ -1388,8 +1388,8 @@
 				CURRENT_PROJECT_VERSION = 1.2.10;
 				DEVELOPMENT_TEAM = K2Q52L9NFL;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.2.10;
-				FLUTTER_BUILD_NUMBER = 1.2.10;
+				FLUTTER_BUILD_NAME = 1.2.12;
+				FLUTTER_BUILD_NUMBER = 1.2.12;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher\"",
