@@ -310,7 +310,7 @@ Future<void> actualizarFechaNacimiento(
 
     final apiService = ApiService();
 
-    await apiService.fetchData(
+    final respuesta = await apiService.fetchData(
       'usuario/nacimiento',
       method: Method.PUT,
       body: {
@@ -318,6 +318,9 @@ Future<void> actualizarFechaNacimiento(
         'fechaNacimiento': fechaNacimientoRename
       },
     );
+
+    controllerUsuario.usuario.value.edad = respuesta['usuario']['edad'];
+    controllerUsuario.usuario.refresh();
   }
 }
 

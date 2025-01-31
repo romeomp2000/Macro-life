@@ -110,12 +110,15 @@ class ConfiguracionesScreController extends GetxController {
         'descripcion': descripcion.text
       };
       await apiService.fetchData(
-        'soporte/enviar-correo',
+        'soporte/',
         method: Method.POST,
         body: body,
       );
-
+      Get.back();
       Get.snackbar('Correo enviado', '', backgroundColor: whiteTheme_);
+      correo.clear();
+      nombre.clear();
+      descripcion.clear();
     } catch (e) {
       if (kDebugMode) {
         print(e);

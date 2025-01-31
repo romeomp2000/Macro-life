@@ -333,6 +333,7 @@ class RegistroPasosController extends GetxController {
 
     await health.requestAuthorization([
       HealthDataType.STEPS,
+      HealthDataType.WORKOUT,
     ]);
   }
 

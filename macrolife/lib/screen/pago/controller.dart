@@ -1,14 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+// import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
+// import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/AplePay.dart';
 import 'package:macrolife/helpers/StripePaymentHandle.dart';
 import 'package:macrolife/helpers/configuraciones.dart';
-import 'package:macrolife/helpers/productos_apple.dart';
+// import 'package:macrolife/helpers/productos_apple.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
+import 'package:macrolife/screen/pago/consumable.dart';
+import 'package:macrolife/screen/pago/prueba.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
 // import 'package:macrolife/widgets/button_paypal.dart';
 // import 'package:macrolife/widgets/layout.dart';
@@ -24,7 +30,7 @@ class PagoController extends GetxController {
   final RxDouble totalAPagar = 0.0.obs;
 
   VideoPlayerController controllerVideo = VideoPlayerController.asset(
-      'assets/videos/Video_Final_MACROLIFE_24012025_pantalla_entera.mp4')
+      'assets/videos/Mockup_Video_Final_V7-3_MACROLIFE_29012025.mp4')
     ..initialize().then((_) {
       // controllerVideo.
     })
@@ -85,6 +91,7 @@ class PagoController extends GetxController {
   void pagar() async {
     if (sucripcion.value == 'Anual') {
       await pruebaGratis();
+      // await getProducts();
       return;
     }
     Get.bottomSheet(
@@ -225,27 +232,155 @@ class PagoController extends GetxController {
     );
   }
 
+  InAppPurchase iap = InAppPurchase.instance;
+  late StreamSubscription<List<PurchaseDetails>> subscription;
+  List<String> notFoundIds = [];
+  List<ProductDetails> products = [];
+  List<PurchaseDetails> purchases = [];
+  List<String> consumablesP = [];
+  bool purchasePending = false;
+  bool loading = true;
+  bool isAvailable = true;
+  String? queryProductError;
+  Set<String> idS = <String>{'MLPA2025'};
+
   Future<void> getProducts() async {
     try {
-      List<String> idS = ['MLPA2025'];
+      Get.to(() => PruebaView());
+      // final bool available = await iap.isAvailable();
 
-      final ProductDetailsResponse response =
-          await InAppPurchase.instance.queryProductDetails(idS.toSet());
+      // if (!available) {
+      //   return;
+      // }
 
-      if (response.notFoundIDs.isNotEmpty) {
-        print("No se encontró");
-      } else {
-        List<ProductDetails> products = response.productDetails;
-        print(products);
-      }
-      // final InAppPurchaseUtils inAppPurchaseUtils = InAppPurchaseUtils.instance;
-      // Get.put<InAppPurchaseUtils>(inAppPurchaseUtils);
+      // final Stream<List<PurchaseDetails>> purchaseUpdated = iap.purchaseStream;
+      // subscription = purchaseUpdated.listen((purchaseDetailsList) {
+      //   listenToPurchaseUpdated(purchaseDetailsList);
+      // }, onDone: () {
+      //   subscription.cancel();
+      // }, onError: (error) {
+      //   subscription.resume();
+      // });
     } catch (error) {
       if (kDebugMode) {
         print(error);
       }
     }
   }
+
+  void showPendingUI() {
+    purchasePending = true;
+  }
+
+  void handleError(IAPError error) {
+    purchasePending = false;
+  }
+
+  Future<bool> verifyPurchase(PurchaseDetails purchaseDetails) {
+    // IMPORTANT!! Always verify a purchase before delivering the product.
+    // For the purpose of an example, we directly return true.
+    return Future<bool>.value(true);
+  }
+
+  void handleInvalidPurchase(PurchaseDetails purchaseDetails) {
+    // handle invalid purchase here if  _verifyPurchase` failed.
+  }
+
+  void deliverProduct(PurchaseDetails purchaseDetails) async {
+    // IMPORTANT!! Always verify purchase details before delivering the product.
+    if ((purchaseDetails.productID == 'MLPA2025')) {
+      await ConsumableStore.save(purchaseDetails.purchaseID!);
+      List<String> consumables = await ConsumableStore.load();
+
+      purchasePending = false;
+      consumables = consumables;
+    } else {
+      purchases.add(purchaseDetails);
+      purchasePending = false;
+    }
+  }
+
+  void listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      if (purchaseDetails.status == PurchaseStatus.pending) {
+        showPendingUI();
+      } else {
+        if (purchaseDetails.status == PurchaseStatus.error) {
+          handleError(purchaseDetails.error!);
+        } else if (purchaseDetails.status == PurchaseStatus.purchased ||
+            purchaseDetails.status == PurchaseStatus.restored) {
+          bool valid = await verifyPurchase(purchaseDetails);
+          if (valid) {
+            deliverProduct(purchaseDetails);
+          } else {
+            handleInvalidPurchase(purchaseDetails);
+            return;
+          }
+        }
+        if (purchaseDetails.pendingCompletePurchase) {
+          await iap.completePurchase(purchaseDetails);
+        }
+      }
+    });
+  }
+
+  // Future<void> initStoreInfo() async {
+  //   final bool isAvailables = await iap.isAvailable();
+  //   if (!isAvailables) {
+  //     isAvailable = isAvailables;
+  //     products = [];
+  //     purchases = [];
+  //     notFoundIds = [];
+  //     consumables = [];
+  //     purchasePending = false;
+  //     loading = false;
+
+  //     return;
+  //   }
+
+  //   if (GetPlatform.isIOS) {
+  //     var iosPlatformAddition =
+  //         iap.getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
+  //     await iosPlatformAddition.setDelegate(ExamplePaymentQueueDelegate());
+  //   }
+
+  //   ProductDetailsResponse productDetailResponse =
+  //       await iap.queryProductDetails(idS.toSet());
+  //   if (productDetailResponse.error != null) {
+  //     queryProductError = productDetailResponse.error!.message;
+  //     isAvailable = isAvailable;
+  //     products = productDetailResponse.productDetails;
+  //     purchases = [];
+  //     notFoundIds = productDetailResponse.notFoundIDs;
+  //     consumablesP = [];
+  //     purchasePending = false;
+  //     loading = false;
+
+  //     return;
+  //   }
+
+  //   if (productDetailResponse.productDetails.isEmpty) {
+  //     queryProductError = null;
+  //     isAvailable = isAvailable;
+  //     products = productDetailResponse.productDetails;
+  //     purchases = [];
+  //     notFoundIds = productDetailResponse.notFoundIDs;
+  //     consumablesP = [];
+  //     purchasePending = false;
+  //     loading = false;
+
+  //     return;
+  //   }
+
+  //   List<String> consumables = await ConsumableStore.load();
+
+  //   isAvailable = isAvailable;
+  //   products = productDetailResponse.productDetails;
+  //   notFoundIds = productDetailResponse.notFoundIDs;
+  //   consumablesP = consumables;
+  //   purchasePending = false;
+  //   loading = false;
+  // }
 
   final UsuarioController usuarioController = Get.find();
   // final EscanearAlimentosController escanearAlimentoController =

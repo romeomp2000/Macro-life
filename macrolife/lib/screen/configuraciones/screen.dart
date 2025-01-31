@@ -49,12 +49,14 @@ class ConfiguracionesScreen extends StatelessWidget {
                   'Edad',
                   style: TextStyle(color: blackTheme_),
                 ),
-                trailing: Text(
-                  '${controllerUsuario.usuario.value.edad}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: blackTheme_,
+                trailing: Obx(
+                  () => Text(
+                    '${controllerUsuario.usuario.value.edad}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: blackTheme_,
+                    ),
                   ),
                 ),
               ),
@@ -64,12 +66,14 @@ class ConfiguracionesScreen extends StatelessWidget {
                   'Altura',
                   style: TextStyle(color: blackTheme_),
                 ),
-                trailing: Text(
-                  '${controllerUsuario.usuario.value.altura} cm',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: blackTheme_,
+                trailing: Obx(
+                  () => Text(
+                    '${controllerUsuario.usuario.value.altura} cm',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: blackTheme_,
+                    ),
                   ),
                 ),
               ),
@@ -79,12 +83,14 @@ class ConfiguracionesScreen extends StatelessWidget {
                   'Peso actual',
                   style: TextStyle(color: blackTheme_),
                 ),
-                trailing: Text(
-                  '${controllerUsuario.usuario.value.pesoActual} Kg',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: blackTheme_,
+                trailing: Obx(
+                  () => Text(
+                    '${controllerUsuario.usuario.value.pesoActual} Kg',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: blackTheme_,
+                    ),
                   ),
                 ),
               ),
@@ -125,12 +131,14 @@ class ConfiguracionesScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Text(
-                      '\$${controllerUsuario.usuario.value.balance}',
-                      style: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: blackTheme_,
+                    Obx(
+                      () => Text(
+                        '\$${controllerUsuario.usuario.value.balance}',
+                        style: const TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: blackTheme_,
+                        ),
                       ),
                     ),
                     CustomElevatedButton(
@@ -520,7 +528,7 @@ Widget formCorreo() {
           margin: const EdgeInsets.only(bottom: 10),
           child: TextField(
             keyboardType: TextInputType.emailAddress,
-            controller: controller.nombre,
+            controller: controller.correo,
             onTap: () => {},
             onEditingComplete: () => {},
             decoration: InputDecoration(
@@ -547,7 +555,7 @@ Widget formCorreo() {
           margin: const EdgeInsets.only(bottom: 30),
           child: TextField(
             keyboardType: TextInputType.text,
-            controller: controller.nombre,
+            controller: controller.descripcion,
             onTap: () => {},
             onEditingComplete: () => {},
             maxLines: 4,

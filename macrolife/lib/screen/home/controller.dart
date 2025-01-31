@@ -1,10 +1,12 @@
 // import 'package:camera/camera.dart';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:health/health.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/config/theme.dart';
+import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/Entrenamiento.dart';
 import 'package:macrolife/models/alimento.model.dart';
@@ -32,6 +34,9 @@ class WeeklyCalendarController extends GetxController {
   final verAppleHealth = false.obs;
   //? controller helth
   var healthData = <HealthDataPoint>[].obs; // Observar los datos de salud
+  // RxList<WorkOutActivities> healthDataWorKout = <WorkOutActivities>[].obs;
+  RxList<WorkOutActivitiesData> healthDataWorKout =
+      <WorkOutActivitiesData>[].obs;
   var isLoading = true.obs; // Estado de carga
   final RxList<ChartData> charSorce = <ChartData>[].obs;
   final widht = 1.0.obs;
@@ -44,6 +49,7 @@ class WeeklyCalendarController extends GetxController {
   RxInt pasos = 0.obs;
   RxInt otro = 0.obs;
   RxInt maximo = 0.obs;
+  RxDouble caloriasHealthApple = 0.0.obs;
 
   final List<String> daysOfWeek = [
     'lunes',
@@ -61,6 +67,75 @@ class WeeklyCalendarController extends GetxController {
     isCaloriasQuemadas.refresh();
 
     cargaAlimentos();
+  }
+
+  Future<void> fetchWorkOut() async {
+    try {
+      if (GetPlatform.isAndroid) {
+        return;
+      }
+
+      bool isAuthorized = await health.requestAuthorization([
+        HealthDataType.WORKOUT,
+      ]);
+
+      if (!isAuthorized) {
+        return;
+      }
+      healthDataWorKout.clear();
+      caloriasHealthApple.value = 0;
+      DateTime startDate = DateTime(
+          today.value.year, today.value.month, today.value.day, 0, 0, 0);
+      DateTime endDate = DateTime(
+          today.value.year, today.value.month, today.value.day, 23, 59, 59);
+      List<HealthDataPoint> data = await health.getHealthDataFromTypes(
+        startDate,
+        endDate,
+        [HealthDataType.WORKOUT],
+      );
+
+      if (data.isNotEmpty) {
+        List<WorkOutActivitiesData> workoutActivities = [];
+
+        for (HealthDataPoint point in data) {
+          HealthValue healthValue = point.value;
+          Map<String, dynamic> valueJson = healthValue.toJson();
+          String? hora = DateFormat('hh:mm a')
+              .format(DateTime.parse(point.dateFrom.toString()))
+              .toLowerCase();
+
+          String? nombre = valueJson['workoutActivityType'];
+          nombre = FuncionesGlobales().translateActivity(nombre!);
+          double? cal = valueJson['totalEnergyBurned'] != null
+              ? double.tryParse(valueJson['totalEnergyBurned'].toString())
+              : null;
+          double? distancia = valueJson['totalDistance'] != null
+              ? double.tryParse(valueJson['totalDistance'].toString())
+              : null;
+          String? unidad = valueJson['totalEnergyBurnedUnit'];
+
+          DateTime dateFrom = DateTime.parse(point.dateFrom.toString());
+          DateTime dateTo = DateTime.parse(point.dateTo.toString());
+          Duration difference = dateTo.difference(dateFrom);
+          // int durationInMinutes = difference.inMinutes;
+
+          WorkOutActivitiesData data = WorkOutActivitiesData(
+              hora: hora,
+              nombre: nombre,
+              tiempo: int.parse(difference.inMinutes.toString()).toString(),
+              cal: cal,
+              distancia: distancia,
+              unidad: unidad);
+          workoutActivities.add(data);
+          caloriasHealthApple.value = caloriasHealthApple.value + cal!;
+        }
+        healthDataWorKout.value = workoutActivities;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
   }
 
   Future<void> fetchHealthData() async {
@@ -169,7 +244,9 @@ class WeeklyCalendarController extends GetxController {
   // final liveWidgetController = Get.put(LiveDynamicController());
 
   PageController pageController = PageController(initialPage: 0);
+
   Rx<DateTime> today = DateTime.now().obs;
+
   DateTime todayCalendar = DateTime.now();
   Rx<RachaDiasModel> rechaDias = RachaDiasModel(
     lun: false,
@@ -180,18 +257,6 @@ class WeeklyCalendarController extends GetxController {
     sab: false,
     dom: false,
   ).obs;
-
-  // DateTime getWeekStartDate(int weekOffset) {
-  //   DateTime current = todayCalendar;
-  //   // Aseguramos que no se muestre más de 3 semanas antes de la semana actual
-  //   int maxOffset = -3; // No más de 3 semanas atrás
-  //   // Calculamos la fecha del inicio de la semana según el desplazamiento
-  //   DateTime startOfWeek =
-  //       current.subtract(Duration(days: current.weekday - 1));
-  //   // Calculamos el nuevo desplazamiento, respetando el límite de 3 semanas
-  //   int finalOffset = weekOffset < maxOffset ? maxOffset : weekOffset;
-  //   return startOfWeek.add(Duration(days: finalOffset * 7));
-  // }
 
   DateTime getWeekStartDate(int index) {
     int adjustedIndex = -index;
@@ -473,6 +538,7 @@ class WeeklyCalendarController extends GetxController {
     today.value = DateTime.now();
     cargaAlimentos();
     fetchHealthData();
+    fetchWorkOut();
   }
 
   RxList<Entrenamiento> entrenamientosList = <Entrenamiento>[].obs;
@@ -557,6 +623,7 @@ class WeeklyCalendarController extends GetxController {
       cargarEntrenamiento();
       cargarRacha();
       fetchHealthData();
+      await fetchWorkOut();
 
       final UsuarioController controllerUsuario = Get.find();
 
@@ -569,6 +636,7 @@ class WeeklyCalendarController extends GetxController {
           "fecha": DateFormat('yyyy-MM-dd').format(today.value),
           "idUsuario": controllerUsuario.usuario.value.sId,
           'isCaloriasQuemadas': isCaloriasQuemadas.value,
+          "caloriasHealthApple": caloriasHealthApple.value,
         },
       );
 
@@ -798,4 +866,32 @@ class NumberWithBorder extends StatelessWidget {
       ],
     );
   }
+}
+
+class WorkOutActivities {
+  final String dia;
+  final List<HealthDataPoint> actividades;
+
+  WorkOutActivities(
+    this.dia,
+    this.actividades,
+  );
+}
+
+class WorkOutActivitiesData {
+  final String? hora;
+  final double? cal;
+  final String? nombre;
+  final String? unidad;
+  final String? tiempo;
+  final double? distancia;
+
+  WorkOutActivitiesData({
+    this.hora,
+    this.nombre,
+    this.cal,
+    this.distancia,
+    this.unidad,
+    this.tiempo,
+  });
 }

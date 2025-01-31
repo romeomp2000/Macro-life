@@ -16,7 +16,7 @@ class PagoVista extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 30,
-        backgroundColor: const Color.fromARGB(255, 252, 252, 252),
+        backgroundColor: whiteTheme_,
         leading: Obx(
           () => controller.paso.value > 1
               ? Container(
@@ -30,7 +30,7 @@ class PagoVista extends StatelessWidget {
         ),
       ),
       extendBody: true,
-      backgroundColor: const Color.fromARGB(255, 252, 252, 252),
+      backgroundColor: whiteTheme_,
       body: Container(
         height: Get.height,
         margin: const EdgeInsets.only(
@@ -79,7 +79,7 @@ class PagoVista extends StatelessWidget {
                         () {
                           if (controller.paso.value == 1) {
                             return Container(
-                              color: Colors.white,
+                              color: whiteTheme_,
                               height: 520,
                               // height: Get.height,
                               child: VideoPlayer(controller.controllerVideo),

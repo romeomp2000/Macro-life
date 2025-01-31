@@ -23,8 +23,8 @@ class NutrientIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: (Get.width * 0.3) - 5,
-      height: 152,
-      padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
+      height: 156,
+      padding: const EdgeInsets.only(top: 2, bottom: 2, left: 10, right: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
