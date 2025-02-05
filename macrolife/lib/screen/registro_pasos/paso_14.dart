@@ -27,14 +27,26 @@ Widget paso_14(RegistroPasosController controller) {
               width: 40,
             ),
           ),
-          CustomTextFormField(
-            focus: false,
-            keyboardType: TextInputType.text,
-            controller: controller.codigoController,
-            onChanged: (p0) {
-              controller.correo.value = p0;
-            },
-            label: 'Código de referencia',
+          Form(
+            key: controller.formKey,
+            child: CustomTextFormField(
+              focus: false,
+              keyboardType: TextInputType.text,
+              controller: controller.codigoController,
+              onChanged: (p0) {
+                controller.correo.value = p0;
+              },
+              length: 8,
+              validator: (p0) {
+                if (p0 != null && p0.isNotEmpty) {
+                  if (p0.length != 8) {
+                    return 'El código debe tener 8 caracteres';
+                  }
+                }
+                return null;
+              },
+              label: 'Código de referencia',
+            ),
           ),
         ],
       ),
@@ -42,7 +54,12 @@ Widget paso_14(RegistroPasosController controller) {
       title: '¿Tienes un código de referencia?',
       options: const [],
       selectedOption: controller.codigoController.value.text,
-      onNext: controller.nextStep,
+      onNext: () {
+        if (controller.formKey.currentState?.validate() ?? false) {
+          controller.nextStep();
+          // print('Formulario válido');
+        }
+      },
     ),
   );
 }

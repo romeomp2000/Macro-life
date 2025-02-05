@@ -132,6 +132,31 @@ class FuncionesGlobales {
     }
   }
 
+  Future permisos() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: true,
+      criticalAlert: true,
+      provisional: false,
+      sound: true,
+    );
+
+    await messaging.setForegroundNotificationPresentationOptions(
+        alert: true, badge: true, sound: true);
+
+    await requestNotificationPermissions(settings);
+  }
+
+  Future<void> requestNotificationPermissions(
+      NotificationSettings settings) async {
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {}
+  }
+
   static Future<XFile> compressImage(XFile imageFile) async {
     // Lee la imagen como bytes
     final bytes = await imageFile.readAsBytes();

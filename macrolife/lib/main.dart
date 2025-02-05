@@ -24,7 +24,7 @@ void main() async {
   HomeWidget.setAppGroupId('group.mx.posibilidades.macrolife');
 
   final configuracionesController = Get.put(ConfiguracionesController());
-  final controllerWidget = Get.put(WidgetController());
+  Get.put(WidgetController());
 
   // WorkMan
   // await configuracionesController.buscaConfiguraciones();

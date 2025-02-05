@@ -41,26 +41,23 @@ class LayoutScreen extends StatelessWidget {
             return const Center(child: Text('Home Screen'));
         }
       }),
-      floatingActionButton: ClipOval(
-        child: FloatingActionButton(
-          onPressed: () {
-            escanearController.onPressPlus();
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Image.asset(
-              'assets/icons/icono_agregar_180x180_line.png',
-              width: 40,
-              height: 40,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: CustomFloatingActionButtonLocation(
-        xOffset: -155,
-        yOffset: 20,
-      ),
+      // floatingActionButton: ClipOval(
+      //   child: FloatingActionButton(
+      //     onPressed: () {
+      //       escanearController.onPressPlus();
+      //     },
+      //     child: Padding(
+      //       padding: const EdgeInsets.all(15.0),
+      //       child: Image.asset(
+      //         'assets/icons/icono_agregar_180x180_line.png',
+      //         width: 40,
+      //         height: 40,
+      //         fit: BoxFit.cover,
+      //       ),
+      //     ),
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           backgroundColor: Colors.white,
@@ -89,9 +86,29 @@ class LayoutScreen extends StatelessWidget {
                   width: 20),
               label: 'Analítica',
             ),
-            const BottomNavigationBarItem(
-              icon: SizedBox.shrink(), // Espacio vacío para el botón de +
+            // const BottomNavigationBarItem(
+            //   icon: SizedBox.shrink(), // Espacio vacío para el botón de +
+            //   label: '',
+            // ),
+            BottomNavigationBarItem(
               label: '',
+              icon: GestureDetector(
+                onTap: () {
+                  escanearController.onPressPlus();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: blackTheme_,
+                      borderRadius: BorderRadius.circular(100)),
+                  padding: const EdgeInsets.all(15.0),
+                  child: Image.asset(
+                    'assets/icons/icono_agregar_180x180_line.png',
+                    width: 25,
+                    height: 25,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
             BottomNavigationBarItem(
               activeIcon: Image.asset(
@@ -127,10 +144,10 @@ class EscanearAlimentosController extends GetxController {
   RxList<ImageLabel> labels = <ImageLabel>[].obs;
   final UsuarioController usuarioController = Get.put(UsuarioController());
   final AnimatedFoodController controllerAnimatedFood =
-      Get.put(AnimatedFoodController(), permanent: true);
+      Get.put(AnimatedFoodController(), permanent: false);
 
   final WeeklyCalendarController cargaMacro =
-      Get.put(WeeklyCalendarController(), permanent: true);
+      Get.put(WeeklyCalendarController(), permanent: false);
   RxDouble widthCamera = 300.0.obs;
   RxDouble heightCamera = 300.0.obs;
   RxBool oscureCamera = false.obs;

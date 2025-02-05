@@ -52,7 +52,7 @@ class PantallaExito extends StatelessWidget {
               ],
             )),
             buttonTest('Ir al home', () {
-              Get.offNamed('/layout');
+              Get.offAndToNamed('/layout');
             }, true)
           ],
         ),

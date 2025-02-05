@@ -334,18 +334,22 @@ Widget buildDetailRow(String label, String value) {
           label,
           style: TextStyle(fontSize: 16, color: blackThemeText),
         ),
-        Row(
-          children: [
-            Text(
-              value,
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: blackTheme_),
-            ),
-            SizedBox(width: 6),
-            Icon(Icons.edit, color: Colors.grey, size: 18),
-          ],
+        SizedBox(width: 2),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                value,
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: blackTheme_),
+              ),
+              SizedBox(width: 6),
+              Icon(Icons.edit, color: Colors.grey, size: 18),
+            ],
+          ),
         ),
       ],
     ),

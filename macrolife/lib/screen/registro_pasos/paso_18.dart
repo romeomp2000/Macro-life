@@ -240,6 +240,7 @@ Widget paso_18(RegistroPasosController controller) {
                       Container(
                         width: Get.width,
                         padding: const EdgeInsets.all(12),
+                        margin: EdgeInsets.only(bottom: 20),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(

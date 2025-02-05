@@ -11,6 +11,7 @@ import 'package:get_storage/get_storage.dart';
 class LoaderController extends GetxController {
   RxBool loading = true.obs;
   final argumentos = Get.arguments;
+
   List<String> frases = [
     'Preparando recomendaciones exclusivas para ti...',
     'Analizando tus preferencias para ofrecerte lo mejor...',
@@ -32,17 +33,16 @@ class LoaderController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-
+    print(argumentos);
     _timer = Timer.periodic(const Duration(milliseconds: 1500), (timer) {
       FuncionesGlobales.vibratePress();
       texto.value = frases[_fraseIndex];
       _fraseIndex = (_fraseIndex + 1) % frases.length;
       _frasesMostradas++;
 
-      // Cuando se hayan mostrado todas las frases, se puede proceder con la siguiente pantalla
       if (_frasesMostradas >= frases.length) {
-        _timer.cancel(); // Cancela el temporizador
-        _proseguirConRegistro(); // Llama a la función que hace la petición y navega
+        _timer.cancel();
+        _proseguirConRegistro();
       }
     });
   }
@@ -73,7 +73,31 @@ class LoaderController extends GetxController {
       var alarmaCena = args["alarmaCena"];
 
       final apiService = ApiService();
+      // var body = {
+      //   'genero': genero,
+      //   'entrenamiento': entrenamiento,
+      //   'aplicacionSimilar': aplicacionSimilar,
+      //   'altura': altura,
+      //   'peso': peso,
+      //   'fechaNacimiento': fechaNacimiento,
+      //   'objetivo': objetivo,
+      //   'pesoDeseado': pesoDeseado,
+      //   'dieta': dieta,
+      //   'lograr': lograr,
+      //   'metaVelocidad': metaVelocidad,
+      //   // 'metaImpedimento': metaImpedimento||,
+      //   'referidoCodigo': codigo,
+      //   'appleID': appleID,
+      //   'googleId': googleId,
+      //   'correo': correo,
+      //   'telefono': telefono,
+      //   'nombre': nombre,
+      //   'alarmaDesayuno': alarmaDesayuno,
+      //   'alarmaComida': alarmaComida,
+      //   'alarmaCena': alarmaCena
+      // };
 
+      // print(body);
       final response = await apiService.fetchData(
         'registro',
         method: Method.POST,

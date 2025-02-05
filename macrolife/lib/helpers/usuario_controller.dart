@@ -3,6 +3,7 @@ import 'package:get_storage/get_storage.dart';
 // import 'package:live_activities/live_activities.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/models/usuario.dart';
+import 'package:macrolife/widgets/AnimatedFood.dart';
 import 'package:macrolife/widgets_home_screen/live_activities_controller.dart';
 import 'package:macrolife/screen/home/controller.dart';
 
@@ -53,8 +54,8 @@ class UsuarioController extends GetxController {
 
   // cerrar sesion
   void logout() async {
-    Get.back(); // Cerrar el cuadro de diálogo
-    Get.offAndToNamed('/registro'); // Realizar la acción
+    Get.back();
+    Get.offAndToNamed('/registro');
 
     final apiService = ApiService();
 
@@ -76,6 +77,11 @@ class UsuarioController extends GetxController {
     liveActivities.eliminar();
     usuario.value = Usuario();
     macronutrientes.value = MacronutrientesCalculo();
+    AnimatedFoodController controller1 = Get.find();
+    WeeklyCalendarController controller2 = Get.find();
+    // controller2.alimentosList.clear();
+    controller1.dispose();
+    controller2.dispose();
     refresh();
   }
 
@@ -93,7 +99,8 @@ class UsuarioController extends GetxController {
     // Guardar el JSON directamente en el almacenamiento
     try {
       final WeeklyCalendarController controllerCalendario =
-          Get.put(WeeklyCalendarController(), permanent: true);
+          // Get.put(WeeklyCalendarController(), permanent: true);
+          Get.put(WeeklyCalendarController());
       int rachaAnterior = usuario.value.rachaDias ?? 0;
 
       box.write('usuario', json);

@@ -24,11 +24,11 @@ class SuscripcionController extends GetxController {
   final RxDouble totalAPagar = 0.0.obs;
 
   RxList<String> images = <String>[
-    'assets/images/foto_carrusel_2160x2200_nuevo_.jpg',
-    'assets/images/foto_carrusel_2160x2200_nuevo_2.jpg',
-    'assets/images/foto_carrusel_2160x2200_nuevo_3.jpg',
-    'assets/images/foto_carrusel_2160x2200_nuevo_4.jpg',
-    'assets/images/foto_carrusel_2160x2200_nuevo_5.jpg'
+    // 'assets/images/foto_carrusel_2160x2200_nuevo_.jpg',
+    // 'assets/images/foto_carrusel_2160x2200_nuevo_2.jpg',
+    // 'assets/images/foto_carrusel_2160x2200_nuevo_3.jpg',
+    // 'assets/images/foto_carrusel_2160x2200_nuevo_4.jpg',
+    // 'assets/images/foto_carrusel_2160x2200_nuevo_5.jpg'
   ].obs;
 
   RxString imagenUrl =

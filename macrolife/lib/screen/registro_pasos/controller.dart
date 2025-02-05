@@ -30,6 +30,8 @@ class RegistroPasosController extends GetxController {
 
   RxDouble widthShadow = 2.5.obs;
 
+  final formKey = GlobalKey<FormState>();
+
   void signWithApple() async {
     try {
       FuncionesGlobales.vibratePress();
@@ -297,6 +299,8 @@ class RegistroPasosController extends GetxController {
 
   bool isFechaNacimientoSelected() {
     // Verifica que fechaNacimiento no sea null
+    // print(fechaNacimiento.value);
+    // return false;
     if (fechaNacimiento.value != null) {
       // Obtén el año actual
       int currentYear = DateTime.now().year;

@@ -40,7 +40,10 @@ Widget paso_11(RegistroPasosController controller) {
         options: const [],
         onOptionSelected: (probado) => controller.probado.value = probado,
         selectedOption: controller.probado.value,
-        onNext: controller.nextStep,
+        onNext: () async {
+          // await FuncionesGlobales().permisos();
+          controller.nextStep();
+        },
       );
     }),
   );

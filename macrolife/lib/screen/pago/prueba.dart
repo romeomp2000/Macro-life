@@ -17,14 +17,14 @@ import 'package:macrolife/screen/pago/consumable.dart';
 // To try without auto-consume on another platform, change `true` to `false` here.
 final bool _kAutoConsume = Platform.isIOS || true;
 
-const String _kConsumableId = 'consumable';
-const String _kUpgradeId = 'upgrade';
-const String _kSilverSubscriptionId = 'subscription_silver';
-const String _kGoldSubscriptionId = 'MLPA2025';
+const String _kConsumableId = 'oooooo';
+// const String _kUpgradeId = 'ML200905';
+const String _kSilverSubscriptionId = 'MLPM2025';
+const String _kGoldSubscriptionId = 'MLPA2025_2';
 const List<String> _kProductIds = <String>[
-  // _kConsumableId,
+  _kConsumableId,
   // _kUpgradeId,
-  // _kSilverSubscriptionId,
+  // _kSilverSubscriptionId,/
   _kGoldSubscriptionId,
 ];
 
@@ -85,6 +85,7 @@ class _MyAppState extends State<PruebaView> {
 
     final ProductDetailsResponse productDetailResponse =
         await _inAppPurchase.queryProductDetails(_kProductIds.toSet());
+    // print(productDetailResponse.productDetails[0].);
     if (productDetailResponse.error != null) {
       setState(() {
         _queryProductError = productDetailResponse.error!.message;

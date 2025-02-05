@@ -20,11 +20,6 @@ class ConfiguracionesScreen extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        // image: DecorationImage(
-        //   image: AssetImage(
-        //       'assets/images/background_1125x2436_uno.jpg'), // Ruta de la imagen
-        //   fit: BoxFit.cover, // Ajusta cómo se muestra la imagen
-        // ),
         color: backGround,
       ),
       child: SafeArea(

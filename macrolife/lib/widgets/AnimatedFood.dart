@@ -14,7 +14,7 @@ class AnimatedFood extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AnimatedFoodController controller =
-        Get.put(AnimatedFoodController(), permanent: true);
+        Get.put(AnimatedFoodController(), permanent: false);
 
     return Obx(() {
       if (controller.loading.value == false) {

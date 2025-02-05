@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:macrolife/config/theme.dart';
-// import 'package:get_storage/get_storage.dart';
 import 'package:macrolife/screen/pago/controller.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
 import 'package:video_player/video_player.dart';
-import 'package:intl/intl.dart';
 
 class PagoVista extends StatelessWidget {
   const PagoVista({super.key});
@@ -64,7 +62,8 @@ class PagoVista extends StatelessWidget {
                                 ? 'Prueba  Macro Life gratis'
                                 : controller.paso.value == 2
                                     ? 'Nosotros te recordaremos antes de que tu prueba finalice'
-                                    : controller.sucripcion.value == 'Anual'
+                                    : controller.sucripcion.value ==
+                                            'Plan anual'
                                         ? 'Comienza tus 3 días de prueba gratis'
                                         : 'Utiliza Macro Life para alcanzar tus metas',
                             textAlign: TextAlign.center,
@@ -112,67 +111,44 @@ class PagoVista extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Obx(() => controller.paso.value == 3
-                      ? Container(
-                          margin: const EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            spacing: 10,
-                            children: [
-                              Obx(
-                                () => GestureDetector(
+                  Obx(() {
+                    if (controller.paso.value == 3) {
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        child: Obx(
+                          () => SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              spacing: 20,
+                              children: List.generate(
+                                  controller.products.length, (index) {
+                                final product = controller.products[index];
+                                return GestureDetector(
                                   onTap: () {
-                                    controller.sucripcion.value = 'Mensual';
-                                    controller.totalAPagar.value = controller
-                                            .configuraciones
-                                            .configuraciones
-                                            .value
-                                            .suscripcion
-                                            ?.mensual ??
-                                        0.0;
+                                    controller.sucripcion.value =
+                                        product.nombre;
+                                    controller.productDetails = product.data;
                                   },
                                   child: tipoPago(
-                                    precio:
-                                        '\$${(controller.configuraciones.configuraciones.value.suscripcion?.mensual ?? 0).toDouble().toStringAsFixed(2)} /mes',
-                                    tipo: 'Mensual',
-                                    valor: controller.sucripcion.value,
-                                  ),
-                                ),
-                              ),
-                              Obx(
-                                () => GestureDetector(
-                                  onTap: () {
-                                    controller.sucripcion.value = 'Anual';
-                                    // GetStorage box = GetStorage();
-                                    // bool? isPromoActive = box.read('promo');
-
-                                    double anualPrice = controller
-                                            .configuraciones
-                                            .configuraciones
-                                            .value
-                                            .suscripcion
-                                            ?.anual ??
-                                        0.0;
-
-                                    // if (isPromoActive != null && isPromoActive) {
-                                    //   controller.totalAPagar.value = anualPrice * 0.5;
-                                    // } else {
-                                    controller.totalAPagar.value = anualPrice;
-                                    // }
-                                  },
-                                  child: tipoPago(
-                                      precio:
-                                          '\$${NumberFormat.decimalPattern().format((controller.configuraciones.configuraciones.value.suscripcion?.anual ?? 0 * (controller.configuraciones.configuraciones.value.suscripcion?.descuentoAnual ?? 0)).toDouble())} /año',
-                                      tipo: 'Anual',
+                                      tipo: product.nombre,
+                                      precio: product.nombre == 'Plan anual'
+                                          ? '\$${product.data.rawPrice.toStringAsFixed(2)}'
+                                          : '\$${product.data.rawPrice.toStringAsFixed(2)}/mes',
                                       valor: controller.sucripcion.value,
-                                      descuento:
-                                          '${controller.configuraciones.configuraciones.value.suscripcion?.descuentoAnual?.toStringAsFixed(0)}'),
-                                ),
-                              )
-                            ],
+                                      descuento: product.nombre == 'Plan anual'
+                                          ? '50'
+                                          : null),
+                                );
+                              }),
+                            ),
                           ),
-                        )
-                      : SizedBox()),
+                        ),
+                      );
+                    } else {
+                      return SizedBox();
+                    }
+                  }),
                   Container(
                     margin: EdgeInsets.only(bottom: 20),
                     child: Row(
@@ -202,12 +178,14 @@ class PagoVista extends StatelessWidget {
                           : controller.pagar();
                     }, true),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 2),
-                    child: Text(
-                      'Solo \$${controller.anualPrice.toStringAsFixed(2)} por año (\$${((controller.anualPrice) / 12).toStringAsFixed(2)}/mes)',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 180, 180, 180),
+                  Obx(
+                    () => Container(
+                      margin: EdgeInsets.only(top: 10, bottom: 2),
+                      child: Text(
+                        'Solo \$${(controller.anualPrice).toStringAsFixed(2)} por año (\$${((controller.anualPrice) / 12).toStringAsFixed(2)}/mes)',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 180, 180, 180),
+                        ),
                       ),
                     ),
                   ),
@@ -235,7 +213,7 @@ class PagoVista extends StatelessWidget {
     return Column(
       children: [
         Obx(
-          () => controller.sucripcion.value == 'Anual'
+          () => controller.sucripcion.value == 'Plan anual'
               ? Column(
                   children: [
                     SizedBox(

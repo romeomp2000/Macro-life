@@ -37,6 +37,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>GIDClientID</key>
 	<string>70844202411-8f8mrhh9usu64n40jcusta3rasvj0dee.apps.googleusercontent.com</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>sms</string>
@@ -65,6 +67,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+		<string>fetch</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -84,7 +91,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>ITSAppUsesNonExemptEncryption</key>  
-	<false/>
 </dict>
 </plist>

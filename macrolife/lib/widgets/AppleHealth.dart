@@ -11,7 +11,7 @@ class HealthDataChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(WeeklyCalendarController(), permanent: true);
+    final controller = Get.put(WeeklyCalendarController(), permanent: false);
     final controllerUsuario = Get.put(UsuarioController());
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

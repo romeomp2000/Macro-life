@@ -218,10 +218,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final UsuarioController controllerUsuario = Get.find();
     final AnimatedFoodController controllerAnimatedFood =
-        Get.put(AnimatedFoodController(), permanent: true);
+        // Get.put(AnimatedFoodController(), permanent: true);
+        Get.put(AnimatedFoodController(), permanent: false);
 
     final WeeklyCalendarController controller =
-        Get.put(WeeklyCalendarController(), permanent: true);
+        Get.put(WeeklyCalendarController(), permanent: false);
 
     return Container(
       decoration: BoxDecoration(color: backGround),
@@ -746,6 +747,7 @@ class EjercicioAppleHealth extends StatelessWidget {
         //   ),
         //   child:
         Container(
+      width: Get.width,
       padding: EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
           color: whiteTheme_,
@@ -767,9 +769,14 @@ class EjercicioAppleHealth extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '${data.nombre}',
-                style: TextStyle(color: blackTheme_),
+              SizedBox(
+                width: Get.width / 2.5,
+                child: Text(
+                  '${data.nombre}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: blackTheme_),
+                ),
               ),
               const SizedBox(height: 15),
               Row(
@@ -817,6 +824,7 @@ class EjercicioAppleHealth extends StatelessWidget {
             children: [
               Container(
                 width: 70,
+                margin: const EdgeInsets.only(bottom: 50),
                 padding: EdgeInsets.all(5),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
@@ -831,7 +839,6 @@ class EjercicioAppleHealth extends StatelessWidget {
                       color: blackThemeText),
                 ),
               ),
-              const SizedBox(height: 50),
               // Container(
               //   padding: EdgeInsets.all(5),
               //   child: Row(
