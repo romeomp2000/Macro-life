@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:macrolife/config/theme.dart';
 
 class CustomElevatedButton extends StatefulWidget {
   final String message;
@@ -47,9 +48,9 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
         ),
         backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
           if (states.contains(WidgetState.disabled)) {
-            return Colors.grey; // Color gris cuando está deshabilitado
+            return greyTheme_; // Color gris cuando está deshabilitado
           }
-          return Colors.black; // Color normal cuando está habilitado
+          return blackTheme_; // Color normal cuando está habilitado
         }),
         shadowColor: WidgetStateProperty.all(Colors.transparent),
       ),

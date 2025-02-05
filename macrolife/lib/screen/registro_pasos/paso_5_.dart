@@ -16,8 +16,11 @@ Widget paso_5(RegistroPasosController controller) {
               defaultAnio: controller.anio.value,
               defaultMes: controller.mes.value,
               defaultDia: controller.dia.value,
-              onFechaSeleccionada: (fecha) =>
-                  {controller.fechaNacimiento.value = fecha},
+              onFechaSeleccionada: (fecha) {
+                // print(fecha);
+                // print('------------');
+                controller.fechaNacimiento.value = fecha;
+              },
             ),
           ],
         ),
@@ -28,6 +31,9 @@ Widget paso_5(RegistroPasosController controller) {
         onOptionSelected: (probado) => controller.probado.value = probado,
         selectedOption: controller.probado.value,
         onNext:
+            // () {
+            //   controller.isFechaNacimientoSelected();
+            // }
             controller.isFechaNacimientoSelected() ? controller.nextStep : null,
       ),
     ),

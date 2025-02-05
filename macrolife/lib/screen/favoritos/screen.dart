@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/screen/favoritos/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,7 +24,7 @@ class FavoritosScreen extends StatelessWidget {
           ),
           title: Text(
             'Favoritos',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, color: blackTheme_),
           ),
           centerTitle: true,
         ),
@@ -37,22 +38,29 @@ class FavoritosScreen extends StatelessWidget {
                   const SizedBox(height: 15),
                   const Text(
                     'Lista guardados',
-                    style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 27,
+                        fontWeight: FontWeight.bold,
+                        color: blackTheme_),
                   ),
                   Obx(() {
                     if (controller.alimentosList.isEmpty) {
                       return Center(
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const SizedBox(height: 300),
                             const Text('Para guardar un alimento, presiona el'),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.bookmark_border),
-                                const SizedBox(width: 8),
+                                const Icon(Icons.bookmark_border,
+                                    color: blackTheme_),
+                                const SizedBox(width: 14),
                                 const Text(
-                                    'botón mientras editas un registro de comida'),
+                                  'botón mientras editas un registro de comida',
+                                  style: TextStyle(color: blackTheme_),
+                                ),
                               ],
                             ),
                           ],

@@ -1,3 +1,4 @@
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -45,20 +46,20 @@ class EditarTelefonoScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const Spacer(), // Empuja el contenido anterior hacia arriba
+            const Spacer(),
             Container(
               margin: const EdgeInsets.all(10),
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: controller.telefonoController.text.length == 10
-                    ? () {
-                        controller.actualizarTelefono();
-                      }
-                    : null,
+                onPressed: () {
+                  controller.telefonoController.text.length == 10
+                      ? controller.actualizarTelefono()
+                      : null;
+                },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+                  backgroundColor: blackTheme_,
                   foregroundColor: Colors.white,
-                  side: const BorderSide(color: Colors.black, width: 1.5),
+                  side: const BorderSide(color: blackTheme_, width: 1.5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),
@@ -76,6 +77,36 @@ class EditarTelefonoScreen extends StatelessWidget {
                 ),
               ),
             ),
+            // Container(
+            //   margin: const EdgeInsets.all(10),
+            //   width: double.infinity,
+            //   child: ElevatedButton(
+            //     onPressed: controller.telefonoController.text.length == 10
+            //         ? () {
+            //             controller.actualizarTelefono();
+            //           }
+            //         : null,
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: blackTheme_,
+            //       foregroundColor: whiteTheme_,
+            //       side: const BorderSide(color: blackTheme_, width: 1.5),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(30.0),
+            //       ),
+            //       padding: const EdgeInsets.symmetric(
+            //         vertical: 12.0,
+            //         horizontal: 24.0,
+            //       ),
+            //     ),
+            //     child: const Text(
+            //       'Actualizar',
+            //       style: TextStyle(
+            //         fontSize: 16.0,
+            //         fontWeight: FontWeight.bold,
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

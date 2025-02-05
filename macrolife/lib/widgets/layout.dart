@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/helpers/funciones_globales.dart';
@@ -7,6 +8,7 @@ import 'package:macrolife/screen/analitica/screen.dart';
 import 'package:macrolife/screen/configuraciones/screen.dart';
 import 'package:macrolife/screen/home/controller.dart';
 import 'package:macrolife/screen/home/screen.dart';
+import 'package:macrolife/screen/pefil/perfil.dart';
 import 'package:macrolife/widgets/AnimatedFood.dart';
 import 'package:macrolife/widgets/BoderCamera.dart';
 import 'package:macrolife/widgets/CustomFloatingActionButtonLocation.dart';
@@ -25,200 +27,106 @@ class LayoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.white,
       body: Obx(() {
         switch (controller.selectedIndex.value) {
           case 0:
             return const HomeScreen();
           case 1:
             return AnaliticaScreen();
-          case 2:
+          case 3:
             return const Center(child: ConfiguracionesScreen());
+          case 4:
+            return PerfilVista();
           default:
             return const Center(child: Text('Home Screen'));
         }
       }),
-      floatingActionButton: ClipOval(
-        child: FloatingActionButton(
-          onPressed: () {
-            escanearController.onPressPlus();
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Image.asset(
-              'assets/icons/icono_agregar_180x180_line.png',
-              width: 40, // Tamaño fijo para la imagen
-              height: 40, // Igual que el ancho
-              fit: BoxFit.cover, // Ajusta la imagen dentro del círculo
-            ),
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: CustomFloatingActionButtonLocation(
-        xOffset: -12, // Mueve el botón 20px hacia la izquierda
-        yOffset: 10, // Mantén el eje vertical sin cambios
-      ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       // floatingActionButton: ClipOval(
-      //   child: GestureDetector(
-      //     onTap: () {
+      //   child: FloatingActionButton(
+      //     onPressed: () {
       //       escanearController.onPressPlus();
       //     },
-      //     child: Container(
-      //       padding: const EdgeInsets.all(20.0),
-      //       decoration: BoxDecoration(
-      //         color: Colors.black,
-      //       ),
+      //     child: Padding(
+      //       padding: const EdgeInsets.all(15.0),
       //       child: Image.asset(
-      //         'assets/icons_2/icono_escanear_principal_76x76_blanco.png',
-      //         width: 30,
-      //         height: 30,
+      //         'assets/icons/icono_agregar_180x180_line.png',
+      //         width: 40,
+      //         height: 40,
+      //         fit: BoxFit.cover,
       //       ),
       //     ),
       //   ),
       // ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // bottomNavigationBar: Container(
-      //   decoration: BoxDecoration(
-      //     boxShadow: <BoxShadow>[
-      //       BoxShadow(
-      //         color: Colors.black26,
-      //         blurRadius: 6,
-      //         offset: Offset(1, -5),
-      //       ),
-      //       BoxShadow(
-      //         color: Colors.white,
-      //         blurRadius: 100,
-      //         offset: Offset(1, -1),
-      //       ),
-      //     ],
-      //   ),
-      //   child: BottomAppBar(
-      //     // color: Colors.white,
-      //     shape: const CircularNotchedRectangle(),
-      //     notchMargin: 15,
-      //     elevation: 0,
-      //     child: Row(
-      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //       children: [
-      //         GestureDetector(
-      //           onTap: () {
-      //             controller.selectedIndex.value = 0;
-      //           },
-      //           child: Container(
-      //             // width: (Get.width * 0.5),
-      //             alignment: Alignment.center,
-      //             margin: EdgeInsets.only(left: Get.width * 0.1, top: 10),
-      //             child: Obx(
-      //               () => Column(
-      //                 children: [
-      //                   Image.asset(
-      //                     'assets/icons_2/icono_home_55x55_negro.png',
-      //                     width: 20,
-      //                     color: controller.selectedIndex.value == 0
-      //                         ? Colors.black
-      //                         : Colors.grey,
-      //                   ),
-      //                   Container(
-      //                     margin: const EdgeInsets.only(top: 5),
-      //                     child: Text(
-      //                       'Inicio',
-      //                       style: TextStyle(
-      //                         fontWeight: FontWeight.bold,
-      //                         color: controller.selectedIndex.value == 0
-      //                             ? Colors.black
-      //                             : Colors.grey,
-      //                       ),
-      //                     ),
-      //                   )
-      //                 ],
-      //               ),
-      //             ),
-      //           ),
-      //         ),
-      //         GestureDetector(
-      //           onTap: () {
-      //             controller.selectedIndex.value = 1;
-      //           },
-      //           child: Container(
-      //             margin: EdgeInsets.only(right: Get.width * 0.1, top: 10),
-      //             alignment: Alignment.center,
-      //             child: Column(
-      //               children: [
-      //                 Obx(
-      //                   () => Column(
-      //                     children: [
-      //                       Image.asset(
-      //                         'assets/icons_2/icono_plan_56x56_negro.png',
-      //                         width: 20,
-      //                         color: controller.selectedIndex.value == 1
-      //                             ? Colors.black
-      //                             : Colors.grey,
-      //                       ),
-      //                       Container(
-      //                         margin: const EdgeInsets.only(top: 5),
-      //                         child: Text(
-      //                           'Plan',
-      //                           style: TextStyle(
-      //                             fontWeight: FontWeight.bold,
-      //                             color: controller.selectedIndex.value == 1
-      //                                 ? Colors.black
-      //                                 : Colors.grey,
-      //                           ),
-      //                         ),
-      //                       )
-      //                     ],
-      //                   ),
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
-
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           backgroundColor: Colors.white,
           currentIndex: controller.selectedIndex.value,
           onTap: (index) {
-            if (index != 3) {
+            if (index != 2) {
               controller.onItemTapped(index);
             }
           },
           items: [
             BottomNavigationBarItem(
               activeIcon: Image.asset(
-                  'assets/icons/icono_menu_principal_65x65_nuevo_inicio_activo.png',
+                  'assets/icons/icono_22x22_menu_principal_home_activo.png',
                   width: 20),
               icon: Image.asset(
-                  'assets/icons/icono_menu_principal_65x65_nuevo_inicio.png',
+                  'assets/icons/icono_22x22_menu_principal_home_inactivo.png',
                   width: 20),
               label: 'Inicio',
             ),
             BottomNavigationBarItem(
               activeIcon: Image.asset(
-                  'assets/icons/icono_menu_principal_65x65_nuevo_analisis_activo.png',
+                  'assets/icons/icono_22x22_menu_principal_analisis_activo.png',
                   width: 20),
               icon: Image.asset(
-                  'assets/icons/icono_menu_principal_65x65_nuevo_analisis.png',
+                  'assets/icons/icono_22x22_menu_principal_analisis_inactivo.png',
                   width: 20),
               label: 'Analítica',
             ),
+            // const BottomNavigationBarItem(
+            //   icon: SizedBox.shrink(), // Espacio vacío para el botón de +
+            //   label: '',
+            // ),
+            BottomNavigationBarItem(
+              label: '',
+              icon: GestureDetector(
+                onTap: () {
+                  escanearController.onPressPlus();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: blackTheme_,
+                      borderRadius: BorderRadius.circular(100)),
+                  padding: const EdgeInsets.all(15.0),
+                  child: Image.asset(
+                    'assets/icons/icono_agregar_180x180_line.png',
+                    width: 25,
+                    height: 25,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
             BottomNavigationBarItem(
               activeIcon: Image.asset(
-                  'assets/icons/icono_menu_principal_65x65_nuevo_ajustes_activo.png',
+                  'assets/icons/icono_22x22_menu_principal_configuracion_activo.png',
                   width: 20),
               icon: Image.asset(
-                  'assets/icons/icono_menu_principal_65x65_nuevo_ajustes.png',
+                  'assets/icons/icono_22x22_menu_principal_configuracion_inactivo.png',
                   width: 20),
               label: 'Ajustes',
             ),
-            const BottomNavigationBarItem(
-              icon: SizedBox.shrink(), // Espacio vacío para el botón de +
-              label: '',
+            BottomNavigationBarItem(
+              activeIcon: Image.asset(
+                  'assets/icons/icono_22x22_menu_principal_perfil_activo.png',
+                  width: 20),
+              icon: Image.asset(
+                  'assets/icons/icono_22x22_menu_principal_perfil_inactivo.png',
+                  width: 20),
+              label: 'Perfil',
             ),
           ],
           type: BottomNavigationBarType.fixed,
@@ -236,10 +144,10 @@ class EscanearAlimentosController extends GetxController {
   RxList<ImageLabel> labels = <ImageLabel>[].obs;
   final UsuarioController usuarioController = Get.put(UsuarioController());
   final AnimatedFoodController controllerAnimatedFood =
-      Get.put(AnimatedFoodController(), permanent: true);
+      Get.put(AnimatedFoodController(), permanent: false);
 
   final WeeklyCalendarController cargaMacro =
-      Get.put(WeeklyCalendarController(), permanent: true);
+      Get.put(WeeklyCalendarController(), permanent: false);
   RxDouble widthCamera = 300.0.obs;
   RxDouble heightCamera = 300.0.obs;
   RxBool oscureCamera = false.obs;
@@ -251,7 +159,9 @@ class EscanearAlimentosController extends GetxController {
     try {
       cameras = await availableCameras();
       if (cameras.isEmpty) {
-        print('No hay cámaras disponibles.');
+        if (kDebugMode) {
+          print('No hay cámaras disponibles.');
+        }
         return;
       }
       cameraController = CameraController(
@@ -618,7 +528,7 @@ class EscanearAlimentosController extends GetxController {
                 Obx(
                   () => BorderCamera(
                     width: widthCamera.value,
-                    height: heightCamera.value,
+                    height: heightCamera.value - 20,
                     isOscure: oscureCamera.value,
                   ),
                 ),
@@ -910,7 +820,7 @@ class EscanearAlimentosController extends GetxController {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Image.asset(
-                          'assets/icons/icono_menu_secundario_90x90_nuevo_registrar_ejercicio.png',
+                          'assets/icons/icono_menu_34x34_brazo.png',
                           width: 35,
                         ),
                         const SizedBox(height: 8),
@@ -918,7 +828,9 @@ class EscanearAlimentosController extends GetxController {
                           'Registrar ejercicio',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
+                              color: blackThemeText,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -941,7 +853,7 @@ class EscanearAlimentosController extends GetxController {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Image.asset(
-                          'assets/icons/icono_menu_secundario_90x90_nuevo_alimentos_guardados.png',
+                          'assets/icons/icono_menu_34x34_guardar.png',
                           width: 35,
                         ),
                         const SizedBox(height: 8),
@@ -949,7 +861,9 @@ class EscanearAlimentosController extends GetxController {
                           'Alimentos guardados',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
+                              color: blackThemeText,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -982,7 +896,7 @@ class EscanearAlimentosController extends GetxController {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Image.asset(
-                          'assets/icons/icono_inteligencia_artificial_120x120_negro.png',
+                          'assets/icons/icono_menu_34x34_inteligencia_artificial.png',
                           width: 35,
                         ),
                         const SizedBox(height: 8),
@@ -990,9 +904,10 @@ class EscanearAlimentosController extends GetxController {
                           'Describe tu comida',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: blackThemeText,
+                          ),
                         ),
                       ],
                     ),
@@ -1015,7 +930,7 @@ class EscanearAlimentosController extends GetxController {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Image.asset(
-                          'assets/icons/icono_menu_secundario_90x90_nuevo_escanear_alimento.png',
+                          'assets/icons/icono_menu_34x34_escanear_alimento.png',
                           width: 35,
                         ),
                         const SizedBox(height: 8),
@@ -1023,7 +938,9 @@ class EscanearAlimentosController extends GetxController {
                           'Escanear alimentos',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
+                              color: blackThemeText,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),

@@ -302,8 +302,8 @@ class NutricionScreen extends StatelessWidget {
                       const SizedBox(height: 20),
                       Obx(
                         () => Wrap(
-                          spacing: 8, // Espacio horizontal entre contenedores
-                          runSpacing: 8, // Espacio vertical entre filas
+                          spacing: 8,
+                          runSpacing: 8,
                           children: [
                             if (controller.alimento.value.ingredientes != null)
                               for (var ingrediente

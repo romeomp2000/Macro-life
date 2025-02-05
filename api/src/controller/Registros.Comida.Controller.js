@@ -1,81 +1,106 @@
-const AlimentoModel = require('../models/Alimentos.Model');
-const ReporteComidaModel = require('../models/Reportar.Comida.Model');
-const moment = require('moment-timezone');
-const { Types } = require('mongoose');
-const { buildFileUri } = require('../config/s3');
-const mongoose = require('mongoose');
-const IngredienteModel = require('../models/Ingredientes.Model');
-const EjercicioModel = require('../models/Ejercicio.Model');
+const AlimentoModel = require("../models/Alimentos.Model");
+const ReporteComidaModel = require("../models/Reportar.Comida.Model");
+const moment = require("moment-timezone");
+const { Types } = require("mongoose");
+const { buildFileUri } = require("../config/s3");
+const mongoose = require("mongoose");
+const IngredienteModel = require("../models/Ingredientes.Model");
+const EjercicioModel = require("../models/Ejercicio.Model");
 
 const obtenerHistorialUsuario = async (req, res) => {
-  const { idUsuario, fecha, isCaloriasQuemadas = true } = req.body;
+  const {
+    idUsuario,
+    fecha,
+    isCaloriasQuemadas = true,
+    caloriasHealthApple = 0,
+  } = req.body;
 
   try {
     // Convertir la fecha a la zona horaria de 'America/Mexico_City'
-    const fechaHoy = moment.tz(fecha, 'YYYY-MM-DD', 'America/Mexico_City');
+    const fechaHoy = moment.tz(fecha, "YYYY-MM-DD", "America/Mexico_City");
 
     // Obtener el inicio y fin del día
-    const todayStart = fechaHoy.startOf('day').toDate();
-    const todayEnd = fechaHoy.endOf('day').toDate();
+    const todayStart = fechaHoy.startOf("day").toDate();
+    const todayEnd = fechaHoy.endOf("day").toDate();
 
     // Crear el filtro de consulta para el historial del usuario
     const query = {
       usuario: new Types.ObjectId(idUsuario),
       fecha: {
         $gte: moment(todayStart),
-        $lte: moment(todayEnd)
-      }
+        $lte: moment(todayEnd),
+      },
     };
 
     // Realizar la búsqueda en la base de datos
     const [alimentos, macronutrientes] = await Promise.all([
-      AlimentoModel.find(query).populate('ingredientes').lean().sort({ fecha: -1 }),
-      getNutrientesPorUsuario(idUsuario, todayStart, todayEnd, isCaloriasQuemadas)
+      AlimentoModel.find(query)
+        .populate("ingredientes")
+        .lean()
+        .sort({ fecha: -1 }),
+      getNutrientesPorUsuario(
+        idUsuario,
+        todayStart,
+        todayEnd,
+        isCaloriasQuemadas,
+        caloriasHealthApple
+      ),
     ]);
 
     // Construir los datos para la respuesta con los campos especificados
     const alimentosResponse = [];
-    moment.locale('es'); // Establece el idioma a español
+    moment.locale("es"); // Establece el idioma a español
 
     for (const alimento of alimentos) {
       const alimentoData = {
         imageUrl: alimento.foto ? buildFileUri(alimento.foto) : null, // Obtener la URL de la imagen
         nombre: alimento.nombre,
-        time: moment(alimento.createdAt)
-          .tz('America/Mexico_City') // Establece la zona horaria de Ciudad de México
-          .format('h:mm a') || '', // Formato de hora: 6:22 p.m.
+        time:
+          moment(alimento.createdAt)
+            .tz("America/Mexico_City") // Establece la zona horaria de Ciudad de México
+            .format("h:mm a") || "", // Formato de hora: 6:22 p.m.
         calorias: alimento?.calorias ? Math.round(alimento.calorias) : 0,
         proteina: alimento?.proteina ? Math.round(alimento.proteina) : 0,
-        carbohidratos: alimento?.carbohidratos ? Math.round(alimento.carbohidratos) : 0,
+        carbohidratos: alimento?.carbohidratos
+          ? Math.round(alimento.carbohidratos)
+          : 0,
         grasas: alimento?.grasas ? Math.round(alimento.grasas) : 0,
         _id: alimento?._id,
         favorito: !!alimento.favorito,
         porciones: alimento?.porciones || 0,
         puntuacionSalud: {
-          nombre: alimento?.puntuacionSalud?.nombre || '',
-          descripcion: alimento?.puntuacionSalud?.descripcion || '',
+          nombre: alimento?.puntuacionSalud?.nombre || "",
+          descripcion: alimento?.puntuacionSalud?.descripcion || "",
           score: alimento?.puntuacionSalud?.score || 0,
-          caracteristicas: alimento?.puntuacionSalud?.caracteristicas || []
+          caracteristicas: alimento?.puntuacionSalud?.caracteristicas || [],
         },
         ingredientes: alimento?.ingredientes?.map((ingrediente) => {
           return {
             ...ingrediente,
-            calorias: ingrediente?.calorias ? Math.round(ingrediente.calorias) : 0,
-            proteina: ingrediente?.proteina ? Math.round(ingrediente.proteina) : 0,
-            carbohidratos: ingrediente?.carbohidratos ? Math.round(ingrediente.carbohidratos) : 0,
-            grasas: ingrediente?.grasas ? Math.round(ingrediente.grasas) : 0
+            calorias: ingrediente?.calorias
+              ? Math.round(ingrediente.calorias)
+              : 0,
+            proteina: ingrediente?.proteina
+              ? Math.round(ingrediente.proteina)
+              : 0,
+            carbohidratos: ingrediente?.carbohidratos
+              ? Math.round(ingrediente.carbohidratos)
+              : 0,
+            grasas: ingrediente?.grasas ? Math.round(ingrediente.grasas) : 0,
           };
-        })
+        }),
       };
 
       alimentosResponse.push(alimentoData);
     }
 
     // Devolver los alimentos con los campos solicitados
-    return res.status(200).json({ alimentos: alimentosResponse, macronutrientes });
+    return res
+      .status(200)
+      .json({ alimentos: alimentosResponse, macronutrientes });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+    return res.status(500).json({ message: "No se pudo, intente más tarde." });
   }
 };
 
@@ -83,16 +108,17 @@ const editarNombreComida = async (req, res) => {
   const { id, nombre } = req.body;
 
   try {
-    const updateAlimento = await AlimentoModel.findByIdAndUpdate(id,
+    const updateAlimento = await AlimentoModel.findByIdAndUpdate(
+      id,
       {
-        nombre
+        nombre,
       },
       { new: true }
     );
     return res.status(200).json({ alimentos: updateAlimento });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+    return res.status(500).json({ message: "No se pudo, intente más tarde." });
   }
 };
 
@@ -100,9 +126,10 @@ const editarPorcionComida = async (req, res) => {
   const { id, porciones } = req.body;
 
   try {
-    const updateAlimento = await AlimentoModel.findByIdAndUpdate(id,
+    const updateAlimento = await AlimentoModel.findByIdAndUpdate(
+      id,
       {
-        porciones
+        porciones,
       },
       { new: true }
     );
@@ -110,65 +137,64 @@ const editarPorcionComida = async (req, res) => {
     return res.status(200).json({ alimentos: updateAlimento });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+    return res.status(500).json({ message: "No se pudo, intente más tarde." });
   }
 };
 
-const getNutrientesPorUsuario = async (usuarioId, todayStart, todayEnd, isCaloriasQuemadas) => {
+const getNutrientesPorUsuario = async (
+  usuarioId,
+  todayStart,
+  todayEnd,
+  isCaloriasQuemadas,
+  caloriasApple = 0
+) => {
   try {
     // Obtenemos los resultados de la consulta agregada de los alimentos consumidos
     const resultados = await AlimentoModel.aggregate([
       {
         $match: {
           usuario: new mongoose.Types.ObjectId(usuarioId), // Corregido: usa 'new'
-          fecha: { $gte: todayStart, $lte: todayEnd } // Filtra por rango de fechas en UTC ajustado
-        }
+          fecha: { $gte: todayStart, $lte: todayEnd }, // Filtra por rango de fechas en UTC ajustado
+        },
       },
       {
         $project: {
-          caloriasTotales: '$calorias', // Eliminamos la multiplicación
-          proteinaTotal: '$proteina',
-          carbohidratosTotales: '$carbohidratos',
-          grasasTotales: '$grasas'
-        }
+          caloriasTotales: "$calorias", // Eliminamos la multiplicación
+          proteinaTotal: "$proteina",
+          carbohidratosTotales: "$carbohidratos",
+          grasasTotales: "$grasas",
+        },
       },
       {
         $group: {
           _id: null, // Agrupamos todo en un solo resultado
-          totalCalorias: { $sum: '$caloriasTotales' },
-          totalProteina: { $sum: '$proteinaTotal' },
-          totalCarbohidratos: { $sum: '$carbohidratosTotales' },
-          totalGrasas: { $sum: '$grasasTotales' }
-        }
-      }
+          totalCalorias: { $sum: "$caloriasTotales" },
+          totalProteina: { $sum: "$proteinaTotal" },
+          totalCarbohidratos: { $sum: "$carbohidratosTotales" },
+          totalGrasas: { $sum: "$grasasTotales" },
+        },
+      },
     ]);
 
     const ejercicios = await EjercicioModel.aggregate([
       {
         $match: {
           usuario: new mongoose.Types.ObjectId(usuarioId),
-          fecha: { $gte: todayStart, $lte: todayEnd }
-        }
+          fecha: { $gte: todayStart, $lte: todayEnd },
+        },
       },
       {
         $group: {
           _id: null,
-          totalCaloriasQuemadas: { $sum: '$calorias' }
-        }
-      }
+          totalCaloriasQuemadas: { $sum: "$calorias" },
+        },
+      },
     ]);
 
-    // console.log(ejercicios);
-
-    const caloriasQuemadas = ejercicios.length
+    let caloriasQuemadas = ejercicios.length
       ? Math.floor(ejercicios[0].totalCaloriasQuemadas)
       : 0;
-
-    // console.log(Math.floor(resultados[0].totalCalorias), 'calorias totales');
-    // console.log(caloriasQuemadas, 'calorias quemada');
-    // console.log(((Math.floor(resultados[0].totalCalorias)) - (caloriasQuemadas)), 'resta');
-
-    // Verificamos si existen los resultados
+    caloriasQuemadas += caloriasApple;
 
     if (resultados.length) {
       let totalCalorias = Math.floor(resultados[0].totalCalorias);
@@ -182,7 +208,7 @@ const getNutrientesPorUsuario = async (usuarioId, todayStart, todayEnd, isCalori
         totalProteina: Math.floor(resultados[0].totalProteina),
         totalCarbohidratos: Math.floor(resultados[0].totalCarbohidratos),
         totalGrasas: Math.floor(resultados[0].totalGrasas),
-        caloriasQuemadas
+        caloriasQuemadas,
       };
     } else {
       let totalCalorias = 0;
@@ -197,12 +223,12 @@ const getNutrientesPorUsuario = async (usuarioId, todayStart, todayEnd, isCalori
         totalCalorias,
         totalProteina: 0,
         totalCarbohidratos: 0,
-        totalGrasas: 0
+        totalGrasas: 0,
       };
     }
   } catch (error) {
-    console.error('Error en getNutrientesPorUsuario:', error);
-    throw new Error('Error al procesar la consulta.');
+    console.error("Error en getNutrientesPorUsuario:", error);
+    throw new Error("Error al procesar la consulta.");
   }
 };
 
@@ -210,9 +236,10 @@ const favoritoComida = async (req, res) => {
   const { id, favorito } = req.body;
 
   try {
-    const updateAlimento = await AlimentoModel.findByIdAndUpdate(id,
+    const updateAlimento = await AlimentoModel.findByIdAndUpdate(
+      id,
       {
-        favorito
+        favorito,
       },
       { new: true }
     );
@@ -220,7 +247,7 @@ const favoritoComida = async (req, res) => {
     return res.status(200).json({ alimentos: updateAlimento });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+    return res.status(500).json({ message: "No se pudo, intente más tarde." });
   }
 };
 
@@ -232,7 +259,7 @@ const deleteComida = async (req, res) => {
     return res.status(200).json({ alimentos: updateAlimento });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+    return res.status(500).json({ message: "No se pudo, intente más tarde." });
   }
 };
 
@@ -243,7 +270,9 @@ const deleteIngrediente = async (req, res) => {
     const ingrediente = await IngredienteModel.findById(id);
 
     if (!ingrediente) {
-      return res.status(404).json({ message: 'No se encontró el ingrediente.' });
+      return res
+        .status(404)
+        .json({ message: "No se encontró el ingrediente." });
     }
 
     ingrediente.eliminado = true;
@@ -255,9 +284,11 @@ const deleteIngrediente = async (req, res) => {
     const carbohidratos = ingrediente.carbohidratos;
     const grasas = ingrediente.grasas;
 
-    const alimento = await AlimentoModel.findOne({ ingredientes: identificador }).populate('ingredientes');
+    const alimento = await AlimentoModel.findOne({
+      ingredientes: identificador,
+    }).populate("ingredientes");
     if (!alimento) {
-      return res.status(404).json({ message: 'No se encontró el alimento.' });
+      return res.status(404).json({ message: "No se encontró el alimento." });
     }
 
     alimento.calorias = alimento.calorias - calorias;
@@ -269,7 +300,7 @@ const deleteIngrediente = async (req, res) => {
     return res.status(200).json({ ingrediente, alimento });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+    return res.status(500).json({ message: "No se pudo, intente más tarde." });
   }
 };
 
@@ -284,26 +315,30 @@ const actualizarIngrediente = async (req, res) => {
         calorias: Math.floor(calorias),
         proteina: Math.floor(proteina),
         carbohidratos: Math.floor(carbohidratos),
-        grasas: Math.floor(grasas)
+        grasas: Math.floor(grasas),
       },
       { new: true } // Devuelve el documento actualizado
     );
 
     if (!ingrediente) {
-      return res.status(404).json({ message: 'No se encontró el ingrediente.' });
+      return res
+        .status(404)
+        .json({ message: "No se encontró el ingrediente." });
     }
 
     // Buscar el alimento relacionado con el ingrediente actualizado
-    const alimento = await AlimentoModel.findOne({ ingredientes: ingrediente._id }).populate('ingredientes');
+    const alimento = await AlimentoModel.findOne({
+      ingredientes: ingrediente._id,
+    }).populate("ingredientes");
 
     if (!alimento) {
-      return res.status(404).json({ message: 'No se encontró el alimento.' });
+      return res.status(404).json({ message: "No se encontró el alimento." });
     }
 
     return res.status(200).json({ ingrediente, alimento });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+    return res.status(500).json({ message: "No se pudo, intente más tarde." });
   }
 };
 
@@ -319,19 +354,19 @@ const actualizarAlimento = async (req, res) => {
         proteina: Math.floor(proteina),
         carbohidratos: Math.floor(carbohidratos),
         grasas: Math.floor(grasas),
-        porciones
+        porciones,
       },
       { new: true } // Devuelve el documento actualizado
     );
 
     if (!alimento) {
-      return res.status(404).json({ message: 'No se encontró el alimento.' });
+      return res.status(404).json({ message: "No se encontró el alimento." });
     }
 
     return res.status(200).json({ alimento });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+    return res.status(500).json({ message: "No se pudo, intente más tarde." });
   }
 };
 
@@ -342,7 +377,9 @@ const agregarIngrediente = async (req, res) => {
     const ingrediente = await IngredienteModel.findById(id);
 
     if (!ingrediente) {
-      return res.status(404).json({ message: 'No se encontró el ingrediente.' });
+      return res
+        .status(404)
+        .json({ message: "No se encontró el ingrediente." });
     }
 
     ingrediente.eliminado = false;
@@ -354,9 +391,11 @@ const agregarIngrediente = async (req, res) => {
     const carbohidratos = ingrediente.carbohidratos;
     const grasas = ingrediente.grasas;
 
-    const alimento = await AlimentoModel.findOne({ ingredientes: identificador }).populate('ingredientes');
+    const alimento = await AlimentoModel.findOne({
+      ingredientes: identificador,
+    }).populate("ingredientes");
     if (!alimento) {
-      return res.status(404).json({ message: 'No se encontró el alimento.' });
+      return res.status(404).json({ message: "No se encontró el alimento." });
     }
 
     alimento.calorias = alimento.calorias + calorias;
@@ -368,7 +407,7 @@ const agregarIngrediente = async (req, res) => {
     return res.status(200).json({ ingrediente, alimento });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+    return res.status(500).json({ message: "No se pudo, intente más tarde." });
   }
 };
 
@@ -379,7 +418,7 @@ const reportarComida = async (req, res) => {
     const reporteNew = {
       usuario: idUsuario,
       reporte,
-      alimento: id
+      alimento: id,
     };
 
     const reporteCreado = await ReporteComidaModel.create(reporteNew);
@@ -387,7 +426,7 @@ const reportarComida = async (req, res) => {
     return res.status(200).json({ reporte: reporteCreado });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'No se pudo, intente más tarde.' });
+    return res.status(500).json({ message: "No se pudo, intente más tarde." });
   }
 };
 
@@ -401,5 +440,5 @@ module.exports = {
   deleteIngrediente,
   agregarIngrediente,
   actualizarIngrediente,
-  actualizarAlimento
+  actualizarAlimento,
 };

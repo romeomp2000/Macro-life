@@ -18,7 +18,10 @@ class FoodDatabaseController extends GetxController {
   final UsuarioController usuarioController = Get.put(UsuarioController());
   final WeeklyCalendarController controllerCalendario = Get.find();
   final AnimatedFoodController controllerAnimatedFood =
-      Get.put(AnimatedFoodController(), permanent: true);
+      // Get.put(AnimatedFoodController(), permanent: true);
+      Get.put(
+    AnimatedFoodController(),
+  );
 
   final RxString id = ''.obs;
   final RxString image = ''.obs;

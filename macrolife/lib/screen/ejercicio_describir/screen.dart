@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/models/Entrenamiento.dart';
 import 'package:macrolife/screen/ejercicio_describir/controller.dart';
 import 'package:macrolife/widgets/custom_text_form_field.dart';
@@ -52,7 +53,7 @@ class EjercicioDescribirScreen extends StatelessWidget {
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.black),
+                border: Border.all(color: blackTheme_),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -62,7 +63,10 @@ class EjercicioDescribirScreen extends StatelessWidget {
                     width: 20,
                   ),
                   const SizedBox(width: 8),
-                  Text('Creado por IA')
+                  Text(
+                    'Creado por IA',
+                    style: TextStyle(color: blackTheme_),
+                  )
                 ],
               ),
             ),
@@ -78,12 +82,14 @@ class EjercicioDescribirScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Ejemplo:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: blackTheme_),
                   ),
                   SizedBox(width: 8), // Espacio entre el título y el contenido
                   Flexible(
                     child: Text(
                       controller.obtenerActividadAleatoria(),
+                      style: TextStyle(color: blackThemeText),
                       overflow: TextOverflow.visible,
                     ),
                   ),
@@ -101,9 +107,9 @@ class EjercicioDescribirScreen extends StatelessWidget {
                   controller.registrarEntrenamiento();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+                  backgroundColor: blackTheme_,
                   foregroundColor: Colors.white,
-                  side: const BorderSide(color: Colors.black, width: 1.5),
+                  side: const BorderSide(color: blackTheme_, width: 1.5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),

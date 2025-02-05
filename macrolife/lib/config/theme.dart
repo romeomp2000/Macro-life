@@ -2,13 +2,20 @@ import 'package:flutter/material.dart';
 
 const blackTheme5_ = Color.fromRGBO(121, 120, 130, 1); // 255, 255, 255
 
-const redTheme_ = Color.fromRGBO(215, 105, 119, 1);
-const yellowTheme_ = Color.fromRGBO(224, 160, 121, 1);
-const blueTheme_ = Color.fromRGBO(124, 165, 225, 1);
 const greenTheme_ = Color.fromRGBO(124, 172, 49, 1);
-const greyTheme_ = Color.fromRGBO(224, 239, 252, 1);
 const whiteTheme_ = Color.fromRGBO(255, 255, 255, 1); // 255, 255, 255
 const blackTheme2_ = Color.fromRGBO(0, 0, 0, 1); // 44, 47, 58
+
+//Nuevo colores
+const blackTheme_ = Color.fromRGBO(42, 48, 42, 1);
+const redTheme_ = Color.fromRGBO(206, 84, 96, 1);
+const yellowTheme_ = Color.fromRGBO(218, 142, 96, 1);
+const blueTheme_ = Color.fromRGBO(100, 148, 218, 1);
+const greyTheme_ = Color.fromRGBO(238, 239, 234, 1);
+
+const blackThemeText = Color.fromRGBO(81, 96, 84, 1);
+
+const backGround = Color.fromRGBO(252, 252, 252, 1);
 
 final ThemeData themeData = ThemeData(
   colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -22,7 +29,7 @@ final ThemeData themeData = ThemeData(
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.white,
     toolbarTextStyle: TextStyle(
-      color: Colors.black,
+      color: blackThemeText,
       fontSize: 20,
       fontWeight: FontWeight.w600,
     ),
@@ -30,13 +37,13 @@ final ThemeData themeData = ThemeData(
     foregroundColor: Colors.white,
     surfaceTintColor: Colors.white,
     elevation: 0,
-    titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
-    iconTheme: IconThemeData(color: Colors.black),
+    titleTextStyle: TextStyle(color: blackTheme_, fontSize: 20),
+    iconTheme: IconThemeData(color: blackTheme_),
   ),
   listTileTheme: const ListTileThemeData(
     titleTextStyle: TextStyle(
       fontSize: 16,
-      color: Colors.black,
+      color: blackTheme_,
     ),
     subtitleTextStyle: TextStyle(
       fontSize: 14,
@@ -44,14 +51,14 @@ final ThemeData themeData = ThemeData(
     ),
   ),
   progressIndicatorTheme: const ProgressIndicatorThemeData(
-    color: Colors.black,
+    color: blackTheme_,
     linearTrackColor: Colors.transparent,
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: Colors.black,
-    foregroundColor: Colors.white,
+    backgroundColor: blackTheme_,
+    foregroundColor: whiteTheme_,
   ),
-  dividerColor: Colors.black,
+  dividerColor: blackTheme_,
   dividerTheme: const DividerThemeData(
     color: Colors.white,
     thickness: 1,
@@ -59,12 +66,12 @@ final ThemeData themeData = ThemeData(
   dialogTheme: const DialogTheme(
     backgroundColor: Colors.white,
     titleTextStyle: TextStyle(
-      color: Colors.black,
+      color: blackTheme_,
       fontSize: 18,
       fontWeight: FontWeight.w600,
     ),
     contentTextStyle: TextStyle(
-      color: Colors.black,
+      color: blackTheme_,
       fontSize: 16,
       fontWeight: FontWeight.w400,
     ),

@@ -1,8 +1,12 @@
-import 'package:camera/camera.dart';
+// import 'package:camera/camera.dart';
+
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:health/health.dart';
 import 'package:macrolife/config/api_service.dart';
+import 'package:macrolife/config/theme.dart';
+import 'package:macrolife/helpers/funciones_globales.dart';
 import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/models/Entrenamiento.dart';
 import 'package:macrolife/models/alimento.model.dart';
@@ -30,6 +34,9 @@ class WeeklyCalendarController extends GetxController {
   final verAppleHealth = false.obs;
   //? controller helth
   var healthData = <HealthDataPoint>[].obs; // Observar los datos de salud
+  // RxList<WorkOutActivities> healthDataWorKout = <WorkOutActivities>[].obs;
+  RxList<WorkOutActivitiesData> healthDataWorKout =
+      <WorkOutActivitiesData>[].obs;
   var isLoading = true.obs; // Estado de carga
   final RxList<ChartData> charSorce = <ChartData>[].obs;
   final widht = 1.0.obs;
@@ -41,6 +48,8 @@ class WeeklyCalendarController extends GetxController {
   RxInt levantamientoPesass = 0.obs;
   RxInt pasos = 0.obs;
   RxInt otro = 0.obs;
+  RxInt maximo = 0.obs;
+  RxDouble caloriasHealthApple = 0.0.obs;
 
   final List<String> daysOfWeek = [
     'lunes',
@@ -60,23 +69,88 @@ class WeeklyCalendarController extends GetxController {
     cargaAlimentos();
   }
 
+  Future<void> fetchWorkOut() async {
+    try {
+      if (GetPlatform.isAndroid) {
+        return;
+      }
+
+      bool isAuthorized = await health.requestAuthorization([
+        HealthDataType.WORKOUT,
+      ]);
+
+      if (!isAuthorized) {
+        return;
+      }
+      healthDataWorKout.clear();
+      caloriasHealthApple.value = 0;
+      DateTime startDate = DateTime(
+          today.value.year, today.value.month, today.value.day, 0, 0, 0);
+      DateTime endDate = DateTime(
+          today.value.year, today.value.month, today.value.day, 23, 59, 59);
+      List<HealthDataPoint> data = await health.getHealthDataFromTypes(
+        startDate,
+        endDate,
+        [HealthDataType.WORKOUT],
+      );
+
+      if (data.isNotEmpty) {
+        List<WorkOutActivitiesData> workoutActivities = [];
+
+        for (HealthDataPoint point in data) {
+          HealthValue healthValue = point.value;
+          Map<String, dynamic> valueJson = healthValue.toJson();
+          String? hora = DateFormat('hh:mm a')
+              .format(DateTime.parse(point.dateFrom.toString()))
+              .toLowerCase();
+
+          String? nombre = valueJson['workoutActivityType'];
+          nombre = FuncionesGlobales().translateActivity(nombre!);
+          double? cal = valueJson['totalEnergyBurned'] != null
+              ? double.tryParse(valueJson['totalEnergyBurned'].toString())
+              : null;
+          double? distancia = valueJson['totalDistance'] != null
+              ? double.tryParse(valueJson['totalDistance'].toString())
+              : null;
+          String? unidad = valueJson['totalEnergyBurnedUnit'];
+
+          DateTime dateFrom = DateTime.parse(point.dateFrom.toString());
+          DateTime dateTo = DateTime.parse(point.dateTo.toString());
+          Duration difference = dateTo.difference(dateFrom);
+          // int durationInMinutes = difference.inMinutes;
+
+          WorkOutActivitiesData data = WorkOutActivitiesData(
+              hora: hora,
+              nombre: nombre,
+              tiempo: int.parse(difference.inMinutes.toString()).toString(),
+              cal: cal,
+              distancia: distancia,
+              unidad: unidad);
+          workoutActivities.add(data);
+          caloriasHealthApple.value = caloriasHealthApple.value + cal!;
+        }
+        healthDataWorKout.value = workoutActivities;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
   Future<void> fetchHealthData() async {
     if (GetPlatform.isAndroid) {
       return;
     }
     isLoading(true);
 
-    // Solicitar permisos
     bool isAuthorized = await health.requestAuthorization([
       HealthDataType.STEPS,
     ]);
 
     if (isAuthorized) {
       // Obtener la fecha actual
-      // DateTime now = DateTime.now();
-
-      DateTime startDate =
-          today.value.subtract(Duration(days: 6)); // Últimos 7 días
+      DateTime startDate = today.value.subtract(Duration(days: 6));
 
       // Obtener los datos de pasos
       List<HealthDataPoint> data = await health.getHealthDataFromTypes(
@@ -116,7 +190,6 @@ class WeeklyCalendarController extends GetxController {
 
         stepsPerDay[dia] = (stepsPerDay[dia] ?? 0) + numericValue.toInt();
 
-        // Si la fecha corresponde al día actual, acumular los pasos
         if (date.day == today.value.day &&
             date.month == today.value.month &&
             date.year == today.value.year) {
@@ -124,16 +197,20 @@ class WeeklyCalendarController extends GetxController {
         }
       }
 
-      pasosHoy.value = pasosHoyTemp; // Asignar los pasos de hoy
+      pasosHoy.value = pasosHoyTemp;
 
-      // Crear datos del gráfico en el orden deseado
-      charSorce.clear(); // Limpiar datos anteriores
+      var maxSteps =
+          stepsPerDay.values.fold(0, (max, steps) => steps > max ? steps : max);
+      maximo.value = maxSteps + 1000;
+      charSorce.clear();
       stepsPerDay.entries.forEach((entry) {
         charSorce
             .add(ChartData(entry.key, entry.value.toDouble(), Colors.black));
       });
     } else {
-      print("No se otorgaron permisos para acceder a los datos.");
+      if (kDebugMode) {
+        print("No se otorgaron permisos para acceder a los datos.");
+      }
     }
 
     isLoading(false);
@@ -167,7 +244,9 @@ class WeeklyCalendarController extends GetxController {
   // final liveWidgetController = Get.put(LiveDynamicController());
 
   PageController pageController = PageController(initialPage: 0);
+
   Rx<DateTime> today = DateTime.now().obs;
+
   DateTime todayCalendar = DateTime.now();
   Rx<RachaDiasModel> rechaDias = RachaDiasModel(
     lun: false,
@@ -178,18 +257,6 @@ class WeeklyCalendarController extends GetxController {
     sab: false,
     dom: false,
   ).obs;
-
-  // DateTime getWeekStartDate(int weekOffset) {
-  //   DateTime current = todayCalendar;
-  //   // Aseguramos que no se muestre más de 3 semanas antes de la semana actual
-  //   int maxOffset = -3; // No más de 3 semanas atrás
-  //   // Calculamos la fecha del inicio de la semana según el desplazamiento
-  //   DateTime startOfWeek =
-  //       current.subtract(Duration(days: current.weekday - 1));
-  //   // Calculamos el nuevo desplazamiento, respetando el límite de 3 semanas
-  //   int finalOffset = weekOffset < maxOffset ? maxOffset : weekOffset;
-  //   return startOfWeek.add(Duration(days: finalOffset * 7));
-  // }
 
   DateTime getWeekStartDate(int index) {
     int adjustedIndex = -index;
@@ -202,8 +269,8 @@ class WeeklyCalendarController extends GetxController {
 
   void onRachaDias() {
     Get.bottomSheet(
-      isDismissible: true, // Permite cerrar al presionar fuera
-      enableDrag: true, // Permite deslizar para cerrar
+      isDismissible: true,
+      enableDrag: true,
       persistent: true,
       isScrollControlled: true,
       Container(
@@ -221,16 +288,13 @@ class WeeklyCalendarController extends GetxController {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  // Logo e ícono de fuego
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Icon(Icons.apple, size: 24, color: Colors.black),
                       Image.asset(
                         'assets/icons/logo_macro_life_1125x207.png',
                         height: 20,
                       ),
-
                       Container(
                         padding: const EdgeInsets.all(5.0),
                         decoration: BoxDecoration(
@@ -293,7 +357,7 @@ class WeeklyCalendarController extends GetxController {
                                                     ?.toDouble() ??
                                                 0) *
                                             5,
-                                        color: Colors.black,
+                                        color: blackTheme_,
                                         cornerStyle: CornerStyle.bothCurve,
                                         enableDragging: true,
                                         width: 0.2,
@@ -304,11 +368,10 @@ class WeeklyCalendarController extends GetxController {
                                 ],
                               ),
                               Container(
-                                width:
-                                    120, // Ajusta el tamaño del círculo según tus necesidades
+                                width: 120,
                                 height: 120,
                                 decoration: BoxDecoration(
-                                  color: Colors.black,
+                                  color: blackTheme_,
                                   shape: BoxShape.circle,
                                 ),
                               ),
@@ -326,25 +389,22 @@ class WeeklyCalendarController extends GetxController {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 10),
                   // Texto principal
                   const Text(
                     "Racha de días",
                     style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w600,
+                      color: blackTheme_,
                     ),
                   ),
                   const SizedBox(height: 30),
                   // Indicador de días
-                  Padding(
-                    padding: const EdgeInsets.all(25.0),
+                  SizedBox(
                     child: Obx(() {
-                      // Obtenemos el modelo reactivo
                       final racha = rechaDias.value;
 
-                      // Mapear las claves y valores
                       final Map<String, bool?> diasMap = {
                         "Lun": racha.lun,
                         "Mar": racha.mar,
@@ -364,36 +424,43 @@ class WeeklyCalendarController extends GetxController {
                               Text(
                                 dia,
                                 style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontWeight: FontWeight.w500,
+                                    color: blackThemeText),
                               ),
                               const SizedBox(height: 4),
                               if (estado == true)
                                 Container(
-                                  width: 18, // Ancho del cuadrado
-                                  height: 18, // Alto del cuadrado
+                                  alignment: Alignment.center,
+                                  width: 18,
+                                  height: 18,
                                   decoration: BoxDecoration(
-                                    color: Colors.black,
+                                    color: blackTheme_,
                                     border: Border.all(
-                                      color: Colors.black45, // Color del borde
-                                      width: 1, // Grosor del borde
+                                      color: blackTheme_,
+                                      width: 1,
                                     ),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5)),
                                   ),
+                                  child: Icon(
+                                    Icons.check,
+                                    color: whiteTheme_,
+                                    size: 12,
+                                  ),
                                 )
                               else
                                 Container(
-                                  width: 18, // Ancho del cuadrado
-                                  height: 18, // Alto del cuadrado
+                                  width: 18,
+                                  height: 18,
                                   decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color:
-                                            Colors.black45, // Color del borde
-                                        width: 1, // Grosor del borde
-                                      ),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
+                                    border: Border.all(
+                                      color: blackTheme_,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5),
+                                    ),
+                                  ),
                                 ),
                             ],
                           );
@@ -406,10 +473,13 @@ class WeeklyCalendarController extends GetxController {
                   // Mensaje
                   const Text(
                     "¡Sigue así! Los objetivos se cumplen día tras día",
-                    style: TextStyle(fontSize: 15),
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: blackThemeText,
+                        fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 50),
                   // Botón continuar
                   SizedBox(
                     width: double.infinity, // Ocupa todo el ancho disponible
@@ -417,11 +487,11 @@ class WeeklyCalendarController extends GetxController {
                       onPressed: () => Get.back(),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        backgroundColor: Colors.black,
+                        backgroundColor: blackTheme_,
                         padding:
-                            EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                            EdgeInsets.symmetric(horizontal: 40, vertical: 16),
                       ),
                       child: const Text(
                         "Continuar",
@@ -468,6 +538,7 @@ class WeeklyCalendarController extends GetxController {
     today.value = DateTime.now();
     cargaAlimentos();
     fetchHealthData();
+    fetchWorkOut();
   }
 
   RxList<Entrenamiento> entrenamientosList = <Entrenamiento>[].obs;
@@ -552,6 +623,7 @@ class WeeklyCalendarController extends GetxController {
       cargarEntrenamiento();
       cargarRacha();
       fetchHealthData();
+      await fetchWorkOut();
 
       final UsuarioController controllerUsuario = Get.find();
 
@@ -564,6 +636,7 @@ class WeeklyCalendarController extends GetxController {
           "fecha": DateFormat('yyyy-MM-dd').format(today.value),
           "idUsuario": controllerUsuario.usuario.value.sId,
           'isCaloriasQuemadas': isCaloriasQuemadas.value,
+          "caloriasHealthApple": caloriasHealthApple.value,
         },
       );
 
@@ -793,4 +866,32 @@ class NumberWithBorder extends StatelessWidget {
       ],
     );
   }
+}
+
+class WorkOutActivities {
+  final String dia;
+  final List<HealthDataPoint> actividades;
+
+  WorkOutActivities(
+    this.dia,
+    this.actividades,
+  );
+}
+
+class WorkOutActivitiesData {
+  final String? hora;
+  final double? cal;
+  final String? nombre;
+  final String? unidad;
+  final String? tiempo;
+  final double? distancia;
+
+  WorkOutActivitiesData({
+    this.hora,
+    this.nombre,
+    this.cal,
+    this.distancia,
+    this.unidad,
+    this.tiempo,
+  });
 }

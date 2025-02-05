@@ -42,20 +42,21 @@ class WidgetController extends GetxController {
         proPercent.value =
             usuarioController.macronutrientes.value.proteinaPorcentaje!;
       }
-    }
-    try {
-      updateHomeWidget(
-          title.value,
-          carbs.value,
-          fats.value,
-          protein.value,
-          caloriasLimite.value,
-          carbsPercent.value,
-          proPercent.value,
-          fatsPercent.value);
-    } catch (error) {
-      if (kDebugMode) {
-        print(error);
+
+      try {
+        updateHomeWidget(
+            title.value,
+            carbs.value,
+            fats.value,
+            protein.value,
+            caloriasLimite.value,
+            carbsPercent.value,
+            proPercent.value,
+            fatsPercent.value);
+      } catch (error) {
+        if (kDebugMode) {
+          print(error);
+        }
       }
     }
 

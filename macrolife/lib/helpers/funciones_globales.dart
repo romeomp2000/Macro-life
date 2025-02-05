@@ -22,6 +22,7 @@ class FuncionesGlobales {
   static Future<void> getHealthData() async {
     final health = HealthFactory();
 
+    // print('aqui entro');
     // Solicitar permisos para acceder a los datos de pasos y frecuencia cardíaca
     bool isAuthorized = await health.requestAuthorization([
       HealthDataType.STEPS,
@@ -129,6 +130,31 @@ class FuncionesGlobales {
       print("Error getting device token: $e");
       return '';
     }
+  }
+
+  Future permisos() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: true,
+      criticalAlert: true,
+      provisional: false,
+      sound: true,
+    );
+
+    await messaging.setForegroundNotificationPresentationOptions(
+        alert: true, badge: true, sound: true);
+
+    await requestNotificationPermissions(settings);
+  }
+
+  Future<void> requestNotificationPermissions(
+      NotificationSettings settings) async {
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {}
   }
 
   static Future<XFile> compressImage(XFile imageFile) async {
@@ -436,5 +462,167 @@ class FuncionesGlobales {
       (match) => '${match[1]},',
     );
     return result;
+  }
+
+  Map<String, String> activityTranslationMap = {
+    // Both
+    'ARCHERY': 'Tiro con arco',
+    'BADMINTON': 'Bádminton',
+    'BASEBALL': 'Béisbol',
+    'BASKETBALL': 'Baloncesto',
+    'BIKING': 'Ciclismo',
+    'BOXING': 'Boxeo',
+    'CRICKET': 'Cricket',
+    'CURLING': 'Curling',
+    'ELLIPTICAL': 'Elíptica',
+    'FENCING': 'Esgrima',
+    'AMERICAN_FOOTBALL': 'Fútbol americano',
+    'AUSTRALIAN_FOOTBALL': 'Fútbol australiano',
+    'SOCCER': 'Fútbol',
+    'GOLF': 'Golf',
+    'GYMNASTICS': 'Gimnasia',
+    'HANDBALL': 'Balonmano',
+    'HIGH_INTENSITY_INTERVAL_TRAINING':
+        'Entrenamiento en intervalos de alta intensidad',
+    'HIKING': 'Senderismo',
+    'HOCKEY': 'Hockey',
+    'SKATING': 'Patinaje',
+    'JUMP_ROPE': 'Saltar la cuerda',
+    'KICKBOXING': 'Kickboxing',
+    'MARTIAL_ARTS': 'Artes marciales',
+    'PILATES': 'Pilates',
+    'RACQUETBALL': 'Raquetbol',
+    'ROWING': 'Remo',
+    'RUGBY': 'Rugby',
+    'RUNNING': 'Correr',
+    'SAILING': 'Navegación',
+    'CROSS_COUNTRY_SKIING': 'Esquí de fondo',
+    'DOWNHILL_SKIING': 'Esquí alpino',
+    'SNOWBOARDING': 'Snowboard',
+    'SOFTBALL': 'Softbol',
+    'SQUASH': 'Squash',
+    'STAIR_CLIMBING': 'Subir escaleras',
+    'SWIMMING': 'Natación',
+    'TABLE_TENNIS': 'Tenis de mesa',
+    'TENNIS': 'Tenis',
+    'VOLLEYBALL': 'Voleibol',
+    'WALKING': 'Caminata',
+    'WATER_POLO': 'Polo acuático',
+    'YOGA': 'Yoga',
+
+    // iOS only
+    'BOWLING': 'Bolos',
+    'CROSS_TRAINING': 'Entrenamiento cruzado',
+    'TRACK_AND_FIELD': 'Atletismo',
+    'DISC_SPORTS': 'Deportes con disco',
+    'LACROSSE': 'Lacrosse',
+    'PREPARATION_AND_RECOVERY': 'Preparación y recuperación',
+    'FLEXIBILITY': 'Flexibilidad',
+    'COOLDOWN': 'Enfriamiento',
+    'WHEELCHAIR_WALK_PACE': 'Ritmo de caminata en silla de ruedas',
+    'WHEELCHAIR_RUN_PACE': 'Ritmo de carrera en silla de ruedas',
+    'HAND_CYCLING': 'Ciclismo manual',
+    'CORE_TRAINING': 'Entrenamiento de core',
+    'FUNCTIONAL_STRENGTH_TRAINING': 'Entrenamiento funcional de fuerza',
+    'TRADITIONAL_STRENGTH_TRAINING': 'Entrenamiento de fuerza tradicional',
+    'MIXED_CARDIO': 'Cardio mixto',
+    'STAIRS': 'Escaleras',
+    'STEP_TRAINING': 'Entrenamiento de pasos',
+    'FITNESS_GAMING': 'Juegos de fitness',
+    'BARRE': 'Barra',
+    'CARDIO_DANCE': 'Baile cardio',
+    'SOCIAL_DANCE': 'Baile social',
+    'MIND_AND_BODY': 'Mente y cuerpo',
+    'PICKLEBALL': 'Pickleball',
+    'CLIMBING': 'Escalada',
+    'EQUESTRIAN_SPORTS': 'Deportes ecuestres',
+    'FISHING': 'Pesca',
+    'HUNTING': 'Caza',
+    'PLAY': 'Juego',
+    'SNOW_SPORTS': 'Deportes de nieve',
+    'PADDLE_SPORTS': 'Deportes de remo',
+    'SURFING_SPORTS': 'Deportes de surf',
+    'WATER_FITNESS': 'Fitness acuático',
+    'WATER_SPORTS': 'Deportes acuáticos',
+    'TAI_CHI': 'Tai Chi',
+    'WRESTLING': 'Lucha',
+
+    // Android only
+    'AEROBICS': 'Aeróbicos',
+    'BIATHLON': 'Biatlón',
+    'BIKING_HAND': 'Ciclismo manual',
+    'BIKING_MOUNTAIN': 'Ciclismo de montaña',
+    'BIKING_ROAD': 'Ciclismo de carretera',
+    'BIKING_SPINNING': 'Spinning',
+    'BIKING_STATIONARY': 'Ciclismo estacionario',
+    'BIKING_UTILITY': 'Ciclismo utilitario',
+    'CALISTHENICS': 'Calistenia',
+    'CIRCUIT_TRAINING': 'Entrenamiento en circuito',
+    'CROSS_FIT': 'CrossFit',
+    'DANCING': 'Bailar',
+    'DIVING': 'Buceo',
+    'ELEVATOR': 'Ascensor',
+    'ERGOMETER': 'Ergómetro',
+    'ESCALATOR': 'Escalera eléctrica',
+    'FRISBEE_DISC': 'Frisbee',
+    'GARDENING': 'Jardinería',
+    'GUIDED_BREATHING': 'Respiración guiada',
+    'HORSEBACK_RIDING': 'Equitación',
+    'HOUSEWORK': 'Trabajo doméstico',
+    'INTERVAL_TRAINING': 'Entrenamiento en intervalos',
+    'IN_VEHICLE': 'En vehículo',
+    'ICE_SKATING': 'Patinaje sobre hielo',
+    'KAYAKING': 'Kayak',
+    'KETTLEBELL_TRAINING': 'Entrenamiento con kettlebell',
+    'KICK_SCOOTER': 'Patinete',
+    'KITE_SURFING': 'Kitesurf',
+    'MEDITATION': 'Meditación',
+    'MIXED_MARTIAL_ARTS': 'Artes marciales mixtas',
+    'P90X': 'P90X',
+    'PARAGLIDING': 'Parapente',
+    'POLO': 'Polo',
+    'ROCK_CLIMBING': 'Escalada en roca',
+    'ROWING_MACHINE': 'Máquina de remo',
+    'RUNNING_JOGGING': 'Correr',
+    'RUNNING_SAND': 'Correr en arena',
+    'RUNNING_TREADMILL': 'Correr en cinta',
+    'SCUBA_DIVING': 'Buceo',
+    'SKATING_CROSS': 'Patinaje en cross',
+    'SKATING_INDOOR': 'Patinaje en interior',
+    'SKATING_INLINE': 'Patinaje en línea',
+    'SKIING': 'Esquí',
+    'SKIING_BACK_COUNTRY': 'Esquí de fondo',
+    'SKIING_KITE': 'Esquí con cometa',
+    'SKIING_ROLLER': 'Esquí sobre ruedas',
+    'SLEDDING': 'Trineo',
+    'SNOWMOBILE': 'Motonieve',
+    'SNOWSHOEING': 'Raquetas de nieve',
+    'STAIR_CLIMBING_MACHINE': 'Máquina de subir escaleras',
+    'STANDUP_PADDLEBOARDING': 'Paddleboard',
+    'STILL': 'Reposo',
+    'STRENGTH_TRAINING': 'Entrenamiento de fuerza',
+    'SURFING': 'Surf',
+    'SWIMMING_OPEN_WATER': 'Natación en agua abierta',
+    'SWIMMING_POOL': 'Natación en piscina',
+    'TEAM_SPORTS': 'Deportes en equipo',
+    'TILTING': 'Inclinación',
+    'VOLLEYBALL_BEACH': 'Voleibol playa',
+    'VOLLEYBALL_INDOOR': 'Voleibol sala',
+    'WAKEBOARDING': 'Wakeboard',
+    'WALKING_FITNESS': 'Caminata fitness',
+    'WALKING_NORDIC': 'Caminata nórdica',
+    'WALKING_STROLLER': 'Caminata con carrito',
+    'WALKING_TREADMILL': 'Caminata en cinta',
+    'WEIGHTLIFTING': 'Levantamiento de pesas',
+    'WHEELCHAIR': 'Silla de ruedas',
+    'WINDSURFING': 'Windsurf',
+    'ZUMBA': 'Zumba',
+
+    // Other
+    'OTHER': 'Otro'
+  };
+
+  String translateActivity(String activityType) {
+    return activityTranslationMap[activityType] ?? activityType;
   }
 }

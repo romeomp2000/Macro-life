@@ -8,6 +8,7 @@ class CustomTextFormField extends StatefulWidget {
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final Widget? suffixIcon;
+  final int? length;
   final void Function(String)? onChanged;
   final bool
       focus; // Nuevo parámetro para determinar si el campo debe enfocarse
@@ -20,6 +21,7 @@ class CustomTextFormField extends StatefulWidget {
       this.controller,
       this.keyboardType,
       this.validator,
+      this.length = null,
       this.suffixIcon,
       this.focus = false, // Valor predeterminado de `false`
       this.onChanged});
@@ -64,6 +66,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       controller: widget.controller,
       validator: widget.validator,
       maxLines: null,
+      maxLength: widget.length,
       onChanged: widget.onChanged,
       obscureText: widget.obsecuretext != null && widget.obsecuretext!
           ? _obscureText

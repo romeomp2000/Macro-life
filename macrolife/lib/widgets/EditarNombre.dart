@@ -1,3 +1,4 @@
+import 'package:macrolife/config/theme.dart';
 import 'package:macrolife/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -53,9 +54,9 @@ class EditarNombreScreen extends StatelessWidget {
                   controller.actualizarNombreAlimento();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  side: const BorderSide(color: Colors.black, width: 1.5),
+                  backgroundColor: blackTheme_,
+                  foregroundColor: whiteTheme_,
+                  side: const BorderSide(color: blackTheme_, width: 1.5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),

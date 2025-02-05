@@ -21,13 +21,7 @@ class AnaliticaScreen extends StatelessWidget {
     controller.fetchPesoHistorial();
 
     return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-              'assets/images/background_1125x2436_uno.jpg'), // Ruta de la imagen
-          fit: BoxFit.cover, // Ajusta cómo se muestra la imagen
-        ),
-      ),
+      decoration: BoxDecoration(color: backGround),
       child: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -40,6 +34,7 @@ class AnaliticaScreen extends StatelessWidget {
                   'Vista general',
                   style: TextStyle(
                     fontSize: 30,
+                    color: blackTheme_,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -52,6 +47,7 @@ class AnaliticaScreen extends StatelessWidget {
                         Image.asset(
                           'assets/icons/icono_checkverde_53x53_nuevo.png',
                           width: 27,
+                          // color: blackTheme_,
                           colorBlendMode: BlendMode.color,
                         ),
                         const SizedBox(width: 10),
@@ -62,7 +58,7 @@ class AnaliticaScreen extends StatelessWidget {
                             ),
                             TextSpan(
                               text: 'Peso objetivo: ',
-                              style: const TextStyle(color: Colors.black),
+                              style: const TextStyle(color: blackTheme_),
                               children: [
                                 TextSpan(
                                   text:
@@ -83,7 +79,7 @@ class AnaliticaScreen extends StatelessWidget {
                         padding:
                             const EdgeInsets.fromLTRB(12.0, 5.0, 12.0, 5.0),
                         decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: blackTheme_,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: const Text(
@@ -121,11 +117,11 @@ class AnaliticaScreen extends StatelessWidget {
                               children: [
                                 Container(
                                   padding: const EdgeInsets.all(8),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.black12,
-                                    backgroundBlendMode: BlendMode.clear,
-                                    shape: BoxShape.circle,
-                                  ),
+                                  decoration: BoxDecoration(
+                                      color: blackTheme_,
+                                      // backgroundBlendMode: BlendMode.clear,
+                                      // shape: BoxShape.circle,
+                                      borderRadius: BorderRadius.circular(100)),
                                   child: Image.asset(
                                     'assets/icons/icono_cajon_ejercicio_88x88_registrar.png',
                                     width: 20,
@@ -140,7 +136,7 @@ class AnaliticaScreen extends StatelessWidget {
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.normal,
-                                        color: Colors.black,
+                                        color: blackTheme_,
                                       ),
                                       children: [
                                         TextSpan(
@@ -160,9 +156,7 @@ class AnaliticaScreen extends StatelessWidget {
                             const Text(
                               'Recuerda actualizar esto al menos una vez a la semana para que podamos ajustar tu plan y alcanzar tu objetivo',
                               style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.black87,
-                              ),
+                                  fontSize: 13, color: blackThemeText),
                             ),
                             const SizedBox(height: 16),
                           ],
@@ -177,7 +171,7 @@ class AnaliticaScreen extends StatelessWidget {
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           decoration: const BoxDecoration(
-                            color: Colors.black,
+                            color: blackTheme_,
                             borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(15),
                               bottomRight: Radius.circular(15),
@@ -203,6 +197,7 @@ class AnaliticaScreen extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
+                    color: blackTheme_,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -237,8 +232,9 @@ class AnaliticaScreen extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    const Text(
+                                    Text(
                                       'Tu peso es',
+                                      style: TextStyle(color: blackThemeText),
                                     ),
                                     const SizedBox(width: 10),
                                     Container(
@@ -283,7 +279,7 @@ class AnaliticaScreen extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: blackTheme_,
                           ),
                         ),
 
@@ -312,9 +308,9 @@ class AnaliticaScreen extends StatelessWidget {
                 Text(
                   'Progreso de objetivos',
                   style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: blackTheme_),
                 ),
                 const SizedBox(height: 10),
                 Obx(
@@ -336,7 +332,7 @@ class AnaliticaScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: controller.tipoBusquedaProgreso.value ==
                                       controller.listaProgreso[index]
-                                  ? Colors.black
+                                  ? blackTheme_
                                   : Colors.white,
                               borderRadius: BorderRadius.circular(10.0),
                               border: Border.all(
@@ -344,7 +340,7 @@ class AnaliticaScreen extends StatelessWidget {
                                 color: controller.tipoBusquedaProgreso.value ==
                                         controller.listaProgreso[index]
                                     ? Colors.white
-                                    : Colors.black,
+                                    : blackTheme_,
                               ),
                             ),
                             child: Text(
@@ -353,7 +349,7 @@ class AnaliticaScreen extends StatelessWidget {
                                 color: controller.tipoBusquedaProgreso.value ==
                                         controller.listaProgreso[index]
                                     ? Colors.white
-                                    : Colors.black,
+                                    : blackThemeText,
                               ),
                             ),
                           ),
@@ -401,8 +397,8 @@ class AnaliticaScreen extends StatelessWidget {
                                   isVisible: true,
                                   start: controller.chartData.first.y,
                                   end: controller.chartData.first.y,
-                                  color: Colors.grey.withOpacity(0.5),
-                                  borderColor: Colors.black,
+                                  color: greyTheme_,
+                                  borderColor: blackTheme_,
                                   borderWidth: 2,
                                 )
                               ]
@@ -410,7 +406,7 @@ class AnaliticaScreen extends StatelessWidget {
                       ),
                       series: <LineSeries<ChartDataP, DateTime>>[
                         LineSeries<ChartDataP, DateTime>(
-                          color: Colors.black,
+                          color: blackTheme_,
                           dataSource: controller.chartData,
                           xValueMapper: (ChartDataP data, _) => data.x,
                           yValueMapper: (ChartDataP data, _) => data.y,
@@ -418,7 +414,7 @@ class AnaliticaScreen extends StatelessWidget {
                             isVisible: true,
                             width: 4,
                             height: 4,
-                            color: Colors.black,
+                            color: blackTheme_,
                           ),
                           enableTooltip: true,
                         ),
@@ -452,9 +448,9 @@ class AnaliticaScreen extends StatelessWidget {
                 Text(
                   'Nutrición',
                   style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: blackTheme_),
                 ),
                 const SizedBox(height: 10),
                 Obx(
@@ -475,7 +471,7 @@ class AnaliticaScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: controller.tipoBusquedaNutricion.value ==
                                       controller.listaNutricion[index]
-                                  ? Colors.black
+                                  ? blackTheme_
                                   : Colors.white,
                               borderRadius: BorderRadius.circular(10.0),
                               border: Border.all(
@@ -483,7 +479,7 @@ class AnaliticaScreen extends StatelessWidget {
                                 color: controller.tipoBusquedaNutricion.value ==
                                         controller.listaNutricion[index]
                                     ? Colors.white
-                                    : Colors.black,
+                                    : blackTheme_,
                               ),
                             ),
                             child: Text(
@@ -492,7 +488,7 @@ class AnaliticaScreen extends StatelessWidget {
                                 color: controller.tipoBusquedaNutricion.value ==
                                         controller.listaNutricion[index]
                                     ? Colors.white
-                                    : Colors.black,
+                                    : blackThemeText,
                               ),
                             ),
                           ),
@@ -530,7 +526,10 @@ class AnaliticaScreen extends StatelessWidget {
                             children: [
                               Text(
                                 'No hay datos para mostrar',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: blackThemeText,
+                                ),
                               ),
                               Text(
                                   'Esto se actualiza a medida que registras más alimentos'),
@@ -552,6 +551,7 @@ class AnaliticaScreen extends StatelessWidget {
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
+                                          color: blackTheme_,
                                         ),
                                       ),
                                     ),
@@ -561,6 +561,7 @@ class AnaliticaScreen extends StatelessWidget {
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
+                                          color: blackTheme_,
                                         ),
                                       ),
                                     ),
@@ -578,12 +579,14 @@ class AnaliticaScreen extends StatelessWidget {
                                       'Calorías totales',
                                       style: TextStyle(
                                         fontSize: 18,
+                                        color: blackThemeText,
                                       ),
                                     ),
                                     Text(
                                       'Promedio diario',
                                       style: TextStyle(
                                         fontSize: 18,
+                                        color: blackThemeText,
                                       ),
                                     ),
                                   ],
@@ -673,23 +676,6 @@ class AnaliticaScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-
-                                  // SfCartesianChart(
-                                  //   primaryYAxis: NumericAxis(),
-                                  //   // borderColor: Colors.black,
-                                  //   plotAreaBackgroundColor: controller.color.value,
-                                  //   primaryXAxis: CategoryAxis(),
-                                  //   series: <CartesianSeries>[
-                                  //     // Inicializa la serie de columnas (barras)
-                                  //     ColumnSeries<ChartData, String>(
-                                  //       dataSource: controller.charSorce,
-                                  //       width: 0.3,
-                                  //       color: Colors.black,
-                                  //       xValueMapper: (ChartData data, _) => data.label,
-                                  //       yValueMapper: (ChartData data, _) => data.value,
-                                  //     )
-                                  //   ],
-                                  // ),
                                 ),
                               ),
                             ],
