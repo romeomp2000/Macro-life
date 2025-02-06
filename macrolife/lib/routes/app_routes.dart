@@ -60,8 +60,6 @@ abstract class Routes {
 
   static const info_imc = '/info-imc';
 
-  static const prefencias = '/preferencias';
-
   static const pago = '/pago';
 
   static const pagoVencido = '/pago-vencido';

@@ -13,17 +13,17 @@ class RegistroController extends GetxController {
       'title': 'Simplifica tus calorías',
       'subtitle': 'Solo toma una foto rápida de tu comida',
     },
-    {
-      'image': 'assets/images/imagen_foto_platillo_cuadros_1125x1125_6.jpg',
-      'title': 'Mantén un control completo',
-      'subtitle':
-          'Lleva un seguimiento de tus nutrientes y calorías en cada comida',
-    },
-    {
-      'image': 'assets/images/male-boxer-posing-t-shirt-with-arms-crossed.jpg',
-      'title': 'Come saludablemente todos los días',
-      'subtitle': 'Te ayudamos a mantener una dieta equilibrada y saludable',
-    },
+    // {
+    //   'image': 'assets/images/imagen_foto_platillo_cuadros_1125x1125_6.jpg',
+    //   'title': 'Mantén un control completo',
+    //   'subtitle':
+    //       'Lleva un seguimiento de tus nutrientes y calorías en cada comida',
+    // },
+    // {
+    //   'image': 'assets/images/male-boxer-posing-t-shirt-with-arms-crossed.jpg',
+    //   'title': 'Come saludablemente todos los días',
+    //   'subtitle': 'Te ayudamos a mantener una dieta equilibrada y saludable',
+    // },
   ];
 
   void updatePage(int index) {

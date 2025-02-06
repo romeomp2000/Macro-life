@@ -129,6 +129,8 @@ class PagoVista extends StatelessWidget {
                                     controller.sucripcion.value =
                                         product.nombre;
                                     controller.productDetails = product.data;
+                                    controller.anualPrice.value =
+                                        product.data.rawPrice;
                                   },
                                   child: tipoPago(
                                       tipo: product.nombre,
@@ -182,7 +184,9 @@ class PagoVista extends StatelessWidget {
                     () => Container(
                       margin: EdgeInsets.only(top: 10, bottom: 2),
                       child: Text(
-                        'Solo \$${(controller.anualPrice).toStringAsFixed(2)} por año (\$${((controller.anualPrice) / 12).toStringAsFixed(2)}/mes)',
+                        controller.sucripcion.value == 'Plan anual'
+                            ? 'Solo \$${(controller.anualPrice).toStringAsFixed(2)} por año (\$${((controller.anualPrice) / 12).toStringAsFixed(2)}/mes)'
+                            : 'Solo \$${(controller.anualPrice).toStringAsFixed(2)} por mes',
                         style: TextStyle(
                           color: Color.fromARGB(255, 180, 180, 180),
                         ),

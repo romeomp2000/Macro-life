@@ -199,7 +199,7 @@ const UsuariosSchema = new Schema(
     },
     estatus: {
       type: String,
-      enum: ["Activo", "Inactivo"],
+      enum: ["Activo", "Inactivo", "Eliminada"],
       require: false,
       default: "Activo",
     },

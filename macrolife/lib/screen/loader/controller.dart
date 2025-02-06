@@ -73,31 +73,7 @@ class LoaderController extends GetxController {
       var alarmaCena = args["alarmaCena"];
 
       final apiService = ApiService();
-      // var body = {
-      //   'genero': genero,
-      //   'entrenamiento': entrenamiento,
-      //   'aplicacionSimilar': aplicacionSimilar,
-      //   'altura': altura,
-      //   'peso': peso,
-      //   'fechaNacimiento': fechaNacimiento,
-      //   'objetivo': objetivo,
-      //   'pesoDeseado': pesoDeseado,
-      //   'dieta': dieta,
-      //   'lograr': lograr,
-      //   'metaVelocidad': metaVelocidad,
-      //   // 'metaImpedimento': metaImpedimento||,
-      //   'referidoCodigo': codigo,
-      //   'appleID': appleID,
-      //   'googleId': googleId,
-      //   'correo': correo,
-      //   'telefono': telefono,
-      //   'nombre': nombre,
-      //   'alarmaDesayuno': alarmaDesayuno,
-      //   'alarmaComida': alarmaComida,
-      //   'alarmaCena': alarmaCena
-      // };
 
-      // print(body);
       final response = await apiService.fetchData(
         'registro',
         method: Method.POST,

@@ -1,11 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:macrolife/config/api_service.dart';
 import 'package:macrolife/helpers/configuraciones.dart';
-import 'package:macrolife/helpers/usuario_controller.dart';
 import 'package:macrolife/screen/pago/billingService.dart';
 import 'package:macrolife/widgets/custom_elevated_button.dart';
 import 'package:video_player/video_player.dart';
@@ -38,6 +35,7 @@ class PagoController extends GetxController {
   void onInit() async {
     //Obtener Planes desde las tiendas oficiales
     Get.put<InAppPurchaseUtils>(inAppPurchaseUtils);
+    await inAppPurchaseUtils.restorePurchases();
     Set<String> idS = <String>{};
     if (GetPlatform.isIOS) {
       idS = {'MLPA2025_2', 'MLPM2025'};
@@ -65,33 +63,33 @@ class PagoController extends GetxController {
     paso.value++;
   }
 
-  Future pruebaGratis() async {
-    try {
-      final controllerButton = Get.put(LoadingController());
-      controllerButton.startLoading();
-      Map<String, dynamic> body = {
-        "idUsuario": usuarioController.usuario.value.sId,
-        "producto": "Anual",
-        "total": 0.0
-      };
+  // Future pruebaGratis() async {
+  //   try {
+  //     final controllerButton = Get.put(LoadingController());
+  //     controllerButton.startLoading();
+  //     Map<String, dynamic> body = {
+  //       "idUsuario": usuarioController.usuario.value.sId,
+  //       "producto": "Anual",
+  //       "total": 0.0
+  //     };
 
-      final ApiService apiService = ApiService();
-      await apiService.fetchData(
-        'suscripcion/prueba-gratis',
-        method: Method.POST,
-        body: body,
-      );
-      controllerButton.stopLoading();
-      Get.offNamed('/pago-exitoso');
+  //     final ApiService apiService = ApiService();
+  //     await apiService.fetchData(
+  //       'suscripcion/prueba-gratis',
+  //       method: Method.POST,
+  //       body: body,
+  //     );
+  //     controllerButton.stopLoading();
+  //     Get.offNamed('/pago-exitoso');
 
-      usuarioController.usuario.value.vencidoSup = true;
-      usuarioController.usuario.refresh();
-    } catch (error) {
-      if (kDebugMode) {
-        print(error);
-      }
-    }
-  }
+  //     usuarioController.usuario.value.vencidoSup = true;
+  //     usuarioController.usuario.refresh();
+  //   } catch (error) {
+  //     if (kDebugMode) {
+  //       print(error);
+  //     }
+  //   }
+  // }
 
   RxBool isLoading = false.obs;
   Future pagar() async {
@@ -115,52 +113,9 @@ class PagoController extends GetxController {
       productDetails = producto.data;
     }
   }
-
-  final UsuarioController usuarioController = Get.find();
-
-  void suscribirseUsuario({
-    required double total,
-    required String producto,
-    required String identificador,
-    required String metodoPago,
-  }) async {
-    try {
-      final apiService = ApiService();
-      await apiService.fetchData(
-        'suscripcion/usuario',
-        method: Method.POST,
-        body: {
-          "idUsuario": usuarioController.usuario.value.sId,
-          "producto": producto,
-          'total': total,
-          'identificador': identificador,
-          'metodoPago': metodoPago,
-        },
-      );
-
-      // print('object');
-      Get.offNamed('/layout');
-      Get.back();
-      Get.back();
-      // // escanearAlimentoController.
-
-      // escanearAlimentoController.ayudaEscanear();
-      usuarioController.usuario.value.vencidoSup = true;
-      usuarioController.usuario.refresh();
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-  }
 }
 
-class SubscriptionData {
-  final String nombre;
-  final ProductDetails data;
 
-  SubscriptionData({required this.nombre, required this.data});
-}
 
 
 

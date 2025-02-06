@@ -22,6 +22,11 @@ const VentasSchema = new Schema(
       type: String,
       required: true,
     },
+    fechaSistema: {
+      // ide retornado
+      type: String,
+      required: false,
+    },
     metodoPago: {
       // como fue el pago
       type: String,
@@ -32,6 +37,10 @@ const VentasSchema = new Schema(
       type: Date,
       required: true,
       default: Date.now,
+    },
+    fechaVenceUsuario: {
+      type: Date,
+      required: true,
     },
     estado: {
       type: String,

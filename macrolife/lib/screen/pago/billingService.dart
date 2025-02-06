@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:macrolife/screen/pago/controller.dart';
+import 'package:macrolife/screen/pago/controllerSuscripcion.dart';
 
 class InAppPurchaseUtils extends GetxController {
   InAppPurchaseUtils._();
@@ -80,41 +81,64 @@ class InAppPurchaseUtils extends GetxController {
   void purchaseProduct(String productId) {}
 
   void handlePurchaseUpdates(List<PurchaseDetails> purchaseDetailsList) async {
-    // Implement your logic for handling purchase updates here
-
     for (int index = 0; index < purchaseDetailsList.length; index++) {
-      print(purchaseDetailsList[0]);
       var purchaseStatus = purchaseDetailsList[index].status;
-      switch (purchaseDetailsList[index].status) {
-        case PurchaseStatus.pending:
-          print(' purchase is in pending ');
-          continue;
-        case PurchaseStatus.error:
-          print(' purchase error ');
-          break;
-        case PurchaseStatus.canceled:
-          print(' purchase cancel ');
-          break;
-        case PurchaseStatus.purchased:
-          print(' purchased comprado ');
-          break;
-        case PurchaseStatus.restored:
-          print(' purchase restore ');
-          break;
-      }
+      // print(purchaseDetailsList.length);
+      // switch (purchaseDetailsList[index].status) {
+      //   case PurchaseStatus.pending:
+      //     print(' Compra en proceso');
+      //     continue;
+      //   case PurchaseStatus.error:
+      //     print(purchaseDetailsList[index].error);
+      //     print('Error al comprar ');
+      //     break;
+      //   case PurchaseStatus.canceled:
+      //     print(' Compra cancelada');
+      //     break;
+      //   case PurchaseStatus.purchased:
+      //     // final controllerSubscription = Get.put(SubscriptionController());
+      //     // final controllerPago = Get.put(PagoController());
 
-      if (purchaseDetailsList[index].pendingCompletePurchase) {
-        await iap.completePurchase(purchaseDetailsList[index]).then((value) {
-          if (purchaseStatus == PurchaseStatus.purchased) {}
-        });
-      }
+      //     // controllerSubscription.suscribirseUsuario(
+      //     //     identificador: purchaseDetailsList[index].purchaseID ?? '1111',
+      //     //     total: controllerPago.anualPrice.value,
+      //     //     producto: controllerPago.sucripcion.value == 'Plan anual'
+      //     //         ? 'Anual'
+      //     //         : 'Mensual',
+      //     //     metodoPago: GetPlatform.isIOS ? 'Apple Pay' : 'Google Pay',
+      //     //     fechaCompra: purchaseDetailsList[index].transactionDate);
+      //     print(' Compra completa ');
+      //     break;
+      //   case PurchaseStatus.restored:
+      //     print(' compras restablecidas ');
+      //     break;
+      // }
+
+      // if (purchaseDetailsList[index].pendingCompletePurchase) {
+      await iap.completePurchase(purchaseDetailsList[index]).then((value) {
+        if (purchaseStatus == PurchaseStatus.purchased) {
+          //on purchase success you can call your logic and your API here.
+          //Método para completar la compra en la api, esto se debe de cambiar para otros proyectos
+          final controllerSubscription = Get.put(SubscriptionController());
+          final controllerPago = Get.put(PagoController());
+
+          controllerSubscription.suscribirseUsuario(
+              identificador: purchaseDetailsList[index].purchaseID ?? '1111',
+              total: controllerPago.anualPrice.value,
+              producto: controllerPago.sucripcion.value == 'Plan anual'
+                  ? 'Anual'
+                  : 'Mensual',
+              metodoPago: GetPlatform.isIOS ? 'Apple Pay' : 'Google Pay',
+              fechaCompra: purchaseDetailsList[index].transactionDate);
+          //---------
+        }
+      });
+      // }
     }
   }
 
   Future<void> buyNonConsumableProduct(ProductDetails productDetails) async {
     try {
-      // restorePurchases();
-
       final PurchaseParam purchaseParam =
           PurchaseParam(productDetails: productDetails);
       await iap.buyNonConsumable(purchaseParam: purchaseParam);
@@ -128,7 +152,6 @@ class InAppPurchaseUtils extends GetxController {
 
   Future<void> buyConsumableProduct(ProductDetails productDetails) async {
     try {
-      // restorePurchases();
       final PurchaseParam purchaseParam =
           PurchaseParam(productDetails: productDetails);
       await iap.buyConsumable(purchaseParam: purchaseParam, autoConsume: true);
@@ -148,4 +171,11 @@ class InAppPurchaseUtils extends GetxController {
       //you can handle error if restore purchase fails
     }
   }
+}
+
+class SubscriptionData {
+  final String nombre;
+  final ProductDetails data;
+
+  SubscriptionData({required this.nombre, required this.data});
 }

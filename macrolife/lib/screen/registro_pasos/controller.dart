@@ -93,7 +93,7 @@ class RegistroPasosController extends GetxController {
 
       nextStep();
 
-      // si no proporsiona que lo escriba;
+      // si no proporciona que lo escriba;
       if (correoWithGoogle != null) {
         correoController.text = correoWithGoogle;
         correo.value = correoWithGoogle;

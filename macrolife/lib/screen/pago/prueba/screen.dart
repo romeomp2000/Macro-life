@@ -27,22 +27,10 @@ class PantallaExito extends StatelessWidget {
                     width: 250,
                   ),
                 ),
-                // Container(
-                //   padding: const EdgeInsets.all(15),
-                //   decoration: BoxDecoration(
-                //     color: Colors.black,
-                //     borderRadius: BorderRadius.circular(100),
-                //   ),
-                //   child: Icon(
-                //     Icons.check,
-                //     size: 50,
-                //     color: Colors.white,
-                //   ),
-                // ),
                 Container(
                   padding: const EdgeInsets.all(20),
                   child: Text(
-                    'A partir de ahora podrás usar la aplicación de Macro Life con todas sus funciones por 3 días sin costo alguno.',
+                    'A partir de ahora podrás usar la aplicación de Macro Life con todas sus funciones.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 17,

@@ -302,12 +302,14 @@ Widget paso_18(RegistroPasosController controller) {
             left: 0,
             child: Container(
                 margin: const EdgeInsets.only(bottom: 25, left: 25, right: 25),
-                // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                // color: Colors.grey[100],
-                // width: Get.width - 20,
                 child: buttonTest('Siguiente', () {
                   FuncionesGlobales.actualizarMacronutrientes();
-                  Get.offAllNamed('/pago');
+                  if (GetPlatform.isIOS) {
+                    Get.offAllNamed('/pago');
+                  } else {
+                    Get.offAllNamed('/pago-vencido');
+                  }
+                  // Get.offAllNamed('/pago');
                 }, true)
                 //  CustomElevatedButton(
                 //   message: 'Siguiente',
